@@ -6,7 +6,7 @@
 - [About](#-about)
 - [Documentation](#-documentation)
 - [Feedback and Contributions](#-feedback-and-contributions)
-- [Contacts](#%EF%B8%8F-contacts)
+- [Contacts](#-contacts)
 
 
 ## About
