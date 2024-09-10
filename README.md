@@ -1,5 +1,7 @@
 # Omni-Planner
 [![language](https://img.shields.io/badge/language-JS,_HTML,_CSS-239120)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![Devices](https://img.shields.io/badge/devices-iOS,_android-blue)](#)
+![Contributions](https://img.shields.io/badge/contributions-welcome-orange)
 [![Github Last Commit](https://img.shields.io/github/last-commit/avichaljadeja2002/omni-planner)](#)
 
 A productivity and planning tool designed to help users organize their tasks, projects, and time efficiently.
@@ -18,7 +20,7 @@ A productivity and planning tool designed to help users organize their tasks, pr
 ---
 
 ## About
-**Omni-Planner** is a planning tool built with React Native to help users streamline and optimize their workflow. Whether you're managing a small to-do list or planning large projects, Omni-Planner provides the user with a flexible interface and robust features to optimize productivity.
+**Omni-Planner** is a planning tool built with React Native to help users optimize their workflow. Whether you're managing a small to-do list or planning large projects, Omni-Planner provides the user with a flexible interface and robust features to optimize productivity.
 
 ### Built With
 - JavaScript
@@ -56,8 +58,8 @@ Contributions are welcome and encouraged! Follow the following steps to contribu
 
 1. Fork the repository.
 2. Create a new feature branch (`git checkout -b feature/YourFeature`).
-3. Commit your changes (`git commit -m 'Add some feature'`).
-4. Push to the branch (`git push origin feature/YourFeature`).
+3. Commit your changes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (`git commit -m 'Add some feature'`).
+4. Push to the branch &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(`git push origin feature/YourFeature`).
 5. Open a Pull Request.
 
 Please ensure that your code adheres to the project's coding guidelines and specifications.
