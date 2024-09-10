@@ -48,7 +48,7 @@ To get a local copy up and running, follow these steps:
 3. **Task Management** – Use the task panel to add, edit, or delete tasks.
 4. **Track Progress** – View progress updates, deadlines, and notifications.
 
-Feel free to explore more features in the [Documentation](#documentation).
+Feel free to explore more features in the [Documentation](https://github.com/avichaljadeja2002/omni-planner/wiki).
 
 ---
 
