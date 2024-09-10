@@ -44,9 +44,7 @@ To get a local copy up and running, follow these steps:
 
 ## Usage
 1. **Create an Account** – Register or log in using your credentials.
-2. **Set Up Your First Project** – Navigate to the dashboard and add a new project.
-3. **Task Management** – Use the task panel to add, edit, or delete tasks.
-4. **Track Progress** – View progress updates, deadlines, and notifications.
+2. **finish this section**
 
 Feel free to explore more features in the [Documentation](https://github.com/avichaljadeja2002/omni-planner/wiki).
 
