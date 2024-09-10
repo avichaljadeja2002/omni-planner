@@ -24,11 +24,12 @@ A productivity and planning tool designed to help users organize their tasks, pr
 - JavaScript
 - React Native
 - HTML/CSS
+- <span style="color:red">**Finish this section**</span>
 
 ---
 
 ## Features
-- ...
+- <span style="color:red">**Finish this section**</span>
 
 ---
 
@@ -38,13 +39,13 @@ To get a local copy up and running, follow these steps:
 1. **Clone the repository**
    ```bash
    git clone https://github.com/avichaljadeja2002/omni-planner.git
-2. **finish this section**
+2. <span style="color:red">**Finish this section**</span>
 
 ---
 
 ## Usage
 1. **Create an Account** – Register or log in using your credentials.
-2. **finish this section**
+2. <span style="color:red">**Finish this section**</span>
 
 Feel free to explore more features in the [Documentation](https://github.com/avichaljadeja2002/omni-planner/wiki).
 
@@ -73,6 +74,7 @@ We appreciate any feedback you may have! Please open an issue for any suggestion
 ## Contacts
 For any queries or support, reach out to us at:
 - **Email**: [villencr@rose-hulman.edu](mailto:villencr@rose-hulman.edu)
+- <span style="color:red">**Finish this section**</span>
 
 [Back to top](#top)
 
