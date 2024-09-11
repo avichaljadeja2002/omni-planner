@@ -1,5 +1,5 @@
 # Omni-Planner
-[![language](https://img.shields.io/badge/language-JS,_HTML,_CSS-239120)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![language](https://img.shields.io/badge/language-JS-239120)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Devices](https://img.shields.io/badge/devices-iOS,_android-blue)](#)
 ![Contributions](https://img.shields.io/badge/contributions-welcome-orange)
 [![Github Last Commit](https://img.shields.io/github/last-commit/avichaljadeja2002/omni-planner)](#)
@@ -25,7 +25,6 @@ Omni-Planner is a productivity and planning tool designed to help users organize
 ### Built With
 - JavaScript
 - React Native
-- HTML/CSS
 - <span style="color:red">**Finish this section**</span>
 
 ---
