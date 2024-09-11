@@ -10,16 +10,18 @@ Omni-Planner is a productivity and planning tool designed to help users organize
 
 ## Table of Contents
 - [About](#about)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [Feedback](#feedback)
-- [Contacts](#contacts)
+   - [Features](#features)
+   - [Installation](#installation)
+   - [Usage](#usage)
+- [Github](#github)
+   - [Contributing](#contributing)
+   - [Feedback](#feedback)
+   - [Contacts](#contacts)
+- [Screenshots](#screenshots)
 
 ---
 
-## About
+# About
 **Omni-Planner** is a planning tool built with React Native to help users optimize their workflow. Whether you're managing a small to-do list or planning large projects, Omni-Planner provides the user with a flexible interface and robust features to optimize productivity.
 
 ### Built With
@@ -51,6 +53,7 @@ To get a local copy up and running, follow these steps:
 Feel free to explore more features in the [Documentation](https://github.com/avichaljadeja2002/omni-planner/wiki).
 
 ---
+# Github
 
 ## Contributing
 Contributions are welcome and encouraged! Follow the following steps to contribute:
@@ -82,6 +85,11 @@ We appreciate any feedback you may have! Please open an issue for any suggestion
 For any queries or support, reach out to us at:
 - **Email**: [villencr@rose-hulman.edu](mailto:villencr@rose-hulman.edu)
 - <span style="color:red">**Finish this section**</span>
+
+---
+
+# Screenshots
+<span style="color:red">**Finish this section**</span>
 
 [Back to top](#top)
 
