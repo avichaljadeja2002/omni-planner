@@ -37,12 +37,13 @@ Omni-Planner is a productivity and planning tool designed to help users organize
 ---
 
 ## Installation
-To get a local copy up and running, follow these steps:
+To get the app up and running, follow these steps:
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/avichaljadeja2002/omni-planner.git
-2. <span style="color:red">**Finish this section**</span>
+1. **Visit your app store**
+      - iOS or Android
+2. **Search "Omni-Planner"**
+3. Download the app with the following icon
+   - <span style="color:red">**Finish this section**</span>
 
 ---
 
@@ -50,7 +51,7 @@ To get a local copy up and running, follow these steps:
 1. **Create an Account** – Register or log in using your credentials.
 2. <span style="color:red">**Finish this section**</span>
 
-Feel free to explore more features in the [Documentation](https://github.com/avichaljadeja2002/omni-planner/wiki).
+Feel free to explore more features and in depth desciptions in the [Documentation](https://github.com/avichaljadeja2002/omni-planner/wiki).
 
 ---
 # Github
