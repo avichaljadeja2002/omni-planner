@@ -42,7 +42,7 @@ To get the app up and running, follow these steps:
 1. **Visit your app store**
       - iOS or Android
 2. **Search "Omni-Planner"**
-3. Download the app with the following icon
+3. **Download the app with the following icon**
    - <span style="color:red">**Finish this section**</span>
 
 ---
