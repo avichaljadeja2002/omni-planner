@@ -4,7 +4,7 @@
 ![Contributions](https://img.shields.io/badge/contributions-welcome-orange)
 [![Github Last Commit](https://img.shields.io/github/last-commit/avichaljadeja2002/omni-planner)](#)
 
-A productivity and planning tool designed to help users organize their tasks, projects, and time efficiently.
+Omni-Planner is a productivity and planning tool designed to help users organize their tasks, projects, and time efficiently.
 
 ---
 
@@ -57,9 +57,15 @@ Feel free to explore more features in the [Documentation](https://github.com/avi
 Contributions are welcome and encouraged! Follow the following steps to contribute:
 
 1. Fork the repository.
-2. Create a new feature branch (`git checkout -b feature/YourFeature`).
-3. Commit your changes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (`git commit -m 'Add some feature'`).
-4. Push to the branch &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(`git push origin feature/YourFeature`).
+2. Create a new feature branch
+   ```bash
+   git checkout -b feature/YourFeature
+3. Commit your changes
+   ```bash
+   git commit -m 'Add some feature'
+4. Push to the branch 
+   ```bash
+   git push origin feature/YourFeatur
 5. Open a Pull Request.
 
 Please ensure that your code adheres to the project's coding guidelines and specifications.
