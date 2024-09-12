@@ -12,6 +12,8 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
+        tabBarInactiveBackgroundColor: colorScheme == 'light' ? 'white': 'black',
+        tabBarActiveBackgroundColor: colorScheme == 'light' ? '#999999': '#222222'
       }}>
       <Tabs.Screen
         name="index"
@@ -36,7 +38,7 @@ export default function TabLayout() {
         options={{
           title: "",
           tabBarIcon: ({color, focused}) => (
-            <TabBarIcon name={'add-circle-outline'} color={focused ? '#A9C6E7' : color} size={40} />
+            <TabBarIcon name={'add-circle-outline'} color={color} size={40} />
           ),
         }}
       />
