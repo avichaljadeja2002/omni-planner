@@ -7,7 +7,6 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
@@ -18,8 +17,8 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name={'home'} color={color} />
           ),
         }}
       />
@@ -27,8 +26,35 @@ export default function TabLayout() {
         name="explore"
         options={{
           title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name={'code-slash'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="add"
+        options={{
+          title: "",
+          tabBarIcon: ({color, focused}) => (
+            <TabBarIcon name={'add-circle-outline'} color={focused ? '#A9C6E7' : color} size={40} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Settings',
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name={'options'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name='person-outline' color={color} />
           ),
         }}
       />
