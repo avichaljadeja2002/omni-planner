@@ -1,8 +1,8 @@
 # Omni-Planner
-[![language](https://img.shields.io/badge/language-JS-239120)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![Devices](https://img.shields.io/badge/devices-iOS,_android-blue)](#)
+![language](https://img.shields.io/badge/language-ts,_tsx,_js-239120)
+![Devices](https://img.shields.io/badge/devices-iOS,_android-blue)
 ![Contributions](https://img.shields.io/badge/contributions-welcome-orange)
-[![Github Last Commit](https://img.shields.io/github/last-commit/avichaljadeja2002/omni-planner)](#)
+![Github Last Commit](https://img.shields.io/github/last-commit/avichaljadeja2002/omni-planner)
 
 Omni-Planner is a productivity and planning tool designed to help users organize their tasks, projects, and time efficiently.
 
@@ -59,17 +59,27 @@ Feel free to explore more features and in depth desciptions in the [Documentatio
 ## Contributing
 Contributions are welcome and encouraged! Follow the following steps to contribute:
 
-1. Fork the repository.
-2. Create a new feature branch
+1. Fork the repository.\
+   Click on the Fork button to create a copy of the repository under your GitHub account.
+2. Clone the forked repository
+   ```bash
+   git clone https://github.com/your-username/repo-name.git
+   cd repo-name
+3. Create a new feature branch
    ```bash
    git checkout -b feature/YourFeature
-3. Commit your changes
+4. Make your changes
+5. Test your changes
+   ```bash
+   cd omni-planner/omni-planner
+   npx expo start
+6. Commit your changes
    ```bash
    git commit -m 'Add some feature'
-4. Push to the branch 
+7. Push to the branch 
    ```bash
    git push origin feature/YourFeatur
-5. Open a Pull Request.
+8. Open a Pull Request.
 
 Please ensure that your code adheres to the project's coding guidelines and specifications.
 
