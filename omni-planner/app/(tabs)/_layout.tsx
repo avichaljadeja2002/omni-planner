@@ -30,7 +30,7 @@ export default function TabLayout() {
         }}
       />
 
-      {/* Discorver Tab */}
+      {/* Discover Tab */}
       <Tabs.Screen
         name="explore"
         options={{
