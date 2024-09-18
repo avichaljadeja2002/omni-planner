@@ -78,7 +78,7 @@ Contributions are welcome and encouraged! Follow the following steps to contribu
    git commit -m 'Add some feature'
 7. Push to the branch 
    ```bash
-   git push origin feature/YourFeatur
+   git push origin feature/YourFeature
 8. Open a Pull Request.
 
 Please ensure that your code adheres to the project's coding guidelines and specifications.
