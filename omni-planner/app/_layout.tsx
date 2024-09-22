@@ -22,7 +22,7 @@ export default function Layout() {
           }}
         />
         <Drawer.Screen
-          name="healthTracker"
+          name="healthTracking"
           component={HealthTracker}
           options={{
             title: 'Health Tracking',
@@ -31,7 +31,7 @@ export default function Layout() {
         />
 
         <Drawer.Screen
-          name="mealTracker"
+          name="mealTracking"
           component={MealTracking}
           options={{
             title: 'Food Tracker',
