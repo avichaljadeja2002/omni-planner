@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { RotateInDownLeft } from "react-native-reanimated";
 
 export const styles = StyleSheet.create({
   container: {
@@ -63,5 +64,14 @@ export const styles = StyleSheet.create({
     flex: 1,
     fontSize: 18,
     color: "#555",
+  },
+  inLine:{
+    flexDirection: 'row',
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
   },
 });
