@@ -4,6 +4,7 @@ import { styles } from './styles';
 
 export default function HealthTracker() {
   return (
+    // Chase and Ethan
     <View style={styles.container}>
       <Text>This is another screen</Text>
     </View>
