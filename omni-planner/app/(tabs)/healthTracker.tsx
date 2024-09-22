@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Button } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { styles } from './styles';
+import { Ionicons } from "@expo/vector-icons";
 
-export default function HealthTracker() {
+export default function HealthTracker({ navigation }) {
   const [selectedDate, setSelectedDate] = useState('');
   const [tasks] = useState([
-    { id: "1", title: "Meet with Saayeh at 5pm", done: true },
-    { id: "2", title: "Doctor's appointment at 7pm", done: true },
-    { id: "3", title: "AI HW due at 11:59pm", done: true },
+    { id: "1", title: "Walk the dog at 5pm", done: true },
+    { id: "2", title: "Gym at 7pm", done: true },
+    { id: "3", title: "Therapy at 10pm", done: true },
   ]);
 
   const handleDayPress = (day) => {
@@ -25,7 +26,7 @@ export default function HealthTracker() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Home</Text>
+        <Text style={styles.headerText}>Health</Text>
       </View>
 
       <Calendar
@@ -44,7 +45,15 @@ export default function HealthTracker() {
         }}
       />
 
-      <Text style={styles.sectionHeader}>Things to do today</Text>
+      <View style={styles.inLine}>
+        <Text style={styles.sectionHeader}>Upcoming Events</Text>
+        <TouchableOpacity style={{ marginLeft: 150 }}
+          onPress={() =>
+            navigation.navigate('addHealthEvents')}
+          hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}>
+          <Ionicons name="add-circle-outline" size={30} color={'#000'} />
+        </TouchableOpacity>
+      </View>
       <FlatList
         data={tasks}
         renderItem={renderTask}

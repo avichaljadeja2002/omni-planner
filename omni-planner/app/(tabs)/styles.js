@@ -74,4 +74,13 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
   },
+  centerButton: {
+    marginTop: 20,
+    paddingTop: 10,
+    borderTopWidth: 1,
+    height: 40,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
 });
