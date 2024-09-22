@@ -7,6 +7,7 @@ import MealTracking from './(tabs)/mealTracker';
 import Finance from './(tabs)/finance';
 import CalendarEvents from './(tabs)/calendarEvents';
 import AddMeals from './(tabs)/addMeals';
+import AddHealthEvents from './(tabs)/addHealthEvents';
 
 const Drawer = createDrawerNavigator();
 
@@ -63,6 +64,15 @@ export default function Layout() {
           component={AddMeals}
           options={{
             title: 'Add New Meal',
+            drawerItemStyle: { display: 'none' }
+          }}
+        />
+        
+        <Drawer.Screen
+          name="addHealthEvents"
+          component={AddHealthEvents}
+          options={{
+            title: 'Add New Health Event',
             drawerItemStyle: { display: 'none' }
           }}
         />

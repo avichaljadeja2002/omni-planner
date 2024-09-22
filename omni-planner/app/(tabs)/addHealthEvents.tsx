@@ -4,7 +4,7 @@ import { styles } from './styles';
 import { Ionicons } from "@expo/vector-icons";
 
 
-export default function AddMeals({ navigation }) {
+export default function AddHealthEvents({ navigation }) {
   return (
     <View style={styles.container}>
       <View>
@@ -27,30 +27,31 @@ export default function AddMeals({ navigation }) {
           <TextInput
             style={styles.input}
           />
+          <Text>
+            Health Goal:
+          </Text>
+          <TextInput
+            style={styles.input}
+          />
+          <Text>
+            # Calories Burned:
+          </Text>
+          <TextInput
+            style={styles.input}
+          />
+          <Text>
+            Repeat:
+          </Text>
+          <TextInput
+            style={styles.input}
+          />
         </View>
 
       </View>
       <View>
-        <View style={styles.inLine}>
-          <Text style={styles.sectionHeader}>
-            Grocery List Ingredients:
-          </Text>
-          <TouchableOpacity style={{ marginLeft: 50 }}
-            onPress={() =>
-              navigation.navigate('addMeals')}
-            hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}>
-            <Ionicons name="add-circle-outline" size={30} color={'#000'} />
-          </TouchableOpacity>
-        </View>
-        <TextInput
-        style={styles.input}
-        />
-        <TextInput
-        style={styles.input}
-        />
         <TouchableOpacity style={styles.centerButton}
           onPress={() =>
-            navigation.navigate('mealTracking')}
+            navigation.navigate('healthTracking')}
           hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}>
           <Ionicons name="save-outline" size={30} color={'#000'} />
         </TouchableOpacity>
