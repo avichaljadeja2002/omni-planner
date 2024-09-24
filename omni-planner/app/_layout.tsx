@@ -1,6 +1,7 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from '@react-navigation/native';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 import App from './(tabs)/index';
 import HealthTracker from './(tabs)/healthTracker';
 import MealTracking from './(tabs)/mealTracker';
@@ -10,6 +11,20 @@ import AddMeals from './(tabs)/addMeals';
 import AddHealthEvents from './(tabs)/addHealthEvents';
 
 const Drawer = createDrawerNavigator();
+
+type RootDrawerParamList = {
+  home: undefined;
+  healthTracking: undefined;
+  mealTracking: undefined;
+  finance: undefined;
+  calendarEvents: undefined;
+  addMeals: undefined;
+  addHealthEvents: undefined;
+};
+
+export interface Props {
+  navigation: DrawerNavigationProp<RootDrawerParamList>;
+}
 
 export default function Layout() {
   return (

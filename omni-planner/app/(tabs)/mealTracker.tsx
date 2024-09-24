@@ -1,23 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Button } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { styles } from './styles';
 import { Ionicons } from "@expo/vector-icons";
-import { DrawerNavigationProp } from '@react-navigation/drawer';
-
-type RootDrawerParamList = {
-  addMeals: undefined;
-};
-
-interface Props {
-  navigation: DrawerNavigationProp<RootDrawerParamList>;
-}
-
-type Task = {
-  id: string;
-  title: string;
-  done: boolean;
-};
+import { Task } from '../../components/Types'
+import { Props } from '../_layout'
 
 export default function MealTracker({ navigation }: Props) {
   const [selectedDate, setSelectedDate] = useState('');
