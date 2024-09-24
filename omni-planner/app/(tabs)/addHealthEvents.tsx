@@ -2,9 +2,17 @@ import React from 'react';
 import { View, TextInput, Text, TouchableOpacity } from 'react-native';
 import { styles } from './styles';
 import { Ionicons } from "@expo/vector-icons";
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 
+type RootDrawerParamList = {
+  healthTracking: undefined;
+};
 
-export default function AddHealthEvents({ navigation }) {
+interface Props {
+  navigation: DrawerNavigationProp<RootDrawerParamList>;
+}
+
+export default function AddHealthEvents({ navigation }:Props) {
   return (
     <View style={styles.container}>
       <View>

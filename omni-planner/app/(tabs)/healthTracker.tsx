@@ -3,20 +3,35 @@ import { View, Text, FlatList, TouchableOpacity, Button } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { styles } from './styles';
 import { Ionicons } from "@expo/vector-icons";
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 
-export default function HealthTracker({ navigation }) {
+type RootDrawerParamList = {
+  addHealthEvents: undefined;
+};
+
+interface Props {
+  navigation: DrawerNavigationProp<RootDrawerParamList>;
+}
+
+type Task = {
+  id: string;
+  title: string;
+  done: boolean;
+};
+
+export default function HealthTracker({ navigation }: Props) {
   const [selectedDate, setSelectedDate] = useState('');
-  const [tasks] = useState([
+  const [tasks] = useState<Task[]>([
     { id: "1", title: "Walk the dog at 5pm", done: true },
     { id: "2", title: "Gym at 7pm", done: true },
     { id: "3", title: "Therapy at 10pm", done: true },
   ]);
 
-  const handleDayPress = (day) => {
+  const handleDayPress = (day: { dateString: React.SetStateAction<string>; }) => {
     setSelectedDate(day.dateString);
   };
 
-  const renderTask = ({ item }) => (
+  const renderTask = ({ item }: { item: Task }) => (
     <View style={styles.taskItem}>
       <Text style={styles.bullet}>•</Text>
       <Text style={styles.taskText}>{item.title}</Text>
