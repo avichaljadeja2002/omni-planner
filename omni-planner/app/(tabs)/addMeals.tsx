@@ -2,16 +2,7 @@ import React from 'react';
 import { View, TextInput, Text, TouchableOpacity } from 'react-native';
 import { styles } from './styles';
 import { Ionicons } from "@expo/vector-icons";
-import { DrawerNavigationProp } from '@react-navigation/drawer';
-
-type RootDrawerParamList = {
-  addMeals: undefined;
-  mealTracking: undefined;
-};
-
-interface Props {
-  navigation: DrawerNavigationProp<RootDrawerParamList>;
-}
+import { Props } from '../_layout'
 
 export default function AddMeals({ navigation }: Props) {
   return (
