@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { styles } from './styles';
 import { Task } from '../../components/Types'
+
 
 export default function TaskScreen() {
   const [selectedDate, setSelectedDate] = useState('');

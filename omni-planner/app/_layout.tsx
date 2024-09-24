@@ -12,14 +12,57 @@ import AddHealthEvents from './(tabs)/addHealthEvents';
 
 const Drawer = createDrawerNavigator();
 
+type IconName = keyof typeof Ionicons.glyphMap | null;
+
+const drawerScreens = [
+  {
+    name: 'home',
+    component: App,
+    title: 'Home',
+    icon: 'home-outline' as IconName,
+  },
+  {
+    name: 'healthTracking',
+    component: HealthTracker,
+    title: 'Health Tracking',
+    icon: 'fitness-outline' as IconName,
+  },
+  {
+    name: 'mealTracking',
+    component: MealTracking,
+    title: 'Food Tracker',
+    icon: 'fast-food-outline' as IconName,
+  },
+  {
+    name: 'finance',
+    component: Finance,
+    title: 'Finance',
+    icon: 'wallet-outline' as IconName,
+  },
+  {
+    name: 'calendarEvents',
+    component: CalendarEvents,
+    title: 'Calendar Events',
+    icon: 'calendar-outline' as IconName,
+  },
+  {
+    name: 'addMeals',
+    component: AddMeals,
+    title: 'Add New Meal',
+    icon: null,
+    hidden: true,
+  },
+  {
+    name: 'addHealthEvents',
+    component: AddHealthEvents,
+    title: 'Add New Health Event',
+    icon: null,
+    hidden: true,
+  },
+];
+
 type RootDrawerParamList = {
-  home: undefined;
-  healthTracking: undefined;
-  mealTracking: undefined;
-  finance: undefined;
-  calendarEvents: undefined;
-  addMeals: undefined;
-  addHealthEvents: undefined;
+  [key in typeof drawerScreens[number]['name']]: undefined;
 };
 
 export interface Props {
@@ -30,68 +73,18 @@ export default function Layout() {
   return (
     <NavigationContainer independent={true}>
       <Drawer.Navigator>
-        <Drawer.Screen
-          name="home"
-          component={App}
-          options={{
-            title: 'Home',
-            drawerIcon: ({ color }) => <Ionicons name="home-outline" size={22} color={color} />,
-          }}
-        />
-        <Drawer.Screen
-          name="healthTracking"
-          component={HealthTracker}
-          options={{
-            title: 'Health Tracking',
-            drawerIcon: ({ color }) => <Ionicons name="fitness-outline" size={22} color={color} />,
-          }}
-        />
-
-        <Drawer.Screen
-          name="mealTracking"
-          component={MealTracking}
-          options={{
-            title: 'Food Tracker',
-            drawerIcon: ({ color }) => <Ionicons name="fast-food-outline" size={22} color={color} />,
-          }}
-        />
-
-        <Drawer.Screen
-          name="finance"
-          component={Finance}
-          options={{
-            title: 'Finance',
-            drawerIcon: ({ color }) => <Ionicons name="wallet-outline" size={22} color={color} />,
-          }}
-        />
-
-        <Drawer.Screen
-          name="calendarEvents"
-          component={CalendarEvents}
-          options={{
-            title: 'Calendar Events',
-            drawerIcon: ({ color }) => <Ionicons name="calendar-outline" size={22} color={color} />,
-          }}
-        />
-
-        <Drawer.Screen
-          name="addMeals"
-          component={AddMeals}
-          options={{
-            title: 'Add New Meal',
-            drawerItemStyle: { display: 'none' }
-          }}
-        />
-        
-        <Drawer.Screen
-          name="addHealthEvents"
-          component={AddHealthEvents}
-          options={{
-            title: 'Add New Health Event',
-            drawerItemStyle: { display: 'none' }
-          }}
-        />
-
+        {drawerScreens.map(({ name, component, title, icon, hidden }) => (
+          <Drawer.Screen
+            key={name}
+            name={name}
+            component={component}
+            options={{
+              title,
+              drawerIcon: icon ? ({ color }) => <Ionicons name={icon} size={22} color={color} /> : undefined,
+              drawerItemStyle: hidden ? { display: 'none' } : undefined,
+            }}
+          />
+        ))}
       </Drawer.Navigator>
     </NavigationContainer>
   );
