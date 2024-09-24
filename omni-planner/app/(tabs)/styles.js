@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import { RotateInDownLeft } from "react-native-reanimated";
 
 export const styles = StyleSheet.create({
   container: {
