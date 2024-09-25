@@ -12,6 +12,7 @@ jobs:
 
     - name: setup
       uses: ../.github/actions/deps-install
+      working-directory:
 
     - name: Run TypeScript type check
       run: npm run tsc --noEmit
