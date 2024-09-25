@@ -3,7 +3,7 @@ name: Lint TS (eslint, prettier)
 on: [push, pull_request]
 
 jobs:
-  type-check:
+  lint-ts:
     runs-on: ubuntu-latest
 
     steps:
