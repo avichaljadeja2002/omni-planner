@@ -13,10 +13,12 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '18'  # Ensure the correct Node.js version
+        node-version: '20'  # Ensure the correct Node.js version
 
     - name: Install dependencies
       run: npm install
+      working-directory: ./omni-planner
 
     - name: Run TypeScript type check
       run: npm run tsc --noEmit
+      working-directory: ./omni-planner
