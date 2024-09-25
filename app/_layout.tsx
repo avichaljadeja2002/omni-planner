@@ -42,7 +42,7 @@ const drawerScreens = [
   {
     name: 'calendarEvents',
     component: CalendarEvents,
-    title: 'Calendar Events',
+    title: 'Calender Events',
     icon: 'calendar-outline' as IconName,
   },
   {
