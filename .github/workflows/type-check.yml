@@ -1,9 +1,13 @@
 name: Type Check
 
+on:
+  workflow_run:
+    workflows: ['Linter']
+    types: [completed]
+
 jobs:
   run-workflows:
     runs-on: ubuntu-latest
     steps:
-      # Run the Type Check workflow
       - name: Run Type Check
         run: npm run tsc --noEmit
