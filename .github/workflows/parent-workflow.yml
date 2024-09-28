@@ -17,4 +17,4 @@ jobs:
         uses: actions/checkout@v3
       
       - name: Run ${{ matrix.workflow }}
-        uses: ${{ matrix.workflow }}
+        uses: ./${{ matrix.workflow }}
