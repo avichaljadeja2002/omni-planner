@@ -6,30 +6,16 @@ import { Props } from '../_layout'
 import { Dropdown } from 'react-native-element-dropdown';
 
 const data = [
-  { label: 'Item 1', value: '1' },
-  { label: 'Item 2', value: '2' },
-  { label: 'Item 3', value: '3' },
-  { label: 'Item 4', value: '4' },
-  { label: 'Item 5', value: '5' },
-  { label: 'Item 6', value: '6' },
-  { label: 'Item 7', value: '7' },
-  { label: 'Item 8', value: '8' },
+  { label: 'Daily', value: '1' },
+  { label: 'Weekly', value: '2' },
+  { label: 'Monthly', value: '3' },
+  { label: 'Yearly', value: '4' },
 ];
 
-export default function AddHealthEvents({ navigation }:Props) {
-  const [value, setValue] = useState(null);
-    const [isFocus, setIsFocus] = useState(false);
+export default function AddHealthEvents({ navigation }: Props) {
+  const [value, setValue] = useState<string | null>(null);
+  const [isFocus, setIsFocus] = useState(false);
 
-    const renderLabel = () => {
-      if (value || isFocus) {
-        return (
-          <Text>
-            Dropdown label
-          </Text>
-        );
-      }
-      return null;
-    };
   return (
     <View style={styles.container}>
       <View style={{ height: 100 }}></View>
@@ -38,7 +24,7 @@ export default function AddHealthEvents({ navigation }:Props) {
           <Text style={styles.sectionHeader}>Add new Health Event</Text>
           <TouchableOpacity style={{ marginLeft: 50 }}
             onPress={() =>
-              navigation.navigate('addMeals')}
+              console.log("pressed")}
             hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
             <View style={styles.taskicon}>
               <Ionicons name="walk-outline" size={30} color={'#000'} />
@@ -78,29 +64,27 @@ export default function AddHealthEvents({ navigation }:Props) {
               Repeating
             </Text>
             <View style={styles.container}>
-        {renderLabel()}
-        <Dropdown
-          data={data}
-          search
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder={!isFocus ? 'Select item' : '...'}
-          searchPlaceholder="Search..."
-          value={value}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-          onChange={item => {
-            setValue(item.value);
-            setIsFocus(false);
-          }}
-          renderLeftIcon={() => (
-            <Ionicons
-              name='accessibility-outline'
-            />
-          )}
-        />
-      </View>
+
+              <Dropdown
+                style={{width: 200, borderWidth: 1, padding: 8}}
+                data={data}
+                maxHeight={300}
+                labelField="label"
+                valueField="value"
+                value={value}
+                onChange={item => {
+                  setValue(item.value);
+                  setIsFocus(false);
+                }}
+                renderLeftIcon={() => (
+                  <Ionicons
+                    name='calendar-outline'
+                    size={20}
+                    paddingRight={10}
+                  />
+                )}
+              />
+            </View>
           </View>
 
         </View>

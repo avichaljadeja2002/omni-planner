@@ -6,7 +6,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { Task } from '../../components/Types'
 import { Props } from '../_layout'
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { IconName } from '../../components/Types';
 
 export default function MealTracker({ navigation }: Props) {
   const [selectedDate, setSelectedDate] = useState('');
