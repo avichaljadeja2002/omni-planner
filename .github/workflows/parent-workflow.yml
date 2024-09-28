@@ -19,12 +19,16 @@ jobs:
 
       # Run the Expo Doctor workflow
       - name: Run Expo Doctor
-        uses: ./.github/workflows/expo-doctor.yml
+        run: npx expo-doctor@latest
 
       # Run the TypeScript Lint workflow
       - name: Run TypeScript Lint
-        uses: ./.github/workflows/lint-ts.yml
+        uses: reviewdog/action-eslint@v1
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            reporter: github-pr-review
+            eslint_flags: ". --ext .js,.jsx,.ts,.tsx"
 
       # Run the Type Check workflow
       - name: Run Type Check
-        uses: ./.github/workflows/type-check.yml
+        run: npm run tsc --noEmit
