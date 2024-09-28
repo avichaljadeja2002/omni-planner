@@ -24,10 +24,10 @@ jobs:
       # Run the TypeScript Lint workflow
       - name: Run TypeScript Lint
         uses: reviewdog/action-eslint@v1
-          with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            reporter: github-pr-review
-            eslint_flags: ". --ext .js,.jsx,.ts,.tsx"
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          eslint_flags: ". --ext .js,.jsx,.ts,.tsx"
 
       # Run the Type Check workflow
       - name: Run Type Check
