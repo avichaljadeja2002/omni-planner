@@ -58,7 +58,7 @@ export default function AddMeals({ navigation }: Props) {
           </Text>
           <TouchableOpacity style={{ marginLeft: 50 }}
             onPress={() =>
-              navigation.navigate('addMeals')}
+              console.log("pressed")}
             hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}>
             <Ionicons name="add-circle-outline" size={30} color={'#000'} />
           </TouchableOpacity>

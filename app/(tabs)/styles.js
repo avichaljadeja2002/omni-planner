@@ -150,7 +150,7 @@ export const styles = StyleSheet.create({
     gap: 50,
   },
   inputText: { 
-    width: 50, 
+    width: 'auto', 
     fontSize: 20 }
 
 });
