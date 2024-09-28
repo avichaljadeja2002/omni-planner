@@ -1,0 +1,9 @@
+name: Type Check
+
+jobs:
+  run-workflows:
+    runs-on: ubuntu-latest
+    steps:
+      # Run the Type Check workflow
+      - name: Run Type Check
+        run: npm run tsc --noEmit
