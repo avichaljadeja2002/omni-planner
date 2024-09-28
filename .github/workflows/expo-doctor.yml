@@ -1,5 +1,10 @@
 name: Expo Doctor
 
+on:
+  workflow_run:
+    workflows: ['Type Check']
+    types: [completed]
+
 jobs:
   run-workflows:
     runs-on: ubuntu-latest
