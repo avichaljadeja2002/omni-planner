@@ -1,0 +1,13 @@
+name: Linting
+
+jobs:
+  run-workflows:
+    runs-on: ubuntu-latest
+    steps:
+      # Run the TypeScript Lint workflow
+      - name: Run TypeScript Lint
+        uses: reviewdog/action-eslint@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          eslint_flags: ". --ext .js,.jsx,.ts,.tsx"\

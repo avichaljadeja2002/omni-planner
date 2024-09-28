@@ -1,34 +1,20 @@
 name: Run All Workflows
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   run-workflows:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        workflow: [expo-doctor.yml, lint-ts.yml, type-check.yml]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install dependencies
-        run: npm install
-
-      # Run the Expo Doctor workflow
-      - name: Run Expo Doctor
-        run: npx expo-doctor@latest
-
-      # Run the TypeScript Lint workflow
-      - name: Run TypeScript Lint
-        uses: reviewdog/action-eslint@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          reporter: github-pr-review
-          eslint_flags: ". --ext .js,.jsx,.ts,.tsx"
-
-      # Run the Type Check workflow
-      - name: Run Type Check
-        run: npm run tsc --noEmit
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Run ${{ matrix.workflow }}
+        uses: ${{ matrix.workflow }}
