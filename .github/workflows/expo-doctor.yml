@@ -6,7 +6,7 @@ on:
     types: [completed]
 
 jobs:
-  run-workflows:
+  run-expo-doctor:
     runs-on: ubuntu-latest
     steps:
       - name: Run Expo Doctor
