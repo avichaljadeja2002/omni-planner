@@ -7,4 +7,4 @@ export type Task = {
     icon: IconName
   };
 
-export type IconName = keyof typeof Ionicons.glyphMap | null;
+export type IconName = keyof typeof Ionicons.glyphMap;

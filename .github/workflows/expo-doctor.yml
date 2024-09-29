@@ -1,13 +1,13 @@
-name: Expo Doctor
+# name: Expo Doctor
 
-on:
-  workflow_run:
-    workflows: ['Type Check']
-    types: [completed]
+# on:
+#   workflow_run:
+#     workflows: ['Type Check']
+#     types: [completed]
 
-jobs:
-  run-expo-doctor:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run Expo Doctor
-        run: npx expo-doctor@latest
+# jobs:
+#   run-expo-doctor:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Run Expo Doctor
+#         run: npx expo-doctor@latest
