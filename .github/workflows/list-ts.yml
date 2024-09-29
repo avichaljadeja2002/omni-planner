@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  run-workflows:
+  run-lint-ts:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
