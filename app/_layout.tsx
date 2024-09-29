@@ -9,10 +9,9 @@ import Finance from './(tabs)/finance';
 import CalendarEvents from './(tabs)/calendarEvents';
 import AddMeals from './(tabs)/addMeals';
 import AddHealthEvents from './(tabs)/addHealthEvents';
+import { IconName } from '@/components/Types';
 
 const Drawer = createDrawerNavigator();
-
-type IconName = keyof typeof Ionicons.glyphMap | null;
 
 const drawerScreens = [
   {

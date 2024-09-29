@@ -8,9 +8,9 @@ import { Task } from '../../components/Types'
 export default function TaskScreen() {
   const [selectedDate, setSelectedDate] = useState('');
   const [tasks] = useState<Task[]>([
-    { id: "1", title: "Meet with Saayeh at 5pm", done: true },
-    { id: "2", title: "Doctor's appointment at 7pm", done: true },
-    { id: "3", title: "AI HW due at 11:59pm", done: true },
+    { id: "1", title: "Meet with Saayeh at 5pm", done: true, icon:'accessibility' },
+    { id: "2", title: "Doctor's appointment at 7pm", done: true, icon:'accessibility' },
+    { id: "3", title: "AI HW due at 11:59pm", done: true, icon:'accessibility' },
   ]);
 
   const handleDayPress = (day: { dateString: React.SetStateAction<string>; }) => {
