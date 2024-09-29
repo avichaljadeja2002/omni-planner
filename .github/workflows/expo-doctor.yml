@@ -1,25 +1,13 @@
-# 🔗 Links:
-# Source file: https://github.com/obytes/react-native-template-obytes/blob/master/.github/workflows/expo-doctor.yml
+# name: Expo Doctor
 
-name: Expo Doctor (expo)
+# on:
+#   workflow_run:
+#     workflows: ['Type Check']
+#     types: [completed]
 
-on: [push, pull_request]
-
-jobs:
-  expo-doctor:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Setup Node
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: 🚑 Run Doctor Checks
-      run: npx expo-doctor@latest
+# jobs:
+#   run-expo-doctor:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Run Expo Doctor
+#         run: npx expo-doctor@latest
