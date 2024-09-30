@@ -38,6 +38,7 @@ export default function AddMeals({ navigation }: Props) {
     } catch (error) {
       console.error('Error saving event:', error);
     }
+    navigation.navigate('mealTracking')
   };
 
   const showDatePicker = () => {
