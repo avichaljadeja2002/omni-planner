@@ -48,6 +48,7 @@ export default function AddCalendarEvents({ navigation }: Props) {
         } catch (error) {
             console.error('Error saving event:', error);
         }
+        navigation.navigate('calendarEvents')
     };
 
     const showDatePicker = () => {
