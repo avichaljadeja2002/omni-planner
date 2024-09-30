@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { styles } from './styles';
@@ -29,6 +29,10 @@ export default function MealTracker({ navigation }: Props) {
       console.error('Error fetching events:', error);
     }
   };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
 
   const handleDayPress = (day: { dateString: React.SetStateAction<string>; }) => {
     setSelectedDate(day.dateString);
