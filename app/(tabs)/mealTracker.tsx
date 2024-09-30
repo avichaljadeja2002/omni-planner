@@ -5,15 +5,30 @@ import { styles } from './styles';
 import { Ionicons } from "@expo/vector-icons";
 import { Task } from '../../components/Types'
 import { Props } from '../_layout'
+import {IPAddr} from './constants'
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 export default function MealTracker({ navigation }: Props) {
   const [selectedDate, setSelectedDate] = useState('');
-  const [tasks] = useState<Task[]>([
-    { id: "1", title: "Breakfast at 8:00am", done: true, icon: 'sunny-outline'},
-    { id: "2", title: "Lunch at 12:30pm", done: true, icon: 'fast-food-outline'},
-    { id: "3", title: "Dinner at 6:00pm", done: true, icon: 'pizza-outline'},
-  ]);
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  const fetchEvents = async () => {
+    try {
+      const response = await fetch(IPAddr + '/get_meal_events/1'); 
+      const data = await response.json();
+      
+      const events = data.map((event: any) => ({
+        id: event.id.toString(),
+        title: `${event.title} at ${event.event_time}`, 
+        done: false,
+        icon: 'pizza-outline',
+      }));
+
+      setTasks(events); 
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
 
   const handleDayPress = (day: { dateString: React.SetStateAction<string>; }) => {
     setSelectedDate(day.dateString);
