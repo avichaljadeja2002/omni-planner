@@ -12,7 +12,7 @@ export default function HealthTracker({ navigation }: Props) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const fetchEvents = async () => {
     try {
-      const response = await fetch('http://192.168.1.11:8080/get_calendar_events/1'); 
+      const response = await fetch('http://localhost:8080/get_calendar_events/1'); 
       const data = await response.json();
       
       const events = data.map((event: any) => ({
