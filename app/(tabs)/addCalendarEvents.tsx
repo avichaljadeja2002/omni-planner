@@ -165,7 +165,7 @@ export default function AddCalendarEvents({ navigation }: Props) {
                 <View style={styles.saveCancel}>
                     <Text style={styles.cancelText}>Cancel</Text>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate('mealTracking')}
+                        onPress={() => navigation.navigate('calendarEvents')}
                         hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}>
                         <Ionicons name='close-circle-outline' size={30} color={'#000'} />
                     </TouchableOpacity>
