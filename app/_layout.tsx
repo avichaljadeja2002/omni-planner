@@ -10,6 +10,7 @@ import CalendarEvents from './(tabs)/calendarEvents';
 import AddMeals from './(tabs)/addMeals';
 import AddHealthEvents from './(tabs)/addHealthEvents';
 import { IconName } from '@/components/Types';
+import AddCalendarEvents from './(tabs)/addCalendarEvents';
 
 const Drawer = createDrawerNavigator();
 
@@ -55,6 +56,13 @@ const drawerScreens = [
     name: 'addHealthEvents',
     component: AddHealthEvents,
     title: 'Add New Health Event',
+    icon: null,
+    hidden: true,
+  },
+  {
+    name: 'addCalendarEvents',
+    component: AddCalendarEvents,
+    title: 'Add New Calendar Event',
     icon: null,
     hidden: true,
   },
