@@ -3,6 +3,7 @@ import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { Calendar } from 'react-native-calendars';
 import { styles } from './styles';
+import {IPAddr} from './constants'
 import { Ionicons } from "@expo/vector-icons";
 import { Task } from '../../components/Types';
 import { Props } from '../_layout';
@@ -12,7 +13,7 @@ export default function HealthTracker({ navigation }: Props) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const fetchEvents = async () => {
     try {
-      const response = await fetch('http://localhost:8080/get_calendar_events/1'); 
+      const response = await fetch(IPAddr + '/get_calendar_events/1'); 
       const data = await response.json();
       
       const events = data.map((event: any) => ({
