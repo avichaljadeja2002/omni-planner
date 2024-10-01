@@ -82,12 +82,14 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 8,
     backgroundColor: "#fff",
+    justifyContent: 'center', // Centering content vertically
   },
   inputContainer: {
     display: "flex",
     flexDirection: "column",
     gap: 20,
     paddingBottom: 20,
+
   },
   dropdown: {
     flex: 1,
