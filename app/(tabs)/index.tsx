@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { styles } from './styles';
 import { Task } from '../../components/Types'
+import { Ionicons } from '@expo/vector-icons';
+import { Props } from '../_layout';
 
 
-export default function TaskScreen() {
+export default function TaskScreen({ navigation }: Props) {
   const [selectedDate, setSelectedDate] = useState('');
   const [tasks] = useState<Task[]>([
     { id: "1", title: "Meet with Saayeh at 5pm", done: true, icon:'accessibility' },
@@ -26,10 +28,19 @@ export default function TaskScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Home</Text>
+      {/* Temporary View until navigation system gets added vvv */}
+      <View style={{ height: 100 }}></View>
+
+      <View>
+        <Text style={styles.sectionHeader}>Welcome [user]</Text>
       </View>
 
+      <FlatList style={styles.flatList}
+        data={tasks}
+        renderItem={renderTask}
+        keyExtractor={(item) => item.id}
+      />
+      <View style={{ height: 50 }}></View>
       <Calendar
         onDayPress={handleDayPress}
         markedDates={{
@@ -40,18 +51,19 @@ export default function TaskScreen() {
           },
         }}
         theme={{
-          selectedDayBackgroundColor: '#9b59b6',
+          selectedDayBackgroundColor: '#65558F',
           todayTextColor: '#00adf5',
           arrowColor: '#9b59b6',
         }}
       />
-
-      <Text style={styles.sectionHeader}>Things to do today</Text>
-      <FlatList
-        data={tasks}
-        renderItem={renderTask}
-        keyExtractor={(item) => item.id}
-      />
+      <TouchableOpacity style={styles.fixedButton}
+        onPress={() =>
+          console.log("pressed")}
+        hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
+        <View style={styles.icon}>
+          <Ionicons name="add-outline" size={40} color={'#eee'} />
+        </View>
+      </TouchableOpacity>
     </View>
   );
 }
