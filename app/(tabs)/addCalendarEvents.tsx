@@ -6,6 +6,7 @@ import { Props } from '../_layout';
 import { Dropdown } from 'react-native-element-dropdown';
 import axios from 'axios';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { IPAddr } from './constants';
 
 const data = [
     { label: 'Daily', value: '1' },
@@ -40,13 +41,14 @@ export default function AddCalendarEvents({ navigation }: Props) {
             event_date: eventData.event_date.toISOString().split('T')[0], // Ensures YYYY-MM-DD format
             event_time: eventData.event_time.toTimeString().split(' ')[0], // HH:MM:SS format
         };
-            
+
         try {
-            const response = await axios.post('http://192.168.1.11:8080/add_calendar_events', formattedData);
+            const response = await axios.post(IPAddr + '/add_calendar_events', formattedData);
             console.log('Event saved successfully:', response.data);
         } catch (error) {
             console.error('Error saving event:', error);
         }
+        navigation.navigate('calendarEvents')
     };
 
     const showDatePicker = () => {
