@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { Calendar } from 'react-native-calendars';
@@ -6,14 +6,32 @@ import { styles } from './styles';
 import { Ionicons } from "@expo/vector-icons";
 import { Task } from '../../components/Types'
 import { Props } from '../_layout'
+import { IPAddr } from './constants';
 
 export default function HealthTracker({ navigation }: Props) {
   const [selectedDate, setSelectedDate] = useState('');
-  const [tasks] = useState<Task[]>([
-    { id: "1", title: "Walk the dog at 5pm", done: true, icon: 'walk-outline' },
-    { id: "2", title: "Gym at 7pm", done: true, icon: 'barbell-outline' },
-    { id: "3", title: "Therapy at 10pm", done: true, icon: 'chatbubbles-outline' },
-  ]);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const fetchEvents = async () => {
+    try {
+      const response = await fetch(IPAddr + '/get_health_events/1'); 
+      const data = await response.json();
+      
+      const events = data.map((event: any) => ({
+        id: event.id.toString(),
+        title: `${event.title} at ${event.event_time}`, 
+        done: false,
+        icon: 'calendar-outline',
+      }));
+
+      setTasks(events); 
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
 
   const handleDayPress = (day: { dateString: React.SetStateAction<string>; }) => {
     setSelectedDate(day.dateString);
