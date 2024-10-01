@@ -8,7 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Task } from '../../components/Types';
 import { Props } from '../_layout';
 
-export default function HealthTracker({ navigation }: Props) {
+export default function CalendarTracker({ navigation }: Props) {
   const [selectedDate, setSelectedDate] = useState('');
   const [tasks, setTasks] = useState<Task[]>([]);
   const fetchEvents = async () => {
