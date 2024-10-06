@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { styles } from './styles';
-import { Task } from '../../components/Types'
+import { RootStackParamList, Task } from '../components/Types'
 import { Ionicons } from '@expo/vector-icons';
-import { Props } from '../_layout';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 
 
-export default function TaskScreen({ navigation }: Props) {
+export default function TaskScreen() {
+  type IndexNavigation = StackNavigationProp<RootStackParamList, 'index'>;
+  const navigation = useNavigation<IndexNavigation>();  
+
   const [selectedDate, setSelectedDate] = useState('');
   const [tasks] = useState<Task[]>([
     { id: "1", title: "Meet with Saayeh at 5pm", done: true, icon:'accessibility' },
@@ -32,6 +36,7 @@ export default function TaskScreen({ navigation }: Props) {
       <View style={{ height: 100 }}></View>
 
       <View>
+        <Text style={styles.headerText}>Home</Text>
         <Text style={styles.sectionHeader}>Welcome [user]</Text>
       </View>
 

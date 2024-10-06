@@ -1,27 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { Calendar } from 'react-native-calendars';
 import { styles } from './styles';
 import { Ionicons } from "@expo/vector-icons";
-import { Task } from '../../components/Types'
-import { Props } from '../_layout'
-import {IPAddr} from './constants'
-import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { RootStackParamList, Task } from '../components/Types'
+import { IPAddr } from './constants';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 
-export default function MealTracker({ navigation }: Props) {
+export default function HealthTracker() {
+  type HealthNavProp = StackNavigationProp<RootStackParamList, 'addMeals'>;
+  const navigation = useNavigation<HealthNavProp>();  
+
+
   const [selectedDate, setSelectedDate] = useState('');
   const [tasks, setTasks] = useState<Task[]>([]);
-
   const fetchEvents = async () => {
     try {
-      const response = await fetch(IPAddr + '/get_meal_events/1'); 
+      const response = await fetch(IPAddr + '/get_health_events/1'); 
       const data = await response.json();
       
       const events = data.map((event: any) => ({
         id: event.id.toString(),
         title: `${event.title} at ${event.event_time}`, 
         done: false,
-        icon: 'pizza-outline',
+        icon: 'calendar-outline',
       }));
 
       setTasks(events); 
@@ -58,11 +62,13 @@ export default function MealTracker({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      {/* Temporary View until navigation system gets added vvv */}
       <View style={{ height: 100 }}></View>
+
       <View>
-        <Text style={styles.sectionHeader}>Upcoming Meals</Text>
+        <Text style={styles.headerText}>Health Tracker</Text>
+        <Text style={styles.sectionHeader}>Upcoming Events</Text>
       </View>
+
       <FlatList style={styles.flatList}
         data={tasks}
         renderItem={renderTask}
@@ -79,21 +85,19 @@ export default function MealTracker({ navigation }: Props) {
           },
         }}
         theme={{
-          selectedDayBackgroundColor: '#9b59b6',
+          selectedDayBackgroundColor: '#65558F',
           todayTextColor: '#00adf5',
           arrowColor: '#9b59b6',
         }}
       />
       <TouchableOpacity style={styles.fixedButton}
         onPress={() =>
-          navigation.navigate('addMeals')}
+          navigation.navigate('addHealthEvents')}
         hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
         <View style={styles.icon}>
           <Ionicons name="add-outline" size={40} color={'#eee'} />
         </View>
       </TouchableOpacity>
-
-
     </View>
   );
 }

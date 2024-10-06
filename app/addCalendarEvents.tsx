@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Platform, TextInput } from 'react-native';
 import { styles } from './styles';
 import { Ionicons } from "@expo/vector-icons";
-import { Props } from '../_layout';
 import { Dropdown } from 'react-native-element-dropdown';
 import axios from 'axios';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { IPAddr } from './constants';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '@/components/Types';
 
 const data = [
     { label: 'Daily', value: '1' },
@@ -15,7 +17,10 @@ const data = [
     { label: 'Yearly', value: '4' },
 ];
 
-export default function AddCalendarEvents({ navigation }: Props) {
+export default function AddCalendarEvents() {
+    type AddCalendarTrackerNavigationProp = StackNavigationProp<RootStackParamList, 'addCalendarEvents'>;
+    const navigation = useNavigation<AddCalendarTrackerNavigationProp>();  
+
     const [value, setValue] = useState<string | null>(null);
     const [isFocus, setIsFocus] = useState(false);
     const [datePickerVisible, setDatePickerVisible] = useState(false);
@@ -31,6 +36,7 @@ export default function AddCalendarEvents({ navigation }: Props) {
         description: ''
     });
 
+
     const handleChange = (name: string, value: any) => {
         setEventData({ ...eventData, [name]: value });
     };
@@ -38,8 +44,8 @@ export default function AddCalendarEvents({ navigation }: Props) {
     const handleSave = async () => {
         const formattedData = {
             ...eventData,
-            event_date: eventData.event_date.toISOString().split('T')[0], // Ensures YYYY-MM-DD format
-            event_time: eventData.event_time.toTimeString().split(' ')[0], // HH:MM:SS format
+            event_date: eventData.event_date.toISOString().split('T')[0], 
+            event_time: eventData.event_time.toTimeString().split(' ')[0],
         };
 
         try {
@@ -78,7 +84,7 @@ export default function AddCalendarEvents({ navigation }: Props) {
             <View style={{ height: 100 }}></View>
             <View>
                 <View style={styles.inLine}>
-                    <Text style={styles.sectionHeader}>Add new Calendar Event</Text>
+                    <Text style={styles.sectionHeader}>New Calendar Event</Text>
                     <TouchableOpacity style={{ marginLeft: 50 }}
                         onPress={() => console.log("pressed")}
                         hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>

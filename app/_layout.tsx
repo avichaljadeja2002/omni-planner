@@ -1,98 +1,73 @@
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Ionicons } from "@expo/vector-icons";
+import React from 'react';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { DrawerNavigationProp } from '@react-navigation/drawer';
-import App from './(tabs)/index';
-import HealthTracker from './(tabs)/healthTracker';
-import MealTracking from './(tabs)/mealTracker';
-import Finance from './(tabs)/finance';
-import CalendarEvents from './(tabs)/calendarEvents';
-import AddMeals from './(tabs)/addMeals';
-import AddHealthEvents from './(tabs)/addHealthEvents';
-import { IconName } from '@/components/Types';
-import AddCalendarEvents from './(tabs)/addCalendarEvents';
+import { Ionicons } from "@expo/vector-icons";
+import App from './index';
+import HealthTracker from './healthTracker';
+import MealTracking from './mealTracker';
+import Finance from './finance';
+import CalendarEvents from './calendarEvents';
+import { createStackNavigator, StackHeaderProps } from '@react-navigation/stack';
+import { RootStackParamList } from '@/components/Types';
+import AddCalendarEvents from './addCalendarEvents';
+import AddHealthEvents from './addHealthEvents';
 
-const Drawer = createDrawerNavigator();
 
-const drawerScreens = [
-  {
-    name: 'home',
-    component: App,
-    title: 'Home',
-    icon: 'home-outline' as IconName,
-  },
-  {
-    name: 'healthTracking',
-    component: HealthTracker,
-    title: 'Health Tracking',
-    icon: 'fitness-outline' as IconName,
-  },
-  {
-    name: 'mealTracking',
-    component: MealTracking,
-    title: 'Food Tracker',
-    icon: 'fast-food-outline' as IconName,
-  },
-  {
-    name: 'finance',
-    component: Finance,
-    title: 'Finance',
-    icon: 'wallet-outline' as IconName,
-  },
-  {
-    name: 'calendarEvents',
-    component: CalendarEvents,
-    title: 'Calender Events',
-    icon: 'calendar-outline' as IconName,
-  }, 
-  {
-    name: 'addMeals',
-    component: AddMeals,
-    title: 'Add New Meal',
-    icon: null,
-    hidden: true,
-  },
-  {
-    name: 'addHealthEvents',
-    component: AddHealthEvents,
-    title: 'Add New Health Event',
-    icon: null,
-    hidden: true,
-  },
-  {
-    name: 'addCalendarEvents',
-    component: AddCalendarEvents,
-    title: 'Add New Calendar Event',
-    icon: null,
-    hidden: true,
-  },
-];
+const Stack = createStackNavigator<RootStackParamList>();
 
-type RootDrawerParamList = {
-  [key in typeof drawerScreens[number]['name']]: undefined;
+const CustomTopBar = ({ navigation }: StackHeaderProps) => {
+  return (
+    <View style={styles.topBar}>
+      <TouchableOpacity onPress={() => navigation.navigate('index')}>
+        <Ionicons name="home-outline" size={28} color="black" />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('healthTracker')}>
+        <Ionicons name="fitness-outline" size={28} color="black" />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('mealTracker')}>
+        <Ionicons name="fast-food-outline" size={28} color="black" />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('finance')}>
+        <Ionicons name="wallet-outline" size={28} color="black" />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('calendarEvents')}>
+        <Ionicons name="calendar-outline" size={28} color="black" />
+      </TouchableOpacity>
+    </View>
+  );
 };
-
-export interface Props {
-  navigation: DrawerNavigationProp<RootDrawerParamList>;
-}
 
 export default function Layout() {
   return (
-    <NavigationContainer independent={true}>
-      <Drawer.Navigator>
-        {drawerScreens.map(({ name, component, title, icon, hidden }) => (
-          <Drawer.Screen
-            key={name}
-            name={name}
-            component={component}
-            options={{
-              title,
-              drawerIcon: icon ? ({ color }) => <Ionicons name={icon} size={22} color={color} /> : undefined,
-              drawerItemStyle: hidden ? { display: 'none' } : undefined,
-            }}
-          />
-        ))}
-      </Drawer.Navigator>
-    </NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          header: (props) => <CustomTopBar {...props} />, 
+        }}
+      >
+        <Stack.Screen name="index" component={App} />
+        <Stack.Screen name="healthTracker" component={HealthTracker} />
+        <Stack.Screen name="mealTracker" component={MealTracking} />
+        <Stack.Screen name="finance" component={Finance} />
+        <Stack.Screen name="calendarEvents" component={CalendarEvents} />
+        <Stack.Screen name="addCalendarEvents" component={AddCalendarEvents} />
+        <Stack.Screen name="addHealthEvents" component={AddHealthEvents} />
+      </Stack.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  topBar: {
+    marginTop: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    height: 60,
+    backgroundColor: '#f5f5f5',
+    paddingHorizontal: 10,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 2,
+  },
+});
