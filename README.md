@@ -2,7 +2,6 @@
 ![language](https://img.shields.io/badge/language-TS,_TSX,_JS-239120)
 ![Devices](https://img.shields.io/badge/devices-iOS,_android-blue)
 ![Contributions](https://img.shields.io/badge/contributions-welcome-orange)
-![Github Last Commit](https://img.shields.io/github/last-commit/avichaljadeja2002/omni-planner)
 
 Omni-Planner is a productivity and planning tool designed to help users organize their tasks, projects, and time efficiently.
 
