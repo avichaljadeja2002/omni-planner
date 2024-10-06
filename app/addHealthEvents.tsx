@@ -2,13 +2,25 @@ import React, { useState } from 'react';
 import { View, TextInput, Text, TouchableOpacity, Platform } from 'react-native';
 import { styles } from './styles';
 import { Ionicons } from "@expo/vector-icons";
-import { Props } from '../_layout'
-import axios from 'axios';
+import { Dropdown } from 'react-native-element-dropdown';
 import { IPAddr } from './constants';
+import axios from 'axios';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '@/components/Types';
 
+const data = [
+  { label: 'Daily', value: '1' },
+  { label: 'Weekly', value: '2' },
+  { label: 'Monthly', value: '3' },
+  { label: 'Yearly', value: '4' },
+];
 
-export default function AddMeals({ navigation }: Props) {
+export default function AddHealthEvents() {
+  type AddHealthEventNavProp = StackNavigationProp<RootStackParamList, 'addCalendarEvents'>;
+  const navigation = useNavigation<AddHealthEventNavProp>();  
+
   const [value, setValue] = useState<string | null>(null);
   const [isFocus, setIsFocus] = useState(false);
   const [datePickerVisible, setDatePickerVisible] = useState(false);
@@ -19,6 +31,8 @@ export default function AddMeals({ navigation }: Props) {
     title: '',
     event_date: new Date(),
     event_time: new Date(),
+    repeating: false,
+    repeat_timeline: ''
   });
 
   const handleChange = (name: string, value: any) => {
@@ -28,17 +42,17 @@ export default function AddMeals({ navigation }: Props) {
   const handleSave = async () => {
     const formattedData = {
       ...eventData,
-      event_date: eventData.event_date.toISOString().split('T')[0], // Ensures YYYY-MM-DD format
-      event_time: eventData.event_time.toTimeString().split(' ')[0], // HH:MM:SS format
+      event_date: eventData.event_date.toISOString().split('T')[0], 
+      event_time: eventData.event_time.toTimeString().split(' ')[0],
     };
 
     try {
-      const response = await axios.post(IPAddr + '/add_meal_events', formattedData);
+      const response = await axios.post(IPAddr + '/add_health_events', formattedData);
       console.log('Event saved successfully:', response.data);
     } catch (error) {
       console.error('Error saving event:', error);
     }
-    navigation.navigate('mealTracking')
+    navigation.navigate('healthTracker')
   };
 
   const showDatePicker = () => {
@@ -68,21 +82,19 @@ export default function AddMeals({ navigation }: Props) {
       <View style={{ height: 100 }}></View>
       <View>
         <View style={styles.inLine}>
-          <Text style={styles.sectionHeader}>Add new Meal</Text>
+          <Text style={styles.headerText}>New Health Event</Text>
           <TouchableOpacity style={{ marginLeft: 50 }}
             onPress={() =>
               console.log("pressed")}
             hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
             <View style={styles.taskicon}>
-              <Ionicons name="pizza-outline" size={30} color={'#000'} />
+              <Ionicons name="walk-outline" size={30} color={'#000'} />
             </View>
           </TouchableOpacity>
         </View>
         <View style={styles.inputContainer}>
           <View style={styles.inLine}>
-            <Text style={styles.inputText}>
-              Title
-            </Text>
+            <Text style={styles.inputText}>Title</Text>
             <TextInput
               style={styles.input}
               value={eventData.title}
@@ -120,46 +132,53 @@ export default function AddMeals({ navigation }: Props) {
             )}
           </View>
 
+          <View style={styles.inLine}>
+            <Text style={styles.inputText}>Repeating</Text>
+            <View style={styles.container}>
+              <Dropdown
+                style={{ width: 200, borderWidth: 1, padding: 8 }}
+                data={data}
+                maxHeight={300}
+                labelField="label"
+                valueField="value"
+                value={value}
+                onChange={item => {
+                  setValue(item.value);
+                  setIsFocus(false);
+                  handleChange('repeat_timeline', item.label);
+                }}
+                renderLeftIcon={() => (
+                  <Ionicons
+                    name='calendar-outline'
+                    size={20}
+                    paddingRight={10}
+                  />
+                )}
+              />
+            </View>
+          </View>
         </View>
-
-      </View>
-      <View>
-        <View style={styles.inLine}>
-          <Text style={styles.sectionHeader}>
-            Ingredients
-          </Text>
-          <TouchableOpacity style={{ marginLeft: 50 }}
-            onPress={() =>
-              console.log("pressed")}
-            hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}>
-            <Ionicons name="add-circle-outline" size={30} color={'#000'} />
-          </TouchableOpacity>
-        </View>
-        <TextInput
-          style={styles.input}
-        />
-        <TextInput
-          style={styles.input}
-        />
       </View>
       <View style={styles.saveCancelContainer}>
-                <View style={styles.saveCancel}>
-                    <Text style={styles.cancelText}>Cancel</Text>
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate('mealTracking')}
-                        hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}>
-                        <Ionicons name='close-circle-outline' size={30} color={'#000'} />
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.saveCancel}>
-                    <Text style={styles.saveText}>Save</Text>
-                    <TouchableOpacity
-                        onPress={handleSave}
-                        hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}>
-                        <Ionicons name="save-outline" size={30} color={'#000'} />
-                    </TouchableOpacity>
-                </View>
-            </View>
+        <View style={styles.saveCancel}>
+          <Text style={styles.cancelText}>Cancel</Text>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('healthTracker')}
+            hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}>
+            <Ionicons name='close-circle-outline' size={30} color={'#000'} />
+          </TouchableOpacity>
         </View>
+        <View style={styles.saveCancel}>
+          <Text style={styles.saveText}>Save</Text>
+          <TouchableOpacity
+            onPress={handleSave}
+            hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}>
+            <Ionicons name="save-outline" size={30} color={'#000'} />
+          </TouchableOpacity>
+        </View>
+      </View>
+
+    </View>
   );
 }

@@ -7,4 +7,16 @@ export type Task = {
     icon: IconName
   };
 
+export type RootStackParamList = {
+    'index': undefined;
+    'healthTracker': undefined;
+    'mealTracker': undefined;
+    'finance': undefined;
+    'calendarEvents': undefined;
+    'addCalendarEvents': undefined;
+    'addHealthEvents': undefined;
+    'addMeals': undefined
+  };
+  
+
 export type IconName = keyof typeof Ionicons.glyphMap;

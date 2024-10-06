@@ -3,17 +3,24 @@ import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { Calendar } from 'react-native-calendars';
 import { styles } from './styles';
-import { Ionicons } from "@expo/vector-icons";
-import { Task } from '../../components/Types'
-import { Props } from '../_layout'
 import { IPAddr } from './constants';
+import { Ionicons } from "@expo/vector-icons";
+import { RootStackParamList, Task } from '../components/Types';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-export default function HealthTracker({ navigation }: Props) {
+
+
+export default function CalendarTracker() {
   const [selectedDate, setSelectedDate] = useState('');
   const [tasks, setTasks] = useState<Task[]>([]);
+
+  type CalendarTrackerNavigationProp = StackNavigationProp<RootStackParamList, 'calendarEvents'>;
+  const navigation = useNavigation<CalendarTrackerNavigationProp>();  
+
   const fetchEvents = async () => {
     try {
-      const response = await fetch(IPAddr + '/get_health_events/1'); 
+      const response = await fetch(IPAddr + '/get_calendar_events/1'); 
       const data = await response.json();
       
       const events = data.map((event: any) => ({
@@ -28,7 +35,7 @@ export default function HealthTracker({ navigation }: Props) {
       console.error('Error fetching events:', error);
     }
   };
-
+  
   useEffect(() => {
     fetchEvents();
   }, []);
@@ -41,7 +48,7 @@ export default function HealthTracker({ navigation }: Props) {
     <View style={styles.taskItem}>
       <Text style={styles.bullet}>
         <View style={styles.taskicon}>
-          <Ionicons name={item.icon} size={30} color={'#000'}></Ionicons>
+          <Ionicons name={item.icon} size={30} color={'#000'} />
         </View>
       </Text>
       <Text style={styles.taskText}>{item.title}</Text>
@@ -50,17 +57,15 @@ export default function HealthTracker({ navigation }: Props) {
           fillColor="#65558F"
           iconStyle={{ borderRadius: 0 }}
           innerIconStyle={{ borderRadius: 0, borderWidth: 2 }}
-          onPress={(isChecked: boolean) => { item.done = isChecked }} />
+          onPress={(isChecked: boolean) => { item.done = isChecked; }} />
       </View>
     </View>
   );
 
   return (
     <View style={styles.container}>
-      {/* Temporary View until navigation system gets added vvv */}
-      <View style={{ height: 100 }}></View>
-
       <View>
+        <Text style={styles.headerText}>Calendar Events</Text>
         <Text style={styles.sectionHeader}>Upcoming Events</Text>
       </View>
 
@@ -70,6 +75,7 @@ export default function HealthTracker({ navigation }: Props) {
         keyExtractor={(item) => item.id}
       />
       <View style={{ height: 50 }}></View>
+
       <Calendar
         onDayPress={handleDayPress}
         markedDates={{
@@ -85,9 +91,10 @@ export default function HealthTracker({ navigation }: Props) {
           arrowColor: '#9b59b6',
         }}
       />
+
+      {/* Button to navigate to addCalendarEvents */}
       <TouchableOpacity style={styles.fixedButton}
-        onPress={() =>
-          navigation.navigate('addHealthEvents')}
+        onPress={() => navigation.navigate('addCalendarEvents')}
         hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
         <View style={styles.icon}>
           <Ionicons name="add-outline" size={40} color={'#eee'} />
