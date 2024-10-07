@@ -149,19 +149,17 @@ export default function AddMeals() {
       </View>
       <View style={styles.saveCancelContainer}>
                 <View style={styles.saveCancel}>
-                    <Text style={styles.cancelText}>Cancel</Text>
+                    <Text style={styles.saveCancelText}>Cancel</Text>
                     <TouchableOpacity
                         onPress={() => navigation.navigate('mealTracker')}
                         hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}>
-                        <Ionicons name='close-circle-outline' size={30} color={'#000'} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.saveCancel}>
-                    <Text style={styles.saveText}>Save</Text>
+                    <Text style={styles.saveCancelText}>Save</Text>
                     <TouchableOpacity
                         onPress={handleSave}
                         hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}>
-                        <Ionicons name="save-outline" size={30} color={'#000'} />
                     </TouchableOpacity>
                 </View>
             </View>
