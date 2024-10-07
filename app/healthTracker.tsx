@@ -11,24 +11,24 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function HealthTracker() {
   type HealthNavProp = StackNavigationProp<RootStackParamList, 'addMeals'>;
-  const navigation = useNavigation<HealthNavProp>();  
+  const navigation = useNavigation<HealthNavProp>();
 
 
   const [selectedDate, setSelectedDate] = useState('');
   const [tasks, setTasks] = useState<Task[]>([]);
   const fetchEvents = async () => {
     try {
-      const response = await fetch(IPAddr + '/get_health_events/1'); 
+      const response = await fetch(IPAddr + '/get_health_events/1');
       const data = await response.json();
-      
+
       const events = data.map((event: any) => ({
         id: event.id.toString(),
-        title: `${event.title} at ${event.event_time}`, 
+        title: `${event.title} at ${event.event_time}`,
         done: false,
         icon: 'calendar-outline',
       }));
 
-      setTasks(events); 
+      setTasks(events);
     } catch (error) {
       console.error('Error fetching events:', error);
     }
@@ -62,8 +62,6 @@ export default function HealthTracker() {
 
   return (
     <View style={styles.container}>
-      <View style={{ height: 100 }}></View>
-
       <View>
         <Text style={styles.headerText}>Health Tracker</Text>
         <Text style={styles.sectionHeader}>Upcoming Events</Text>
@@ -74,7 +72,9 @@ export default function HealthTracker() {
         renderItem={renderTask}
         keyExtractor={(item) => item.id}
       />
-      <View style={{ height: 50 }}></View>
+      <View style={{ height: 50 }}>
+        <Text style={styles.sectionHeader}>Title</Text>
+      </View>
       <Calendar
         onDayPress={handleDayPress}
         markedDates={{

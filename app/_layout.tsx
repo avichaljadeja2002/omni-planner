@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { Ionicons } from "@expo/vector-icons";
 import App from './index';
 import HealthTracker from './healthTracker';
@@ -40,20 +39,20 @@ const CustomTopBar = ({ navigation }: StackHeaderProps) => {
 
 export default function Layout() {
   return (
-      <Stack.Navigator
-        screenOptions={{
-          header: (props) => <CustomTopBar {...props} />, 
-        }}
-      >
-        <Stack.Screen name="index" component={App} />
-        <Stack.Screen name="healthTracker" component={HealthTracker} />
-        <Stack.Screen name="mealTracker" component={MealTracking} />
-        <Stack.Screen name="finance" component={Finance} />
-        <Stack.Screen name="calendarEvents" component={CalendarEvents} />
-        <Stack.Screen name="addCalendarEvents" component={AddCalendarEvents} />
-        <Stack.Screen name="addHealthEvents" component={AddHealthEvents} />
-        <Stack.Screen name="addMeals" component={AddMeals} />
-      </Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        header: (props) => <CustomTopBar {...props} />,
+      }}
+    >
+      <Stack.Screen name="index" component={App} />
+      <Stack.Screen name="healthTracker" component={HealthTracker} />
+      <Stack.Screen name="mealTracker" component={MealTracking} />
+      <Stack.Screen name="finance" component={Finance} />
+      <Stack.Screen name="calendarEvents" component={CalendarEvents} />
+      <Stack.Screen name="addCalendarEvents" component={AddCalendarEvents} />
+      <Stack.Screen name="addHealthEvents" component={AddHealthEvents} />
+      <Stack.Screen name="addMeals" component={AddMeals} />
+    </Stack.Navigator>
   );
 }
 

@@ -12,7 +12,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 export default function AddMeals() {
   type CalendarTrackerNavigationProp = StackNavigationProp<RootStackParamList, 'addMeals'>;
-  const navigation = useNavigation<CalendarTrackerNavigationProp>();  
+  const navigation = useNavigation<CalendarTrackerNavigationProp>();
 
   const [value, setValue] = useState<string | null>(null);
   const [isFocus, setIsFocus] = useState(false);
@@ -33,8 +33,8 @@ export default function AddMeals() {
   const handleSave = async () => {
     const formattedData = {
       ...eventData,
-      event_date: eventData.event_date.toISOString().split('T')[0], 
-      event_time: eventData.event_time.toTimeString().split(' ')[0], 
+      event_date: eventData.event_date.toISOString().split('T')[0],
+      event_time: eventData.event_time.toTimeString().split(' ')[0],
     };
 
     try {
@@ -73,7 +73,7 @@ export default function AddMeals() {
       <View style={{ height: 100 }}></View>
       <View>
         <View style={styles.inLine}>
-        <Text style={styles.sectionHeader}>New Meal</Text>
+          <Text style={styles.sectionHeader}>New Meal</Text>
           <TouchableOpacity style={{ marginLeft: 50 }}
             onPress={() =>
               console.log("pressed")}
@@ -97,36 +97,23 @@ export default function AddMeals() {
 
           <View style={styles.inLine}>
             <Text style={styles.inputText}>Date</Text>
-            <TouchableOpacity onPress={showDatePicker} style={styles.input}>
-              <Text>{eventData.event_date.toDateString()}</Text>
-            </TouchableOpacity>
-            {datePickerVisible && (
+            <View style={styles.dateTime}>
               <DateTimePicker
                 value={eventData.event_date}
                 mode="date"
                 display="default"
                 onChange={handleDateChange}
               />
-            )}
-          </View>
 
-          <View style={styles.inLine}>
-            <Text style={styles.inputText}>Time</Text>
-            <TouchableOpacity onPress={showTimePicker} style={styles.input}>
-              <Text>{eventData.event_time.toTimeString().split(' ')[0]}</Text>
-            </TouchableOpacity>
-            {timePickerVisible && (
               <DateTimePicker
                 value={eventData.event_time}
                 mode="time"
                 display="default"
                 onChange={handleTimeChange}
               />
-            )}
+            </View>
           </View>
-
         </View>
-
       </View>
       <View>
         <View style={styles.inLine}>
@@ -148,21 +135,21 @@ export default function AddMeals() {
         />
       </View>
       <View style={styles.saveCancelContainer}>
-                <View style={styles.saveCancel}>
-                    <Text style={styles.saveCancelText}>Cancel</Text>
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate('mealTracker')}
-                        hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.saveCancel}>
-                    <Text style={styles.saveCancelText}>Save</Text>
-                    <TouchableOpacity
-                        onPress={handleSave}
-                        hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}>
-                    </TouchableOpacity>
-                </View>
-            </View>
+        <View style={styles.saveCancel}>
+          <Text style={styles.saveCancelText}>Cancel</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('mealTracker')}
+            hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}>
+          </TouchableOpacity>
         </View>
+        <View style={styles.saveCancel}>
+          <Text style={styles.saveCancelText}>Save</Text>
+          <TouchableOpacity
+            onPress={handleSave}
+            hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
   );
 }
