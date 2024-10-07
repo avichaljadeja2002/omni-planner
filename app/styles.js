@@ -84,6 +84,16 @@ export const styles = StyleSheet.create({
     backgroundColor: "#fff",
     justifyContent: 'center', // Centering content vertically
   },
+  bigInput: {
+    flex: 1,
+    height: 80,
+    marginHorizontal: 10,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    backgroundColor: "#fff",
+  },
   inputContainer: {
     display: "flex",
     flexDirection: "column",
@@ -116,17 +126,23 @@ export const styles = StyleSheet.create({
   },
   fixedButton: {
     position: "absolute",
-    right: 30,
-    bottom: 30,
+    right: 10,
+    top: 10,
   },
   icon: {
-    borderRadius: 50,
+    borderRadius: 25,
     height: 60,
     width: 60,
     backgroundColor: "#65558F",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  },
+  newText:{
+    color: '#eee',
+    top:-5,
+    fontSize: 14,
+    fontWeight: 'bold'
   },
   taskicon: {
     borderRadius: 50,
@@ -148,15 +164,9 @@ export const styles = StyleSheet.create({
     height: 50,
     borderColor: "black",
   },
-  saveText: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginLeft: 5,
-  },
-  cancelText: {
+  saveCancelText: {
     fontSize: 18,
     fontWeight: "bold",
-    marginLeft: 5,
   },
   saveCancelContainer: {
     flexDirection: "row",

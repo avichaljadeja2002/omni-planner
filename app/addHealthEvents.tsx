@@ -19,7 +19,7 @@ const data = [
 
 export default function AddHealthEvents() {
   type AddHealthEventNavProp = StackNavigationProp<RootStackParamList, 'addCalendarEvents'>;
-  const navigation = useNavigation<AddHealthEventNavProp>();  
+  const navigation = useNavigation<AddHealthEventNavProp>();
 
   const [value, setValue] = useState<string | null>(null);
   const [isFocus, setIsFocus] = useState(false);
@@ -42,7 +42,7 @@ export default function AddHealthEvents() {
   const handleSave = async () => {
     const formattedData = {
       ...eventData,
-      event_date: eventData.event_date.toISOString().split('T')[0], 
+      event_date: eventData.event_date.toISOString().split('T')[0],
       event_time: eventData.event_time.toTimeString().split(' ')[0],
     };
 
@@ -161,20 +161,18 @@ export default function AddHealthEvents() {
       </View>
       <View style={styles.saveCancelContainer}>
         <View style={styles.saveCancel}>
-          <Text style={styles.cancelText}>Cancel</Text>
+          <Text style={styles.saveCancelText}>Cancel</Text>
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('healthTracker')}
             hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}>
-            <Ionicons name='close-circle-outline' size={30} color={'#000'} />
           </TouchableOpacity>
         </View>
         <View style={styles.saveCancel}>
-          <Text style={styles.saveText}>Save</Text>
+          <Text style={styles.saveCancelText}>Save</Text>
           <TouchableOpacity
             onPress={handleSave}
             hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}>
-            <Ionicons name="save-outline" size={30} color={'#000'} />
           </TouchableOpacity>
         </View>
       </View>
