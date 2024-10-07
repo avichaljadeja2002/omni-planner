@@ -36,3 +36,9 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+bootJar {
+	mainClass = 'com.main.omniplanner.OmniplannerApplication'
+}
+
+
