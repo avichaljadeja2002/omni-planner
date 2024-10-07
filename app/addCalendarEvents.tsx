@@ -19,7 +19,7 @@ const data = [
 
 export default function AddCalendarEvents() {
     type AddCalendarTrackerNavigationProp = StackNavigationProp<RootStackParamList, 'addCalendarEvents'>;
-    const navigation = useNavigation<AddCalendarTrackerNavigationProp>();  
+    const navigation = useNavigation<AddCalendarTrackerNavigationProp>();
 
     const [value, setValue] = useState<string | null>(null);
     const [isFocus, setIsFocus] = useState(false);
@@ -44,7 +44,7 @@ export default function AddCalendarEvents() {
     const handleSave = async () => {
         const formattedData = {
             ...eventData,
-            event_date: eventData.event_date.toISOString().split('T')[0], 
+            event_date: eventData.event_date.toISOString().split('T')[0],
             event_time: eventData.event_time.toTimeString().split(' ')[0],
         };
 
@@ -105,33 +105,23 @@ export default function AddCalendarEvents() {
 
                     <View style={styles.inLine}>
                         <Text style={styles.inputText}>Date</Text>
-                        <TouchableOpacity onPress={showDatePicker} style={styles.input}>
-                            <Text>{eventData.event_date.toDateString()}</Text>
-                        </TouchableOpacity>
-                        {datePickerVisible && (
+                        <View style={styles.dateTime}>
                             <DateTimePicker
                                 value={eventData.event_date}
                                 mode="date"
                                 display="default"
                                 onChange={handleDateChange}
                             />
-                        )}
-                    </View>
 
-                    <View style={styles.inLine}>
-                        <Text style={styles.inputText}>Time</Text>
-                        <TouchableOpacity onPress={showTimePicker} style={styles.input}>
-                            <Text>{eventData.event_time.toTimeString().split(' ')[0]}</Text>
-                        </TouchableOpacity>
-                        {timePickerVisible && (
                             <DateTimePicker
                                 value={eventData.event_time}
                                 mode="time"
                                 display="default"
                                 onChange={handleTimeChange}
                             />
-                        )}
+                        </View>
                     </View>
+
 
                     <View style={styles.inLine}>
                         <Text style={styles.inputText}>Repeating</Text>
@@ -160,7 +150,7 @@ export default function AddCalendarEvents() {
                     </View>
 
                     <View style={styles.inLine}>
-                        <Text style={[styles.inputText, {alignSelf:'baseline', top:5}]}>Description</Text>
+                        <Text style={[styles.inputText, { alignSelf: 'baseline', top: 5 }]}>Description</Text>
                         <TextInput
                             style={styles.bigInput}
                             value={eventData.description}

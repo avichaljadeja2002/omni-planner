@@ -5,6 +5,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 25,
     backgroundColor: "#ffffff",
+    paddingTop: 10
   },
   header: {
     flexDirection: "row",
@@ -73,6 +74,13 @@ export const styles = StyleSheet.create({
     height: 60,
     marginBottom: 10,
   },
+  dateTime: {
+    display: 'flex',
+    flexDirection: "column",
+    width: '80%',
+    gap: 10,
+    height: 100
+  },
   input: {
     flex: 1,
     height: 40,
@@ -138,9 +146,9 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  newText:{
+  newText: {
     color: '#eee',
-    top:-5,
+    top: -5,
     fontSize: 14,
     fontWeight: 'bold'
   },

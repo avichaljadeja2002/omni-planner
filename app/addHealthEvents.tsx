@@ -104,32 +104,21 @@ export default function AddHealthEvents() {
 
           <View style={styles.inLine}>
             <Text style={styles.inputText}>Date</Text>
-            <TouchableOpacity onPress={showDatePicker} style={styles.input}>
-              <Text>{eventData.event_date.toDateString()}</Text>
-            </TouchableOpacity>
-            {datePickerVisible && (
+            <View style={styles.dateTime}>
               <DateTimePicker
                 value={eventData.event_date}
                 mode="date"
                 display="default"
                 onChange={handleDateChange}
               />
-            )}
-          </View>
 
-          <View style={styles.inLine}>
-            <Text style={styles.inputText}>Time</Text>
-            <TouchableOpacity onPress={showTimePicker} style={styles.input}>
-              <Text>{eventData.event_time.toTimeString().split(' ')[0]}</Text>
-            </TouchableOpacity>
-            {timePickerVisible && (
               <DateTimePicker
                 value={eventData.event_time}
                 mode="time"
                 display="default"
                 onChange={handleTimeChange}
               />
-            )}
+            </View>
           </View>
 
           <View style={styles.inLine}>
