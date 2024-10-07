@@ -11,6 +11,7 @@ import { RootStackParamList } from '@/components/Types';
 import AddCalendarEvents from './addCalendarEvents';
 import AddHealthEvents from './addHealthEvents';
 import AddMeals from './addMeals';
+import AddFinanceEvents from './addFinanceEvents';
 
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -48,6 +49,7 @@ export default function Layout() {
       <Stack.Screen name="healthTracker" component={HealthTracker} />
       <Stack.Screen name="mealTracker" component={MealTracking} />
       <Stack.Screen name="finance" component={Finance} />
+      <Stack.Screen name="addFinanceEvents" component={AddFinanceEvents} />
       <Stack.Screen name="calendarEvents" component={CalendarEvents} />
       <Stack.Screen name="addCalendarEvents" component={AddCalendarEvents} />
       <Stack.Screen name="addHealthEvents" component={AddHealthEvents} />
