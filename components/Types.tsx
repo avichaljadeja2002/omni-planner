@@ -12,6 +12,7 @@ export type RootStackParamList = {
     'healthTracker': undefined;
     'mealTracker': undefined;
     'finance': undefined;
+    'addFinanceEvents': undefined,
     'calendarEvents': undefined;
     'addCalendarEvents': undefined;
     'addHealthEvents': undefined;
