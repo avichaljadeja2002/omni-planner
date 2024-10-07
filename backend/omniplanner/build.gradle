@@ -28,11 +28,18 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	testImplementation 'org.mockito:mockito-core:5.3.1'
-
+	testImplementation 'org.mockito:mockito-junit-jupiter:5.6.0'
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+	testImplementation 'org.junit.platform:junit-platform-suite-api:1.10.0'
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
 }
 
-tasks.named('test') {
+test {
+	// Use JUnit Platform for running the tests (necessary for JUnit 5)
 	useJUnitPlatform()
+
+	// Optional: Display more detailed test results
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
 }
