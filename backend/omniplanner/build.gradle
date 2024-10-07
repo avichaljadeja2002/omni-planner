@@ -43,3 +43,9 @@ test {
 		events "passed", "skipped", "failed"
 	}
 }
+
+bootJar {
+	mainClass = 'com.main.omniplanner.OmniplannerApplication'
+}
+
+
