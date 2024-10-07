@@ -2,10 +2,16 @@ FROM eclipse-temurin:17-jdk-focal
 
 WORKDIR /app
 
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-RUN ./mvnw dependency:go-offline
+COPY build.gradle settings.gradle ./
+COPY gradlew ./
+COPY gradle ./gradle
 
-COPY src ./src
+RUN ./gradlew build --no-daemon || return 0
 
-CMD ["./mvnw", "spring-boot:run"]
+COPY . .
+
+RUN ./gradlew build --no-daemon
+
+EXPOSE 8080
+
+CMD ["java", "-jar", "build/libs/your-app-name.jar"]
