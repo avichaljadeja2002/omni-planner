@@ -91,6 +91,7 @@ export default function CalendarTracker() {
         hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
         <View style={styles.icon}>
           <Ionicons name="add-outline" size={40} color={'#eee'} />
+          <Text style={styles.newText}>New</Text>
         </View>
       </TouchableOpacity>
     </View>
