@@ -8,6 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { RootStackParamList, Task } from '../components/Types';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import axios from 'axios';
 
 
 
@@ -18,27 +19,19 @@ export default function CalendarTracker() {
   type CalendarTrackerNavigationProp = StackNavigationProp<RootStackParamList, 'calendarEvents'>;
   const navigation = useNavigation<CalendarTrackerNavigationProp>();  
 
-  const fetchEvents = async () => {
-    try {
-      const response = await fetch(IPAddr + '/get_calendar_events/1'); 
-      const data = await response.json();
-      
-      const events = data.map((event: any) => ({
-        id: event.id.toString(),
-        title: `${event.title} at ${event.event_time}`, 
-        done: false,
-        icon: 'calendar-outline',
-      }));
-
-      setTasks(events); 
-    } catch (error) {
-      console.error('Error fetching events:', error);
-    }
-  };
-  
   useEffect(() => {
-    fetchEvents();
-  }, []);
+    axios.get('http://localhost:8080/get_calendar_events/1') // Change the endpoint to hit your Spring Boot API
+      .then(response => {
+        const events = response.data.map((event: any) => ({
+          id: event.id.toString(),
+          title: `${event.title} at ${event.event_time}`,
+          done: false,
+          icon: 'calendar-outline',
+        }));
+        setTasks(events);
+      })
+      .catch(error => console.error('Error fetching events:', error));
+  }, []); 
 
   const handleDayPress = (day: { dateString: React.SetStateAction<string>; }) => {
     setSelectedDate(day.dateString);
