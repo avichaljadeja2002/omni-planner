@@ -2,16 +2,23 @@ FROM eclipse-temurin:17-jdk-focal
 
 WORKDIR /app
 
-COPY build.gradle settings.gradle ./
-COPY gradlew ./
-COPY gradle ./gradle
+# Copy Gradle wrapper and give it executable permissions
+COPY gradlew /app/gradlew
+COPY build.gradle settings.gradle /app/
+COPY gradle /app/gradle
 
-RUN ./gradlew build --no-daemon || return 0
+# Ensure gradlew has executable permissions
+RUN chmod +x /app/gradlew
 
-COPY . .
+# Run the Gradle build to download dependencies
+RUN /app/gradlew build --no-daemon || return 0
 
-RUN ./gradlew build --no-daemon
+# Copy the rest of the application source code
+COPY . /app
+
+# Build the application
+RUN /app/gradlew build --no-daemon
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "build/libs/omniplanner-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "/app/build/libs/omniplanner-0.0.1-SNAPSHOT.jar"]
