@@ -73,7 +73,7 @@ export default function HealthTracker() {
         keyExtractor={(item) => item.id}
       />
       <View style={{ height: 50 }}>
-        <Text style={styles.sectionHeader}>Title</Text>
+        <Text style={styles.sectionHeader}>Events</Text>
       </View>
       <Calendar
         onDayPress={handleDayPress}
