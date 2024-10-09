@@ -22,6 +22,9 @@ jobs:
 
       - name: Change to another directory
         run: cd ../
+      
+      - name: Show current directory
+        run: pwd
 
       - name: install dependancies
         run: npm install
