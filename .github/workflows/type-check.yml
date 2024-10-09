@@ -13,7 +13,7 @@ jobs:
         run: pwd
 
       - name: Change to another directory
-        run: cd ../
+        run: cd ./home/runner/work/omni-planner/
       
       - name: Show current directory
         run: pwd
