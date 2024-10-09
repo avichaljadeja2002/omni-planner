@@ -22,7 +22,7 @@ jobs:
 
   lint-ts:
     runs-on: ubuntu-latest
-    needs: init_job
+    needs: init-job
     steps:
       - name: Run TypeScript Lint
         uses: reviewdog/action-eslint@v1
