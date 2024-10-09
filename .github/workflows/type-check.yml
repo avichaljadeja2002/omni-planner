@@ -11,9 +11,12 @@ jobs:
     steps:
       - name: Show current directory
         run: pwd
-        
+
       - name: Change to another directory
         run: cd ../
+      
+      - name: Show current directory
+        run: pwd
 
       - name: Run Type Check
         run: npm run tsc --noEmit
