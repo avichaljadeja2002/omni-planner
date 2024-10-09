@@ -1,13 +1,16 @@
-# name: Type Check
+name: Type Check
 
-# on:
-#   workflow_run:
-#     workflows: ['Linter']
-#     types: [completed]
+on:
+  workflow_run:
+    workflows: ['Linter']
+    types: [completed]
 
-# jobs:
-#   run-type-check:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Run Type Check
-#         run: npm run tsc --noEmit
+jobs:
+  run-type-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show current directory
+        run: pwd
+        
+      - name: Run Type Check
+        run: npm run tsc --noEmit
