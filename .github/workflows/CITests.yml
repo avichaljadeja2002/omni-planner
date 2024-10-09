@@ -11,6 +11,9 @@ jobs:
     steps:
       - name: Print working directory
         run: pwd
+      
+      - name: What is there?
+        run: ls
 
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,9 +25,6 @@ jobs:
 
       - name: install dependancies
         run: npm install
-      
-      # - name: Change Directory
-      #   run: cd client
 
   lint-ts:
     runs-on: ubuntu-latest
