@@ -9,6 +9,9 @@ jobs:
   init-job:
     runs-on: ubuntu-latest
     steps:
+      - name: Print working directory
+        run: pwd
+
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -19,6 +22,9 @@ jobs:
 
       - name: install dependancies
         run: npm install
+      
+      # - name: Change Directory
+      #   run: cd client
 
   lint-ts:
     runs-on: ubuntu-latest
