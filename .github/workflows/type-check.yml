@@ -12,5 +12,8 @@ jobs:
       - name: Show current directory
         run: pwd
         
+      - name: Change to another directory
+        run: cd ../
+
       - name: Run Type Check
         run: npm run tsc --noEmit
