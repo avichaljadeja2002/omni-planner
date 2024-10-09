@@ -41,14 +41,14 @@ jobs:
 
   type-check:
     runs-on: ubuntu-latest
-    needs: lint-ts
+    needs: init-job
     steps:
       - name: Run Type Check
         run: npm run tsc --noEmit
       
   expo-doctor:
     runs-on: ubuntu-latest
-    needs: type-check
+    needs: init-job
     steps:
       - name: Run Expo Doctor
         run: npx expo-doctor@latest
