@@ -13,7 +13,7 @@ jobs:
         run: pwd
 
       - name: Change Directory
-        run: cd ./
+        run: cd ..
 
       - name: Print working directory
         run: pwd
