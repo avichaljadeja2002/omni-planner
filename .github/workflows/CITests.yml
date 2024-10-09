@@ -15,8 +15,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Print working directory
-        run: pwd
+      - name: Print working directory contents
+        run: ls -al
 
       - name: Setup Node
         uses: actions/setup-node@v4
