@@ -46,7 +46,7 @@ jobs:
         run: npm install
 
       - name: Run Type Check
-        run: npm run tsc --noEmit
+        run: npx tsc
       
   expo-doctor:
     runs-on: ubuntu-latest
