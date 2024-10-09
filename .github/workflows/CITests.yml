@@ -11,9 +11,12 @@ jobs:
     steps:
       - name: Print working directory
         run: pwd
-      
-      - name: What is there?
-        run: ls
+
+      - name: Change Directory
+        run: cd ./
+
+      - name: Print working directory
+        run: pwd
 
       - name: Checkout code
         uses: actions/checkout@v4
