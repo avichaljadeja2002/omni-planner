@@ -37,7 +37,7 @@ jobs:
     needs: init-job
     steps:
       - name: Run TypeScript Lint
-        uses: reviewdog/action-eslint@v1
+        run: npx eslint
 
   type-check:
     runs-on: ubuntu-latest
