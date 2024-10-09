@@ -18,12 +18,6 @@ jobs:
       - name: Print working directory
         run: pwd
 
-      - name: Change Directory
-        run: cd ..
-
-      - name: Print working directory
-        run: pwd
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
