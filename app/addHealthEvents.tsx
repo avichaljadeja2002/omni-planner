@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, TouchableOpacity, Platform } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity } from 'react-native';
 import { styles } from './styles';
 import { Ionicons } from "@expo/vector-icons";
 import { Dropdown } from 'react-native-element-dropdown';
@@ -22,9 +22,6 @@ export default function AddHealthEvents() {
   const navigation = useNavigation<AddHealthEventNavProp>();
 
   const [value, setValue] = useState<string | null>(null);
-  const [isFocus, setIsFocus] = useState(false);
-  const [datePickerVisible, setDatePickerVisible] = useState(false);
-  const [timePickerVisible, setTimePickerVisible] = useState(false);
 
   const [eventData, setEventData] = useState({
     user_id: 1,
@@ -55,23 +52,13 @@ export default function AddHealthEvents() {
     navigation.navigate('healthTracker')
   };
 
-  const showDatePicker = () => {
-    setDatePickerVisible(true);
-  };
-
-  const showTimePicker = () => {
-    setTimePickerVisible(true);
-  };
-
   const handleDateChange = (event: any, selectedDate: any) => {
-    setDatePickerVisible(Platform.OS === 'ios');
     if (selectedDate) {
       handleChange('event_date', selectedDate);
     }
   };
 
   const handleTimeChange = (event: any, selectedTime: any) => {
-    setTimePickerVisible(Platform.OS === 'ios');
     if (selectedTime) {
       handleChange('event_time', selectedTime);
     }
@@ -133,7 +120,6 @@ export default function AddHealthEvents() {
                 value={value}
                 onChange={item => {
                   setValue(item.value);
-                  setIsFocus(false);
                   handleChange('repeat_timeline', item.label);
                 }}
                 renderLeftIcon={() => (

@@ -2,15 +2,11 @@ import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { styles } from './styles';
-import { RootStackParamList, Task } from '../components/Types'
+import { Task } from '../components/Types'
 import { Ionicons } from '@expo/vector-icons';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
 
 
 export default function TaskScreen() {
-  type IndexNavigation = StackNavigationProp<RootStackParamList, 'index'>;
-  const navigation = useNavigation<IndexNavigation>();
 
   const [selectedDate, setSelectedDate] = useState('');
   const [tasks] = useState<Task[]>([

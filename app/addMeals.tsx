@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, TouchableOpacity, Platform } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity } from 'react-native';
 import { styles } from './styles';
 import { Ionicons } from "@expo/vector-icons";
 import axios from 'axios';
@@ -13,11 +13,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 export default function AddMeals() {
   type CalendarTrackerNavigationProp = StackNavigationProp<RootStackParamList, 'addMeals'>;
   const navigation = useNavigation<CalendarTrackerNavigationProp>();
-
-  const [value, setValue] = useState<string | null>(null);
-  const [isFocus, setIsFocus] = useState(false);
-  const [datePickerVisible, setDatePickerVisible] = useState(false);
-  const [timePickerVisible, setTimePickerVisible] = useState(false);
 
   const [eventData, setEventData] = useState({
     user_id: 1,
@@ -46,23 +41,13 @@ export default function AddMeals() {
     navigation.navigate('mealTracker')
   };
 
-  const showDatePicker = () => {
-    setDatePickerVisible(true);
-  };
-
-  const showTimePicker = () => {
-    setTimePickerVisible(true);
-  };
-
   const handleDateChange = (event: any, selectedDate: any) => {
-    setDatePickerVisible(Platform.OS === 'ios');
     if (selectedDate) {
       handleChange('event_date', selectedDate);
     }
   };
 
   const handleTimeChange = (event: any, selectedTime: any) => {
-    setTimePickerVisible(Platform.OS === 'ios');
     if (selectedTime) {
       handleChange('event_time', selectedTime);
     }

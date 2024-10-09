@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Platform, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import { styles } from './styles';
 import { Ionicons } from "@expo/vector-icons";
 import { Dropdown } from 'react-native-element-dropdown';
@@ -22,9 +22,6 @@ export default function AddFinanceEvents() {
     const navigation = useNavigation<AddFinanceTrackerNavigationProp>();
 
     const [value, setValue] = useState<string | null>(null);
-    const [isFocus, setIsFocus] = useState(false);
-    const [datePickerVisible, setDatePickerVisible] = useState(false);
-    const [timePickerVisible, setTimePickerVisible] = useState(false);
 
     const [eventData, setEventData] = useState({
         user_id: 1,
@@ -57,23 +54,13 @@ export default function AddFinanceEvents() {
         navigation.navigate('finance')
     };
 
-    const showDatePicker = () => {
-        setDatePickerVisible(true);
-    };
-
-    const showTimePicker = () => {
-        setTimePickerVisible(true);
-    };
-
     const handleDateChange = (event: any, selectedDate: any) => {
-        setDatePickerVisible(Platform.OS === 'ios');
         if (selectedDate) {
             handleChange('event_date', selectedDate);
         }
     };
 
     const handleTimeChange = (event: any, selectedTime: any) => {
-        setTimePickerVisible(Platform.OS === 'ios');
         if (selectedTime) {
             handleChange('event_time', selectedTime);
         }
@@ -135,7 +122,6 @@ export default function AddFinanceEvents() {
                                 value={value}
                                 onChange={item => {
                                     setValue(item.value);
-                                    setIsFocus(false);
                                     handleChange('repeat_timeline', item.label);
                                 }}
                                 renderLeftIcon={() => (
