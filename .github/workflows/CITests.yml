@@ -12,14 +12,17 @@ jobs:
       - name: Print working directory
         run: pwd
 
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Print working directory
+        run: pwd
+
       - name: Change Directory
         run: cd ..
 
       - name: Print working directory
         run: pwd
-
-      - name: Checkout code
-        uses: actions/checkout@v4
 
       - name: Setup Node
         uses: actions/setup-node@v4
