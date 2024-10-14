@@ -17,9 +17,9 @@ const data = [
     { label: 'Yearly', value: '4' },
 ];
 
-export default function AddCalendarEvents() {
-    type AddCalendarTrackerNavigationProp = StackNavigationProp<RootStackParamList, 'addCalendarEvents'>;
-    const navigation = useNavigation<AddCalendarTrackerNavigationProp>();
+export default function AddFinanceEvents() {
+    type AddFinanceTrackerNavigationProp = StackNavigationProp<RootStackParamList, 'addFinanceEvents'>;
+    const navigation = useNavigation<AddFinanceTrackerNavigationProp>();
 
     const [value, setValue] = useState<string | null>(null);
 
@@ -30,7 +30,7 @@ export default function AddCalendarEvents() {
         event_time: new Date(),
         repeating: false,
         repeat_timeline: '',
-        description: ''
+        money: 0.0
     });
 
 
@@ -46,12 +46,12 @@ export default function AddCalendarEvents() {
         };
 
         try {
-            const response = await axios.post(IPAddr + '/add_calendar_events', formattedData);
+            const response = await axios.post(IPAddr + '/add_finance_events', formattedData);
             console.log('Event saved successfully:', response.data);
         } catch (error) {
             console.error('Error saving event:', error);
         }
-        navigation.navigate('calendarEvents')
+        navigation.navigate('finance')
     };
 
     const handleDateChange = (event: any, selectedDate: any) => {
@@ -71,12 +71,12 @@ export default function AddCalendarEvents() {
             <View style={{ height: 100 }}></View>
             <View>
                 <View style={styles.inLine}>
-                    <Text style={styles.sectionHeader}>New Calendar Event</Text>
+                    <Text style={styles.sectionHeader}>New Finance Event</Text>
                     <TouchableOpacity style={{ marginLeft: 50 }}
                         onPress={() => console.log("pressed")}
                         hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
                         <View style={styles.taskicon}>
-                            <Ionicons name="walk-outline" size={30} color={'#000'} />
+                            <Ionicons name="wallet-outline" size={30} color={'#000'} />
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -136,11 +136,11 @@ export default function AddCalendarEvents() {
                     </View>
 
                     <View style={styles.inLine}>
-                        <Text style={[styles.inputText, { alignSelf: 'baseline', top: 5 }]}>Description</Text>
+                        <Text style={[styles.inputText, { alignSelf: 'baseline', top: 5 }]}>Money</Text>
                         <TextInput
-                            style={styles.bigInput}
-                            value={eventData.description}
-                            onChangeText={(text) => handleChange('description', text)}
+                            style={styles.input}
+                            value={eventData.money.toString()}
+                            onChangeText={(text) => handleChange('money', text)}
                         />
                     </View>
                 </View>
@@ -149,7 +149,7 @@ export default function AddCalendarEvents() {
                 <View style={styles.saveCancel}>
                     <Text style={styles.saveCancelText}>Cancel</Text>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate('calendarEvents')}
+                        onPress={() => navigation.navigate('finance')}
                         hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}>
                     </TouchableOpacity>
                 </View>

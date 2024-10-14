@@ -2,21 +2,17 @@ import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { styles } from './styles';
-import { RootStackParamList, Task } from '../components/Types'
+import { Task } from '../components/Types'
 import { Ionicons } from '@expo/vector-icons';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
 
 
 export default function TaskScreen() {
-  type IndexNavigation = StackNavigationProp<RootStackParamList, 'index'>;
-  const navigation = useNavigation<IndexNavigation>();  
 
   const [selectedDate, setSelectedDate] = useState('');
   const [tasks] = useState<Task[]>([
-    { id: "1", title: "Meet with Saayeh at 5pm", done: true, icon:'accessibility' },
-    { id: "2", title: "Doctor's appointment at 7pm", done: true, icon:'accessibility' },
-    { id: "3", title: "AI HW due at 11:59pm", done: true, icon:'accessibility' },
+    { id: "1", title: "Meet with Saayeh at 5pm", done: true, icon: 'accessibility' },
+    { id: "2", title: "Doctor's appointment at 7pm", done: true, icon: 'accessibility' },
+    { id: "3", title: "AI HW due at 11:59pm", done: true, icon: 'accessibility' },
   ]);
 
   const handleDayPress = (day: { dateString: React.SetStateAction<string>; }) => {
@@ -32,9 +28,6 @@ export default function TaskScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Temporary View until navigation system gets added vvv */}
-      <View style={{ height: 100 }}></View>
-
       <View>
         <Text style={styles.headerText}>Home</Text>
         <Text style={styles.sectionHeader}>Welcome [user]</Text>
@@ -45,7 +38,9 @@ export default function TaskScreen() {
         renderItem={renderTask}
         keyExtractor={(item) => item.id}
       />
-      <View style={{ height: 50 }}></View>
+      <View style={{ height: 50 }}>
+        <Text style={styles.sectionHeader}>Title</Text>
+      </View>
       <Calendar
         onDayPress={handleDayPress}
         markedDates={{
