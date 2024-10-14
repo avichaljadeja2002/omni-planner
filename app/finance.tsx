@@ -20,7 +20,7 @@ export default function FinanceTracker() {
   const navigation = useNavigation<FinanceTrackerNavigationProp>();  
 
   useEffect(() => {
-    axios.get(IPAddr + '/get_finance_events/1') // Change the endpoint to hit your Spring Boot API
+    axios.get(IPAddr + '/get_finance_events/1') 
       .then(response => {
         const events = response.data.map((event: any) => ({
           id: event.id.toString(),

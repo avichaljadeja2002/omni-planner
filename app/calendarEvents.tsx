@@ -20,7 +20,7 @@ export default function CalendarTracker() {
   const navigation = useNavigation<CalendarTrackerNavigationProp>();  
 
   useEffect(() => {
-    axios.get(IPAddr + '/get_calendar_events/1') // Change the endpoint to hit your Spring Boot API
+    axios.get(IPAddr + '/get_calendar_events/1')
       .then(response => {
         const events = response.data.map((event: any) => ({
           id: event.id.toString(),
