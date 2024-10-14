@@ -72,7 +72,9 @@ export default function MealTracker() {
         renderItem={renderTask}
         keyExtractor={(item) => item.id}
       />
-      <View style={{ height: 50 }}></View>
+      <View style={{ height: 50 }}>
+        <Text style={styles.sectionHeader}>Title</Text>
+      </View>
       <Calendar
         onDayPress={handleDayPress}
         markedDates={{
