@@ -37,10 +37,6 @@ export default function AddFinanceEvents() {
     ];
 
     const handleSave = async (data: any) => {
-        const formattedData = {
-            ...data,
-            money: parseFloat(data.money)
-        }
         try {
             const response = await axios.post(IPAddr + '/add_finance_events', data);
             console.log('Event saved successfully:', response.data);
