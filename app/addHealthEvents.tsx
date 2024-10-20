@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import { IPAddr } from './constants';
-import GenericForm from './addEventPage';
+import GenericAddPageForm from './addEventPage';
 import { RootStackParamList } from '@/components/Types';
 
 const data = [
@@ -48,7 +48,7 @@ export default function AddHealthEvents() {
   };
 
   return (
-    <GenericForm
+    <GenericAddPageForm
       title="New Health Event"
       initialData={initialData}
       fields={fields}

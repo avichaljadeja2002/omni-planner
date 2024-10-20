@@ -9,7 +9,7 @@ import { IPAddr } from './constants';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { IPAddr } from './constants';
-import GenericForm from './addEventPage';
+import GenericAddPageForm from './addEventPage';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/components/Types';
 

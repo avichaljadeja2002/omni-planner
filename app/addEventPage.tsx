@@ -12,7 +12,7 @@ interface FormProps {
   onCancel: () => void;
 }
 
-const GenericForm: React.FC<FormProps> = ({ title, initialData, fields, onSave, onCancel }) => {
+const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, onSave, onCancel }) => {
   const [formData, setFormData] = useState(initialData);
   const handleChange = (name: string, value: any) => {
     setFormData({ ...formData, [name]: value });
@@ -115,4 +115,4 @@ const GenericForm: React.FC<FormProps> = ({ title, initialData, fields, onSave, 
   );
 };
 
-export default GenericForm;
+export default GenericAddPageForm;
