@@ -7,6 +7,9 @@ import axios from 'axios';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { IPAddr } from './constants';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+import { IPAddr } from './constants';
+import GenericForm from './addEventPage';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/components/Types';
 
@@ -14,15 +17,15 @@ import { RootStackParamList } from '@/components/Types';
 import { useGoogleCalendar } from './googleCalendarLink'; 
 
 const data = [
-    { label: 'Daily', value: '1' },
-    { label: 'Weekly', value: '2' },
-    { label: 'Monthly', value: '3' },
-    { label: 'Yearly', value: '4' },
+  { label: 'Daily', value: '1' },
+  { label: 'Weekly', value: '2' },
+  { label: 'Monthly', value: '3' },
+  { label: 'Yearly', value: '4' },
 ];
 
 export default function AddCalendarEvents() {
-    type AddCalendarTrackerNavigationProp = StackNavigationProp<RootStackParamList, 'addCalendarEvents'>;
-    const navigation = useNavigation<AddCalendarTrackerNavigationProp>();
+  type AddCalendarTrackerNavigationProp = StackNavigationProp<RootStackParamList, 'addCalendarEvents'>;
+  const navigation = useNavigation<AddCalendarTrackerNavigationProp>();
 
     const [value, setValue] = useState<string | null>(null);
     const [eventData, setEventData] = useState({
@@ -34,6 +37,34 @@ export default function AddCalendarEvents() {
         repeat_timeline: '',
         description: ''
     });
+  const initialData = {
+    user_id: 1,
+    title: '',
+    event_date: new Date(),
+    event_time: new Date(),
+    repeating: false,
+    repeat_timeline: '',
+    description: '',
+  };
+
+  const fields = [  
+    { name: 'title', label: 'Title', type: 'text' },
+    { name: 'event_date', label: 'Date', type: 'date' },
+    { name: 'event_time', label: 'Time', type: 'time' },
+    { name: 'repeat_timeline', label: 'Repeating', type: 'dropdown', options: data },
+    { name: 'description', label: 'Description', type: 'textarea' },
+  ];
+
+  const handleSave = async (data: any) => {    
+
+    try {
+        const response = await axios.post(IPAddr + '/add_calendar_events', data);
+        console.log('Event saved successfully:', response.data);
+        navigation.navigate('calendarEvents');
+    } catch (error) {
+        console.error('Error saving event:', error);
+    }
+};
 
     // Use Google Calendar Service
     const {
@@ -48,9 +79,9 @@ export default function AddCalendarEvents() {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showTimePicker, setShowTimePicker] = useState(false);
 
-    const handleChange = (name: string, value: any) => {
-        setEventData({ ...eventData, [name]: value });
-    };
+  const handleCancel = () => {
+    navigation.navigate('calendarEvents');
+  };
 
     const handleSave = async () => {
         const formattedData = {
