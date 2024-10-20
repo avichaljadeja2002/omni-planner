@@ -5,17 +5,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { Dropdown } from 'react-native-element-dropdown';
 import axios from 'axios';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { IPAddr } from './constants';
+import { IPAddr, repeatingData } from './constants';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/components/Types';
-
-const data = [
-    { label: 'Daily', value: '1' },
-    { label: 'Weekly', value: '2' },
-    { label: 'Monthly', value: '3' },
-    { label: 'Yearly', value: '4' },
-];
 
 export default function AddCalendarEvents() {
     type AddCalendarTrackerNavigationProp = StackNavigationProp<RootStackParamList, 'addCalendarEvents'>;
@@ -115,7 +108,7 @@ export default function AddCalendarEvents() {
                         <View style={styles.container}>
                             <Dropdown
                                 style={{ width: 200, borderWidth: 1, padding: 8 }}
-                                data={data}
+                                data={repeatingData}
                                 maxHeight={300}
                                 labelField="label"
                                 valueField="value"

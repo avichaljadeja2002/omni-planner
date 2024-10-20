@@ -1,17 +1,12 @@
 import React from 'react';
-import { IPAddr } from './constants';
+import { IPAddr, repeatingData } from './constants';
 import axios from 'axios';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import GenericAddPageForm from './addEventPage';
 import { RootStackParamList } from '@/components/Types';
 
-const data = [
-  { label: 'Daily', value: '1' },
-  { label: 'Weekly', value: '2' },
-  { label: 'Monthly', value: '3' },
-  { label: 'Yearly', value: '4' },
-];
+
 
 export default function AddHealthEvents() {
   type AddHealthEventNavProp = StackNavigationProp<RootStackParamList, 'addCalendarEvents'>;
@@ -30,7 +25,7 @@ export default function AddHealthEvents() {
     { name: 'title', label: 'Title', type: 'text' },
     { name: 'event_date', label: 'Date', type: 'date' },
     { name: 'event_time', label: 'Time', type: 'time' },
-    { name: 'repeat_timeline', label: 'Repeating', type: 'dropdown', options: data },
+    { name: 'repeat_timeline', label: 'Repeating', type: 'dropdown', options: repeatingData },
     { name: 'description', label: 'Description', type: 'textarea' },
   ];
 
