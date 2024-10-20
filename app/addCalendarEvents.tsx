@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, ScrollView, Button } from 'react-native';
 import { styles } from './styles';
 import { Ionicons } from "@expo/vector-icons";
 import { Dropdown } from 'react-native-element-dropdown';
@@ -9,6 +9,9 @@ import { IPAddr } from './constants';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/components/Types';
+
+// Import Google Calendar Service
+import { useGoogleCalendar } from './googleCalendarLink'; 
 
 const data = [
     { label: 'Daily', value: '1' },
@@ -22,7 +25,6 @@ export default function AddCalendarEvents() {
     const navigation = useNavigation<AddCalendarTrackerNavigationProp>();
 
     const [value, setValue] = useState<string | null>(null);
-
     const [eventData, setEventData] = useState({
         user_id: 1,
         title: '',
@@ -33,6 +35,18 @@ export default function AddCalendarEvents() {
         description: ''
     });
 
+    // Use Google Calendar Service
+    const {
+        promptAsync,
+        request,
+        googleEvents,
+        fetchGoogleCalendarEvents,
+        accessToken,
+    } = useGoogleCalendar();
+
+    // State to control the visibility of Date and Time pickers
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [showTimePicker, setShowTimePicker] = useState(false);
 
     const handleChange = (name: string, value: any) => {
         setEventData({ ...eventData, [name]: value });
@@ -48,26 +62,62 @@ export default function AddCalendarEvents() {
         try {
             const response = await axios.post(IPAddr + '/add_calendar_events', formattedData);
             console.log('Event saved successfully:', response.data);
+
+            // Sync event to Google Calendar if authenticated
+            if (accessToken) {
+                await syncToGoogleCalendar(formattedData);
+            }
+
         } catch (error) {
             console.error('Error saving event:', error);
         }
-        navigation.navigate('calendarEvents')
+        navigation.navigate('calendarEvents');
     };
 
-    const handleDateChange = (event: any, selectedDate: any) => {
-        if (selectedDate) {
-            handleChange('event_date', selectedDate);
+    // Function to sync events to Google Calendar
+    const syncToGoogleCalendar = async (eventData: any) => {
+        if (!accessToken) return;
+
+        try {
+            await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    summary: eventData.title,
+                    description: eventData.description,
+                    start: {
+                        dateTime: `${eventData.event_date}T${eventData.event_time}`,
+                    },
+                    end: {
+                        dateTime: `${eventData.event_date}T${eventData.event_time}`, // Adjust the end time if needed
+                    },
+                }),
+            });
+            console.log('Event added to Google Calendar');
+        } catch (error) {
+            console.error('Error syncing event to Google Calendar:', error);
         }
     };
 
-    const handleTimeChange = (event: any, selectedTime: any) => {
+    const handleDateChange = (event: any, selectedDate: Date | undefined) => {
+        setShowDatePicker(false); // Close Date Picker
+        if (selectedDate) {
+            handleChange('event_date', selectedDate); // Update Date if user selects
+        }
+    };
+
+    const handleTimeChange = (event: any, selectedTime: Date | undefined) => {
+        setShowTimePicker(false); // Close Time Picker
         if (selectedTime) {
-            handleChange('event_time', selectedTime);
+            handleChange('event_time', selectedTime); // Update Time if user selects
         }
     };
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <View style={{ height: 100 }}></View>
             <View>
                 <View style={styles.inLine}>
@@ -80,6 +130,24 @@ export default function AddCalendarEvents() {
                         </View>
                     </TouchableOpacity>
                 </View>
+
+                {/* Google Sign-In Button */}
+                <Button
+                    title="Login to Google"
+                    disabled={!request}
+                    onPress={() => promptAsync()} // Trigger Google Sign-In
+                />
+
+                {/* Show Google Events if fetched */}
+                {googleEvents.length > 0 && (
+                    <View>
+                        <Text>Google Calendar Events:</Text>
+                        {googleEvents.map((event, index) => (
+                            <Text key={index}>{event.summary}</Text>
+                        ))}
+                    </View>
+                )}
+
                 <View style={styles.inputContainer}>
                     <View style={styles.inLine}>
                         <Text style={styles.inputText}>Title</Text>
@@ -92,23 +160,33 @@ export default function AddCalendarEvents() {
 
                     <View style={styles.inLine}>
                         <Text style={styles.inputText}>Date</Text>
-                        <View style={styles.dateTime}>
+                        <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+                            <Text>{eventData.event_date.toDateString()}</Text>
+                        </TouchableOpacity>
+                        {showDatePicker && (
                             <DateTimePicker
                                 value={eventData.event_date}
                                 mode="date"
                                 display="default"
                                 onChange={handleDateChange}
                             />
+                        )}
+                    </View>
 
+                    <View style={styles.inLine}>
+                        <Text style={styles.inputText}>Time</Text>
+                        <TouchableOpacity onPress={() => setShowTimePicker(true)}>
+                            <Text>{eventData.event_time.toTimeString().split(' ')[0]}</Text>
+                        </TouchableOpacity>
+                        {showTimePicker && (
                             <DateTimePicker
                                 value={eventData.event_time}
                                 mode="time"
                                 display="default"
                                 onChange={handleTimeChange}
                             />
-                        </View>
+                        )}
                     </View>
-
 
                     <View style={styles.inLine}>
                         <Text style={styles.inputText}>Repeating</Text>
@@ -161,6 +239,6 @@ export default function AddCalendarEvents() {
                     </TouchableOpacity>
                 </View>
             </View>
-        </View>
+        </ScrollView>
     );
 }
