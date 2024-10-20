@@ -1,17 +1,10 @@
 import React from 'react';
 import axios from 'axios';
-import { IPAddr } from './constants';
+import { IPAddr, repeatingData } from './constants';
 import { useNavigation } from '@react-navigation/native';
 import GenericAddPageForm from './addEventPage';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/components/Types';
-
-const data = [
-    { label: 'Daily', value: '1' },
-    { label: 'Weekly', value: '2' },
-    { label: 'Monthly', value: '3' },
-    { label: 'Yearly', value: '4' },
-];
 
 export default function AddFinanceEvents() {
     type AddFinanceTrackerNavigationProp = StackNavigationProp<RootStackParamList, 'addFinanceEvents'>;
@@ -21,7 +14,7 @@ export default function AddFinanceEvents() {
         { name: 'title', label: 'Title', type: 'text' },
         { name: 'event_date', label: 'Date', type: 'date' },
         { name: 'event_time', label: 'Time', type: 'time' },
-        { name: 'repeating', label: 'Repeating', type: 'dropdown', options: data },
+        { name: 'repeating', label: 'Repeating', type: 'dropdown', options: repeatingData },
         { name: 'money', label: 'Money', type: 'number' }
     ];
  
