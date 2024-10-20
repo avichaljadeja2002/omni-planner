@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { Calendar } from 'react-native-calendars';
@@ -6,7 +6,7 @@ import { styles } from './styles';
 import { IPAddr } from './constants';
 import { Ionicons } from "@expo/vector-icons";
 import { RootStackParamList, Task } from '../components/Types';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 
@@ -19,27 +19,19 @@ export default function CalendarTracker() {
   type CalendarTrackerNavigationProp = StackNavigationProp<RootStackParamList, 'calendarEvents'>;
   const navigation = useNavigation<CalendarTrackerNavigationProp>();  
 
-  useFocusEffect(
-    useCallback(() => {
-      getEvents();
-    }, [])
-  );
-
-
-  const getEvents = (() => {
+  useEffect(() => {
     axios.get(IPAddr + '/get_calendar_events/1')
-    .then(response => {
-      const events = response.data.map((event: any) => ({
-        id: event.id.toString(),
-        title: `${event.title} at ${event.event_time}`,
-        done: false,
-        icon: 'calendar-outline',
-      }));
-      setTasks(events);
-    })
-    .catch(error => console.error('Error fetching events:', error));
-
-  })
+      .then(response => {
+        const events = response.data.map((event: any) => ({
+          id: event.id.toString(),
+          title: `${event.title} at ${event.event_time}`,
+          done: false,
+          icon: 'calendar-outline',
+        }));
+        setTasks(events);
+      })
+      .catch(error => console.error('Error fetching events:', error));
+  }, []); 
 
   const handleDayPress = (day: { dateString: React.SetStateAction<string>; }) => {
     setSelectedDate(day.dateString);
@@ -95,6 +87,7 @@ export default function CalendarTracker() {
         }}
       />
 
+      {/* Button to navigate to addCalendarEvents */}
       <TouchableOpacity style={styles.fixedButton}
         onPress={() => navigation.navigate('addCalendarEvents')}
         hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
