@@ -7,6 +7,7 @@ import { IPAddr } from './constants';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { RootStackParamList } from '../components/Types';
 import { useNavigation } from '@react-navigation/native';
+import GenericAddPageForm from './addEventPage';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 
@@ -46,6 +47,16 @@ export default function AddMeals() {
       handleChange('event_date', selectedDate);
     }
   };
+  return (
+    <GenericAddPageForm
+      title="New Meal"
+      initialData={initialData}
+      fields={fields}
+      onSave={handleSave}
+      onCancel={handleCancel}
+    />
+  );
+};
 
   const handleTimeChange = (event: any, selectedTime: any) => {
     if (selectedTime) {
