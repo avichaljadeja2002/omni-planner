@@ -5,20 +5,20 @@ import { Calendar } from 'react-native-calendars';
 import { styles } from './styles';
 import { Ionicons } from "@expo/vector-icons";
 import { RootStackParamList, Task } from '../components/Types';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 interface FormProps {
     title: string;
-    page: keyof RootStackParamList;
+    header: string;
     nextPage: keyof RootStackParamList
     tasks: Array<Task>;
   }
 
-const GenericMainPageForm: React.FC<FormProps> = ({ title, page, nextPage, tasks }) => {
+const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, tasks }) => {
     const [selectedDate, setSelectedDate] = useState('');
 
-    type Prop = StackNavigationProp<RootStackParamList, typeof page>;
+    type Prop = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
     const navigation = useNavigation<Prop>();  
 
     const handleDayPress = (day: { dateString: React.SetStateAction<string>; }) => {
@@ -47,7 +47,7 @@ const GenericMainPageForm: React.FC<FormProps> = ({ title, page, nextPage, tasks
         <View style={styles.container}>
             <View>
                 <Text style={styles.headerText}>{title}</Text>
-                <Text style={styles.sectionHeader}>Upcoming Events</Text>
+                <Text style={styles.sectionHeader}>{header}</Text>
             </View>
 
             <FlatList style={styles.flatList}
