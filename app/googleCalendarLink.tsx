@@ -33,13 +33,19 @@ export function useGoogleCalendar() {
   useEffect(() => {
     if (response?.type === 'success') {
       const { authentication } = response;
-      console.log('Logged in with Google:', authentication.accessToken);
-      setAccessToken(authentication?.accessToken || null);
-    }
-    else if (response?.type === 'error') {
-        console.log('Error during Google login:', response.error);
+  
+      if (authentication?.accessToken) {
+        console.log('Logged in with Google:', authentication.accessToken);
+        setAccessToken(authentication.accessToken);
+      } else {
+        console.log('Authentication object is missing or invalid');
+        setAccessToken(null); // Handle the case when authentication is null or accessToken is undefined
+      }
+    } else if (response?.type === 'error') {
+      console.log('Error during Google login:', response.error);
     }
   }, [response]);
+  
 
   // Fetch Google Calendar events using the access token
   const fetchGoogleCalendarEvents = async () => {
