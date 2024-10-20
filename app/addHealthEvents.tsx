@@ -8,6 +8,7 @@ import axios from 'axios';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
+import GenericAddPageForm from './addEventPage';
 import { RootStackParamList } from '@/components/Types';
 
 const data = [
@@ -22,7 +23,14 @@ export default function AddHealthEvents() {
   const navigation = useNavigation<AddHealthEventNavProp>();
 
   const [value, setValue] = useState<string | null>(null);
-
+  const initialData = {
+    user_id: 1,
+    title: '',
+    event_date: new Date(),
+    event_time: new Date(),
+    repeating: false,
+    repeat_timeline: ''
+  }
   const [eventData, setEventData] = useState({
     user_id: 1,
     title: '',
@@ -65,93 +73,12 @@ export default function AddHealthEvents() {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={{ height: 100 }}></View>
-      <View>
-        <View style={styles.inLine}>
-          <Text style={styles.headerText}>New Health Event</Text>
-          <TouchableOpacity style={{ marginLeft: 50 }}
-            onPress={() =>
-              console.log("pressed")}
-            hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
-            <View style={styles.taskicon}>
-              <Ionicons name="walk-outline" size={30} color={'#000'} />
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.inputContainer}>
-          <View style={styles.inLine}>
-            <Text style={styles.inputText}>Title</Text>
-            <TextInput
-              style={styles.input}
-              value={eventData.title}
-              onChangeText={(text) => handleChange('title', text)}
-            />
-          </View>
-
-          <View style={styles.inLine}>
-            <Text style={styles.inputText}>Date</Text>
-            <View style={styles.dateTime}>
-              <DateTimePicker
-                value={eventData.event_date}
-                mode="date"
-                display="default"
-                onChange={handleDateChange}
-              />
-
-              <DateTimePicker
-                value={eventData.event_time}
-                mode="time"
-                display="default"
-                onChange={handleTimeChange}
-              />
-            </View>
-          </View>
-
-          <View style={styles.inLine}>
-            <Text style={styles.inputText}>Repeating</Text>
-            <View style={styles.container}>
-              <Dropdown
-                style={{ width: 200, borderWidth: 1, padding: 8 }}
-                data={data}
-                maxHeight={300}
-                labelField="label"
-                valueField="value"
-                value={value}
-                onChange={item => {
-                  setValue(item.value);
-                  handleChange('repeat_timeline', item.label);
-                }}
-                renderLeftIcon={() => (
-                  <Ionicons
-                    name='calendar-outline'
-                    size={20}
-                    paddingRight={10}
-                  />
-                )}
-              />
-            </View>
-          </View>
-        </View>
-      </View>
-      <View style={styles.saveCancelContainer}>
-        <View style={styles.saveCancel}>
-          <Text style={styles.saveCancelText}>Cancel</Text>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('healthTracker')}
-            hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.saveCancel}>
-          <Text style={styles.saveCancelText}>Save</Text>
-          <TouchableOpacity
-            onPress={handleSave}
-            hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-    </View>
+    <GenericAddPageForm
+      title="New Health Event"
+      initialData={initialData}
+      fields={fields}
+      onSave={handleSave}
+      onCancel={handleCancel}
+    />
   );
 }
