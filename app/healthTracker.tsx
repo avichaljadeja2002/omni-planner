@@ -14,7 +14,7 @@ export default function HealthTracker() {
           id: event.id.toString(),
           title: `${event.title} at ${event.event_time}`,
           done: false,
-          icon: 'calendat-outline',
+          icon: 'calendar-outline',
         }));
         setTasks(events);
       })

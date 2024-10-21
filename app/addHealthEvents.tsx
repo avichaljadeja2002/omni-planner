@@ -1,17 +1,9 @@
 import React from 'react';
-import { IPAddr, repeatingData } from './constants';
 import axios from 'axios';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
+import { IPAddr, repeatingData } from './constants';
 import GenericAddPageForm from './addEventPage';
-import { RootStackParamList } from '@/components/Types';
-
-
 
 export default function AddHealthEvents() {
-  type AddHealthEventNavProp = StackNavigationProp<RootStackParamList, 'addCalendarEvents'>;
-  const navigation = useNavigation<AddHealthEventNavProp>();
-
   const initialData = {
     user_id: 1,
     title: '',
@@ -21,17 +13,13 @@ export default function AddHealthEvents() {
     repeat_timeline: ''
   }
 
-  const fields = [  
+  const fields = [
     { name: 'title', label: 'Title', type: 'text' },
     { name: 'event_date', label: 'Date', type: 'date' },
     { name: 'event_time', label: 'Time', type: 'time' },
     { name: 'repeat_timeline', label: 'Repeating', type: 'dropdown', options: repeatingData },
     { name: 'description', label: 'Description', type: 'textarea' },
   ];
-
-  const handleCancel = () => {
-    navigation.navigate('healthTracker')
-  }
 
   const handleSave = async (saveData: any) => {
     try {
@@ -40,7 +28,6 @@ export default function AddHealthEvents() {
     } catch (error) {
       console.error('Error saving event:', error);
     }
-    navigation.navigate('healthTracker')
   };
 
   return (
@@ -48,8 +35,8 @@ export default function AddHealthEvents() {
       title="New Health Event"
       initialData={initialData}
       fields={fields}
+      mainPage='healthTracker'
       onSave={handleSave}
-      onCancel={handleCancel}
     />
   );
 }

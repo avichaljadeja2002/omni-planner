@@ -13,13 +13,13 @@ interface FormProps {
     header: string;
     nextPage: keyof RootStackParamList
     tasks: Array<Task>;
-  }
+}
 
 const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, tasks }) => {
     const [selectedDate, setSelectedDate] = useState('');
 
     type Prop = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
-    const navigation = useNavigation<Prop>();  
+    const navigation = useNavigation<Prop>();
 
     const handleDayPress = (day: { dateString: React.SetStateAction<string>; }) => {
         setSelectedDate(day.dateString);
