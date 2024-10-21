@@ -3,17 +3,24 @@ import { View, TextInput, Text, TouchableOpacity } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Dropdown } from 'react-native-element-dropdown';
 import { styles } from './styles';
+import { RootStackParamList } from '@/components/Types';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from 'expo-router';
 
 interface FormProps {
   title: string;
   initialData: any;
   fields: Array<{ name: string; label: string; type: string; options?: any }>;
+  mainPage: keyof RootStackParamList;
   onSave: (data: any) => void;
-  onCancel: () => void;
 }
 
-const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, onSave, onCancel }) => {
+const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, mainPage, onSave }) => {
   const [formData, setFormData] = useState(initialData);
+
+  type TrackerNavigationProp = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
+  const navigation = useNavigation<TrackerNavigationProp>();
+
   const handleChange = (name: string, value: any) => {
     setFormData({ ...formData, [name]: value });
   };
@@ -31,7 +38,9 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, o
       event_time: formData.event_time.toTimeString().split(' ')[0],
     };
     onSave(formattedData);
+    navigation.navigate('calendarEvents')
   };
+
 
   return (
     <View style={styles.container}>
@@ -91,7 +100,7 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, o
                 placeholder={field.label}
               />
             )}
-             {field.type === 'number' && (
+            {field.type === 'number' && (
               <TextInput
                 style={[styles.input, { height: 50 }]}
                 value={formData[field.name]}
@@ -104,7 +113,7 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, o
         </View>
       ))}
       <View style={styles.saveCancelContainer}>
-        <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
+        <TouchableOpacity style={styles.cancelButton} onPress={() => navigation.navigate(mainPage)}>
           <Text style={styles.saveCancelText}>Cancel</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.saveButton} onPress={handleSave}>

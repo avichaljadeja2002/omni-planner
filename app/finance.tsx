@@ -24,7 +24,7 @@ export default function FinanceTracker() {
   useEffect(() => {
     fetchEvents();
   }, []);
-
+ 
   return (
     <GenericMainPageForm
       title='Finance Tracker'

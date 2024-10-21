@@ -1,16 +1,9 @@
 import React from 'react'
 import axios from 'axios';
 import { IPAddr } from './constants';
-import { RootStackParamList } from '../components/Types';
-import { useNavigation } from '@react-navigation/native';
 import GenericAddPageForm from './addEventPage';
-import { StackNavigationProp } from '@react-navigation/stack';
-
 
 export default function AddMeals() {
-  type AddMealTrackerNavigationProp = StackNavigationProp<RootStackParamList, 'addMeals'>;
-  const navigation = useNavigation<AddMealTrackerNavigationProp>();
-
   const initialData = {
     user_id: 1,
     title: '',
@@ -31,21 +24,15 @@ export default function AddMeals() {
     } catch (error) {
       console.error('Error saving event:', error);
     }
-    navigation.navigate('mealTracker')
   };
-
-
-  const handleCancel = (() => {
-    navigation.navigate('mealTracker')
-  })
 
   return (
     <GenericAddPageForm
       title="New Meal"
       initialData={initialData}
       fields={fields}
+      mainPage='mealTracker'
       onSave={handleSave}
-      onCancel={handleCancel}
     />
   );
 };

@@ -1,16 +1,9 @@
 import React from 'react'
 import axios from 'axios';
 import { IPAddr, repeatingData } from './constants';
-import { RootStackParamList } from '../components/Types';
-import { useNavigation } from '@react-navigation/native';
 import GenericAddPageForm from './addEventPage';
-import { StackNavigationProp } from '@react-navigation/stack';
-
 
 export default function AddCalandarEvents() {
-  type AddCalandarEventTrackerNavigationProp = StackNavigationProp<RootStackParamList, 'addCalendarEvents'>;
-  const navigation = useNavigation<AddCalandarEventTrackerNavigationProp>();
-
   const initialData = {
     user_id: 1,
     title: '',
@@ -34,21 +27,15 @@ export default function AddCalandarEvents() {
     } catch (error) {
       console.error('Error saving event:', error);
     }
-    navigation.navigate('calendarEvents')
   };
-
-
-  const handleCancel = (() => {
-    navigation.navigate('calendarEvents')
-  })
 
   return (
     <GenericAddPageForm
       title="New Calendar Event"
       initialData={initialData}
       fields={fields}
+      mainPage='calendarEvents'
       onSave={handleSave}
-      onCancel={handleCancel}
     />
   );
 };
