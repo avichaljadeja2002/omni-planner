@@ -1,15 +1,15 @@
 import React from 'react'
 import axios from 'axios';
-import { IPAddr } from './constants';
+import { IPAddr, repeatingData } from './constants';
 import { RootStackParamList } from '../components/Types';
 import { useNavigation } from '@react-navigation/native';
 import GenericAddPageForm from './addEventPage';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 
-export default function AddMeals() {
-  type AddMealTrackerNavigationProp = StackNavigationProp<RootStackParamList, 'addMeals'>;
-  const navigation = useNavigation<AddMealTrackerNavigationProp>();
+export default function AddCalandarEvents() {
+  type AddCalandarEventTrackerNavigationProp = StackNavigationProp<RootStackParamList, 'addCalendarEvents'>;
+  const navigation = useNavigation<AddCalandarEventTrackerNavigationProp>();
 
   const initialData = {
     user_id: 1,
@@ -23,7 +23,7 @@ export default function AddMeals() {
     { name: 'event_date', label: 'Date', type: 'date' },
     { name: 'event_time', label: 'Time', type: 'time' },
     { name: 'description', label: 'Description', type: 'text' },
-    { name: 'repeating', label: 'Repeating', type: 'dropdown' },
+    { name: 'repeating', label: 'Repeating', type: 'dropdown', options: repeatingData },
 
   ];
 
@@ -34,7 +34,7 @@ export default function AddMeals() {
     } catch (error) {
       console.error('Error saving event:', error);
     }
-    navigation.navigate('mealTracker')
+    navigation.navigate('calendarEvents')
   };
 
 
