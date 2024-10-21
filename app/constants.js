@@ -1,4 +1,4 @@
-export const IPAddr = "http://34.204.83.156:8080" 
+export const IPAddr = "http://192.168.1.11:8080" 
 
 export const repeatingData = [
     { label: 'Daily', value: '1' },

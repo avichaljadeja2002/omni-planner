@@ -1,149 +1,140 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Button, Alert } from 'react-native';
-import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { Calendar } from 'react-native-calendars';
-import { styles } from './styles';
-import { IPAddr } from './constants';
-import { Ionicons } from "@expo/vector-icons";
-import { RootStackParamList, Task } from '../components/Types';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
+import * as Linking from 'expo-linking';
 import axios from 'axios';
-import * as AuthSession from 'expo-auth-session';
-import { makeRedirectUri, useAuthRequest } from 'expo-auth-session';
+import { IPAddr } from './constants';
+import { styles } from './styles';
+import GenericMainPageForm from './mainPageTemplate';
+import { Task } from '@/components/Types';
 
-const GOOGLE_CLIENT_ID = '982652547040-6pftl2ggc47iplud47t9cend8scdclkd.apps.googleusercontent.com';
+const CLIENT_ID = '982652547040-6pftl2ggc47iplud47t9cend8scdclkd.apps.googleusercontent.com';
+const CLIENT_SECRET = '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';
+const REDIRECT_URI = Linking.createURL('/');
+const TOKEN_URI = 'https://oauth2.googleapis.com/token';
+const AUTH_URI = 'https://accounts.google.com/o/oauth2/v2/auth';
 
+WebBrowser.maybeCompleteAuthSession();
 
 export default function CalendarTracker() {
-  const [selectedDate, setSelectedDate] = useState('');
   const [tasks, setTasks] = useState<Task[]>([]);
 
-  type CalendarTrackerNavigationProp = StackNavigationProp<RootStackParamList, 'calendarEvents'>;
-  const navigation = useNavigation<CalendarTrackerNavigationProp>();
+  const handlePress = async () => {
+    try {
+      console.log("Initiating OAuth login...");
 
-  const [accessToken, setAccessToken] = useState(null);
+      const authUrl = `${AUTH_URI}?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=https://www.googleapis.com/auth/calendar&access_type=offline&prompt=consent`;
 
-  const GOOGLE_DISCOVERY = {
-    authorizationEndpoint: 'https://accounts.google.com/o/oauth2/v2/auth',
-    tokenEndpoint: 'https://oauth2.googleapis.com/token',
+      const result = await WebBrowser.openAuthSessionAsync(authUrl, REDIRECT_URI);
+      console.log("WebBrowser result:", result);
+
+      if (result.type === 'success' && result.url) {
+        const authCodeMatch = result.url.match(/code=([^&]*)/);
+        const authCode = authCodeMatch ? authCodeMatch[1] : null;
+
+        if (authCode) {
+          console.log("Received authorization code:", authCode);
+          getAccessToken(authCode);
+        } else {
+          console.error("Authorization code not found in the redirect URL");
+          Alert.alert('Authorization failed: code not found');
+        }
+      } else {
+        console.error("WebBrowser failed to authorize");
+        Alert.alert('Authorization failed');
+      }
+    } catch (error) {
+      console.error("Error during OAuth flow:", error);
+    }
   };
 
+  const getAccessToken = async (authCode: string) => {
+    console.log("Exchanging authorization code for access token...");
+    try {
+      const params = new URLSearchParams();
+      params.append('code', authCode);
+      params.append('client_id', CLIENT_ID);
+      params.append('client_secret', CLIENT_SECRET);
+      params.append('redirect_uri', REDIRECT_URI);
+      params.append('grant_type', 'authorization_code');
 
-  useEffect(() => {
-    axios.get(IPAddr + '/get_calendar_events/1')
-      .then(response => {
-        const events = response.data.map((event: any) => ({
+      const response = await axios.post(TOKEN_URI, params, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
+      if (response.data.access_token) {
+        console.log("Received access token:", response.data.access_token);
+        fetchLinkedCalendarEvents(response.data.access_token);
+      } else {
+        console.error("Failed to retrieve access token");
+        Alert.alert('Failed to retrieve access token');
+      }
+    } catch (error) {
+      console.error('Error exchanging authorization code:', error);
+      Alert.alert('Error exchanging authorization code');
+    }
+  };
+
+  const fetchLinkedCalendarEvents = async (token: string) => {
+    console.log("Fetching events from /link_calendar API...");
+    try {
+      const response = await axios.get(`${IPAddr}/link_calendar?accessToken=${token}`);
+
+      if (response.status === 200 && response.data) {
+        console.log('Received events from link_calendar:', response.data);
+
+        const calendarEvents = response.data.map((event: any) => ({
           id: event.id.toString(),
-          title: `${event.title} at ${event.event_time}`,
+          title: event.title,
+          event_date: event.event_date,
           done: false,
           icon: 'calendar-outline',
         }));
-        setTasks(events);
-      })
-      .catch(error => console.error('Error fetching events:', error));
-  }, []);
 
-  const handleDayPress = (day: { dateString: React.SetStateAction<string>; }) => {
-    setSelectedDate(day.dateString);
+        setTasks((prevTasks) => [...prevTasks, ...calendarEvents]);
+        Alert.alert('Successfully fetched and added calendar events!');
+      } else {
+        console.error("Failed to fetch events from link_calendar API");
+        Alert.alert('Failed to fetch events from link_calendar API');
+      }
+    } catch (error) {
+      console.error('Error fetching events from link_calendar API:', error);
+      Alert.alert('Error fetching events from link_calendar API');
+    }
   };
 
-
-
-  const redirectUri = AuthSession.makeRedirectUri();
-
-  // Configure the request
-  const [request, response, promptAsync] = useAuthRequest(
-    {
-      clientId: GOOGLE_CLIENT_ID,
-      redirectUri,
-      scopes: ['https://www.googleapis.com/auth/calendar.events'],
-      responseType: 'code',
-    },
-    GOOGLE_DISCOVERY
-  );
+  const fetchEvents = async () => {
+    try {
+      const response = await axios.get(`${IPAddr}/get_calendar_events/1`);
+      const events = response.data.map((event: any) => ({
+        id: event.id.toString(),
+        title: `${event.title} at ${event.event_time}`,
+        done: false,
+        icon: 'wallet-outline',
+      }));
+      setTasks(events);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
 
   useEffect(() => {
-    if (response?.type === 'success') {
-      const { code } = response.params;
-      sendAuthCode(code);
-    }
-  }, [response]);
-
-  const linkGoogleCalendar = () => {
-    promptAsync();
-  };
-
-  const sendAuthCode = async (authCode: string) => {
-    try {
-      const response = await axios.post(IPAddr + '/link_calendar', JSON.stringify({ "authCode": authCode, "user_id": 1 }));
-      console.log('Event saved successfully:', response.data);
-    } catch (error) {
-      console.error('Error saving event:', error);
-    }
-  }
-  const renderTask = ({ item }: { item: Task }) => (
-    <View style={styles.taskItem}>
-      <Text style={styles.bullet}>
-        <View style={styles.taskicon}>
-          <Ionicons name={item.icon} size={30} color={'#000'} />
-        </View>
-      </Text>
-      <Text style={styles.taskText}>{item.title}</Text>
-      <View>
-        <BouncyCheckbox
-          fillColor="#65558F"
-          iconStyle={{ borderRadius: 0 }}
-          innerIconStyle={{ borderRadius: 0, borderWidth: 2 }}
-          onPress={(isChecked: boolean) => { item.done = isChecked; }} />
-      </View>
-    </View>
-  );
+    fetchEvents();
+  }, []);
 
   return (
     <View style={styles.container}>
-      <View>
-        <Text style={styles.headerText}>Calendar Events</Text>
-        <Text style={styles.sectionHeader}>Upcoming Events</Text>
-      </View>
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Button title="Link Google Calendar" onPress={linkGoogleCalendar} />
-      </View>
-      <FlatList style={styles.flatList}
-        data={tasks}
-        renderItem={renderTask}
-        keyExtractor={(item) => item.id}
-      />
-      <View style={{ height: 50 }}>
-        <Text style={styles.sectionHeader}>Title</Text>
-      </View>
-
-      <Calendar
-        onDayPress={handleDayPress}
-        markedDates={{
-          [selectedDate]: {
-            selected: true,
-            marked: true,
-            selectedColor: '#9b59b6',
-          },
-        }}
-        theme={{
-          selectedDayBackgroundColor: '#65558F',
-          todayTextColor: '#00adf5',
-          arrowColor: '#9b59b6',
-        }}
-      />
-
-
-      {/* Button to navigate to addCalendarEvents */}
-      <TouchableOpacity style={styles.fixedButton}
-        onPress={() => navigation.navigate('addCalendarEvents')}
-        hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
-        <View style={styles.icon}>
-          <Ionicons name="add-outline" size={40} color={'#eee'} />
-          <Text style={styles.newText}>New</Text>
-        </View>
+      <TouchableOpacity onPress={handlePress}>
+        <Text>Link Google Calendar</Text>
       </TouchableOpacity>
+      <GenericMainPageForm
+        title='Calendar Tracker'
+        header='Upcoming Events'
+        nextPage='addCalendarEvents'
+        tasks={tasks}
+      />
     </View>
   );
 }
