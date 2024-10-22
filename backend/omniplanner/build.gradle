@@ -73,7 +73,6 @@ task cleanTest {
 // Make the cleanTest task the default task
 defaultTasks 'cleanTest'
 
-
 bootJar {
 	mainClass = 'com.main.omniplanner.OmniPlannerApplication'
 }

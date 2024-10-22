@@ -45,7 +45,7 @@ public class GoogleCalendarLink {
      */
     private static final List<String> SCOPES =
             Collections.singletonList(CalendarScopes.CALENDAR);
-    private static final String CREDENTIALS_FILE_PATH = "C:\\Users\\jadejaan\\OneDrive - Rose-Hulman Institute of Technology\\Desktop\\omni-planner\\backend\\omniplanner\\src\\main\\java\\com\\main\\omniplanner\\credentials.json";
+    private static final String CREDENTIALS_FILE_PATH = "credentials.json";
 
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         System.out.println("Attempting to access: " + CREDENTIALS_FILE_PATH); // Debugging line

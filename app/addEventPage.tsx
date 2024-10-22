@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, TouchableOpacity } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity, ScrollView } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Dropdown } from 'react-native-element-dropdown';
 import { styles } from './styles';
@@ -43,7 +43,7 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
 
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.sectionHeader}>{title}</Text>
       {fields.map((field, index) => (
         <View key={index} style={styles.inputContainer}>
@@ -120,7 +120,7 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
           <Text style={styles.saveCancelText}>Save</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
