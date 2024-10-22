@@ -1,6 +1,4 @@
 import { StyleSheet } from "react-native";
-import { Calendar } from "react-native-calendars";
-import CalendarHeader from "react-native-calendars/src/calendar/header";
 
 export const styles = StyleSheet.create({
   container: {
