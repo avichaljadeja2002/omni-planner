@@ -23,10 +23,6 @@ public class LinkGoogleCalendar {
 
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
     private static final String APPLICATION_NAME = "omniplanner";
-    private static final String TOKEN_URI = "https://oauth2.googleapis.com/token";
-    private static final String CLIENT_ID = "982652547040-6pftl2ggc47iplud47t9cend8scdclkd.apps.googleusercontent.com";
-    private static final String CLIENT_SECRET = "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";
-    private static final String REDIRECT_URI = "http://localhost:8080";
 
     @GetMapping("/link_calendar")
     public List<CalendarEvents> getCalendarEvents(@RequestParam String accessToken) {
