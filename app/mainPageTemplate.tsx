@@ -46,6 +46,7 @@ const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, tas
     return (
         <View style={styles.container}>
             <View>
+                <View style={{height:12}}></View>
                 <Text style={styles.headerText}>{title}</Text>
                 <Text style={styles.sectionHeader}>{header}</Text>
             </View>
@@ -56,7 +57,7 @@ const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, tas
                 keyExtractor={(item) => item.id}
             />
             <View style={{ height: 50 }}>
-                <Text style={styles.sectionHeader}>Title</Text>
+                <Text style={styles.calendarHeader}>Events</Text>
             </View>
 
             <Calendar
@@ -80,7 +81,6 @@ const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, tas
                 hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
                 <View style={styles.icon}>
                     <Ionicons name="add-outline" size={40} color={'#eee'} />
-                    <Text style={styles.newText}>New</Text>
                 </View>
             </TouchableOpacity>
         </View>

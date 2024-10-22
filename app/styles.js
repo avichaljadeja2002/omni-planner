@@ -1,4 +1,6 @@
 import { StyleSheet } from "react-native";
+import { Calendar } from "react-native-calendars";
+import CalendarHeader from "react-native-calendars/src/calendar/header";
 
 export const styles = StyleSheet.create({
   container: {
@@ -15,9 +17,17 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
   },
   headerText: {
+    textAlign: "center",
     fontSize: 28,
     fontWeight: "bold",
     color: "#333",
+  },
+  calendarHeader: {
+    textAlign: "center",
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 20,
   },
   subHeaderText: {
     fontSize: 18,
@@ -25,7 +35,6 @@ export const styles = StyleSheet.create({
     marginBottom: 15,
   },
   sectionHeader: {
-    textAlign: "center",
     fontSize: 24,
     fontWeight: "bold",
     color: "#333",
