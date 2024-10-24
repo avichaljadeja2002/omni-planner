@@ -8,6 +8,10 @@ import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
+import com.main.omniplanner.requests.CalendarLinkRequest;
+import com.main.omniplanner.user.User;
+import com.main.omniplanner.user.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -24,15 +28,32 @@ public class LinkGoogleCalendar {
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
     private static final String APPLICATION_NAME = "omniplanner";
 
-    @GetMapping("/link_calendar")
-    public List<CalendarEvents> getCalendarEvents(@RequestParam String accessToken) {
-        System.out.println("access " + accessToken);
+    @Autowired
+    private UserRepository userRepository;
+
+    @PostMapping("/link_calendar")
+    public String linkCalendar(@RequestBody CalendarLinkRequest request) {
+        try {
+            User user = userRepository.findById(request.getUserId())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+
+            user.setGoogle_calendar_linked(true);
+            user.setGoogle_calendar_access_token(request.getAccessToken());
+            userRepository.save(user);
+            return "Google Calendar linked successfully for user ID: " + request.getUserId();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Failed to link Google Calendar for user ID: " + request.getUserId();
+        }
+    }
+
+    @GetMapping("/get_google_calendar_events")
+    public List<CalendarEvents> getGoogleCalendarEvents(@RequestParam String access_token) {
         List<CalendarEvents> calendarEventsList = new ArrayList<>();
         try {
             HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-
             Calendar service = new Calendar.Builder(httpTransport, JSON_FACTORY,
-                    request -> request.getHeaders().setAuthorization("Bearer " + accessToken))
+                    request -> request.getHeaders().setAuthorization("Bearer " + access_token))
                     .setApplicationName(APPLICATION_NAME)
                     .build();
 
@@ -42,7 +63,6 @@ public class LinkGoogleCalendar {
                     .setSingleEvents(true)
                     .execute();
 
-            // Map the events to CalendarEvents entities
             for (Event event : events.getItems()) {
                 CalendarEvents calendarEvent = new CalendarEvents();
 

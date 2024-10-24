@@ -34,7 +34,6 @@ class FinanceEventsControllerTest {
 
     @Test
     void testGetEventsByUserId_Success() {
-        //Given data
         int userId = 1;
         FinanceEvents event1 = new FinanceEvents();
         event1.setId(1);
@@ -57,11 +56,9 @@ class FinanceEventsControllerTest {
 
         List<FinanceEvents> events = Arrays.asList(event1, event2);
 
-        // When
         when(financeEventsService.getEventsByUserId(userId)).thenReturn(events);
         ResponseEntity<List<FinanceEvents>> response = financeEventsController.getEventsByUserId(userId);
 
-        // Then
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(2, Objects.requireNonNull(response.getBody()).size());
         assertEquals("Event 1", response.getBody().get(0).getTitle());
@@ -70,28 +67,22 @@ class FinanceEventsControllerTest {
 
     @Test
     void testGetEventsByUserId_EmptyList() {
-        // Given
         int userId = 2;
 
-        // When
         when(financeEventsService.getEventsByUserId(userId)).thenReturn(Arrays.asList());
         ResponseEntity<List<FinanceEvents>> response = financeEventsController.getEventsByUserId(userId);
 
-        // Then
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(0, response.getBody().size());
     }
 
     @Test
     void testGetEventsByUserId_NonExistingUser() {
-        // Given
-        int userId = 999; // Assuming this user doesn't exist
+        int userId = 999;
 
-        // When
         when(financeEventsService.getEventsByUserId(userId)).thenReturn(Arrays.asList());
         ResponseEntity<List<FinanceEvents>> response = financeEventsController.getEventsByUserId(userId);
 
-        // Then
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(0, response.getBody().size());
     }

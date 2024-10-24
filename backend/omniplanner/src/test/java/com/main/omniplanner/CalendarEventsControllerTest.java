@@ -3,6 +3,7 @@ package com.main.omniplanner;
 import com.main.omniplanner.calendar.CalendarEvents;
 import com.main.omniplanner.calendar.CalendarEventsController;
 import com.main.omniplanner.calendar.CalendarEventsService;
+import com.main.omniplanner.responses.CalendarEventResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -34,7 +35,6 @@ class CalendarEventsControllerTest {
 
     @Test
     void testGetEventsByUserId_Success() {
-        //Given data
         int userId = 1;
         CalendarEvents event1 = new CalendarEvents();
         event1.setId(1);
@@ -57,15 +57,13 @@ class CalendarEventsControllerTest {
 
         List<CalendarEvents> events = Arrays.asList(event1, event2);
 
-        // When
         when(calendarEventsService.getEventsByUserId(userId)).thenReturn(events);
-        ResponseEntity<List<CalendarEvents>> response = calendarEventsController.getEventsByUserId(userId);
-
+        ResponseEntity<CalendarEventResponse> response = calendarEventsController.getEventsByUserId(userId);
         // Then
         assertEquals(200, response.getStatusCodeValue());
-        assertEquals(2, Objects.requireNonNull(response.getBody()).size());
-        assertEquals("Event 1", response.getBody().get(0).getTitle());
-        assertEquals("Event 2", response.getBody().get(1).getTitle());
+        assertEquals(2, Objects.requireNonNull(Objects.requireNonNull(response.getBody()).getEvents()).size());
+        assertEquals("Event 1", response.getBody().getEvents().get(0).getTitle());
+        assertEquals("Event 2", response.getBody().getEvents().get(1).getTitle());
     }
 
     @Test
@@ -75,11 +73,11 @@ class CalendarEventsControllerTest {
 
         // When
         when(calendarEventsService.getEventsByUserId(userId)).thenReturn(Arrays.asList());
-        ResponseEntity<List<CalendarEvents>> response = calendarEventsController.getEventsByUserId(userId);
+        ResponseEntity<CalendarEventResponse> response = calendarEventsController.getEventsByUserId(userId);
 
         // Then
         assertEquals(200, response.getStatusCodeValue());
-        assertEquals(0, response.getBody().size());
+        assertEquals(0, response.getBody().getEvents().size());
     }
 
     @Test
@@ -89,10 +87,10 @@ class CalendarEventsControllerTest {
 
         // When
         when(calendarEventsService.getEventsByUserId(userId)).thenReturn(Arrays.asList());
-        ResponseEntity<List<CalendarEvents>> response = calendarEventsController.getEventsByUserId(userId);
+        ResponseEntity<CalendarEventResponse> response = calendarEventsController.getEventsByUserId(userId);
 
         // Then
         assertEquals(200, response.getStatusCodeValue());
-        assertEquals(0, response.getBody().size());
+        assertEquals(0, response.getBody().getEvents().size());
     }
 }

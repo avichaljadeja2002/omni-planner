@@ -8,8 +8,8 @@ import { styles } from './styles';
 import GenericMainPageForm from './mainPageTemplate';
 import { Task } from '@/components/Types';
 
-const CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
-const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
+const CLIENT_ID = '982652547040-6pftl2ggc47iplud47t9cend8scdclkd.apps.googleusercontent.com';
+const CLIENT_SECRET = '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';
 const REDIRECT_URI = Linking.createURL('/');
 const TOKEN_URI = 'https://oauth2.googleapis.com/token';
 const AUTH_URI = 'https://accounts.google.com/o/oauth2/v2/auth';
@@ -18,6 +18,7 @@ WebBrowser.maybeCompleteAuthSession();
 
 export default function CalendarTracker() {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [isGoogleCalendarLinked, setIsGoogleCalendarLinked] = useState<boolean>(false);
 
   const handlePress = async () => {
     try {
@@ -66,7 +67,7 @@ export default function CalendarTracker() {
 
       if (response.data.access_token) {
         console.log("Received access token:", response.data.access_token);
-        fetchLinkedCalendarEvents(response.data.access_token);
+        linkGoogleCalendar(1, response.data.access_token);
       } else {
         console.error("Failed to retrieve access token");
         Alert.alert('Failed to retrieve access token');
@@ -77,48 +78,56 @@ export default function CalendarTracker() {
     }
   };
 
-  const fetchLinkedCalendarEvents = async (token: string) => {
-    console.log("Fetching events from /link_calendar API...");
+  const linkGoogleCalendar = async (userId: any, token: any) => {
+    console.log("Linking Google Calendar for user and fetching events...");
     try {
-      const response = await axios.get(`${IPAddr}/link_calendar?accessToken=${token}`);
+      const response = await axios.post(`${IPAddr}/link_calendar`, {
+        userId: userId,
+        accessToken: token,
+      });
 
-      if (response.status === 200 && response.data) {
-        console.log('Received events from link_calendar:', response.data);
-
-        const calendarEvents = response.data.map((event: any) => ({
-          id: event.id.toString(),
-          title: event.title,
-          event_date: event.event_date,
-          done: false,
-          icon: 'calendar-outline',
-        }));
-
-        setTasks((prevTasks) => [...prevTasks, ...calendarEvents]);
-        Alert.alert('Successfully fetched and added calendar events!');
+      if (response.status === 200 && response.data.includes("successfully")) {
+        console.log('Google Calendar linked successfully:', response.data);
+        Alert.alert('Google Calendar linked successfully!');
+        setIsGoogleCalendarLinked(true);
+        fetchEvents();
       } else {
-        console.error("Failed to fetch events from link_calendar API");
-        Alert.alert('Failed to fetch events from link_calendar API');
+        console.error("Failed to link Google Calendar");
+        Alert.alert('Failed to link Google Calendar');
       }
     } catch (error) {
-      console.error('Error fetching events from link_calendar API:', error);
-      Alert.alert('Error fetching events from link_calendar API');
+      console.error('Error linking Google Calendar:', error);
+      Alert.alert('Error linking Google Calendar');
     }
   };
+
+
 
   const fetchEvents = async () => {
     try {
       const response = await axios.get(`${IPAddr}/get_calendar_events/1`);
-      const events = response.data.map((event: any) => ({
-        id: event.id.toString(),
-        title: `${event.title} at ${event.event_time}`,
-        done: false,
-        icon: 'wallet-outline',
-      }));
-      setTasks(events);
+
+      if (response.status === 200 && response.data) {
+        const { events, googleCalendarLinked } = response.data;
+
+        setIsGoogleCalendarLinked(googleCalendarLinked);
+
+        const formattedEvents = events.map((event: any) => ({
+          id: event.id.toString(),
+          title: `${event.title} at ${event.event_time}`,
+          done: false,
+          icon: 'wallet-outline',
+        }));
+
+        setTasks(formattedEvents);
+      } else {
+        console.error('Failed to fetch events');
+      }
     } catch (error) {
       console.error('Error fetching events:', error);
     }
   };
+
 
   useEffect(() => {
     fetchEvents();
@@ -126,9 +135,11 @@ export default function CalendarTracker() {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={handlePress}>
-        <Text>Link Google Calendar</Text>
-      </TouchableOpacity>
+      {!isGoogleCalendarLinked && (
+        <TouchableOpacity style={styles.linkButton} onPress={handlePress}>
+          <Text style={styles.linkButtonText}>Link to Google Calendar</Text>
+        </TouchableOpacity>)
+      }
       <GenericMainPageForm
         title='Calendar Tracker'
         header='Upcoming Events'
