@@ -34,7 +34,6 @@ class MealEventsControllerTest {
 
     @Test
     void testGetEventsByUserId_Success() {
-        //Given data
         int userId = 1;
         MealEvents event1 = new MealEvents();
         event1.setId(1);
@@ -52,11 +51,9 @@ class MealEventsControllerTest {
 
         List<MealEvents> events = Arrays.asList(event1, event2);
 
-        // When
         when(mealEventsService.getEventsByUserId(userId)).thenReturn(events);
         ResponseEntity<List<MealEvents>> response = mealEventsController.getEventsByUserId(userId);
 
-        // Then
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(2, Objects.requireNonNull(response.getBody()).size());
         assertEquals("Event 1", response.getBody().get(0).getTitle());
@@ -65,28 +62,22 @@ class MealEventsControllerTest {
 
     @Test
     void testGetEventsByUserId_EmptyList() {
-        // Given
         int userId = 2;
 
-        // When
         when(mealEventsService.getEventsByUserId(userId)).thenReturn(Arrays.asList());
         ResponseEntity<List<MealEvents>> response = mealEventsController.getEventsByUserId(userId);
 
-        // Then
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(0, response.getBody().size());
     }
 
     @Test
     void testGetEventsByUserId_NonExistingUser() {
-        // Given
-        int userId = 999; // Assuming this user doesn't exist
+        int userId = 999;
 
-        // When
         when(mealEventsService.getEventsByUserId(userId)).thenReturn(Arrays.asList());
         ResponseEntity<List<MealEvents>> response = mealEventsController.getEventsByUserId(userId);
 
-        // Then
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(0, response.getBody().size());
     }

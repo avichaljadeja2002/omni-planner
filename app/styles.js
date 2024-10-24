@@ -215,4 +215,19 @@ export const styles = StyleSheet.create({
     color: "#333",
     marginRight: 10,
   },
+  linkButton: {
+    backgroundColor: "#4285F4",
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 20,
+  },
+
+  linkButtonText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+
 });

@@ -14,7 +14,9 @@ public class User {
     private String name;
     private String email;
 
-    // Getters and setters
+    private boolean google_calendar_linked;
+
+    private String google_calendar_access_token;
     public int getId() {
         return id;
     }
@@ -33,6 +35,22 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public boolean isGoogle_calendar_linked() {
+        return google_calendar_linked;
+    }
+
+    public void setGoogle_calendar_linked(boolean google_calendar_linked) {
+        this.google_calendar_linked = google_calendar_linked;
+    }
+
+    public String getGoogle_calendar_access_token() {
+        return google_calendar_access_token;
+    }
+
+    public void setGoogle_calendar_access_token(String google_calendar_access_token) {
+        this.google_calendar_access_token = google_calendar_access_token;
     }
 
     public void setEmail(String email) {
