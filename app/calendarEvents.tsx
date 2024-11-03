@@ -134,18 +134,20 @@ export default function CalendarTracker() {
   }, []);
 
   return (
-    <View style={styles.container}>
-      {!isGoogleCalendarLinked && (
-        <TouchableOpacity style={styles.linkButton} onPress={handlePress}>
-          <Text style={styles.linkButtonText}>Link to Google Calendar</Text>
-        </TouchableOpacity>)
-      }
+    <View style={styles.bigContainer}>
       <GenericMainPageForm
         title='Calendar Tracker'
         header='Upcoming Events'
         nextPage='addCalendarEvents'
         tasks={tasks}
       />
+      {!isGoogleCalendarLinked && (
+        <View style={{alignItems: 'center', marginBottom:25}}>
+        <TouchableOpacity style={styles.linkButton} onPress={handlePress}>
+          <Text style={styles.linkButtonText}>Link to Google Calendar</Text>
+        </TouchableOpacity>
+        </View>)
+      }
     </View>
   );
 }
