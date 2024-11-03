@@ -1,39 +1,39 @@
 # 6.4.2 Stakeholder Needs and Requirements Definition Process
 ## 1. Prepare for Stakeholder Needs and Requirements Definition
 ### a. Identify the stakeholders who have an interest in the software system throughout its lifecycle.
-#### a. 
+#### a. 'a'
 #### b. 
 #### c. 
 ### b. Define the stakeholder needs and requirements definition strategy.
-#### a. 
-#### b. 
-#### c. 
+#### a. 'd'
+#### b. In extreme programming, stakeholder needs and requirements are defined using stories. "Early estimation is a key difference between stories and other requirements practices."
+#### c. We are creating stories and using planning poker to provide early estimation.
 ### c. Identify and plan for the necessary enabling systems or services needed to support stakeholder needs and requirements definition.
-#### a. 
+#### a. 'h'
 #### b. 
 #### c. 
 ### d. Obtain or acquire access to the enabling systems or services to be used.
-#### a. 
+#### a. 'h'
 #### b. 
 #### c. 
 
 ## 2. Define Stakeholder Needs
 ### a. Define context of use within the concept of operations and the preliminary life cycle concepts.
-#### a. 
+#### a. 'b' 
 #### b. 
 #### c. 
 ### b. Identify stakeholder needs.
-#### a. 
-#### b. 
-#### c. 
+#### a. 'd'
+#### b. Beck says to identify stakeholder needs through stories, "On an XP team, interaction designers work with customers, helping to write and clarify stories."
+#### c. We meet with our client, who is a stakeholder, weekly to create stories.
 ### c. Prioritize and down-select needs.
-#### a. 
-#### b. 
-#### c. 
+#### a. 'e'
+#### b. In XP, the customer selects the stories thay would like implemented. "Our customer picked the minimal functionality for a first deployment."
+#### c. We talk to out client weekly and get her impression of what we should be doing next to meet her goals.
 ### d. Define the stakeholder needs and rationale.
-#### a. 
-#### b. 
-#### c. 
+#### a. 'd'
+#### b. In a story, rationale is included as well as needs. ![alt text](image.png)
+#### c. Out stories use a currently... given... when... then... format which includes stakeholder needs and rationale.
 
 ## 3. Develop the Operational Concept and Other Life Cycle Concepts
 ### a. Define a representative set of scenarios to identify the required capabilities that correspond to anticipated operational and other life cycle concepts.
@@ -47,7 +47,7 @@
 
 ## 4. Transform Stakeholder Needs Into Stakeholder Requirements
 ### a. Identify the constraints on a system solution.
-#### a. 
+#### a. 'c'
 #### b. 
 #### c. 
 ### b. Identify the stakeholder requirements and functions that relate to critical quality characteristics, such as assurance, safety, security, environment, or health.
@@ -195,6 +195,7 @@
 #### a. 
 #### b. 
 #### c. 
+
 
 # 6.4.5 Design Definition Process
 ## 1. Prepare for Software System Design Definition.

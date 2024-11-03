@@ -5,7 +5,11 @@ export const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 25,
     backgroundColor: "#ffffff",
-    paddingTop: 10
+    paddingTop: 10,
+  },
+  bigContainer: {
+    flex: 1,
+    backgroundColor: "#ffffff",
   },
   header: {
     flexDirection: "row",
@@ -25,7 +29,7 @@ export const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "#333",
-    marginBottom: 20,
+    marginBottom: 10,
   },
   subHeaderText: {
     fontSize: 18,
@@ -37,6 +41,7 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#333",
     marginBottom: 20,
+    marginTop: 10,
   },
   bullet: {
     fontSize: 36,
@@ -76,9 +81,14 @@ export const styles = StyleSheet.create({
   inLine: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    height: 60,
+    height: 'auto',
+    marginBottom: 10,
+  },
+  inLineDescription: {
+    display: "flex",
+    flexDirection: "row",
+    height: 'auto',
     marginBottom: 10,
   },
   dateTime: {
@@ -86,7 +96,6 @@ export const styles = StyleSheet.create({
     flexDirection: "column",
     width: '80%',
     gap: 10,
-    height: 100
   },
   input: {
     flex: 1,
@@ -179,9 +188,15 @@ export const styles = StyleSheet.create({
     height: 50,
     borderColor: "black",
   },
-  saveCancelText: {
+  saveText: {
     fontSize: 18,
     fontWeight: "bold",
+    color: "#eee"
+  },
+  cancelText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#65558f"
   },
   saveCancelContainer: {
     flexDirection: "row",
@@ -194,7 +209,8 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: "#f8d7da",
+    borderColor: "#65558f",
+    borderWidth: 2,
     borderRadius: 8,
     flex: 0.45,
     justifyContent: "center",
@@ -204,7 +220,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#65558f",
     borderRadius: 8,
     flex: 0.45,
     justifyContent: "center",
@@ -218,12 +234,12 @@ export const styles = StyleSheet.create({
   linkButton: {
     backgroundColor: "#4285F4",
     paddingVertical: 12,
-    paddingHorizontal: 20,
+    paddingHorizontal: 25,
+    width: '75%',
+    marginTop:0,
     borderRadius: 8,
     alignItems: "center",
-    marginTop: 20,
   },
-
   linkButtonText: {
     color: "#FFFFFF",
     fontSize: 16,

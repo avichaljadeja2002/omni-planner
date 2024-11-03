@@ -4,14 +4,6 @@ import { IPAddr, repeatingData } from './constants';
 import GenericAddPageForm from './addEventPage';
 
 export default function AddFinanceEvents() {
-    const fields = [
-        { name: 'title', label: 'Title', type: 'text' },
-        { name: 'event_date', label: 'Date', type: 'date' },
-        { name: 'event_time', label: 'Time', type: 'time' },
-        { name: 'repeating', label: 'Repeating', type: 'dropdown', options: repeatingData },
-        { name: 'money', label: 'Money', type: 'number' }
-    ];
-
     const initialData = {
         user_id: 1,
         title: '',
@@ -21,6 +13,14 @@ export default function AddFinanceEvents() {
         repeat_timeline: '',
         money: 0.0
     }
+    
+    const fields = [
+        { name: 'title', label: 'Title', type: 'text' },
+        { name: 'event_date', label: 'Date', type: 'date' },
+        { name: 'event_time', label: 'Time', type: 'time' },
+        { name: 'repeating', label: 'Repeating', type: 'dropdown', options: repeatingData },
+        { name: 'money', label: 'Money', type: 'number' }
+    ];
 
     const handleSave = async (saveData: any) => {
         try {

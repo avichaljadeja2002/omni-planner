@@ -15,7 +15,7 @@ export default function AddCalandarEvents() {
     { name: 'title', label: 'Title', type: 'text' },
     { name: 'event_date', label: 'Date', type: 'date' },
     { name: 'event_time', label: 'Time', type: 'time' },
-    { name: 'description', label: 'Description', type: 'text' },
+    { name: 'description', label: 'Description', type: 'textarea' },
     { name: 'repeating', label: 'Repeating', type: 'dropdown', options: repeatingData },
 
   ];

@@ -56,10 +56,8 @@ const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, tas
                 renderItem={renderTask}
                 keyExtractor={(item) => item.id}
             />
-            <View style={{ height: 50 }}>
-                <Text style={styles.calendarHeader}>Events</Text>
-            </View>
-
+            <View style={{ height: 15 }}></View>
+            <Text style={styles.calendarHeader}>Events</Text>
             <Calendar
                 onDayPress={handleDayPress}
                 markedDates={{

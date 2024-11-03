@@ -38,7 +38,7 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
       event_time: formData.event_time.toTimeString().split(' ')[0],
     };
     onSave(formattedData);
-    navigation.navigate('calendarEvents')
+    navigation.navigate(mainPage)
   };
 
 
@@ -47,7 +47,7 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
       <Text style={styles.sectionHeader}>{title}</Text>
       {fields.map((field, index) => (
         <View key={index} style={styles.inputContainer}>
-          <View style={styles.inLine}>
+          <View style={field.type === 'textarea' ? styles.inLineDescription : styles.inLine}>
             <Text style={styles.inputText}>{field.label}</Text>
             {field.type === 'text' && (
               <TextInput
@@ -113,11 +113,11 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
         </View>
       ))}
       <View style={styles.saveCancelContainer}>
-        <TouchableOpacity style={styles.cancelButton} onPress={() => navigation.navigate(mainPage)}>
-          <Text style={styles.saveCancelText}>Cancel</Text>
+      <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+          <Text style={styles.saveText}>Save</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-          <Text style={styles.saveCancelText}>Save</Text>
+        <TouchableOpacity style={styles.cancelButton} onPress={() => navigation.navigate(mainPage)}>
+          <Text style={styles.cancelText}>Cancel</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
