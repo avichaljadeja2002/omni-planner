@@ -30,7 +30,7 @@ public class CalendarEventsService {
     }
 
     public List<CalendarEvents> getEventsByUserId(int userId) {
-        return calendarEventsRepository.findByUserId(userId);
+        return calendarEventsRepository.findUpcomingByUserId(userId);
     }
 
 }

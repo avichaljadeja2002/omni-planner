@@ -30,7 +30,7 @@ public class MealEventsService {
     }
 
     public List<MealEvents> getEventsByUserId(int userId) {
-        return mealEventsRepository.findByUserId(userId);
+        return mealEventsRepository.findUpcomingByUserId(userId);
     }
 
 }
