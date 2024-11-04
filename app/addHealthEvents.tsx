@@ -23,7 +23,12 @@ export default function AddHealthEvents() {
 
   const handleSave = async (saveData: any) => {
     try {
-      const response = await axios.post(IPAddr + '/add_health_events', saveData);
+      const payload = {
+        ...saveData,
+        repeating: Boolean(saveData.repeating),
+        repeat_timeline: saveData.repeating
+      };
+      const response = await axios.post(IPAddr + '/add_health_events', payload);
       console.log('Event saved successfully:', response.data);
     } catch (error) {
       console.error('Error saving event:', error);

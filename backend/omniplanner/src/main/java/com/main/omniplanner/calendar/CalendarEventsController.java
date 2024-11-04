@@ -24,7 +24,7 @@ public class CalendarEventsController {
     @Autowired
     private LinkGoogleCalendar linkGoogleCalendar;
 
-    @PostMapping("/add_calendar_events")
+    @PostMapping("/add_calendar_event")
     public ResponseEntity<CalendarEvents> addEvent(@RequestBody CalendarEvents event) {
         CalendarEvents savedEvent = calendarEventsService.saveEvent(event);
         return new ResponseEntity<>(savedEvent, HttpStatus.CREATED);
