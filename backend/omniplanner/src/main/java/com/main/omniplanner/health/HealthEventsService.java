@@ -31,7 +31,8 @@ public class HealthEventsService {
     }
 
     public List<HealthEvents> getEventsByUserId(int userId) {
-        return healthEventsRepository.findUpcomingByUserId(userId);
+        Long currentTimeMillis = System.currentTimeMillis();
+        return healthEventsRepository.findUpcomingByUserId(userId, currentTimeMillis);
     }
 
 }

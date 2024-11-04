@@ -1,16 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import axios from 'axios';
 import { IPAddr, repeatingData } from './constants';
 import GenericAddPageForm from './addEventPage';
-
-// Helper function to format date and time
-const formatDate = (date: { toISOString: () => string; }) => {
-  return date.toISOString().split('T')[0]; // YYYY-MM-DD
-};
-
-const formatTime = (date: { toTimeString: () => string; }) => {
-  return date.toTimeString().split(' ')[0]; // HH:MM:SS
-};
 
 export default function AddCalendarEvents() {
   const initialData = {
@@ -38,7 +29,6 @@ export default function AddCalendarEvents() {
         repeating: Boolean(saveData.repeating),
         repeat_timeline: saveData.repeating
       };
-
       const response = await axios.post(IPAddr + '/add_calendar_event', payload);
       console.log('Event saved successfully:', response.data);
     } catch (error) {

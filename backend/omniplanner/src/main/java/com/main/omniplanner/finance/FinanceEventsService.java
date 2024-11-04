@@ -16,6 +16,7 @@ public class FinanceEventsService {
     @Autowired
     private EventService eventService;
 
+
     public FinanceEvents saveEvent(FinanceEvents event) {
         Event event1 = new Event();
         event1.setEventDate(event.getEvent_date());
@@ -30,7 +31,8 @@ public class FinanceEventsService {
     }
 
     public List<FinanceEvents> getEventsByUserId(int userId) {
-        return financeEventsRepository.findUpcomingByUserId(userId);
+        Long currentTimeMillis = System.currentTimeMillis();
+        return financeEventsRepository.findUpcomingByUserId(userId, currentTimeMillis);
     }
 
 }

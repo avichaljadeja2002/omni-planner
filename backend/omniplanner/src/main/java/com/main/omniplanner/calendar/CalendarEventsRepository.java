@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface CalendarEventsRepository extends JpaRepository<CalendarEvents, Integer> {
     List<CalendarEvents> findByUserId(int userId);
-    @Query("SELECT f FROM CalendarEvents f WHERE f.userId = :userId AND (f.repeating = true OR f.event_date >= CURRENT_DATE)")
-    List<CalendarEvents> findUpcomingByUserId(@Param("userId") int userId);
+    @Query("SELECT f FROM CalendarEvents f WHERE f.userId = :userId AND (f.repeating = true OR f.event_date >= :currentTimeMillis)")
+    List<CalendarEvents> findUpcomingByUserId(@Param("userId") int userId, @Param("currentTimeMillis") Long currentTimeMillis);
 }

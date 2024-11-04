@@ -30,7 +30,8 @@ public class MealEventsService {
     }
 
     public List<MealEvents> getEventsByUserId(int userId) {
-        return mealEventsRepository.findUpcomingByUserId(userId);
+        Long currentTimeMillis = System.currentTimeMillis();
+        return mealEventsRepository.findUpcomingByUserId(userId, currentTimeMillis);
     }
 
 }
