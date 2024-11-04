@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface MealEventsRepository extends JpaRepository<MealEvents, Integer> {
     List<MealEvents> findByUserId(int userId);
-    @Query("SELECT f FROM MealEvents f WHERE f.userId = :userId AND f.event_date >= CURRENT_DATE")
-    List<MealEvents> findUpcomingByUserId(@Param("userId") int userId);
+    @Query("SELECT f FROM MealEvents f WHERE f.userId = :userId AND  f.event_date >= :currentTimeMillis")
+    List<MealEvents> findUpcomingByUserId(@Param("userId") int userId, @Param("currentTimeMillis") Long currentTimeMillis);
 }

@@ -30,7 +30,8 @@ public class CalendarEventsService {
     }
 
     public List<CalendarEvents> getEventsByUserId(int userId) {
-        return calendarEventsRepository.findUpcomingByUserId(userId);
+        Long currentTimeMillis = System.currentTimeMillis();
+        return calendarEventsRepository.findUpcomingByUserId(userId, currentTimeMillis);
     }
 
 }
