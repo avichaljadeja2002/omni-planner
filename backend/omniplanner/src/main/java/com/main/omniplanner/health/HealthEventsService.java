@@ -31,7 +31,7 @@ public class HealthEventsService {
     }
 
     public List<HealthEvents> getEventsByUserId(int userId) {
-        return healthEventsRepository.findByUserId(userId);
+        return healthEventsRepository.findUpcomingByUserId(userId);
     }
 
 }

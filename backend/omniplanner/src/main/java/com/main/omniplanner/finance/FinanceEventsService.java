@@ -30,7 +30,7 @@ public class FinanceEventsService {
     }
 
     public List<FinanceEvents> getEventsByUserId(int userId) {
-        return financeEventsRepository.findByUserId(userId);
+        return financeEventsRepository.findUpcomingByUserId(userId);
     }
 
 }
