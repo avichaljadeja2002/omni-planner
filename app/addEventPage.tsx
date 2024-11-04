@@ -36,6 +36,9 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
       ...formData,
       event_date: formData.event_date.toISOString().split('T')[0],
       event_time: formData.event_time.toTimeString().split(' ')[0],
+      repeating: Boolean(formData.repeating),
+      repeat_timeline: formData.repeating
+    
     };
     onSave(formattedData);
     navigation.navigate(mainPage)
@@ -87,7 +90,7 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
                 labelField="label"
                 valueField="value"
                 value={formData[field.name]}
-                onChange={(item) => handleChange(field.name, item.label)}
+                onChange={(item) => handleChange(field.name, item.value)}
                 placeholder="Select"
               />
             )}
@@ -113,7 +116,7 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
         </View>
       ))}
       <View style={styles.saveCancelContainer}>
-      <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+        <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
           <Text style={styles.saveText}>Save</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.cancelButton} onPress={() => navigation.navigate(mainPage)}>

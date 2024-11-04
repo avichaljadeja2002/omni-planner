@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Task } from '../components/Types'
+import React, { useState, useCallback } from 'react';
 import { IPAddr } from './constants';
+import { Task } from '../components/Types';
 import axios from 'axios';
 import GenericMainPageForm from './mainPageTemplate';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function HealthTracker() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -21,9 +22,11 @@ export default function HealthTracker() {
       .catch(error => console.error('Error fetching events:', error));
   };
 
-  useEffect(() => {
-    fetchEvents();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchEvents();
+    }, [])
+  );
 
   return (
     <GenericMainPageForm

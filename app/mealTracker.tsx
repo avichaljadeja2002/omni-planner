@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { IPAddr } from './constants';
 import { Task } from '../components/Types';
 import axios from 'axios';
 import GenericMainPageForm from './mainPageTemplate';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function MealTracker() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -19,17 +20,20 @@ export default function MealTracker() {
         setTasks(events);
       })
       .catch(error => console.error('Error fetching events:', error));
-  }
+  };
 
-  useEffect(() => {
-    fetchEvents();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchEvents();
+    }, [])
+  );
 
   return (
     <GenericMainPageForm
-      title='Meal Tracker'
-      header='Upcoming Meals'
-      nextPage='addMeals'
+      title="Meal Tracker"
+      header="Upcoming Meals"
+      nextPage="addMeals"
       tasks={tasks}
-    />);
+    />
+  );
 }

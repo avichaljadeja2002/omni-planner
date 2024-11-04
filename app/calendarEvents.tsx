@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Linking from 'expo-linking';
@@ -7,6 +7,7 @@ import { IPAddr } from './constants';
 import { styles } from './styles';
 import GenericMainPageForm from './mainPageTemplate';
 import { Task } from '@/components/Types';
+import { useFocusEffect } from '@react-navigation/native';
 
 const CLIENT_ID = '982652547040-6pftl2ggc47iplud47t9cend8scdclkd.apps.googleusercontent.com';
 const CLIENT_SECRET = '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';
@@ -129,9 +130,11 @@ export default function CalendarTracker() {
   };
 
 
-  useEffect(() => {
-    fetchEvents();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchEvents();
+    }, [])
+  );
 
   return (
     <View style={styles.bigContainer}>

@@ -1,20 +1,33 @@
-import React, { useState } from 'react';
-import { Task } from '../components/Types'
 // import { IPAddr } from './constants';
 // import axios from 'axios';
 import GenericMainPageForm from './mainPageTemplate';
-
+import React, { useState, useCallback } from 'react';
+import { IPAddr } from './constants';
+import { Task } from '../components/Types';
+import axios from 'axios';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function TaskScreen() {
-  const [tasks] = useState<Task[]>([
-    { id: "1", title: "Meet with Saayeh at 5pm", done: true, icon: 'accessibility' },
-    { id: "2", title: "Doctor's appointment at 7pm", done: true, icon: 'accessibility' },
-    { id: "3", title: "AI HW due at 11:59pm", done: true, icon: 'accessibility' },
-  ]);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const fetchAllEvents = async () => {
+    axios.get(IPAddr + '/get_all_events/1')
+      .then(response => {
+        const events = response.data.map((event: any) => ({
+          id: event.id.toString(),
+          title: `${event.title} at ${event.eventTime}`,
+          done: false,
+          icon: 'wallet-outline',
+        }));
+        setTasks(events);
+      })
+      .catch(error => console.error('Error fetching events:', error));
+  }
 
-  // useEffect(() => {
-  //   fetchEvents();
-  // }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchAllEvents();
+    }, [])
+  );
 
   return (
     <GenericMainPageForm
