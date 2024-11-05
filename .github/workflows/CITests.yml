@@ -85,9 +85,7 @@ jobs:
       - name: List files
         run: ls
       - name: cd
-        run: cd ..
-      - name: Print working directory
-        run: pwd
+        run: cd backend
       - name: List files
         run: ls
 
