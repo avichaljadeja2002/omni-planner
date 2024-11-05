@@ -22,6 +22,7 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
   const navigation = useNavigation<TrackerNavigationProp>();
 
   const handleChange = (name: string, value: any) => {
+    console.log('Setting', name, 'to', value);
     setFormData({ ...formData, [name]: value });
   };
 
@@ -32,12 +33,13 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
   };
 
   const handleSave = () => {
+    console.log('Saving event:', formData);
     const formattedData = {
       ...formData,
       event_date: formData.event_date.toISOString().split('T')[0],
       event_time: formData.event_time.toTimeString().split(' ')[0],
-      repeating: Boolean(formData.repeating),
-      repeat_timeline: formData.repeating
+      repeating: formData.repeat_timeline && formData.repeat_timeline,
+      repeat_timeline: formData.repeat_timeline,
     
     };
     onSave(formattedData);

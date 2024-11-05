@@ -18,7 +18,7 @@ export default function AddCalendarEvents() {
     { name: 'event_date', label: 'Date', type: 'date' },
     { name: 'event_time', label: 'Time', type: 'time' },
     { name: 'description', label: 'Description', type: 'textarea' },
-    { name: 'repeating', label: 'Repeating', type: 'dropdown', options: repeatingData },
+    { name: 'repeat_timeline', label: 'Repeating', type: 'dropdown', options: repeatingData },
   ];
 
   const handleSave = async (saveData: any) => {
