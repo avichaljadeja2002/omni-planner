@@ -80,6 +80,8 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
+      - name: Print working directory
+        run: pwd
+        
       - name: Run Tests
         run: npm run test
