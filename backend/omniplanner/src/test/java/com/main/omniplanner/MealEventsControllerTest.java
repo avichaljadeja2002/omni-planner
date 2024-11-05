@@ -15,6 +15,7 @@ import java.sql.Time;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.http.HttpStatus;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -56,8 +57,17 @@ class MealEventsControllerTest {
 
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(2, Objects.requireNonNull(response.getBody()).size());
+        // Assert for the first event
         assertEquals("Event 1", response.getBody().get(0).getTitle());
+        assertEquals(1, response.getBody().get(0).getUser_id());
+        assertEquals(Date.valueOf("2023-10-01"), response.getBody().get(0).getEvent_date());
+        assertEquals(Time.valueOf("10:00:00"), response.getBody().get(0).getEvent_time());
+       
+        // Assert for the second event
         assertEquals("Event 2", response.getBody().get(1).getTitle());
+        assertEquals(1, response.getBody().get(1).getUser_id());
+        assertEquals(Date.valueOf("2023-10-02"), response.getBody().get(1).getEvent_date());
+        assertEquals(Time.valueOf("11:00:00"), response.getBody().get(1).getEvent_time());
     }
 
     @Test
@@ -80,5 +90,26 @@ class MealEventsControllerTest {
 
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(0, response.getBody().size());
+    }
+    @Test
+    void testAddEvent_Success() {
+        // Given
+        MealEvents event = new MealEvents();
+        event.setId(1);
+        event.setUser_id(1);
+        event.setTitle("New Meal Event");
+        event.setEvent_date(Date.valueOf("2023-10-10"));
+        event.setEvent_time(Time.valueOf("14:00:00"));
+
+        // When
+        when(mealEventsService.saveEvent(event)).thenReturn(event);
+
+        // Act
+        ResponseEntity<MealEvents> response = mealEventsController.addEvent(event);
+
+        // Then
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(1, Objects.requireNonNull(response.getBody()).getId());
+        assertEquals("New Meal Event", response.getBody().getTitle());
     }
 }

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.sql.Date;
@@ -16,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 class FinanceEventsControllerTest {
@@ -61,8 +62,24 @@ class FinanceEventsControllerTest {
 
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(2, Objects.requireNonNull(response.getBody()).size());
+       
+        // Assert for the first event
         assertEquals("Event 1", response.getBody().get(0).getTitle());
+        assertEquals(1, response.getBody().get(0).getUser_id());
+        assertEquals(Date.valueOf("2023-10-01"), response.getBody().get(0).getEvent_date());
+        assertEquals(Time.valueOf("10:00:00"), response.getBody().get(0).getEvent_time());
+        assertFalse(response.getBody().get(0).isRepeating());
+        assertNull(response.getBody().get(0).getRepeat_timeline());
+        assertEquals(1.1, response.getBody().get(0).getMoney());
+       
+        // Assert for the second event
         assertEquals("Event 2", response.getBody().get(1).getTitle());
+        assertEquals(1, response.getBody().get(1).getUser_id());
+        assertEquals(Date.valueOf("2023-10-02"), response.getBody().get(1).getEvent_date());
+        assertEquals(Time.valueOf("11:00:00"), response.getBody().get(1).getEvent_time());
+        assertTrue(response.getBody().get(1).isRepeating());
+        assertEquals("Weekly", response.getBody().get(1).getRepeat_timeline());
+        assertEquals(2.1, response.getBody().get(1).getMoney());
     }
 
     @Test
@@ -80,10 +97,33 @@ class FinanceEventsControllerTest {
     void testGetEventsByUserId_NonExistingUser() {
         int userId = 999;
 
-        when(financeEventsService.getEventsByUserId(userId)).thenReturn(Arrays.asList());
+        when(financeEventsService.getEventsByUserId(userId)).thenReturn(List.of());
         ResponseEntity<List<FinanceEvents>> response = financeEventsController.getEventsByUserId(userId);
 
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(0, response.getBody().size());
+    }
+
+    @Test
+    void testAddEvent_Success() {
+        // Given
+        FinanceEvents event = new FinanceEvents();
+        event.setId(1);
+        event.setUser_id(1);
+        event.setTitle("New Finance Event");
+        event.setEvent_date(Date.valueOf("2023-10-10"));
+        event.setEvent_time(Time.valueOf("14:00:00"));
+        event.setMoney(5.1);
+
+        // When
+        when(financeEventsService.saveEvent(event)).thenReturn(event);
+
+        // Act
+        ResponseEntity<FinanceEvents> response = financeEventsController.addEvent(event);
+
+        // Then
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(1, Objects.requireNonNull(response.getBody()).getId());
+        assertEquals("New Finance Event", response.getBody().getTitle());
     }
 }
