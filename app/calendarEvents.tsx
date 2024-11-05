@@ -112,9 +112,9 @@ export default function CalendarTracker() {
         const { events, googleCalendarLinked } = response.data;
 
         setIsGoogleCalendarLinked(googleCalendarLinked);
-
+        console.log('Fetched events:', events);
         const formattedEvents = events.map((event: any) => ({
-          id: event.id.toString(),
+          id: `${event.id}-${event.event_date}-${event.event_time}`,
           title: `${event.title} at ${event.event_time}`,
           done: false,
           icon: 'wallet-outline',
