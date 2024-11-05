@@ -68,6 +68,10 @@ test {
 
 jacocoTestReport {
     dependsOn test // tests are required to run before generating the report
+	reports {
+        xml.required = true
+		xml.destination = file("${buildDir}/reports/jacoco/cov.xml") // Change 'customReportName.xml' to your desired name
+	}
 }
 // Create a new task to clean and then test
 task cleanTest {
