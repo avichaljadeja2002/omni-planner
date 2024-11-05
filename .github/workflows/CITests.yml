@@ -80,14 +80,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-      - name: Print working directory
-        run: pwd
-      - name: List files
-        run: ls
-      - name: cd
-        run: cd backend
-      - name: List files
-        run: ls
-
+      - name: rwighbw
+        run: |
+          cd backend/omniplanner
+          ls
       - name: Run Tests
-        run: npm run test
+        run: | 
+          cd backend/omniplanner 
+          npm run test
