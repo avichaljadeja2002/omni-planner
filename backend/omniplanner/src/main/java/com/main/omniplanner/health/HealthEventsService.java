@@ -23,7 +23,7 @@ public class HealthEventsService {
         event1.setEventTime(event.getEvent_time());
         event1.setTitle(event.getTitle());
         event1.setUserID(event.getUser_id());
-        event1.setEvent_type("calendar");
+        event1.setEvent_type("health");
         event1.setRepeating(event.isRepeating());
         event1.setRepeatTimeline(event.getRepeat_timeline());
         eventService.saveEvent(event1);

@@ -18,7 +18,7 @@ export default function AddFinanceEvents() {
         { name: 'title', label: 'Title', type: 'text' },
         { name: 'event_date', label: 'Date', type: 'date' },
         { name: 'event_time', label: 'Time', type: 'time' },
-        { name: 'repeating', label: 'Repeating', type: 'dropdown', options: repeatingData },
+        { name: 'repeat_timeline', label: 'Repeating', type: 'dropdown', options: repeatingData },
         { name: 'money', label: 'Money', type: 'number' }
     ];
 
