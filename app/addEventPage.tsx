@@ -22,7 +22,6 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
   const navigation = useNavigation<TrackerNavigationProp>();
 
   const handleChange = (name: string, value: any) => {
-    console.log('Setting', name, 'to', value);
     setFormData({ ...formData, [name]: value });
   };
 
@@ -33,7 +32,6 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
   };
 
   const handleSave = () => {
-    console.log('Saving event:', formData);
     const formattedData = {
       ...formData,
       event_date: formData.event_date.toISOString().split('T')[0],
