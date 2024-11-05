@@ -56,33 +56,34 @@ public class LinkGoogleCalendar {
                     request -> request.getHeaders().setAuthorization("Bearer " + access_token))
                     .setApplicationName(APPLICATION_NAME)
                     .build();
-
+            long currentTimeMillis = System.currentTimeMillis();
+            DateTime now = new DateTime(currentTimeMillis);
             Events events = service.events().list("primary")
                     .setMaxResults(10)
                     .setOrderBy("updated")
                     .setSingleEvents(true)
+                    .setTimeMin(now)
                     .execute();
 
             for (Event event : events.getItems()) {
                 CalendarEvents calendarEvent = new CalendarEvents();
 
-                calendarEvent.setTitle("Google calendar event " + event.getSummary());
+                calendarEvent.setTitle("Google: " + event.getSummary());
                 calendarEvent.setDescription(event.getDescription());
 
                 DateTime start = event.getStart().getDateTime() != null ?
                         event.getStart().getDateTime() : event.getStart().getDate();
 
                 if (start != null) {
-                    calendarEvent.setEvent_date(new Date(start.getValue()));
-                    calendarEvent.setEvent_time(new Time(start.getValue()));
+                    long eventStartMillis = start.getValue();
+                    calendarEvent.setEvent_date(new Date(eventStartMillis));
+                    calendarEvent.setEvent_time(new Time(eventStartMillis));
+                    calendarEventsList.add(calendarEvent);
                 }
-
-                calendarEventsList.add(calendarEvent);
             }
         } catch (IOException | GeneralSecurityException e) {
             e.printStackTrace();
         }
-
         return calendarEventsList;
     }
 }
