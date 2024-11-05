@@ -29,7 +29,6 @@ export default function AddFinanceEvents() {
                 repeating: Boolean(saveData.repeating),
                 repeat_timeline: saveData.repeating
               };
-              console.log('Payload:', payload);
             const response = await axios.post(IPAddr + '/add_finance_events', payload);
             console.log('Event saved successfully:', response.data);
         } catch (error) {
