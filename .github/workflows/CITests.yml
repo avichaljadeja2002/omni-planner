@@ -80,10 +80,7 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-      - name: rwighbw
-        run: |
-          cd backend/omniplanner
-          ls
+
       - name: Run Tests
         run: | 
           cd backend/omniplanner 
