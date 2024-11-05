@@ -4,6 +4,7 @@ import com.main.omniplanner.calendar.CalendarEvents;
 import com.main.omniplanner.calendar.CalendarEventsController;
 import com.main.omniplanner.calendar.CalendarEventsService;
 import com.main.omniplanner.responses.CalendarEventResponse;
+import com.main.omniplanner.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,6 +22,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 class CalendarEventsControllerTest {
+
+    @Mock
+    private UserRepository userRepository;
 
     @Mock
     private CalendarEventsService calendarEventsService;
