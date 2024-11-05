@@ -102,7 +102,20 @@ export default function CalendarTracker() {
     }
   };
 
+  const formatTime = (time: string) => {
+    const [hours, minutes] = time.split(':');
+    const hour = parseInt(hours);
 
+    if (hour === 0) {
+      return `12:${minutes} AM`;
+    } else if (hour < 12) {
+      return `${hour}:${minutes} AM`;
+    } else if (hour === 12) {
+      return `12:${minutes} PM`;
+    } else {
+      return `${hour - 12}:${minutes} PM`;
+    }
+  };
 
   const fetchEvents = async () => {
     try {
@@ -115,7 +128,7 @@ export default function CalendarTracker() {
         console.log('Fetched events:', events);
         const formattedEvents = events.map((event: any) => ({
           id: `${event.id}-${event.event_date}-${event.event_time}`,
-          title: `${event.title} at ${event.event_time}`,
+          title: `${event.title} at ${formatTime(event.event_time)}`,
           done: false,
           icon: 'wallet-outline',
         }));
