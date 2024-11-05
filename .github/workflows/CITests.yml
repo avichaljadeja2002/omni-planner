@@ -81,6 +81,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Set execute permission for gradlew
+        run: chmod +x ./backend/omniplanner/gradlew
+        
       - name: CD into the backend/omniplanner directory
         run: | 
           cd backend/omniplanner 
