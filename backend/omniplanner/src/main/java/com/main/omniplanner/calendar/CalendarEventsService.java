@@ -20,7 +20,7 @@ public class CalendarEventsService {
         event1.setEventDate(event.getEvent_date());
         event1.setEventTime(event.getEvent_time());
         event1.setTitle(event.getTitle());
-        event1.setUserID(event.getUser_id());
+        event1.setUserId(event.getUser_id());
         event1.setDescription(event.getDescription());
         event1.setEvent_type("calendar");
         event1.setRepeating(event.isRepeating());

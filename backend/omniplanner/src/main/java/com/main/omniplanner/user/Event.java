@@ -102,14 +102,6 @@ public class Event {
         this.title = title;
     }
 
-    public int getUser() {
-        return userId;
-    }
-
-    public void setUserID(int userID) {
-        this.userId = userID;
-    }
-
     public String getEvent_type() {
         return event_type;
     }

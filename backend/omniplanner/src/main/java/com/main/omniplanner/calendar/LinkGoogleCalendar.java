@@ -34,6 +34,7 @@ public class LinkGoogleCalendar {
     @PostMapping("/link_calendar")
     public String linkCalendar(@RequestBody CalendarLinkRequest request) {
         try {
+            System.out.println("Linking Google Calendar for user ID: " + request.getUserId());
             User user = userRepository.findById(request.getUserId())
                     .orElseThrow(() -> new RuntimeException("User not found"));
 
