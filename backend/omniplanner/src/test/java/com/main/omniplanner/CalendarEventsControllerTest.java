@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.sql.Date;
@@ -66,8 +67,23 @@ class CalendarEventsControllerTest {
         // Then
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(2, Objects.requireNonNull(Objects.requireNonNull(response.getBody()).getEvents()).size());
+
         assertEquals("Event 1", response.getBody().getEvents().get(0).getTitle());
+        assertEquals("Description 1", response.getBody().getEvents().get(0).getDescription());
+        assertEquals(1, response.getBody().getEvents().get(0).getUser_id());
+        System.out.println(response.getBody().getEvents().get(0).getEvent_date());
+        System.out.println(response.getBody().getEvents().get(0).getEvent_time());
+        System.out.println(response.getBody().getEvents().get(0).isRepeating());
+        System.out.println(response.getBody().getEvents().get(0).getRepeat_timeline());
+
         assertEquals("Event 2", response.getBody().getEvents().get(1).getTitle());
+        assertEquals("Description 2", response.getBody().getEvents().get(1).getDescription());
+        assertEquals(1, response.getBody().getEvents().get(1).getUser_id());
+        System.out.println(response.getBody().getEvents().get(1).getEvent_date());
+        System.out.println(response.getBody().getEvents().get(1).getEvent_time());
+        System.out.println(response.getBody().getEvents().get(1).isRepeating());
+        System.out.println(response.getBody().getEvents().get(1).getRepeat_timeline());
+
     }
 
     @Test
@@ -97,4 +113,38 @@ class CalendarEventsControllerTest {
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(0, response.getBody().getEvents().size());
     }
+
+  @Test
+    void testGetEventsByUserId_ExceptionThrown() {
+        int userId = 1;
+
+        when(userRepository.findById(userId)).thenThrow(new RuntimeException("Database error"));
+
+        ResponseEntity<CalendarEventResponse> response = calendarEventsController.getEventsByUserId(userId);
+
+        assertEquals(500, response.getStatusCodeValue());
+    }
+
+    @Test
+    void testAddEvent_Success() {
+        // Given
+        CalendarEvents event = new CalendarEvents();
+        event.setId(1);
+        event.setUser_id(1);
+        event.setTitle("New Event");
+        event.setEvent_date(Date.valueOf("2023-10-10"));
+        event.setEvent_time(Time.valueOf("14:00:00"));
+
+        // When
+        when(calendarEventsService.saveEvent(event)).thenReturn(event);
+
+        // Act
+        ResponseEntity<CalendarEvents> response = calendarEventsController.addEvent(event);
+
+        // Then
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(1, Objects.requireNonNull(response.getBody()).getId());
+        assertEquals("New Event", response.getBody().getTitle());
+    }
+
 }
