@@ -19,7 +19,7 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
   const [formData, setFormData] = useState(initialData);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
-  const [currentField, setCurrentField] = useState<string | null>(null);
+  const [currentField, setCurrentField] = useState<string | null>(null); // Tracks which field is being edited
 
   type TrackerNavigationProp = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
   const navigation = useNavigation<TrackerNavigationProp>();
@@ -34,24 +34,25 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
       setShowDatePicker(false);
     }
   };
+
   const handleTimeChange = (name: string, event: any, selectedTime: any) => {
-    if (selectedTime) {
-      handleChange(name, selectedTime);
-      setShowTimePicker(false);
+    if (event.type === 'dismissed') {
+      setShowTimePicker(false); // Dismiss the picker if the user clicks outside or cancels
+    } else if (selectedTime) {
+      handleChange(name, selectedTime); // Update the selected time
     }
   };
 
   const handleSave = () => {
     const formattedData = {
       ...formData,
-      event_date: formData.event_date.toISOString().split('T')[0],
-      event_time: formData.event_time.toTimeString().split(' ')[0],
+      event_date: formData.event_date?.toISOString().split('T')[0],
+      event_time: formData.event_time?.toTimeString().split(' ')[0],
       repeating: formData.repeat_timeline && formData.repeat_timeline,
       repeat_timeline: formData.repeat_timeline,
-    
     };
     onSave(formattedData);
-    navigation.navigate(mainPage)
+    navigation.navigate(mainPage);
   };
 
   const showPicker = (type: 'date' | 'time', fieldName: string) => {
@@ -79,25 +80,33 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
               />
             )}
             {field.type === 'date' && (
-              <View style={styles.dateTime}>
+              <View style={styles.dateTimeInLine}>
+              <TouchableOpacity onPress={() => showPicker('date', field.name)}>
+                <Text style={{textAlign: 'right'}}>{formData[field.name] ? formData[field.name].toDateString() : 'Select Date'}</Text>
+              </TouchableOpacity>
+              {showDatePicker && (
                 <DateTimePicker
-                  value={formData[field.name]}
+                  value={currentField ? formData[currentField] || new Date() : new Date()}
                   mode="date"
                   display="default"
-                  onChange={(event, selectedDate) => handleDateChange(field.name, event, selectedDate)}
-                  style={{ flex: 1 }}
+                  onChange={(event, selectedDate) => handleDateChange(currentField!, event, selectedDate)}
                 />
+              )}
               </View>
             )}
             {field.type === 'time' && (
-              <View style={styles.dateTime}>
+              <View style={styles.dateTimeInLine}>
+              <TouchableOpacity onPress={() => showPicker('time', field.name)}>
+                <Text style={{textAlign: 'right'}}>{formData[field.name] ? formData[field.name].toLocaleTimeString() : 'Select Time'}</Text>
+              </TouchableOpacity>
+              {showTimePicker && (
                 <DateTimePicker
-                  value={formData[field.name]}
+                  value={currentField ? formData[currentField] || new Date() : new Date()}
                   mode="time"
                   display="default"
-                  onChange={(event, selectedTime) => handleDateChange(field.name, event, selectedTime)}
-                  style={{ flex: 1 }}
+                  onChange={(event, selectedTime) => handleTimeChange(currentField!, event, selectedTime)}
                 />
+              )}
               </View>
             )}
             {field.type === 'dropdown' && (
@@ -112,6 +121,7 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
                 placeholder="Select"
               />
             )}
+            
             {field.type === 'textarea' && (
               <TextInput
                 style={styles.bigInput}
@@ -133,6 +143,10 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
           </View>
         </View>
       ))}
+
+      
+      
+
       <View style={styles.saveCancelContainer}>
         <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
           <Text style={styles.saveText}>Save</Text>

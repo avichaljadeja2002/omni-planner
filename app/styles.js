@@ -79,10 +79,9 @@ export const styles = StyleSheet.create({
     color: "#555",
   },
   inLine: {
-    display: "flex",
     flexDirection: "row",
-    alignItems: "center",
-    height: 'auto',
+    justifyContent: "space-between",
+    alignItems: "space-center",
     marginBottom: 10,
   },
   inLineDescription: {
@@ -90,12 +89,6 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     height: 'auto',
     marginBottom: 10,
-  },
-  dateTime: {
-    display: 'flex',
-    flexDirection: "column",
-    width: '80%',
-    gap: 10,
   },
   input: {
     flex: 1,
@@ -123,7 +116,6 @@ export const styles = StyleSheet.create({
     flexDirection: "column",
     gap: 20,
     paddingBottom: 20,
-
   },
   dropdown: {
     flex: 1,
@@ -229,7 +221,7 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "500",
     color: "#333",
-    marginRight: 10,
+    alignItems: "left"
   },
   linkButton: {
     backgroundColor: "#4285F4",
@@ -245,5 +237,15 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+  dateTimeInLine: {
+    marginRight: 0,
+    width: 'auto',
+    alignSelf: "flex-end",
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderColor: "#ccc",
+  }
 
 });

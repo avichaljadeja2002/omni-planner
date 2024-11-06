@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface FinanceEventsRepository extends JpaRepository<FinanceEvents, Integer> {
     List<FinanceEvents> findByUserId(int userId);
-    @Query("SELECT f FROM FinanceEvents f WHERE f.userId = :userId AND (f.repeating = true OR f.event_date >= :currentTimeMillis)")
+    @Query("SELECT f FROM FinanceEvents f WHERE f.userId = :userId AND (f.repeating = true OR f.event_date >= :currentTimeMillis) ORDER BY f.event_date ASC")
     List<FinanceEvents> findUpcomingByUserId(@Param("userId") int userId, @Param("currentTimeMillis") Long currentTimeMillis);
 
 }
