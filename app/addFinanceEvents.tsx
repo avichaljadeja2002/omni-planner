@@ -19,7 +19,7 @@ export default function AddFinanceEvents() {
         { name: 'event_date', label: 'Date', type: 'date' },
         { name: 'event_time', label: 'Time', type: 'time' },
         { name: 'repeat_timeline', label: 'Repeating', type: 'dropdown', options: repeatingData },
-        { name: 'money', label: 'Money', type: 'number' }
+        { name: 'money ($)', label: 'Money', type: 'number' }
     ];
 
     const handleSave = async (saveData: any) => {

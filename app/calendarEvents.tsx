@@ -1,50 +1,46 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Alert } from 'react-native';
-import * as WebBrowser from 'expo-web-browser';
-import * as Linking from 'expo-linking';
 import axios from 'axios';
 import { IPAddr } from './constants';
 import { styles } from './styles';
 import GenericMainPageForm from './mainPageTemplate';
 import { Task } from '@/components/Types';
 import { useFocusEffect } from '@react-navigation/native';
+import * as AuthSession from 'expo-auth-session';
 
 const CLIENT_ID = '982652547040-6pftl2ggc47iplud47t9cend8scdclkd.apps.googleusercontent.com';
 const CLIENT_SECRET = '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';
-const REDIRECT_URI = Linking.createURL('/');
 const TOKEN_URI = 'https://oauth2.googleapis.com/token';
-const AUTH_URI = 'https://accounts.google.com/o/oauth2/v2/auth';
 
-WebBrowser.maybeCompleteAuthSession();
+const discovery = {
+  authorizationEndpoint: 'https://accounts.google.com/o/oauth2/v2/auth',
+  tokenEndpoint: 'https://oauth2.googleapis.com/token',
+};
 
 export default function CalendarTracker() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isGoogleCalendarLinked, setIsGoogleCalendarLinked] = useState<boolean>(false);
 
+  const [request, response, promptAsync] = AuthSession.useAuthRequest(
+    {
+      clientId: CLIENT_ID,
+      scopes: ['https://www.googleapis.com/auth/calendar'],
+      redirectUri: AuthSession.makeRedirectUri(),
+    },
+    discovery
+  );
+
+  useEffect(() => {
+    if (response?.type === 'success' && response.params?.code) {
+      const authCode = response.params.code;
+      console.log("Received authorization code:", authCode);
+      getAccessToken(authCode);
+    }
+  }, [response]);
+
   const handlePress = async () => {
     try {
-      console.log("Initiating OAuth login...");
-
-      const authUrl = `${AUTH_URI}?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=https://www.googleapis.com/auth/calendar&access_type=offline&prompt=consent`;
-
-      const result = await WebBrowser.openAuthSessionAsync(authUrl, REDIRECT_URI);
-      console.log("WebBrowser result:", result);
-
-      if (result.type === 'success' && result.url) {
-        const authCodeMatch = result.url.match(/code=([^&]*)/);
-        const authCode = authCodeMatch ? authCodeMatch[1] : null;
-
-        if (authCode) {
-          console.log("Received authorization code:", authCode);
-          getAccessToken(authCode);
-        } else {
-          console.error("Authorization code not found in the redirect URL");
-          Alert.alert('Authorization failed: code not found');
-        }
-      } else {
-        console.error("WebBrowser failed to authorize");
-        Alert.alert('Authorization failed');
-      }
+      await promptAsync();
     } catch (error) {
       console.error("Error during OAuth flow:", error);
     }
@@ -57,7 +53,7 @@ export default function CalendarTracker() {
       params.append('code', authCode);
       params.append('client_id', CLIENT_ID);
       params.append('client_secret', CLIENT_SECRET);
-      params.append('redirect_uri', REDIRECT_URI);
+      params.append('redirect_uri', AuthSession.makeRedirectUri());
       params.append('grant_type', 'authorization_code');
 
       const response = await axios.post(TOKEN_URI, params, {
@@ -142,7 +138,6 @@ export default function CalendarTracker() {
     }
   };
 
-
   useFocusEffect(
     useCallback(() => {
       fetchEvents();
@@ -159,11 +154,11 @@ export default function CalendarTracker() {
       />
       {!isGoogleCalendarLinked && (
         <View style={{alignItems: 'center', marginBottom:25}}>
-        <TouchableOpacity style={styles.linkButton} onPress={handlePress}>
-          <Text style={styles.linkButtonText}>Link to Google Calendar</Text>
-        </TouchableOpacity>
-        </View>)
-      }
+          <TouchableOpacity style={styles.linkButton} onPress={handlePress}>
+            <Text style={styles.linkButtonText}>Link to Google Calendar</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 }
