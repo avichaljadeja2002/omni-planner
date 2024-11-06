@@ -130,7 +130,7 @@ export default function CalendarTracker() {
           id: `${event.id}-${event.event_date}-${event.event_time}`,
           title: `${event.title} at ${formatTime(event.event_time)}`,
           done: false,
-          icon: 'wallet-outline',
+          icon: 'calendar-outline',
         }));
 
         setTasks(formattedEvents);

@@ -29,11 +29,12 @@ const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, tas
         <View style={styles.taskItem}>
             <Text style={styles.bullet}>
                 <View style={styles.taskicon}>
-                    <Ionicons name={item.icon} size={30} color={'#000'} />
+                    <Ionicons name={ item.icon} size={30} color={'#000'} />
                 </View>
             </Text>
             <Text style={styles.taskText}>{item.title}</Text>
             <View>
+
                 <BouncyCheckbox
                     fillColor="#65558F"
                     iconStyle={{ borderRadius: 0 }}
@@ -46,7 +47,7 @@ const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, tas
     return (
         <View style={styles.container}>
             <View>
-                <View style={{height:12}}></View>
+                <View style={{ height: 12 }}></View>
                 <Text style={styles.headerText}>{title}</Text>
                 <Text style={styles.sectionHeader}>{header}</Text>
             </View>
@@ -73,14 +74,16 @@ const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, tas
                     arrowColor: '#9b59b6',
                 }}
             />
-
-            <TouchableOpacity style={styles.fixedButton}
-                onPress={() => navigation.navigate(nextPage)}
-                hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
-                <View style={styles.icon}>
-                    <Ionicons name="add-outline" size={40} color={'#eee'} />
-                </View>
-            </TouchableOpacity>
+            {/* TODO: Remove this later */}
+            {title !== 'Home' &&
+                <TouchableOpacity style={styles.fixedButton}
+                    onPress={() => navigation.navigate(nextPage)}
+                    hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
+                    <View style={styles.icon}>
+                        <Ionicons name="add-outline" size={40} color={'#eee'} />
+                    </View>
+                </TouchableOpacity>
+            }
         </View>
     );
 }
