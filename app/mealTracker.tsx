@@ -15,7 +15,7 @@ export default function MealTracker() {
           id: event.id.toString(),
           title: `${event.title} at ${event.event_time}`,
           done: false,
-          icon: 'pizza-outline',
+          icon: 'fast-food-outline',
         }));
         setTasks(events);
       })

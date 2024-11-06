@@ -17,6 +17,9 @@ interface FormProps {
 
 const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, mainPage, onSave }) => {
   const [formData, setFormData] = useState(initialData);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
+  const [currentField, setCurrentField] = useState<string | null>(null);
 
   type TrackerNavigationProp = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
   const navigation = useNavigation<TrackerNavigationProp>();
@@ -28,6 +31,13 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
   const handleDateChange = (name: string, event: any, selectedDate: any) => {
     if (selectedDate) {
       handleChange(name, selectedDate);
+      setShowDatePicker(false);
+    }
+  };
+  const handleTimeChange = (name: string, event: any, selectedTime: any) => {
+    if (selectedTime) {
+      handleChange(name, selectedTime);
+      setShowTimePicker(false);
     }
   };
 
@@ -44,6 +54,14 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
     navigation.navigate(mainPage)
   };
 
+  const showPicker = (type: 'date' | 'time', fieldName: string) => {
+    setCurrentField(fieldName);
+    if (type === 'date') {
+      setShowDatePicker(true);
+    } else {
+      setShowTimePicker(true);
+    }
+  };
 
   return (
     <ScrollView style={styles.container}>
