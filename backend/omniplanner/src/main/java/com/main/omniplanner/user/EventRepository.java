@@ -14,6 +14,6 @@ import java.util.List;
 public interface EventRepository extends JpaRepository<Event, Integer> {
     List<Event> findByUserId(int userId);
 
-    @Query("SELECT f FROM Event f WHERE f.userId = :userId AND (f.repeating = true OR f.eventDate >= :currentTimeMillis)")
+    @Query("SELECT f FROM Event f WHERE f.userId = :userId AND (f.repeating = true OR f.eventDate >= :currentTimeMillis) ORDER BY f.eventDate ASC")
     List<Event> findUpcomingByUserId(@Param("userId") int userId, @Param("currentTimeMillis") Long currentTimeMillis);
 }

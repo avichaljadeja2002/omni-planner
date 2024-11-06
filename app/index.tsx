@@ -12,7 +12,6 @@ export default function TaskScreen() {
   const fetchAllEvents = async () => {
     axios.get(IPAddr + '/get_all_events/1')
       .then(response => {
-        console.log(response.data);
         const events = response.data.map((event: any) => ({
           id: event.id.toString(),
           title: `${event.title} at ${event.eventTime}`,
