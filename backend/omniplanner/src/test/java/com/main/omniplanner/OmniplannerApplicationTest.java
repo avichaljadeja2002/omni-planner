@@ -9,7 +9,7 @@ import org.springframework.test.context.TestPropertySource;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @SpringBootTest
-@TestPropertySource(locations="classpath:application-test.properties")
+@TestPropertySource(properties="spring.datasource.url=jdbc:sqlite:omniplanner.db")
 class OmniplannerApplicationTest {
     @Test
     void contextLoads() {
