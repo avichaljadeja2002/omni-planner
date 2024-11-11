@@ -2,8 +2,8 @@
 ## 1. Prepare for Stakeholder Needs and Requirements Definition
 ### a. Identify the stakeholders who have an interest in the software system throughout its lifecycle.
 #### a. 'a'
-#### b. 
-#### c. 
+#### b. Extreme programming talks about sutomer input which I feel can be directly relate to stakeholder needs; "Visionary customers can be part of quarterly and weekly planning. They can have a budget, a percentage of the available development capacity, to do with as they please."
+#### c. We talked about who could possibly be using the app and threw aroud the idea of making a campus wide survey to get opinions of some stakeholders.
 ### b. Define the stakeholder needs and requirements definition strategy.
 #### a. 'd'
 #### b. In extreme programming, stakeholder needs and requirements are defined using stories. "Early estimation is a key difference between stories and other requirements practices."
