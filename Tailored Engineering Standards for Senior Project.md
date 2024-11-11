@@ -11,17 +11,17 @@
 ### c. Identify and plan for the necessary enabling systems or services needed to support stakeholder needs and requirements definition.
 #### a. 'h'
 #### b. 
-#### c. 
+#### c. We talked to our client to figure out the most optimal serices to use for the time being and we have begun to think about when we need to upscale, what services to swap/migrate to,
 ### d. Obtain or acquire access to the enabling systems or services to be used.
 #### a. 'h'
 #### b. 
-#### c. 
+#### c. This was relatively simple for us as all the services are free except for the AWS server. We just had to make accounts and sign up for API keys and whatever we needed.
 
 ## 2. Define Stakeholder Needs
 ### a. Define context of use within the concept of operations and the preliminary life cycle concepts.
 #### a. 'b' 
 #### b. 
-#### c. 
+#### c. In our project, the context of use is defined during our meetings meetings with out client. We talk about how our system will be used and implemented in real life. This helps us make sure the system will fit into normal operations and works well with other systems in general.
 ### b. Identify stakeholder needs.
 #### a. 'd'
 #### b. Beck says to identify stakeholder needs through stories, "On an XP team, interaction designers work with customers, helping to write and clarify stories."
@@ -39,21 +39,21 @@
 ### a. Define a representative set of scenarios to identify the required capabilities that correspond to anticipated operational and other life cycle concepts.
 #### a. 
 #### b. 
-#### c. 
+#### c. In our project, we writeuser stories based on real-world use cases.
 ### b. Identify the factors affecting interactions between the users and the system.
 #### a. 
 #### b. 
-#### c. 
+#### c. In our project, we have a sort of continuous feedback loop with out client. We will give her the most recent version of the app, then get her feedback, implement that feedback and repeat.
 
 ## 4. Transform Stakeholder Needs Into Stakeholder Requirements
 ### a. Identify the constraints on a system solution.
 #### a. 'c'
 #### b. 
-#### c. 
+#### c. This is a big issue in our project, especially when it comes to the finance integration. We need to follow all guidelines and restraints of storage of personal information, which is quite difficult. We also realize out current database is not going to be able to be upscaled well to a production build.
 ### b. Identify the stakeholder requirements and functions that relate to critical quality characteristics, such as assurance, safety, security, environment, or health.
 #### a. 
 #### b. 
-#### c. 
+#### c. Our project includes a CI pipeline. This pipeline will eventually check safety and security of sensitive data as well as just make sure we are using good coding standards.
 
 # 6.4.4 Architecture Definition Process
 ## 1. Prepare for Architectural Definition
