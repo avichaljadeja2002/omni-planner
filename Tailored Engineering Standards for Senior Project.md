@@ -37,11 +37,11 @@
 
 ## 3. Develop the Operational Concept and Other Life Cycle Concepts
 ### a. Define a representative set of scenarios to identify the required capabilities that correspond to anticipated operational and other life cycle concepts.
-#### a. 
+#### a. 'b'
 #### b. 
 #### c. In our project, we writeuser stories based on real-world use cases.
 ### b. Identify the factors affecting interactions between the users and the system.
-#### a. 
+#### a. 'g'
 #### b. 
 #### c. In our project, we have a sort of continuous feedback loop with out client. We will give her the most recent version of the app, then get her feedback, implement that feedback and repeat.
 
@@ -51,7 +51,7 @@
 #### b. 
 #### c. This is a big issue in our project, especially when it comes to the finance integration. We need to follow all guidelines and restraints of storage of personal information, which is quite difficult. We also realize out current database is not going to be able to be upscaled well to a production build.
 ### b. Identify the stakeholder requirements and functions that relate to critical quality characteristics, such as assurance, safety, security, environment, or health.
-#### a. 
+#### a. 'f'
 #### b. 
 #### c. Our project includes a CI pipeline. This pipeline will eventually check safety and security of sensitive data as well as just make sure we are using good coding standards.
 
