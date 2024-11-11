@@ -10,17 +10,25 @@
 #### c. We are creating stories and using planning poker to provide early estimation.
 ### c. Identify and plan for the necessary enabling systems or services needed to support stakeholder needs and requirements definition.
 #### a. 'h'
-#### b. 
+#### b. I think XP doesn't talk too much about this, but it does talk about something called a 10-minute build which mich be helpful in finding the enabling systems you will need for a full build: "Automatically build the whole system and run all of the tests in ten minutes. A build that takes longer than ten minutes will be used much less often, missing the opportunity for feedback."
 #### c. We talked to our client to figure out the most optimal serices to use for the time being and we have begun to think about when we need to upscale, what services to swap/migrate to,
 ### d. Obtain or acquire access to the enabling systems or services to be used.
 #### a. 'h'
-#### b. 
+#### b. I don't think XP says too much about actually accessing these enabling systems, but it does talk a good but about the usefullness of enabling systems such as CI: "Continuous integration should be complete enough that the eventual first deployment of the system is no big deal."
 #### c. This was relatively simple for us as all the services are free except for the AWS server. We just had to make accounts and sign up for API keys and whatever we needed.
 
 ## 2. Define Stakeholder Needs
 ### a. Define context of use within the concept of operations and the preliminary life cycle concepts.
 #### a. 'b' 
-#### b. 
+#### b. XP says: "Plan work a week at a time. Have a meeting at the beginning of every week. During this meeting:
+
+1. Review progress to date, including how actual progress for the previous week matched expected progress.
+
+2. Have the customers pick a week’s worth of stories to implement this week.
+
+3. Break the stories into tasks. Team members sign up for tasks and estimate them."
+
+#### This is a good way to get all context of use from the customer / client.
 #### c. In our project, the context of use is defined during our meetings meetings with out client. We talk about how our system will be used and implemented in real life. This helps us make sure the system will fit into normal operations and works well with other systems in general.
 ### b. Identify stakeholder needs.
 #### a. 'd'
@@ -32,27 +40,27 @@
 #### c. We talk to out client weekly and get her impression of what we should be doing next to meet her goals.
 ### d. Define the stakeholder needs and rationale.
 #### a. 'd'
-#### b. In a story, rationale is included as well as needs. ![alt text](image.png)
+#### b. In a story, rationale is included as well as needs. !![alt text](image.png)
 #### c. Out stories use a currently... given... when... then... format which includes stakeholder needs and rationale.
 
 ## 3. Develop the Operational Concept and Other Life Cycle Concepts
 ### a. Define a representative set of scenarios to identify the required capabilities that correspond to anticipated operational and other life cycle concepts.
 #### a. 'b'
-#### b. 
-#### c. In our project, we writeuser stories based on real-world use cases.
+#### b. XP says: "Have the customers pick a week’s worth of stories to implement this week." This is a good way to get a small set of representative scenarios to identify required capabilities.
+#### c. In our project, we write user stories based on real-world use cases.
 ### b. Identify the factors affecting interactions between the users and the system.
 #### a. 'g'
-#### b. 
+#### b. XP says: "XP lets you adapt by making frequent, small corrections; moving towards your goal with deployed software at short intervals. You don’t wait a long time to find out if you were going the wrong way." What this means is it becomes very quick to find factors affecting interaction between users and the system because you are getting so much user feedback.
 #### c. In our project, we have a sort of continuous feedback loop with out client. We will give her the most recent version of the app, then get her feedback, implement that feedback and repeat.
 
 ## 4. Transform Stakeholder Needs Into Stakeholder Requirements
 ### a. Identify the constraints on a system solution.
 #### a. 'c'
-#### b. 
+#### b. Beck says; "To improve overall system throughput you have to first find the constraint; make sure it is working full speed; then find ways of either increasing the capacity of the constraint, offloading some of the work onto non-constraints, or eliminating the constraint entirely." This is good because only having to deal with a couple of constraints at a time makes the work much easier and more managable.
 #### c. This is a big issue in our project, especially when it comes to the finance integration. We need to follow all guidelines and restraints of storage of personal information, which is quite difficult. We also realize out current database is not going to be able to be upscaled well to a production build.
 ### b. Identify the stakeholder requirements and functions that relate to critical quality characteristics, such as assurance, safety, security, environment, or health.
 #### a. 'f'
-#### b. 
+#### b. Beck says; "Integrate and test changes after no more than a couple of hours." This ensures stakeholder requiremetns and functions work.
 #### c. Our project includes a CI pipeline. This pipeline will eventually check safety and security of sensitive data as well as just make sure we are using good coding standards.
 
 # 6.4.4 Architecture Definition Process
