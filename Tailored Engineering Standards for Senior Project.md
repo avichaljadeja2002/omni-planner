@@ -115,9 +115,9 @@
 #### b. Beck notes that a “single code base” helps avoid the complexities of multiple versions, maintaining coherence across the team’s design decisions (Ch. 9).
 #### c. Omniplanner’s use of React Native was documented to ensure team alignment on frameworks’ rationale and benefits.
 ### d. Select or develop supporting modeling techniques and tools.
-#### a. (TODO)
-#### b. (TODO)
-#### c. (TODO)
+#### a. 'd'
+#### b. Beck suggests that tests should be used as a modeling technique as "model checking could be used test-first style" (Ch. 7).
+#### c. Omniplanner's tests are organized in classes that model different aspects of the system. For example, the UserTest class models the user of the system.
 
 ## 3. Develop Models and Views of Candidate Architecture
 ### a. Define the software system context and boundaries in terms of interfaces and interactions with external entities.
@@ -131,7 +131,7 @@
 ### c. Allocate concepts, properties, characteristics, behaviors, functions, or constraints that are significant to architecture decisions of the software system to architectural entities.
 #### a. 'e'
 #### b. Beck’s Test-First Programming underscores the importance of tests in ensuring each component functions as intended, promoting “accountability to our experimentation” (Ch. 13).
-#### c. (TODO)
+#### c. Omniplanner's tests are organized in classes that each ensure a component of the system functions as intended. For example, the UserTest class ensures the system's user functions as intended.
 ### d. Select, adapt, or develop models of the candidate architectures of the software system.
 #### a. 'd'
 #### b. Weekly Cycles help teams “write the tests and then get them to run in five days” (Ch. 7), ensuring models are adapted weekly based on continuous feedback.
@@ -139,7 +139,7 @@
 ### e. Compose views from the models in accordance with identified viewpoints to express how the architecture addresses stakeholder concerns and meets stakeholder and system/software requirements.
 #### a. 'd'
 #### b. According to Pair Programming, “working effectively together feels good” and helps clarify shared views (Ch. 7).
-#### c. (TODO)
+#### c. At Omniplanner's weekly meetings, we take our mentor's concerns into account when assigning tasks for the week to programming pairs.
 ### f. Harmonize the architecture models and views with each other.
 #### a. 'd'
 #### b. Continuous Integration emphasizes that “testing is as important as programming” (Ch. 9), keeping models harmonized through frequent testing and alignment.
