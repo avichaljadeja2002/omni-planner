@@ -249,9 +249,9 @@
 #### b. XP states: "The equivalent transformation is daily business in software. A distributed system might use remote procedure calls as its initial communication technology. As experience with the system grows, the team can see how to improve the system by moving to CORBA. A year later the team replaces CORBA with a message queue. At every stage of this process the system is running. Every stage of the process provides the experience to get to the next stage." This really emphisizes the importance of being able to elegantly transition your system between implementations.
 #### c. Initially we had separate add forms for every different type of event, even though the structure is the same. We are now using a genericAddForm for creating events. This form takes in all parameters eg. What to do on save, What fields (including type). This makes it a simpler design as it maintains consistency and ensures reusing of code.
 ### d. Refine or define the interfaces among the software system elements and with external entities.
-#### a. 'g'
-#### b. 
-#### c. 
+#### a. 'f'
+#### b. The Extreme Programming implementation of this task is to gradually refine the interfaces based on feedback from the client. A quote from the book that supports this answer is: "On an XP team, interaction designers work with customers, helping to write and clarify stories. Interaction designers can use all their usual tools during this process. They also analyze actual usage of the system to decide what the system needs to do next. Interaction designers specify a little bit up front and continue to refine the user interface throughout the life of the project." (Page 38)
+#### c. Our project is implementing this task by having weekly meetings where we get feedback from our mentor and we refine the interface based on this feedback in the time between meetings.
 ### e. Establish the design artifacts.
 #### a. 'f'
 #### b. XP states: "Maintain only the code and the tests as permanent artifacts." This is because the only artifact that will always be up to date is the code.
