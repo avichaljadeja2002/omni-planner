@@ -95,7 +95,7 @@
 ### e. Identify and plan for the necessary enabling systems or services needed to support the architecture definition process.
 #### a. 'j'
 #### b. Slack allows a buffer for unexpected needs and enables teams to “meet commitments” by accommodating minor adjustments in the plan (Ch. 7).
-#### c. We used google calendar API to ensure system met expectation of external calendar linking.
+#### c. We used the Google Calendar API to ensure the system met expectations of external calendar linking.
 ### f. Obtain or acquire access to the enabling systems or services to be used.
 #### a. 'j'
 #### b. Beck explains that “everyone on the team should be involved in planning” (Ch. 12), ensuring access and transparency across all resources.
@@ -246,8 +246,8 @@
 #### c. We ensured that one person was taking minutes at every meeting so we had a clear picture of what the client wanted (if we forgot). We then write the stories and get approval from the client. Post that, tasks are assigned (through planning poker). We then go about with design and development.
 ### c. Examine design alternatives and feasibility of implementation.
 #### a. 'e'
-#### b. XP states: "The equivalent transformation is daily business in software. A distributed system might use remote procedure calls as its initial communication technology. As experience with the system grows, the team can see how to improve the system by moving to CORBA. A year later the team replaces CORBA with a message queue. At every stage of this process the system is running. Every stage of the process provides the experience to get to the next stage." This really emphisizes the importance of being able to elegantly transition your system between implementations.
-#### c. Initially we had separate add forms for every different type of event, even though the structure is the same. We are now using a genericAddForm for creating events. This form takes in all parameters eg. What to do on save, What fields (including type). This makes it a simpler design as it maintains consistency and ensures reusing of code.
+#### b. XP states: "The equivalent transformation is daily business in software. A distributed system might use remote procedure calls as its initial communication technology. As experience with the system grows, the team can see how to improve the system by moving to CORBA. A year later the team replaces CORBA with a message queue. At every stage of this process the system is running. Every stage of the process provides the experience to get to the next stage." This really emphasizes the importance of being able to elegantly transition your system between implementations.
+#### c. Initially we had separate add forms for every different type of event, even though the structure is the same. We are now using a genericAddForm for creating events. This form takes in all parameters eg. What to do on save, what fields (including type). This makes it a simpler design as it maintains consistency and ensures reusing of code.
 ### d. Refine or define the interfaces among the software system elements and with external entities.
 #### a. 'f'
 #### b. The Extreme Programming implementation of this task is to gradually refine the interfaces based on feedback from the client. A quote from the book that supports this answer is: "On an XP team, interaction designers work with customers, helping to write and clarify stories. Interaction designers can use all their usual tools during this process. They also analyze actual usage of the system to decide what the system needs to do next. Interaction designers specify a little bit up front and continue to refine the user interface throughout the life of the project." (Page 38)
@@ -260,8 +260,8 @@
 ## 3. Assess Alternatives for Obtaining Software System Elements.
 ### a. Determine technologies required for each element composing the software system.
 #### a. 'g'
-#### b. XP states: "Simplicity is the most intensely intellectual of the XP values. To make a system simple enough to gracefully solve only today’s problem is hard work. Yesterday’s simple solution may be fine today, or it may look simplistic or complex." You must make a judgement call when it comes to determining technologies used in the system.
-#### c. We try to use the simplist solutions possible, for example, using Expo GO is quite simple, but probably not the best solution.
+#### b. XP states: "Simplicity is the most intensely intellectual of the XP values. To make a system simple enough to gracefully solve only today’s problem is hard work. Yesterday’s simple solution may be fine today, or it may look simplistic or complex." You must make a judgment call when it comes to determining technologies used in the system.
+#### c. We try to use the simplest solutions possible, for example, using Expo GO is quite simple, but probably not the best solution.
 ### b. Identify candidate alternatives for the software system elements.
 #### a. 'e'
 #### b. XP talks about design alternatives: "They would sit for hours, talking about each of their ideas in turn. By the time they were tired of talking, they could have implemented all the alternatives twice." It talks about the importance of alternatives but emphasizes to not spend too much time on them.
