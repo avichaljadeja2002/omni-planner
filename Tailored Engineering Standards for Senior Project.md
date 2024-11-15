@@ -77,73 +77,73 @@
 # 6.4.4 Architecture Definition Process
 ## 1. Prepare for Architectural Definition
 ### a. Review pertinent information and identify key drivers of the architecture.
-#### a. 
-#### b. 
-#### c. 
+#### a. 'a'
+#### b. Beck notes, "Plan using units of customer-visible functionality" to ensure features are aligned with the user’s perspective (Extreme Programming Explained, Ch. 7). Understanding these drivers helps the team focus on essential, visible outcomes.
+#### c. In Omniplanner, customer-visible functionalities like calendar integration and intuitive task management were prioritized to ensure development efforts directly benefited users.
 ### b. Identify stakeholder concerns.
-#### a. 
-#### b. 
-#### c. 
+#### a. 'a'
+#### b. XP Implementation: According to Beck, “Defects destroy the trust required for effective software development” (Ch. 13), highlighting that addressing concerns, including reliability and usability, fosters trust.
+#### c. To build trust, Omniplanner’s development focused on stakeholder concerns and tested usability almost weekly.
 ### c. Define the architecture definition roadmap, approach, and strategy.
-#### a. 
-#### b. 
-#### c. 
+#### a. 'h'
+#### b. Weekly cycles allow the team to “plan work a week at a time” and adjust according to progress and feedback (Ch. 7), forming a dynamic roadmap.
+#### c. Omniplanner’s roadmap was built around iterative cycles, with development milestones aligned to weekly cycles for flexibility.
 ### d. Define architecture evaluation criteria based on stakeholder concerns and key requirements.
-#### a. 
-#### b. 
-#### c. 
+#### a. 'g'
+#### b. Beck’s Test-First Programming practice emphasizes that “testing is as important as programming,” which helps in creating criteria based on reliability and defect prevention (Ch. 13).
+#### c. Omniplanner’s architecture was evaluated using criteria such as reliability, with test-driven development ensuring functionality met user expectations.
 ### e. Identify and plan for the necessary enabling systems or services needed to support the architecture definition process.
-#### a. 
-#### b. 
-#### c. 
+#### a. 'j'
+#### b. Slack allows a buffer for unexpected needs and enables teams to “meet commitments” by accommodating minor adjustments in the plan (Ch. 7).
+#### c. We used google calendar API to ensure system met expectation of external calendar linking.
 ### f. Obtain or acquire access to the enabling systems or services to be used.
-#### a. 
-#### b. 
-#### c. 
+#### a. 'j'
+#### b. Beck explains that “everyone on the team should be involved in planning” (Ch. 12), ensuring access and transparency across all resources.
+#### c. Our team ensured continuous access to GitHub Actions for collaborative testing, keeping everyone aligned with the project resources.
 
 ## 2. Develop Architectural Viewpoints
 ### a. Select, adapt, or develop viewpoints and model kinds based on stakeholder concerns.
-#### a. 
-#### b. 
-#### c. 
+#### a. 'b'
+#### b. The emphasis on Stories highlights planning with “customer-visible functionality” (Ch. 7), focusing on user perspectives in architecture.
+#### c. Omniplanner designed interfaces based on user stories, particularly focusing on simplicity and accessibility in scheduling.
 ### b. Establish or identify potential architecture frameworks to be used in developing models and views.
-#### a. 
-#### b. 
-#### c. 
+#### a. 'd'
+#### b. Beck’s Incremental Design approach encourages teams to “build only what you need” to stay adaptable and responsive to requirements as they evolve (Ch. 7).
+#### c. React Native was selected for Omniplanner due to its flexible architecture and cross-platform support, allowing iterative development across iOS and Android.
 ### c. Capture rationale for selection of frameworks, viewpoints, and model kinds.
-#### a. 
-#### b. 
-#### c. 
+#### a. 'd'
+#### b. Beck notes that a “single code base” helps avoid the complexities of multiple versions, maintaining coherence across the team’s design decisions (Ch. 9).
+#### c. Omniplanner’s use of React Native was documented to ensure team alignment on frameworks’ rationale and benefits.
 ### d. Select or develop supporting modeling techniques and tools.
-#### a. 
-#### b. 
-#### c. 
+#### a. (TODO)
+#### b. (TODO)
+#### c. (TODO)
 
 ## 3. Develop Models and Views of Candidate Architecture
 ### a. Define the software system context and boundaries in terms of interfaces and interactions with external entities.
-#### a. 
-#### b. 
-#### c. 
+#### a. 'c'
+#### b. Beck’s Incremental Deployment model advocates for gradual changes, explaining that “big deployments have a high risk” (Ch. 9). Establishing boundaries helps manage incremental updates to interfaces.
+#### c. Omniplanner’s API boundaries were defined to manage secure integration with Google, ensuring incremental improvements without disrupting core functionalities.
 ### b. Identify architectural entities and relationships between entities that address key stakeholder concerns and critical software system requirements.
-#### a. 
-#### b. 
-#### c. 
+#### a. 'f'
+#### b. The Code and Tests principle encourages “maintaining only code and tests as permanent artifacts” (Ch. 9), ensuring that each entity and relationship is tested.
+#### c. Omniplanner’s architecture mapped entities such as task management and calendar syncing, with relationships refined through iterative testing.
 ### c. Allocate concepts, properties, characteristics, behaviors, functions, or constraints that are significant to architecture decisions of the software system to architectural entities.
-#### a. 
-#### b. 
-#### c. 
+#### a. 'e'
+#### b. Beck’s Test-First Programming underscores the importance of tests in ensuring each component functions as intended, promoting “accountability to our experimentation” (Ch. 13).
+#### c. (TODO)
 ### d. Select, adapt, or develop models of the candidate architectures of the software system.
-#### a. 
-#### b. 
-#### c. 
+#### a. 'd'
+#### b. Weekly Cycles help teams “write the tests and then get them to run in five days” (Ch. 7), ensuring models are adapted weekly based on continuous feedback.
+#### c. Omniplanner’s task management and calendar modules were iteratively developed and refined using weekly cycles, enabling responsiveness to feedback.
 ### e. Compose views from the models in accordance with identified viewpoints to express how the architecture addresses stakeholder concerns and meets stakeholder and system/software requirements.
-#### a. 
-#### b. 
-#### c. 
+#### a. 'd'
+#### b. According to Pair Programming, “working effectively together feels good” and helps clarify shared views (Ch. 7).
+#### c. (TODO)
 ### f. Harmonize the architecture models and views with each other.
-#### a. 
-#### b. 
-#### c. 
+#### a. 'd'
+#### b. Continuous Integration emphasizes that “testing is as important as programming” (Ch. 9), keeping models harmonized through frequent testing and alignment.
+#### c. Regular review cycles in Omniplanner ensured coherence across user interfaces and backend components, aligning the full architecture with project standards.
 
 ## 4. Relate the Architecture to Design
 ### a. Identify software system elements that relate to architectural entities and the nature of these relationships.
