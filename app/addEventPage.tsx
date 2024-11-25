@@ -37,9 +37,9 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
 
   const handleTimeChange = (name: string, event: any, selectedTime: any) => {
     if (event.type === 'dismissed') {
-      setShowTimePicker(false); // Dismiss the picker if the user clicks outside or cancels
+      setShowTimePicker(false); 
     } else if (selectedTime) {
-      handleChange(name, selectedTime); // Update the selected time
+      handleChange(name, selectedTime);
     }
   };
 

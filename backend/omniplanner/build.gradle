@@ -82,5 +82,9 @@ task cleanTest {
 defaultTasks 'cleanTest'
 
 bootJar {
-	mainClass = 'com.main.omniplanner.OmniPlannerApplication'
+	mainClass  = 'com.main.omniplanner.OmniplannerApplication'
+}
+
+springBoot {
+	mainClass  = 'com.main.omniplanner.OmniplannerApplication'
 }
