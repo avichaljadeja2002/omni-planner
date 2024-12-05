@@ -8,6 +8,7 @@ import { styles } from './styles';
 import GenericMainPageForm from './mainPageTemplate';
 import { Task } from '@/components/Types';
 import { useFocusEffect } from '@react-navigation/native';
+import { cLog } from './log'
 
 const CLIENT_ID = '982652547040-6pftl2ggc47iplud47t9cend8scdclkd.apps.googleusercontent.com';
 const CLIENT_SECRET = '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';
@@ -82,7 +83,9 @@ export default function CalendarTracker() {
   const linkGoogleCalendar = async (userId: any, token: any) => {
     console.log("Linking Google Calendar for user and fetching events...");
     try {
-      const response = await axios.post(`${IPAddr}/link_calendar`, {
+      const hit = `${IPAddr}/link_calendar`;
+      cLog("Linking Google Calendar with hit:" + hit);
+      const response = await axios.post(hit, {
         userId: userId,
         accessToken: token,
       });
@@ -119,7 +122,9 @@ export default function CalendarTracker() {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get(`${IPAddr}/get_calendar_events/1`);
+      const hit = `${IPAddr}/get_calendar_events/1`;
+      cLog('Fetching calendar events from:' + hit);
+      const response = await axios.get(hit);
 
       if (response.status === 200 && response.data) {
         const { events, googleCalendarLinked } = response.data;

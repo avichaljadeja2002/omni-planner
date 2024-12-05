@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { IPAddr, repeatingData } from './constants';
 import GenericAddPageForm from './addEventPage';
+import { cLog } from './log'
 
 export default function AddFinanceEvents() {
     const initialData = {
@@ -29,7 +30,9 @@ export default function AddFinanceEvents() {
                 repeating: Boolean(saveData.repeating),
                 repeat_timeline: saveData.repeating
               };
-            const response = await axios.post(IPAddr + '/add_finance_events', payload);
+              const hit = IPAddr + '/add_finance_events';
+              cLog('Saving event to:' + hit);
+            const response = await axios.post(hit, payload);
             console.log('Event saved successfully:', response.data);
         } catch (error) {
             console.error('Error saving event:', error);
