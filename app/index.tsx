@@ -2,7 +2,7 @@
 // import axios from 'axios';
 import GenericMainPageForm from './mainPageTemplate';
 import React, { useState, useCallback } from 'react';
-import { IPAddr } from './constants';
+import { formatTime, IPAddr } from './constants';
 import { Task } from '../components/Types';
 import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
@@ -17,7 +17,7 @@ export default function TaskScreen() {
       .then(response => {
         const events = response.data.map((event: any) => ({
           id: event.id.toString(),
-          title: `${event.title} at ${event.eventTime}`,
+          title: `${event.title} at ${event.eventDate}, ${formatTime(event.eventTime)}`,
           done: false,
           icon: getEventIcon(event.event_type), 
         }));

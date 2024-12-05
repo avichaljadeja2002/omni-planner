@@ -1,4 +1,4 @@
-import { IPAddr } from './constants';
+import { IPAddr, formatTime } from './constants';
 import { Task } from '../components/Types';
 import axios from 'axios';
 import GenericMainPageForm from './mainPageTemplate';
@@ -16,7 +16,7 @@ export default function FinanceTracker() {
       .then(response => {
         const events = response.data.map((event: any) => ({
           id: event.id.toString(),
-          title: `${event.title} at ${event.event_time}`,
+          title: `${event.title} at ${event.event_date}, ${formatTime(event.event_time)}`,
           done: false,
           icon: 'wallet-outline',
         }));

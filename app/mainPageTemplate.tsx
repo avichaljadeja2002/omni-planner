@@ -34,7 +34,6 @@ const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, tas
             </Text>
             <Text style={styles.taskText}>{item.title}</Text>
             <View>
-
                 <BouncyCheckbox
                     fillColor="#65558F"
                     iconStyle={{ borderRadius: 0 }}

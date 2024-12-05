@@ -28,7 +28,7 @@ export default function AddMeals() {
       const hit = IPAddr + '/add_meal_events';
       cLog('Saving event to:' + hit);
       const response = await axios.post(hit, payload);
-      console.log('Event saved successfully:', response.data);
+      cLog('Event saved successfully:' + response.data);
     } catch (error) {
       console.error('Error saving event:', error);
     }
