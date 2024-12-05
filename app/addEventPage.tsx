@@ -101,6 +101,7 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
               </TouchableOpacity>
               {showTimePicker && (
                 <DateTimePicker
+                  minuteInterval={15}
                   value={currentField ? formData[currentField] || new Date() : new Date()}
                   mode="time"
                   display="default"
@@ -143,9 +144,6 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
           </View>
         </View>
       ))}
-
-      
-      
 
       <View style={styles.saveCancelContainer}>
         <TouchableOpacity style={styles.saveButton} onPress={handleSave}>

@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Linking from 'expo-linking';
 import axios from 'axios';
-import { IPAddr } from './constants';
+import { IPAddr, formatTime } from './constants';
 import { styles } from './styles';
 import GenericMainPageForm from './mainPageTemplate';
 import { Task } from '@/components/Types';
@@ -24,19 +24,19 @@ export default function CalendarTracker() {
 
   const handlePress = async () => {
     try {
-      console.log("Initiating OAuth login...");
+      cLog("Initiating OAuth login...");
 
       const authUrl = `${AUTH_URI}?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=https://www.googleapis.com/auth/calendar&access_type=offline&prompt=consent`;
 
       const result = await WebBrowser.openAuthSessionAsync(authUrl, REDIRECT_URI);
-      console.log("WebBrowser result:", result);
+      cLog("WebBrowser result:" + result);
 
       if (result.type === 'success' && result.url) {
         const authCodeMatch = result.url.match(/code=([^&]*)/);
         const authCode = authCodeMatch ? authCodeMatch[1] : null;
 
         if (authCode) {
-          console.log("Received authorization code:", authCode);
+          cLog("Received authorization code:" + authCode);
           getAccessToken(authCode);
         } else {
           console.error("Authorization code not found in the redirect URL");
@@ -52,7 +52,7 @@ export default function CalendarTracker() {
   };
 
   const getAccessToken = async (authCode: string) => {
-    console.log("Exchanging authorization code for access token...");
+    cLog("Exchanging authorization code for access token...");
     try {
       const params = new URLSearchParams();
       params.append('code', authCode);
@@ -68,7 +68,7 @@ export default function CalendarTracker() {
       });
 
       if (response.data.access_token) {
-        console.log("Received access token:", response.data.access_token);
+        cLog("Received access token:" + response.data.access_token);
         linkGoogleCalendar(1, response.data.access_token);
       } else {
         console.error("Failed to retrieve access token");
@@ -81,7 +81,7 @@ export default function CalendarTracker() {
   };
 
   const linkGoogleCalendar = async (userId: any, token: any) => {
-    console.log("Linking Google Calendar for user and fetching events...");
+    cLog("Linking Google Calendar for user and fetching events...");
     try {
       const hit = `${IPAddr}/link_calendar`;
       cLog("Linking Google Calendar with hit:" + hit);
@@ -91,7 +91,7 @@ export default function CalendarTracker() {
       });
 
       if (response.status === 200 && response.data.includes("successfully")) {
-        console.log('Google Calendar linked successfully:', response.data);
+        cLog('Google Calendar linked successfully:' + response.data);
         Alert.alert('Google Calendar linked successfully!');
         setIsGoogleCalendarLinked(true);
         fetchEvents();
@@ -102,21 +102,6 @@ export default function CalendarTracker() {
     } catch (error) {
       console.error('Error linking Google Calendar:', error);
       Alert.alert('Error linking Google Calendar');
-    }
-  };
-
-  const formatTime = (time: string) => {
-    const [hours, minutes] = time.split(':');
-    const hour = parseInt(hours);
-
-    if (hour === 0) {
-      return `12:${minutes} AM`;
-    } else if (hour < 12) {
-      return `${hour}:${minutes} AM`;
-    } else if (hour === 12) {
-      return `12:${minutes} PM`;
-    } else {
-      return `${hour - 12}:${minutes} PM`;
     }
   };
 
@@ -132,7 +117,7 @@ export default function CalendarTracker() {
         setIsGoogleCalendarLinked(googleCalendarLinked);
         const formattedEvents = events.map((event: any) => ({
           id: `${event.id}-${event.event_date}-${event.event_time}`,
-          title: `${event.title} at ${formatTime(event.event_time)}`,
+          title: `${event.title} at ${event.event_date}, ${formatTime(event.event_time)}`,
           done: false,
           icon: 'calendar-outline',
         }));
