@@ -6,11 +6,14 @@ import { IPAddr } from './constants';
 import { Task } from '../components/Types';
 import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
+import { cLog } from './log'
 
 export default function TaskScreen() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const fetchAllEvents = async () => {
-    axios.get(IPAddr + '/get_all_events/1')
+    const hit = IPAddr + '/get_all_events/1';
+    cLog('Fetching all events from:' + hit);
+    axios.get(hit)
       .then(response => {
         const events = response.data.map((event: any) => ({
           id: event.id.toString(),

@@ -4,12 +4,15 @@ import { Task } from '../components/Types';
 import axios from 'axios';
 import GenericMainPageForm from './mainPageTemplate';
 import { useFocusEffect } from '@react-navigation/native';
+import { cLog } from './log'
 
 export default function HealthTracker() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const fetchEvents = async () => {
-    axios.get(IPAddr + '/get_health_events/1')
+    const hit = IPAddr + '/get_health_events/1';
+    cLog('Fetching health events from:' + hit);
+    axios.get(hit)
       .then(response => {
         const events = response.data.map((event: any) => ({
           id: event.id.toString(),

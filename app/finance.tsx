@@ -4,12 +4,15 @@ import axios from 'axios';
 import GenericMainPageForm from './mainPageTemplate';
 import React, { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import { cLog } from './log'
 
 export default function FinanceTracker() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const fetchEvents = async () => {
-    axios.get(IPAddr + '/get_finance_events/1')
+    const hit = IPAddr + '/get_finance_events/1';
+    cLog('Fetching finance events from:' + hit);
+    axios.get(hit)
       .then(response => {
         const events = response.data.map((event: any) => ({
           id: event.id.toString(),

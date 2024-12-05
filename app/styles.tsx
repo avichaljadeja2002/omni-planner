@@ -81,7 +81,7 @@ export const styles = StyleSheet.create({
   inLine: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "space-center",
+    alignItems: "center",
     marginBottom: 10,
   },
   inLineDescription: {
@@ -221,7 +221,7 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "500",
     color: "#333",
-    alignItems: "left"
+    alignItems: "flex-start"
   },
   linkButton: {
     backgroundColor: "#4285F4",
