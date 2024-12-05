@@ -47,7 +47,7 @@ export default function TaskScreen() {
   return (
     <GenericMainPageForm
       title='Home'
-      header='Welcome Dr. Hays'
+      header='Welcome Saayeh!'
       nextPage='index'
       tasks={tasks}
     />
