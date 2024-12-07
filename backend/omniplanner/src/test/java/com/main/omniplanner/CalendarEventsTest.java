@@ -2,7 +2,7 @@ package com.main.omniplanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.main.omniplanner.user.Event;
+import com.main.omniplanner.calendar.CalendarEvents;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
