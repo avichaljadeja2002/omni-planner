@@ -54,7 +54,7 @@ public class HealthEventsTest {
     @Test
     public void testGetSetRepeating() {
         healthEvents.setRepeating(true);
-        assertEquals(true, healthEvents.getRepeating());
+        assertEquals(true, healthEvents.isRepeating());
     }
 
     @Test
