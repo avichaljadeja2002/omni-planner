@@ -53,7 +53,7 @@ public class CalendarEventsTest {
     @Test
     public void testGetSetRepeating() {
         calendarEvents.setRepeating(true);
-        assertEquals(true, calendarEvents.getRepeating());
+        assertEquals(true, calendarEvents.isRepeating());
     }
 
     @Test
