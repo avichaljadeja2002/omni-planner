@@ -53,7 +53,7 @@ public class FinanceEventsTest {
     @Test
     public void testGetSetRepeating() {
         financeEvents.setRepeating(true);
-        assertEquals(true, financeEvents.getRepeating());
+        assertEquals(true, financeEvents.isRepeating());
     }
 
     @Test
