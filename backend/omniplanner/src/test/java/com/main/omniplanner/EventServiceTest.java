@@ -46,6 +46,6 @@ public class EventServiceTest {
         assertEquals(true, testEvent.getRepeating());
         assertEquals("Team Meeting", testEvent.getTitle());
         assertEquals("Work", testEvent.getEvent_type());
-        assertEquals(0, testEvent.getUser_id());
+        assertEquals(0, testEvent.getUserId());
     }
 }
