@@ -18,7 +18,7 @@ public class FinanceEventsServiceTest {
 
     @BeforeEach
     void setUp() {
-        financeEventsService = new financeEventsService();
+        financeEventsService = new FinanceEventsService();
     }
 
     @Test
