@@ -2,7 +2,8 @@ package com.main.omniplanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.main.omniplanner.user.Event;
+import com.main.omniplanner.calendar.CalendarEvents;
+import com.main.omniplanner.calendar.CalendarEventsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +17,7 @@ public class CalendarEventsServiceTest {
 
     @BeforeEach
     void setUp() {
-        calendarEventsService = new calendarEventsService();
+        calendarEventsService = new CalendarEventsService();
     }
 
     @Test
