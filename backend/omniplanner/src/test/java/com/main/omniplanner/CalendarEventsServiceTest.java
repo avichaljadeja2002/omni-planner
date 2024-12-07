@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.*;
 
 public class CalendarEventsServiceTest {
 
@@ -40,7 +41,7 @@ public class CalendarEventsServiceTest {
         assertEquals("Team Meeting", testCalendarEvents.getTitle());
         assertEquals(date, testCalendarEvents.getEvent_date());
         assertEquals(time, testCalendarEvents.getEvent_time());
-        assertEquals(true, testCalendarEvents.getRepeating());
+        assertEquals(true, testCalendarEvents.isRepeating());
         assertEquals("weekly", testCalendarEvents.getRepeat_timeline());
         assertEquals("Meeting", testCalendarEvents.getDescription());
     }
