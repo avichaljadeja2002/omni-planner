@@ -40,7 +40,7 @@ public class FinanceEventsServiceTest {
         assertEquals("Team Meeting", testFinanceEvents.getTitle());
         assertEquals(date, testFinanceEvents.getEvent_date());
         assertEquals(time, testFinanceEvents.getEvent_time());
-        assertEquals(true, testFinanceEvents.getRepeating());
+        assertEquals(true, testFinanceEvents.isRepeating());
         assertEquals("weekly", testFinanceEvents.getRepeat_timeline());
         assertEquals(9.99, testFinanceEvents.getMoney());
     }
