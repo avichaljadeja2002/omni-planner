@@ -36,14 +36,14 @@ class UserControllerTest {
     @Test
     void testGetUsersByUserId_Success() {
         int userId = 1;
-        User user1 = new user();
+        User user1 = new User();
         user1.setId(1);
         user1.setName("John Doe");
         user1.setEmail("johndoe@example.com");
         user1.setGoogle_calendar_linked(true);
         user1.setGoogle_calendar_access_token("access_token_123");
 
-        User user2 = new user();
+        User user2 = new User();
         user2.setId(2);
         user2.setName("John Doe");
         user2.setEmail("johndoe@example.com");
@@ -61,14 +61,14 @@ class UserControllerTest {
         assertEquals(1, response.getBody().get(0).getId());
         assertEquals("John Doe", response.getBody().get(0).getName());
         assertEquals("johndoe@example.com", response.getBody().get(0).getEmail());
-        assertEquals(true, response.getBody().get(0).getGoogle_calendar_linked());
+        assertEquals(true, response.getBody().get(0).isGoogle_calendar_linked());
         assertEquals("access_token_123", response.getBody().get(0).getGoogle_calendar_access_token());
        
         // Assert for the second event
         assertEquals(2, response.getBody().get(1).getId());
         assertEquals("John Doe", response.getBody().get(1).getName());
         assertEquals("johndoe@example.com", response.getBody().get(1).getEmail());
-        assertEquals(false, response.getBody().get(1).getGoogle_calendar_linked());
+        assertEquals(false, response.getBody().get(1).isGoogle_calendar_linked());
     }
 
     @Test
@@ -96,15 +96,15 @@ class UserControllerTest {
     @Test
     void testAddUser_Success() {
         // Given
-        User user1 = new user();
-        user1.setId(1);
-        user1.setName("John Doe");
-        user1.setEmail("johndoe@example.com");
-        user1.setGoogle_calendar_linked(true);
-        user1.setGoogle_calendar_access_token("access_token_123");
+        User user = new User();
+        user.setId(1);
+        user.setName("John Doe");
+        user.setEmail("johndoe@example.com");
+        user.setGoogle_calendar_linked(true);
+        user.setGoogle_calendar_access_token("access_token_123");
 
         // When
-        when(userService.getAllUsers()).thenReturn(user);
+        when(userService.saveEvent(user)).thenReturn(user);
 
         // Act
         ResponseEntity<User> response = userController.getUsers();
@@ -114,7 +114,7 @@ class UserControllerTest {
         assertEquals(1, Objects.requireNonNull(response.getBody()).getId());
         assertEquals("John Doe", response.getBody().getName());
         assertEquals("johndoe@example.com", response.getBody().getEmail());
-        assertEquals(true, response.getBody().getGoogle_calendar_linked());
+        assertEquals(true, response.getBody().isGoogle_calendar_linked());
         assertEquals("access_token_123", response.getBody().getGoogle_calendar_access_token());
     }
 }
