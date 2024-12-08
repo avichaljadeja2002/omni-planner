@@ -43,6 +43,8 @@ export default function Layout() {
     <Stack.Navigator
       screenOptions={{
         header: (props) => <CustomTopBar {...props} />,
+        gestureEnabled: false,
+        cardStyle: { backgroundColor: 'white'}
       }}
     >
       <Stack.Screen name="index" component={App} />

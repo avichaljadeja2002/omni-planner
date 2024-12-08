@@ -25,6 +25,30 @@ public class MealEvents {
 
     private Time event_time;
 
+    private boolean repeating;
+
+    private String repeat_timeline;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public void setRepeating(boolean repeating) {
+        this.repeating = repeating;
+    }
+
+    public String getRepeat_timeline() {
+        return repeat_timeline;
+    }
+
+    public void setRepeat_timeline(String repeat_timeline) {
+        this.repeat_timeline = repeat_timeline;
+    }
+
     public int getId() {
         return id;
     }
@@ -64,5 +88,10 @@ public class MealEvents {
     public void setEvent_time(Time event_time) {
         this.event_time = event_time;
     }
+
+    public boolean isRepeating() {
+        return repeating;
+    }
+
 }
 
