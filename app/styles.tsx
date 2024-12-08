@@ -80,13 +80,12 @@ export const styles = StyleSheet.create({
   },
   inLine: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 10,
   },
   inLineDescription: {
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
     height: 'auto',
     marginBottom: 10,
   },
@@ -99,7 +98,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 8,
     backgroundColor: "#fff",
-    justifyContent: 'center', // Centering content vertically
+    textAlign: 'left',
   },
   bigInput: {
     flex: 1,
@@ -110,6 +109,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 8,
     backgroundColor: "#fff",
+    textAlign: 'left', 
   },
   inputContainer: {
     display: "flex",
@@ -126,6 +126,18 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 10,
     backgroundColor: "#fff",
+    textAlign: 'left',
+  },
+  dateTimeText: {
+    textAlign: 'left',
+  },
+  formContainer: {
+    alignItems: 'flex-start',
+  },
+  fieldContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
   },
   centerButton: {
     marginTop: 20,
@@ -238,6 +250,7 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   dateTimeInLine: {
+    flex: 1,
     marginRight: 0,
     width: 'auto',
     alignSelf: "flex-end",
@@ -246,6 +259,6 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderColor: "#ccc",
+    textAlign: 'left',
   }
-
 });

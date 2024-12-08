@@ -25,6 +25,8 @@ public class MealEventsService {
         event1.setUserId(event.getUser_id());
         event1.setDescription("");
         event1.setEvent_type("meal");
+        event1.setRepeating(event.isRepeating());
+        event1.setRepeatTimeline(event.getRepeat_timeline());
         eventService.saveEvent(event1);
         return mealEventsRepository.save(event);
     }
