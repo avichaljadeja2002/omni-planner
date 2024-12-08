@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.*;
 
 public class HealthEventsServiceTest {
 
@@ -17,7 +18,7 @@ public class HealthEventsServiceTest {
 
     @BeforeEach
     void setUp() {
-        healthEventsService = new healthEventsService();
+        healthEventsService = new HealthEventsService();
     }
 
     @Test
@@ -39,7 +40,7 @@ public class HealthEventsServiceTest {
         assertEquals("Team Meeting", testHealthEvents.getTitle());
         assertEquals(date, testHealthEvents.getEvent_date());
         assertEquals(time, testHealthEvents.getEvent_time());
-        assertEquals(true, testHealthEvents.getRepeating());
+        assertEquals(true, testHealthEvents.isRepeating());
         assertEquals("weekly", testHealthEvents.getRepeat_timeline());
     }
 }
