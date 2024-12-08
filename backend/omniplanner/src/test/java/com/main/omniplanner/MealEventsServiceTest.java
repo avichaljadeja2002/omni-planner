@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.*;
 
 public class MealEventsServiceTest {
 
@@ -17,7 +18,7 @@ public class MealEventsServiceTest {
 
     @BeforeEach
     void setUp() {
-        mealEventsService = new mealEventsService();
+        mealEventsService = new MealEventsService();
     }
 
     @Test
