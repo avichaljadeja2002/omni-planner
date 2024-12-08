@@ -9,10 +9,11 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.*;
 
 public class UserServiceTest {
 
-    private UserService userService;
+    private UserService UserService;
     private User user;
 
     @BeforeEach
@@ -33,7 +34,7 @@ public class UserServiceTest {
         assertEquals(0, user.getId());
         assertEquals("John Doe", user.getName());
         assertEquals("johndoe@example.com", user.getEmail());
-        assertEquals(true, user.getGoogle_calendar_linked());
-        assertEquals("access_token_123", user.getGoogle_calendar_linked());
+        assertEquals(true, user.isGoogle_calendar_linked());
+        assertEquals("access_token_123", user.isGoogle_calendar_linked());
     }
 }
