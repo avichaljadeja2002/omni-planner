@@ -13,12 +13,12 @@ import java.util.*;
 
 public class UserServiceTest {
 
-    private UserService UserService;
+    private UserService userService;
     private User user;
 
     @BeforeEach
     void setUp() {
-        userService = new userService();
+        userService = new UserService();
     }
 
     @Test
