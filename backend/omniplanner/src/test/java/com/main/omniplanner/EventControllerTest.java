@@ -53,7 +53,7 @@ class EventControllerTest {
         event2.setEventTime(Time.valueOf("11:00:00"));
         event2.setMoney(2.1f);
         event2.setRepeating(true);
-        event2.setRepeat_timeline("Weekly");
+        event2.setRepeatTimeline("Weekly");
         event2.setId(2);
         event2.setTitle("Event 2");
         event2.setUserId(userId);
