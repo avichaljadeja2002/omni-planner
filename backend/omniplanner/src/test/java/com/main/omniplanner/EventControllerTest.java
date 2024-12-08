@@ -38,26 +38,26 @@ class EventControllerTest {
         int userId = 1;
         Event event1 = new Event();
         event1.setDescription("Meeting 1");
-        event1.setEvent_date(Date.valueOf("2023-10-01"));
-        event1.setEvent_time(Time.valueOf("10:00:00"));
-        event1.setMoney(1.1);
+        event1.setEventDate(Date.valueOf("2023-10-01"));
+        event1.setEventTime(Time.valueOf("10:00:00"));
+        event1.setMoney(1.1f);
         event1.setRepeating(false);
         event1.setId(1);
         event1.setTitle("Event 1");
-        event1.setUser_id(userId);
-        event1.setEventType("Work");
+        event1.setUserId(userId);
+        event1.setEvent_type("Work");
 
         Event event2 = new Event();
         event2.setDescription("Meeting 2");
-        event2.setEvent_date(Date.valueOf("2023-10-02"));
-        event2.setEvent_time(Time.valueOf("11:00:00"));
-        event2.setMoney(2.1);
+        event2.setEventDate(Date.valueOf("2023-10-02"));
+        event2.setEventTime(Time.valueOf("11:00:00"));
+        event2.setMoney(2.1f);
         event2.setRepeating(true);
         event2.setRepeat_timeline("Weekly");
         event2.setId(2);
         event2.setTitle("Event 2");
-        event2.setUser_id(userId);
-        event2.setEventType("Work");
+        event2.setUserId(userId);
+        event2.setEvent_type("Work");
 
         List<Event> events = Arrays.asList(event1, event2);
 
@@ -69,26 +69,26 @@ class EventControllerTest {
 
         // Assert for the first event
         assertEquals("Meeting 1", response.getBody().get(0).getDescription());
-        assertEquals(Date.valueOf("2023-10-01"), response.getBody().get(0).getEvent_date());
-        assertEquals(Time.valueOf("10:00:00"), response.getBody().get(0).getEvent_time());
+        assertEquals(Date.valueOf("2023-10-01"), response.getBody().get(0).getEventDate());
+        assertEquals(Time.valueOf("10:00:00"), response.getBody().get(0).getEventTime());
         assertEquals(1.1, response.getBody().get(0).getMoney());
         assertEquals(false, response.getBody().get(0).getRepeating());
         assertEquals(1, response.getBody().get(0).getId());
         assertEquals("Event 1", response.getBody().get(0).getTitle());
-        assertEquals(userId, response.getBody().get(0).getUser_id());
-        assertEquals("Work", response.getBody().get(0).getUser_id());
+        assertEquals(userId, response.getBody().get(0).getUserId());
+        assertEquals("Work", response.getBody().get(0).getUserId());
        
         // Assert for the second event
         assertEquals("Meeting 2", response.getBody().get(1).getDescription());
-        assertEquals(Date.valueOf("2023-10-02"), response.getBody().get(1).getEvent_date());
-        assertEquals(Time.valueOf("11:00:00"), response.getBody().get(1).getEvent_time());
+        assertEquals(Date.valueOf("2023-10-02"), response.getBody().get(1).getEventDate());
+        assertEquals(Time.valueOf("11:00:00"), response.getBody().get(1).getEventTime());
         assertEquals(2.1, response.getBody().get(1).getMoney());
         assertEquals(true, response.getBody().get(1).getRepeating());
-        assertEquals("Weekly", response.getBody().get(1).getRepeat_timeline());
+        assertEquals("Weekly", response.getBody().get(1).getRepeatTimeline());
         assertEquals(2, response.getBody().get(1).getId());
         assertEquals("Event 2", response.getBody().get(1).getTitle());
-        assertEquals(userId, response.getBody().get(1).getUser_id());
-        assertEquals("Work", response.getBody().get(1).getEventType());
+        assertEquals(userId, response.getBody().get(1).getUserId());
+        assertEquals("Work", response.getBody().get(1).getEvent_type());
     }
 
     @Test
@@ -118,14 +118,14 @@ class EventControllerTest {
         // Given
         Event event = new Event();
         event.setDescription("New Meeting");
-        event.setEvent_date(Date.valueOf("2023-10-10"));
-        event.setEvent_time(Time.valueOf("14:00:00"));
-        event.setMoney(5.1);
-        event2.setRepeating(true);
-        event2.setRepeat_timeline("Weekly");
+        event.setEventDate(Date.valueOf("2023-10-10"));
+        event.setEventTime(Time.valueOf("14:00:00"));
+        event.setMoney(5.1f);
+        event.setRepeating(true);
+        event.setRepeatTimeline("Weekly");
         event.setId(1);
         event.setTitle("New Finance Event");
-        event.setUser_id(1);
+        event.setUserId(1);
         event.setEvent_type("Work");
 
         // When
