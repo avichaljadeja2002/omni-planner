@@ -18,6 +18,7 @@ public class UserServiceTest {
 
     @BeforeEach
     void setUp() {
+        user = new User();
         userService = new UserService();
     }
 
@@ -29,6 +30,7 @@ public class UserServiceTest {
         user.setGoogle_calendar_linked(true);
         user.setGoogle_calendar_access_token("access_token_123");
 
+        // This part is causing problems
         List<User> userList = userService.getAllUsers();
         User testUser = userList.get(0);
         assertEquals(0, user.getId());
