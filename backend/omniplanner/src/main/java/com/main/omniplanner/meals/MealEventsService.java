@@ -17,6 +17,12 @@ public class MealEventsService {
     @Autowired
     private EventService eventService;
 
+    // Constructor injection
+    public MealEventsService(MealEventsRepository mealEventsRepository, EventService eventService) {
+        this.mealEventsRepository = mealEventsRepository;
+        this.eventService = eventService;
+    }
+
     public MealEvents saveEvent(MealEvents event) {
         Event event1 = new Event();
         event1.setEventDate(event.getEvent_date());
