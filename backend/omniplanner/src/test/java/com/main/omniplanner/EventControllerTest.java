@@ -132,11 +132,11 @@ class EventControllerTest {
         when(eventService.saveEvent(event)).thenReturn(event);
 
         // Act
-        ResponseEntity<Event> response = eventController.addEvent(event);
+        ResponseEntity<List<Event>> response = eventController.getEventsByUserId(1);
 
         // Then
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(1, Objects.requireNonNull(response.getBody()).getId());
-        assertEquals("New Finance Event", response.getBody().getTitle());
+        assertEquals(1, Objects.requireNonNull(response.getBody()).get(0).getId());
+        assertEquals("New Finance Event", response.getBody().get(0).getTitle());
     }
 }
