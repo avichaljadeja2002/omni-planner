@@ -16,6 +16,11 @@ public class HealthEventsService {
     @Autowired
     private EventService eventService;
 
+    // Constructor injection
+    public HealthEventsService(HealthEventsRepository healthEventsRepository, EventService eventService) {
+        this.healthEventsRepository = healthEventsRepository;
+        this.eventService = eventService;
+    }
 
     public HealthEvents saveEvent(HealthEvents event) {
         Event event1 = new Event();
