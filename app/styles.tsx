@@ -31,6 +31,12 @@ export const styles = StyleSheet.create({
     color: "#333",
     marginBottom: 10,
   },
+  toggleContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center", 
+    marginBottom: 10, 
+  },  
   subHeaderText: {
     fontSize: 18,
     color: "#9b59b6",
