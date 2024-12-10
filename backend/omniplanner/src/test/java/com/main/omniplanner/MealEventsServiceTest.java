@@ -36,7 +36,7 @@ public class MealEventsServiceTest {
         mealEventsService = new MealEventsService(mealEventsRepository, eventService);
         mealEvents = new MealEvents();
         mealEvents.setId(0);
-        mealEvents.setUser_id(0);
+        mealEvents.setUserId(0);
         mealEvents.setTitle("Team Meeting");
         date = Date.valueOf("2024-11-05");
         mealEvents.setEvent_date(date);
@@ -56,7 +56,7 @@ public class MealEventsServiceTest {
         assertFalse(mealEventsList.isEmpty(), "The list should not be empty");
         MealEvents testMealEvents = mealEventsList.get(0);
         assertEquals(0, testMealEvents.getId());
-        assertEquals(0, testMealEvents.getUser_id());
+        assertEquals(0, testMealEvents.getUserId());
         assertEquals("Team Meeting", testMealEvents.getTitle());
         assertEquals(date, testMealEvents.getEvent_date());
         assertEquals(time, testMealEvents.getEvent_time());
