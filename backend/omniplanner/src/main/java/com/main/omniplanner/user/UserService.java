@@ -12,6 +12,11 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    // Constructor injection
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }

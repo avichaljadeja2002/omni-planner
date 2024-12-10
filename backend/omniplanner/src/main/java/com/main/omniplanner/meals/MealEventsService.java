@@ -17,12 +17,18 @@ public class MealEventsService {
     @Autowired
     private EventService eventService;
 
+    // Constructor injection
+    public MealEventsService(MealEventsRepository mealEventsRepository, EventService eventService) {
+        this.mealEventsRepository = mealEventsRepository;
+        this.eventService = eventService;
+    }
+
     public MealEvents saveEvent(MealEvents event) {
         Event event1 = new Event();
         event1.setEventDate(event.getEvent_date());
         event1.setEventTime(event.getEvent_time());
         event1.setTitle(event.getTitle());
-        event1.setUserId(event.getUser_id());
+        event1.setUserId(event.getUserId());
         event1.setDescription("");
         event1.setEvent_type("meal");
         event1.setRepeating(event.isRepeating());

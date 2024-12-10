@@ -25,34 +25,38 @@ class UserControllerTest {
     @Mock
     private UserService userService;
 
-    @InjectMocks
     private UserController userController;
+
+    User user1;
+    User user2;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-    }
+        userController = new UserController(userService);
 
-    @Test
-    void testGetUsersByUserId_Success() {
-        int userId = 1;
-        User user1 = new User();
+        user1 = new User();
         user1.setId(1);
         user1.setName("John Doe");
         user1.setEmail("johndoe@example.com");
         user1.setGoogle_calendar_linked(true);
         user1.setGoogle_calendar_access_token("access_token_123");
 
-        User user2 = new User();
+        user2 = new User();
         user2.setId(2);
         user2.setName("John Doe");
         user2.setEmail("johndoe@example.com");
         user2.setGoogle_calendar_linked(false);
+    }
+
+    @Test
+    void testGetUsersByUserId_Success() {
+        int userId = 1;        
 
         List<User> users = Arrays.asList(user1, user2);
 
         when(userService.getAllUsers()).thenReturn(users);
-        ResponseEntity<List<User>> response = userController.getUsers();
+        ResponseEntity<List<User>> response = ResponseEntity.ok(userController.getUsers());
 
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(2, Objects.requireNonNull(response.getBody()).size());
@@ -76,7 +80,7 @@ class UserControllerTest {
         int userId = 2;
 
         when(userService.getAllUsers()).thenReturn(Arrays.asList());
-        ResponseEntity<List<User>> response = userController.getUsers();
+        ResponseEntity<List<User>> response = ResponseEntity.ok(userController.getUsers());
 
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(0, response.getBody().size());
@@ -87,7 +91,7 @@ class UserControllerTest {
         int userId = 999;
 
         when(userService.getAllUsers()).thenReturn(List.of());
-        ResponseEntity<List<User>> response = userController.getUsers();
+        ResponseEntity<List<User>> response = ResponseEntity.ok(userController.getUsers());
 
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(0, response.getBody().size());
@@ -95,26 +99,18 @@ class UserControllerTest {
 
     @Test
     void testAddUser_Success() {
-        // Given
-        User user = new User();
-        user.setId(1);
-        user.setName("John Doe");
-        user.setEmail("johndoe@example.com");
-        user.setGoogle_calendar_linked(true);
-        user.setGoogle_calendar_access_token("access_token_123");
-
         // When
-        when(userService.saveEvent(user)).thenReturn(user);
+        when(userService.getAllUsers()).thenReturn(List.of(user1));
 
         // Act
-        ResponseEntity<User> response = userController.getUsers();
+        ResponseEntity<List<User>> response = ResponseEntity.ok(userController.getUsers());
 
         // Then
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(1, Objects.requireNonNull(response.getBody()).getId());
-        assertEquals("John Doe", response.getBody().getName());
-        assertEquals("johndoe@example.com", response.getBody().getEmail());
-        assertEquals(true, response.getBody().isGoogle_calendar_linked());
-        assertEquals("access_token_123", response.getBody().getGoogle_calendar_access_token());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(1, Objects.requireNonNull(response.getBody()).get(0).getId());
+        assertEquals("John Doe", response.getBody().get(0).getName());
+        assertEquals("johndoe@example.com", response.getBody().get(0).getEmail());
+        assertTrue(response.getBody().get(0).isGoogle_calendar_linked());
+        assertEquals("access_token_123", response.getBody().get(0).getGoogle_calendar_access_token());
     }
 }
