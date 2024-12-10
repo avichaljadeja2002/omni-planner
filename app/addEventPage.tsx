@@ -6,6 +6,8 @@ import { styles } from './styles';
 import { RootStackParamList } from '@/components/Types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from 'expo-router';
+import MultiSelect from 'react-native-multiple-select';
+import { cLog } from './log';
 
 interface FormProps {
   title: string;
@@ -37,7 +39,7 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
 
   const handleTimeChange = (name: string, event: any, selectedTime: any) => {
     if (event.type === 'dismissed') {
-      setShowTimePicker(false); 
+      setShowTimePicker(false);
     } else if (selectedTime) {
       handleChange(name, selectedTime);
     }
@@ -64,6 +66,11 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
     }
   };
 
+  const handleIngredientChange = (selectedItems: string[]) => {
+    handleChange('ingredients', selectedItems);
+  };
+
+  cLog(formData)
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.sectionHeader}>{title}</Text>
@@ -81,33 +88,47 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
             )}
             {field.type === 'date' && (
               <View style={styles.dateTimeInLine}>
-              <TouchableOpacity onPress={() => showPicker('date', field.name)}>
-                <Text style={{textAlign: 'right'}}>{formData[field.name] ? formData[field.name].toDateString() : 'Select Date'}</Text>
-              </TouchableOpacity>
-              {showDatePicker && (
-                <DateTimePicker
-                  value={currentField ? formData[currentField] || new Date() : new Date()}
-                  mode="date"
-                  display="default"
-                  onChange={(event, selectedDate) => handleDateChange(currentField!, event, selectedDate)}
-                />
-              )}
+                <TouchableOpacity onPress={() => showPicker('date', field.name)}>
+                  <Text style={{ textAlign: 'right' }}>{formData[field.name] ? formData[field.name].toDateString() : 'Select Date'}</Text>
+                </TouchableOpacity>
+                {showDatePicker && (
+                  <DateTimePicker
+                    value={currentField ? formData[currentField] || new Date() : new Date()}
+                    mode="date"
+                    display="default"
+                    onChange={(event, selectedDate) => handleDateChange(currentField!, event, selectedDate)}
+                  />
+                )}
               </View>
+            )}
+            {field.type === 'multi-select' && (
+              <MultiSelect
+                items={field.options || []}
+                uniqueKey="value"
+                selectedItems={formData[field.name]?.map((item: any) => item.value)}
+                onSelectedItemsChange={(selectedItems) => handleChange(field.name,
+                  field.options?.filter(option => selectedItems.includes(option.value))
+                )}
+                selectText="Select Ingredients"
+                searchInputPlaceholderText="Search Ingredients..."
+                displayKey="label"
+                styleDropdownMenuSubsection={styles.dropdown}
+              />
             )}
             {field.type === 'time' && (
               <View style={styles.dateTimeInLine}>
-              <TouchableOpacity onPress={() => showPicker('time', field.name)}>
-                <Text style={{textAlign: 'right'}}>{formData[field.name] ? formData[field.name].toLocaleTimeString() : 'Select Time'}</Text>
-              </TouchableOpacity>
-              {showTimePicker && (
-                <DateTimePicker
-                  minuteInterval={15}
-                  value={currentField ? formData[currentField] || new Date() : new Date()}
-                  mode="time"
-                  display="default"
-                  onChange={(event, selectedTime) => handleTimeChange(currentField!, event, selectedTime)}
-                />
-              )}
+                <TouchableOpacity onPress={() => showPicker('time', field.name)}>
+                  <Text style={{ textAlign: 'right' }}>{formData[field.name] ? formData[field.name].toLocaleTimeString() : 'Select Time'}</Text>
+                </TouchableOpacity>
+                {showTimePicker && (
+                  <DateTimePicker
+                    minuteInterval={15}
+                    value={currentField ? formData[currentField] || new Date() : new Date()}
+                    mode="time"
+                    display="default"
+                    onChange={(event, selectedTime) => handleTimeChange(currentField!, event, selectedTime)}
+                  />
+                )}
               </View>
             )}
             {field.type === 'dropdown' && (
@@ -122,7 +143,7 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
                 placeholder="Select"
               />
             )}
-            
+
             {field.type === 'textarea' && (
               <TextInput
                 style={styles.bigInput}

@@ -1,5 +1,6 @@
 package com.main.omniplanner.meals;
 
+import com.main.omniplanner.Ingredients.Ingredients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,4 +25,5 @@ public class MealEventsController {
         List<MealEvents> events = mealEventsService.getEventsByUserId(userId);
         return ResponseEntity.ok(events);
     }
+
 }
