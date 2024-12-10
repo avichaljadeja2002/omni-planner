@@ -10,6 +10,11 @@ public class EventService {
     @Autowired
     private EventRepository eventRepository;
 
+    // Constructor injection
+    public EventService(EventRepository eventRepository) {
+        this.eventRepository = eventRepository;
+    }
+
     public List<Event> getEventsByUserId(int userId)
     {
         Long currentTimeMillis = System.currentTimeMillis();

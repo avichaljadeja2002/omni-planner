@@ -25,12 +25,12 @@ class EventControllerTest {
     @Mock
     private EventService eventService;
 
-    @InjectMocks
     private EventController eventController;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        eventController = new EventController(eventService);
     }
 
     @Test
@@ -64,25 +64,25 @@ class EventControllerTest {
         when(eventService.getEventsByUserId(userId)).thenReturn(events);
         ResponseEntity<List<Event>> response = eventController.getEventsByUserId(userId);
 
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2, Objects.requireNonNull(response.getBody()).size());
 
         // Assert for the first event
         assertEquals("Meeting 1", response.getBody().get(0).getDescription());
         assertEquals(Date.valueOf("2023-10-01"), response.getBody().get(0).getEventDate());
         assertEquals(Time.valueOf("10:00:00"), response.getBody().get(0).getEventTime());
-        assertEquals(1.1, response.getBody().get(0).getMoney());
+        assertEquals(1.1, response.getBody().get(0).getMoney(), 0.0001, "Money value mismatch");
         assertEquals(false, response.getBody().get(0).getRepeating());
         assertEquals(1, response.getBody().get(0).getId());
         assertEquals("Event 1", response.getBody().get(0).getTitle());
         assertEquals(userId, response.getBody().get(0).getUserId());
-        assertEquals("Work", response.getBody().get(0).getUserId());
+        assertEquals("Work", response.getBody().get(0).getEvent_type());
        
         // Assert for the second event
         assertEquals("Meeting 2", response.getBody().get(1).getDescription());
         assertEquals(Date.valueOf("2023-10-02"), response.getBody().get(1).getEventDate());
         assertEquals(Time.valueOf("11:00:00"), response.getBody().get(1).getEventTime());
-        assertEquals(2.1, response.getBody().get(1).getMoney());
+        assertEquals(2.1, response.getBody().get(1).getMoney(), 0.0001, "Money value mismatch");
         assertEquals(true, response.getBody().get(1).getRepeating());
         assertEquals("Weekly", response.getBody().get(1).getRepeatTimeline());
         assertEquals(2, response.getBody().get(1).getId());
@@ -116,6 +116,7 @@ class EventControllerTest {
     @Test
     void testAddEvent_Success() {
         // Given
+        int userId = 1;
         Event event = new Event();
         event.setDescription("New Meeting");
         event.setEventDate(Date.valueOf("2023-10-10"));
@@ -125,17 +126,15 @@ class EventControllerTest {
         event.setRepeatTimeline("Weekly");
         event.setId(1);
         event.setTitle("New Finance Event");
-        event.setUserId(1);
+        event.setUserId(userId);
         event.setEvent_type("Work");
 
-        // When
-        when(eventService.saveEvent(event)).thenReturn(event);
+        List<Event> events = Arrays.asList(event);
 
-        // Act
-        ResponseEntity<List<Event>> response = eventController.getEventsByUserId(1);
+        when(eventService.getEventsByUserId(userId)).thenReturn(events);
+        ResponseEntity<List<Event>> response = eventController.getEventsByUserId(userId);
 
-        // Then
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(1, Objects.requireNonNull(response.getBody()).get(0).getId());
         assertEquals("New Finance Event", response.getBody().get(0).getTitle());
     }

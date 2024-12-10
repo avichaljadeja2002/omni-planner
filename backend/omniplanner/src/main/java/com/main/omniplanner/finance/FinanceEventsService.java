@@ -16,6 +16,11 @@ public class FinanceEventsService {
     @Autowired
     private EventService eventService;
 
+    // Constructor injection
+    public FinanceEventsService(FinanceEventsRepository financeEventsRepository, EventService eventService) {
+        this.financeEventsRepository = financeEventsRepository;
+        this.eventService = eventService;
+    }
 
     public FinanceEvents saveEvent(FinanceEvents event) {
         Event event1 = new Event();

@@ -15,6 +15,12 @@ public class CalendarEventsService {
     @Autowired
     private EventService eventService;
 
+    // Constructor injection
+    public CalendarEventsService(CalendarEventsRepository calendarEventsRepository, EventService eventService) {
+        this.calendarEventsRepository = calendarEventsRepository;
+        this.eventService = eventService;
+    }
+
     public CalendarEvents saveEvent(CalendarEvents event) {
         Event event1 = new Event();
         event1.setEventDate(event.getEvent_date());
