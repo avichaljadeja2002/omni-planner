@@ -252,11 +252,12 @@ export const styles = StyleSheet.create({
   dateTimeInLine: {
     flex: 1,
     marginRight: 0,
+    marginLeft: 10,
     width: 'auto',
     alignSelf: "flex-end",
     borderWidth: 1,
     borderRadius: 8,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingVertical: 10,
     borderColor: "#ccc",
     textAlign: 'left',

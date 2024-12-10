@@ -82,7 +82,7 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
             {field.type === 'date' && (
               <View style={styles.dateTimeInLine}>
               <TouchableOpacity onPress={() => showPicker('date', field.name)}>
-                <Text style={{textAlign: 'right'}}>{formData[field.name] ? formData[field.name].toDateString() : 'Select Date'}</Text>
+                <Text style={{textAlign: 'left'}}>{formData[field.name] ? formData[field.name].toDateString() : 'Select Date'}</Text>
               </TouchableOpacity>
               {showDatePicker && (
                 <DateTimePicker
@@ -97,7 +97,7 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
             {field.type === 'time' && (
               <View style={styles.dateTimeInLine}>
               <TouchableOpacity onPress={() => showPicker('time', field.name)}>
-                <Text style={{textAlign: 'right'}}>{formData[field.name] ? formData[field.name].toLocaleTimeString() : 'Select Time'}</Text>
+                <Text style={{textAlign: 'left'}}>{formData[field.name] ? formData[field.name].toLocaleTimeString() : 'Select Time'}</Text>
               </TouchableOpacity>
               {showTimePicker && (
                 <DateTimePicker
