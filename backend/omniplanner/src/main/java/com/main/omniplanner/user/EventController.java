@@ -14,6 +14,10 @@ import java.util.List;
 public class EventController {
     @Autowired
     private EventService eventService;
+
+    public EventController(EventService eventService) {
+        this.eventService = eventService;
+    }
     @GetMapping("/get_all_events/{userId}")
     public ResponseEntity<List<Event>> getEventsByUserId(@PathVariable int userId) {
         List<Event> events = eventService.getEventsByUserId(userId);

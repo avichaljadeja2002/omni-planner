@@ -26,8 +26,8 @@ public class MealEventsTest {
 
     @Test
     public void testGetSetUser_id() {
-        mealEvents.setUser_id(0);
-        assertEquals(0, mealEvents.getUser_id());
+        mealEvents.setUserId(0);
+        assertEquals(0, mealEvents.getUserId());
     }
 
     @Test
@@ -48,5 +48,17 @@ public class MealEventsTest {
         Time time = Time.valueOf("10:30:00");
         mealEvents.setEvent_time(time);
         assertEquals(time, mealEvents.getEvent_time());
+    }
+
+    @Test
+    public void testGetSetRepeat_timeline() {
+        mealEvents.setRepeat_timeline("Weekly");
+        assertEquals("Weekly", mealEvents.getRepeat_timeline());
+    }
+
+    @Test
+    public void testGetSetRepeating() {
+        mealEvents.setRepeating(true);
+        assertTrue(mealEvents.isRepeating());
     }
 }
