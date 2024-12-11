@@ -29,11 +29,11 @@ public class MealEvents {
 
     private String repeat_timeline;
 
-    public int getUserId() {
+    public int getUser_id() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUser_id(int userId) {
         this.userId = userId;
     }
 

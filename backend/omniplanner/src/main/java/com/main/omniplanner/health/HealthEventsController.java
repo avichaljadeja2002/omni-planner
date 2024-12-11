@@ -10,6 +10,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 public class HealthEventsController {
+
     @Autowired
     private HealthEventsService healthEventsService;
 
