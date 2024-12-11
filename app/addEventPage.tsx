@@ -72,7 +72,7 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
 
   cLog(formData)
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView contentContainerStyle={styles.addContainer}>
       <Text style={styles.sectionHeader}>{title}</Text>
       {fields.map((field, index) => (
         <View key={index} style={styles.inputContainer}>
@@ -106,7 +106,7 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
                 items={field.options || []}
                 uniqueKey="value"
                 selectedItems={formData[field.name]?.map((item: any) => item.value)}
-                onSelectedItemsChange={(selectedItems) => {}}
+                onSelectedItemsChange={(selectedItems) => {handleIngredientChange(selectedItems)}}
                 selectText="Select Ingredients"
                 searchInputPlaceholderText="Search Ingredients..."
                 displayKey="label"

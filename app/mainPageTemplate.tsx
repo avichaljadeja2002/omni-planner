@@ -72,9 +72,6 @@ const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, tas
                     />
                 </TouchableOpacity>
             </View>
-
-
-            
             {isCalendarVisible && (
                 <Calendar
                     onDayPress={handleDayPress}
