@@ -3,6 +3,15 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: "column",
+    justifyContent: "space-between",
+    paddingHorizontal: 25,
+    backgroundColor: "#ffffff",
+    paddingTop: 10,
+    marginBottom: 20,
+  },
+  addContainer: {
+    flex: 1,
     paddingHorizontal: 25,
     backgroundColor: "#ffffff",
     paddingTop: 10,
@@ -29,7 +38,6 @@ export const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "#333",
-    marginBottom: 10,
   },
   toggleContainer: {
     flexDirection: "row",
@@ -144,7 +152,7 @@ export const styles = StyleSheet.create({
   },
   flatList: {
     height: 250,
-    flexGrow: 0,
+    flexGrow: 1,
   },
   fixedButton: {
     position: "absolute",
