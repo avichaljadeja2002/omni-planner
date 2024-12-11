@@ -94,7 +94,6 @@ export const styles = StyleSheet.create({
   },
   inLine: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 10,
   },
@@ -235,7 +234,8 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "500",
     color: "#333",
-    alignItems: "flex-start"
+    alignItems: "flex-start",
+    width: '26%',
   },
   linkButton: {
     backgroundColor: "#4285F4",
@@ -252,10 +252,8 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   dateTimeInLine: {
-    marginRight: 0,
     marginLeft: 10,
     width: 'auto',
-    alignSelf: "flex-end",
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 10,

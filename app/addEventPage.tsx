@@ -74,6 +74,7 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
   return (
     <ScrollView contentContainerStyle={styles.addContainer}>
       <Text style={styles.sectionHeader}>{title}</Text>
+      <View>
       {fields.map((field, index) => (
         <View key={index} style={styles.inputContainer}>
           <View style={field.type === 'textarea' ? styles.inLineDescription : styles.inLine}>
@@ -163,7 +164,7 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
           </View>
         </View>
       ))}
-
+      </View>
       <View style={styles.saveCancelContainer}>
         <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
           <Text style={styles.saveText}>Save</Text>
