@@ -33,6 +33,7 @@ public class MealEventsService {
         event1.setEvent_type("meal");
         event1.setRepeating(event.isRepeating());
         event1.setRepeatTimeline(event.getRepeat_timeline());
+        event1.setIngredients(event.getIngredients());
         eventService.saveEvent(event1);
         return mealEventsRepository.save(event);
     }
