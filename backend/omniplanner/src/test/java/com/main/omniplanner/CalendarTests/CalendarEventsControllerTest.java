@@ -65,7 +65,7 @@ class CalendarEventsControllerTest {
         when(calendarEventsService.getEventsByUserId(userId)).thenReturn(events);
         ResponseEntity<CalendarEventResponse> response = calendarEventsController.getEventsByUserId(userId);
         // Then
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2, Objects.requireNonNull(Objects.requireNonNull(response.getBody()).getEvents()).size());
 
         assertEquals("Event 1", response.getBody().getEvents().get(0).getTitle());
@@ -96,7 +96,7 @@ class CalendarEventsControllerTest {
         ResponseEntity<CalendarEventResponse> response = calendarEventsController.getEventsByUserId(userId);
 
         // Then
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().getEvents().size());
     }
 
@@ -110,7 +110,7 @@ class CalendarEventsControllerTest {
         ResponseEntity<CalendarEventResponse> response = calendarEventsController.getEventsByUserId(userId);
 
         // Then
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().getEvents().size());
     }
 
