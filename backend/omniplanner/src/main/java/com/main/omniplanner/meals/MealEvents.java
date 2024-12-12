@@ -29,6 +29,8 @@ public class MealEvents {
 
     private String repeat_timeline;
 
+    private String ingredients;
+
     public int getUserId() {
         return userId;
     }
@@ -83,6 +85,13 @@ public class MealEvents {
 
     public boolean isRepeating() {
         return repeating;
+    }
+
+    public String getIngredients() {
+        return ingredients;
+    }
+    public void setIngredients(String ingredients) {
+        this.ingredients = ingredients;
     }
 
 }

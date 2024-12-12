@@ -15,6 +15,10 @@ public class MealEventsController {
     @Autowired
     private MealEventsService mealEventsService;
 
+    public MealEventsController(MealEventsService mealEventsService) {
+        this.mealEventsService = mealEventsService;
+    }
+
     @PostMapping("/add_meal_events")
     public ResponseEntity<MealEvents> addEvent(@RequestBody MealEvents event) {
         MealEvents savedEvent = mealEventsService.saveEvent(event);
