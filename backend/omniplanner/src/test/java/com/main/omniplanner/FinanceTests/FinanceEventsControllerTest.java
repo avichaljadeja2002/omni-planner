@@ -1,4 +1,4 @@
-package com.main.omniplanner;
+package com.main.omniplanner.FinanceTests;
 
 import com.main.omniplanner.finance.FinanceEvents;
 import com.main.omniplanner.finance.FinanceEventsController;

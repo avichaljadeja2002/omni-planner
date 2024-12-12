@@ -1,4 +1,4 @@
-package com.main.omniplanner;
+package com.main.omniplanner.MealTests;
 
 import com.main.omniplanner.meals.MealEvents;
 import com.main.omniplanner.meals.MealEventsController;

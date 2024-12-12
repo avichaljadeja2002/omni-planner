@@ -1,4 +1,4 @@
-package com.main.omniplanner;
+package com.main.omniplanner.MealTests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -60,5 +60,11 @@ public class MealEventsTest {
     public void testGetSetRepeating() {
         mealEvents.setRepeating(true);
         assertTrue(mealEvents.isRepeating());
+    }
+
+    @Test
+    public void testGetSetIngredients() {
+        mealEvents.setIngredients("Chicken, Rice, Broccoli");
+        assertEquals("Chicken, Rice, Broccoli", mealEvents.getIngredients());
     }
 }
