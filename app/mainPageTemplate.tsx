@@ -52,16 +52,13 @@ const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, tas
                 <Text style={styles.headerText}>{title}</Text>
                 <Text style={styles.sectionHeader}>{header}</Text>
             </View>
-
             <FlatList
                 style={styles.flatList}
                 data={tasks}
                 renderItem={renderTask}
                 keyExtractor={(item) => item.id}
             />
-
             <View style={{ height: 15 }}></View>
-            
             <View style={styles.toggleContainer}>
                 <Text style={styles.calendarHeader}>Events</Text>
                 <TouchableOpacity onPress={() => setIsCalendarVisible(!isCalendarVisible)}>
@@ -89,7 +86,6 @@ const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, tas
                     }}
                 />
             )}
-
             {title !== 'Home' &&
                 <TouchableOpacity
                     style={styles.fixedButton}

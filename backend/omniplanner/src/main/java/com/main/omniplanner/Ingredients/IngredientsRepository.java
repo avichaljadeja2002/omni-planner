@@ -11,5 +11,5 @@ import java.util.List;
 public interface IngredientsRepository extends JpaRepository<Ingredients, Integer> {
 
     @Query("SELECT f FROM Ingredients f WHERE f.userId = :userId")
-    List<Ingredients> findIngrediantsByUserId(@Param("userId") int userId);
+    List<Ingredients> findIngredientsByUserId(@Param("userId") int userId);
 }

@@ -12,12 +12,15 @@ public class IngredientsController {
     @Autowired
     private IngredientsService ingredientsService;
 
+    public IngredientsController(IngredientsService ingredientsService) {
+        this.ingredientsService = ingredientsService;
+    }
+
     @GetMapping("/get_ingredients/{userId}")
     public ResponseEntity<List<Ingredients>> getIngredients(@PathVariable int userId) {
         List<Ingredients> events = ingredientsService.getIngredients(userId);
         return ResponseEntity.ok(events);
     }
-
 
     @PostMapping("/add_ingredients")
     public ResponseEntity<Ingredients> addEvent(@RequestBody Ingredients event) {

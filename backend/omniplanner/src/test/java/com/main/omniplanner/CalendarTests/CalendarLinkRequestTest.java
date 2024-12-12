@@ -1,4 +1,4 @@
-package com.main.omniplanner;
+package com.main.omniplanner.CalendarTests;
 
 import com.main.omniplanner.requests.CalendarLinkRequest;
 import org.junit.jupiter.api.BeforeEach;
