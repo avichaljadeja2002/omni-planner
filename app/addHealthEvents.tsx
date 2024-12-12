@@ -29,6 +29,7 @@ export default function AddHealthEvents() {
         repeating: Boolean(saveData.repeating),
         repeat_timeline: saveData.repeating
       };
+      cLog('Payload:' + JSON.stringify(payload));
       const hit = IPAddr + '/add_health_events';
       cLog('Saving event to:' + hit);
       const response = await axios.post(hit, payload);

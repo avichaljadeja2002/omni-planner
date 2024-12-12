@@ -14,6 +14,10 @@ public class FinanceEventsController {
     @Autowired
     private FinanceEventsService financeEventsService;
 
+    public FinanceEventsController(FinanceEventsService financeEventsService) {
+        this.financeEventsService = financeEventsService;
+    }
+
     @PostMapping("/add_finance_events")
     public ResponseEntity<FinanceEvents> addEvent(@RequestBody FinanceEvents event) {
         FinanceEvents savedEvent = financeEventsService.saveEvent(event);

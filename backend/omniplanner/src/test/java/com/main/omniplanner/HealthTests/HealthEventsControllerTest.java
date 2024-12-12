@@ -1,4 +1,4 @@
-package com.main.omniplanner;
+package com.main.omniplanner.HealthTests;
 
 import com.main.omniplanner.health.HealthEvents;
 import com.main.omniplanner.health.HealthEventsController;
@@ -22,54 +22,50 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 class HealthEventsControllerTest {
-
-    @Mock
-    private UserRepository userRepository;
-
     @Mock
     private HealthEventsService healthEventsService;
 
-    @InjectMocks
     private HealthEventsController healthEventsController;
 
+    private HealthEvents event1;
+    private HealthEvents event2;
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-    }
+        healthEventsController = new HealthEventsController(healthEventsService);
 
-    @Test
-    void testGetEventsByUserId_Success() {
-        //Given data
-        int userId = 1;
-        HealthEvents event1 = new HealthEvents();
+        event1 = new HealthEvents();
         event1.setId(1);
-        event1.setUser_id(userId);
+        event1.setUserId(1);
         event1.setTitle("Event 1");
         event1.setEvent_date(Date.valueOf("2023-10-01"));
         event1.setEvent_time(Time.valueOf("10:00:00"));
         event1.setRepeating(false);
 
-        HealthEvents event2 = new HealthEvents();
+        event2 = new HealthEvents();
         event2.setId(2);
-        event2.setUser_id(userId);
+        event2.setUserId(1);
         event2.setTitle("Event 2");
         event2.setEvent_date(Date.valueOf("2023-10-02"));
         event2.setEvent_time(Time.valueOf("11:00:00"));
         event2.setRepeating(true);
         event2.setRepeat_timeline("Weekly");
+    }
 
+    @Test
+    void testGetEventsByUserId_Success() {
         List<HealthEvents> events = Arrays.asList(event1, event2);
 
         // When
-        when(healthEventsService.getEventsByUserId(userId)).thenReturn(events);
-        ResponseEntity<List<HealthEvents>> response = healthEventsController.getEventsByUserId(userId);
+        when(healthEventsService.getEventsByUserId(1)).thenReturn(events);
+        ResponseEntity<List<HealthEvents>> response = healthEventsController.getEventsByUserId(1);
 
         // Then
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2, Objects.requireNonNull(response.getBody()).size());
         // Assert for the first event
         assertEquals("Event 1", response.getBody().get(0).getTitle());
-        assertEquals(1, response.getBody().get(0).getUser_id());
+        assertEquals(1, response.getBody().get(0).getUserId());
         assertEquals(Date.valueOf("2023-10-01"), response.getBody().get(0).getEvent_date());
         assertEquals(Time.valueOf("10:00:00"), response.getBody().get(0).getEvent_time());
         assertFalse(response.getBody().get(0).isRepeating());
@@ -77,7 +73,7 @@ class HealthEventsControllerTest {
        
         // Assert for the second event
         assertEquals("Event 2", response.getBody().get(1).getTitle());
-        assertEquals(1, response.getBody().get(1).getUser_id());
+        assertEquals(1, response.getBody().get(1).getUserId());
         assertEquals(Date.valueOf("2023-10-02"), response.getBody().get(1).getEvent_date());
         assertEquals(Time.valueOf("11:00:00"), response.getBody().get(1).getEvent_time());
         assertTrue(response.getBody().get(1).isRepeating());
@@ -94,28 +90,20 @@ class HealthEventsControllerTest {
         ResponseEntity<List<HealthEvents>> response = healthEventsController.getEventsByUserId(userId);
 
         // Then
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().size());
     }
     @Test
     void testAddEvent_Success() {
-        // Given
-        HealthEvents event = new HealthEvents();
-        event.setId(1);
-        event.setUser_id(1);
-        event.setTitle("New Health Event");
-        event.setEvent_date(Date.valueOf("2023-10-10"));
-        event.setEvent_time(Time.valueOf("14:00:00"));
-
         // When
-        when(healthEventsService.saveEvent(event)).thenReturn(event);
+        when(healthEventsService.saveEvent(event1)).thenReturn(event1);
 
         // Act
-        ResponseEntity<HealthEvents> response = healthEventsController.addEvent(event);
+        ResponseEntity<HealthEvents> response = healthEventsController.addEvent(event1);
 
         // Then
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(1, Objects.requireNonNull(response.getBody()).getId());
-        assertEquals("New Health Event", response.getBody().getTitle());
+        assertEquals("Event 1", response.getBody().getTitle());
     }
 }
