@@ -1,4 +1,4 @@
-package com.main.omniplanner;
+package com.main.omniplanner.EventTests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -79,4 +79,11 @@ public class EventTest {
         event.setEvent_type("Work");
         assertEquals("Work", event.getEvent_type());
     }
+
+    @Test
+    public void testGetSetIngredients(){
+        event.setIngredients("3,4");
+        assertEquals("3,4", event.getIngredients());
+    }
+
 }

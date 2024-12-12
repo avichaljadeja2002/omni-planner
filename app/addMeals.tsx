@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { IPAddr, repeatingData } from './constants';
 import GenericAddPageForm from './addEventPage';
 import { cLog } from './log'
 
 export default function AddMeals() {
+  const [ingredients, setIngredients] = useState([]);
   const initialData = {
     user_id: 1,
     title: '',
@@ -16,23 +17,24 @@ export default function AddMeals() {
   const fetchIngredients = async () => {
     try {
       const response = await axios.get(IPAddr + '/get_ingredients/13');
-      initialData.ingredients = response.data.map((item: any) => ({
-        label: item.ingredientName, 
-        value: item.id, 
+      const fetchedIngredients = response.data.map((item: any) => ({
+        label: item.ingredientName,
+        value: item.id,
       }));
+      setIngredients(fetchedIngredients); // Update state with fetched ingredients
     } catch (error) {
       console.error('Error fetching ingredients:', error);
     }
   };
 
-  const addIngredient = async (newIngredient: string) => {
-    try {
-      const response = await axios.post(IPAddr + '/add_ingredients', { ingredient: newIngredient });
-      const addedIngredient = response.data.ingredient;
-    } catch (error) {
-      console.error('Error adding new ingredient:', error);
-    }
-  };
+  // const addIngredient = async (newIngredient: string) => {
+  //   try {
+  //     const response = await axios.post(IPAddr + '/add_ingredients', { ingredient: newIngredient });
+  //     const addedIngredient = response.data.ingredient;
+  //   } catch (error) {
+  //     console.error('Error adding new ingredient:', error);
+  //   }
+  // };
 
 
   const fields = [
@@ -40,7 +42,7 @@ export default function AddMeals() {
     { name: 'event_date', label: 'Date', type: 'date' },
     { name: 'event_time', label: 'Time', type: 'time' },
     { name: 'repeat_timeline', label: 'Repeating', type: 'dropdown', options: repeatingData },
-    { name: 'ingredients', label: 'Ingredients', type: 'multi-select' },
+    { name: 'ingredients', label: 'Ingredients', type: 'multi-select'},
   ];
 
   const handleSave = async (saveData: any) => {
@@ -50,6 +52,7 @@ export default function AddMeals() {
         repeating: Boolean(saveData.repeating),
         repeat_timeline: saveData.repeating
       };
+      cLog('Payload:' + JSON.stringify(payload));
       const hit = IPAddr + '/add_meal_events';
       cLog('Saving event to:' + hit);
       const response = await axios.post(hit, payload);
@@ -66,9 +69,9 @@ export default function AddMeals() {
   return (
     <GenericAddPageForm
       title="New Meal"
-      initialData={initialData}
+      initialData={{ ...initialData, ingredients }} // Pass fetched ingredients as initial data
       fields={fields}
-      mainPage='mealTracker'
+      mainPage="mealTracker"
       onSave={handleSave}
     />
   );

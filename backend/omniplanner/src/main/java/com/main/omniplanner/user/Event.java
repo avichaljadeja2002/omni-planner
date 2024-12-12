@@ -45,6 +45,9 @@ public class Event {
     @Column(name = "user_id")
     private int userId;
 
+    @Column(name = "ingredients")
+    private String ingredients;
+
     // Getters and Setters
     public int getId() {
         return id;
@@ -116,5 +119,12 @@ public class Event {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public String getIngredients() {
+        return ingredients;
+    }
+    public void setIngredients(String ingredients) {
+        this.ingredients = ingredients;
     }
 }

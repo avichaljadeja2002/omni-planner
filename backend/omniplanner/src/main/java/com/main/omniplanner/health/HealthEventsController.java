@@ -10,8 +10,13 @@ import java.util.List;
 @RestController
 @CrossOrigin
 public class HealthEventsController {
+
     @Autowired
     private HealthEventsService healthEventsService;
+
+    public HealthEventsController(HealthEventsService healthEventsService) {
+        this.healthEventsService = healthEventsService;
+    }
 
     @PostMapping("/add_health_events")
     public ResponseEntity<HealthEvents> addEvent(@RequestBody HealthEvents event) {
