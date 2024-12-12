@@ -1,4 +1,4 @@
-package com.main.omniplanner;
+package com.main.omniplanner.HealthTests;
 
 import static org.junit.jupiter.api.Assertions.*;
 

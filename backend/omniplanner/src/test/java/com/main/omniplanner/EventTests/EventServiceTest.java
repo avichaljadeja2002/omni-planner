@@ -1,4 +1,4 @@
-package com.main.omniplanner;
+package com.main.omniplanner.EventTests;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;

@@ -1,4 +1,4 @@
-package com.main.omniplanner;
+package com.main.omniplanner.UserTests;
 
 import com.main.omniplanner.user.User;
 import com.main.omniplanner.user.UserController;

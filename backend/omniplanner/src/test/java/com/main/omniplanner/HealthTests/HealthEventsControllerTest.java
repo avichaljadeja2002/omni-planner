@@ -1,4 +1,4 @@
-package com.main.omniplanner;
+package com.main.omniplanner.HealthTests;
 
 import com.main.omniplanner.health.HealthEvents;
 import com.main.omniplanner.health.HealthEventsController;
