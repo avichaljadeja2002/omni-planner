@@ -22,33 +22,34 @@ public class IngredientsControllerTest {
     @Mock
     private IngredientsService ingredientsService;
 
-    @InjectMocks
     private IngredientsController ingredientsController;
+    Ingredients ingredient1;
+    Ingredients ingredient2;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        ingredientsController = new IngredientsController(ingredientsService);
+
+        ingredient1 = new Ingredients();
+        ingredient1.setId(10);
+        ingredient1.setUserId(1);
+        ingredient1.setIngredientName("Onion");
+
+        ingredient2 = new Ingredients();
+        ingredient2.setId(20);
+        ingredient2.setUserId(1);
+        ingredient2.setIngredientName("Pasta");
     }
 
     @Test
     void testGetIngredientsByUserId_Success() {
-        int userId = 1;
-        Ingredients ingredient1 = new Ingredients();
-        ingredient1.setId(10);
-        ingredient1.setUserId(userId);
-        ingredient1.setIngredientName("Onion");
-
-        Ingredients ingredient2 = new Ingredients();
-        ingredient2.setId(20);
-        ingredient2.setUserId(userId);
-        ingredient2.setIngredientName("Pasta");
-
         List<Ingredients> events = Arrays.asList(ingredient1, ingredient2);
 
-        when(ingredientsService.getIngredients(userId)).thenReturn(events);
-        ResponseEntity<List<Ingredients>> response = ingredientsController.getIngredients(userId);
+        when(ingredientsService.getIngredients(1)).thenReturn(events);
+        ResponseEntity<List<Ingredients>> response = ingredientsController.getIngredients(1);
 
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2, Objects.requireNonNull(response.getBody()).size());
 
         // Assert for the first event
@@ -64,34 +65,24 @@ public class IngredientsControllerTest {
 
     @Test
     void testGetEventsByUserId_EmptyList() {
-        int userId = 2;
+        when(ingredientsService.getIngredients(2)).thenReturn(Arrays.asList());
+        ResponseEntity<List<Ingredients>> response = ingredientsController.getIngredients(2);
 
-        when(ingredientsService.getIngredients(userId)).thenReturn(Arrays.asList());
-        ResponseEntity<List<Ingredients>> response = ingredientsController.getIngredients(userId);
-
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().size());
     }
 
     @Test
     void testGetEventsByUserId_NonExistingUser() {
-        int userId = 999;
+        when(ingredientsService.getIngredients(999)).thenReturn(List.of());
+        ResponseEntity<List<Ingredients>> response = ingredientsController.getIngredients(999);
 
-        when(ingredientsService.getIngredients(userId)).thenReturn(List.of());
-        ResponseEntity<List<Ingredients>> response = ingredientsController.getIngredients(userId);
-
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().size());
     }
 
     @Test
     void testAddEvent_Success() {
-        // Given
-        Ingredients ingredient1 = new Ingredients();
-        ingredient1.setId(10);
-        ingredient1.setUserId(1);
-        ingredient1.setIngredientName("Onion");
-
         // When
         when(ingredientsService.saveEvent(ingredient1)).thenReturn(ingredient1);
 

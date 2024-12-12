@@ -26,16 +26,15 @@ class EventControllerTest {
 
     private EventController eventController;
 
+    private Event event1;
+    private Event event2;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         eventController = new EventController(eventService);
-    }
 
-    @Test
-    void testGetEventsByUserId_Success() {
-        int userId = 1;
-        Event event1 = new Event();
+        event1 = new Event();
         event1.setDescription("Meeting 1");
         event1.setEventDate(Date.valueOf("2023-10-01"));
         event1.setEventTime(Time.valueOf("10:00:00"));
@@ -43,10 +42,10 @@ class EventControllerTest {
         event1.setRepeating(false);
         event1.setId(1);
         event1.setTitle("Event 1");
-        event1.setUserId(userId);
+        event1.setUserId(1);
         event1.setEvent_type("Work");
 
-        Event event2 = new Event();
+        event2 = new Event();
         event2.setDescription("Meeting 2");
         event2.setEventDate(Date.valueOf("2023-10-02"));
         event2.setEventTime(Time.valueOf("11:00:00"));
@@ -55,13 +54,16 @@ class EventControllerTest {
         event2.setRepeatTimeline("Weekly");
         event2.setId(2);
         event2.setTitle("Event 2");
-        event2.setUserId(userId);
+        event2.setUserId(1);
         event2.setEvent_type("Work");
+    }
 
+    @Test
+    void testGetEventsByUserId_Success() {
         List<Event> events = Arrays.asList(event1, event2);
 
-        when(eventService.getEventsByUserId(userId)).thenReturn(events);
-        ResponseEntity<List<Event>> response = eventController.getEventsByUserId(userId);
+        when(eventService.getEventsByUserId(1)).thenReturn(events);
+        ResponseEntity<List<Event>> response = eventController.getEventsByUserId(1);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2, Objects.requireNonNull(response.getBody()).size());
@@ -74,7 +76,7 @@ class EventControllerTest {
         assertEquals(false, response.getBody().get(0).getRepeating());
         assertEquals(1, response.getBody().get(0).getId());
         assertEquals("Event 1", response.getBody().get(0).getTitle());
-        assertEquals(userId, response.getBody().get(0).getUserId());
+        assertEquals(1, response.getBody().get(0).getUserId());
         assertEquals("Work", response.getBody().get(0).getEvent_type());
        
         // Assert for the second event
@@ -86,7 +88,7 @@ class EventControllerTest {
         assertEquals("Weekly", response.getBody().get(1).getRepeatTimeline());
         assertEquals(2, response.getBody().get(1).getId());
         assertEquals("Event 2", response.getBody().get(1).getTitle());
-        assertEquals(userId, response.getBody().get(1).getUserId());
+        assertEquals(1, response.getBody().get(1).getUserId());
         assertEquals("Work", response.getBody().get(1).getEvent_type());
     }
 
@@ -97,7 +99,7 @@ class EventControllerTest {
         when(eventService.getEventsByUserId(userId)).thenReturn(Arrays.asList());
         ResponseEntity<List<Event>> response = eventController.getEventsByUserId(userId);
 
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().size());
     }
 
@@ -108,33 +110,19 @@ class EventControllerTest {
         when(eventService.getEventsByUserId(userId)).thenReturn(List.of());
         ResponseEntity<List<Event>> response = eventController.getEventsByUserId(userId);
 
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().size());
     }
 
     @Test
     void testAddEvent_Success() {
-        // Given
-        int userId = 1;
-        Event event = new Event();
-        event.setDescription("New Meeting");
-        event.setEventDate(Date.valueOf("2023-10-10"));
-        event.setEventTime(Time.valueOf("14:00:00"));
-        event.setMoney(5.1f);
-        event.setRepeating(true);
-        event.setRepeatTimeline("Weekly");
-        event.setId(1);
-        event.setTitle("New Finance Event");
-        event.setUserId(userId);
-        event.setEvent_type("Work");
+        List<Event> events = Arrays.asList(event1);
 
-        List<Event> events = Arrays.asList(event);
-
-        when(eventService.getEventsByUserId(userId)).thenReturn(events);
-        ResponseEntity<List<Event>> response = eventController.getEventsByUserId(userId);
+        when(eventService.getEventsByUserId(1)).thenReturn(events);
+        ResponseEntity<List<Event>> response = eventController.getEventsByUserId(1);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(1, Objects.requireNonNull(response.getBody()).get(0).getId());
-        assertEquals("New Finance Event", response.getBody().get(0).getTitle());
+        assertEquals("Event 1", response.getBody().get(0).getTitle());
     }
 }

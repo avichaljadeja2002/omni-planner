@@ -3,7 +3,6 @@ package com.main.omniplanner.IngredientsTests;
 import com.main.omniplanner.Ingredients.Ingredients;
 import com.main.omniplanner.Ingredients.IngredientsRepository;
 import com.main.omniplanner.Ingredients.IngredientsService;
-import com.main.omniplanner.user.EventService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -39,7 +38,7 @@ public class IngredientsServiceTest {
     @Test
     public void testGetSaveEvent() {
         when(ingredientsRepository.save(ingredients)).thenReturn(ingredients);
-        when(ingredientsRepository.findIngrediantsByUserId(eq(0)))
+        when(ingredientsRepository.findIngredientsByUserId(eq(0)))
                 .thenReturn(Collections.singletonList(ingredients));
 
         ingredientsService.saveEvent(ingredients);
@@ -51,6 +50,6 @@ public class IngredientsServiceTest {
         assertEquals("Onion", testIngredient.getIngredientName());
 
         verify(ingredientsRepository).save(ingredients);
-        verify(ingredientsRepository).findIngrediantsByUserId(eq(0));
+        verify(ingredientsRepository).findIngredientsByUserId(eq(0));
     }
 }
