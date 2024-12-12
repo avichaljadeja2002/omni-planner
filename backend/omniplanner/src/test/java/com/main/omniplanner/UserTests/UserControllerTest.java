@@ -51,14 +51,12 @@ class UserControllerTest {
 
     @Test
     void testGetUsersByUserId_Success() {
-        int userId = 1;        
-
         List<User> users = Arrays.asList(user1, user2);
 
         when(userService.getAllUsers()).thenReturn(users);
         ResponseEntity<List<User>> response = ResponseEntity.ok(userController.getUsers());
 
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2, Objects.requireNonNull(response.getBody()).size());
 
         // Assert for the first event
@@ -77,23 +75,19 @@ class UserControllerTest {
 
     @Test
     void testGetUsersByUserId_EmptyList() {
-        int userId = 2;
-
         when(userService.getAllUsers()).thenReturn(Arrays.asList());
         ResponseEntity<List<User>> response = ResponseEntity.ok(userController.getUsers());
 
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().size());
     }
 
     @Test
     void testGetUsersByUserId_NonExistingUser() {
-        int userId = 999;
-
         when(userService.getAllUsers()).thenReturn(List.of());
         ResponseEntity<List<User>> response = ResponseEntity.ok(userController.getUsers());
 
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().size());
     }
 

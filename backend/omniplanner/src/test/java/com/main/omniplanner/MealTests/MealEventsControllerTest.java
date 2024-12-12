@@ -25,37 +25,36 @@ class MealEventsControllerTest {
     @Mock
     private MealEventsService mealEventsService;
 
-    @InjectMocks
     private MealEventsController mealEventsController;
-
+    MealEvents event1;
+    MealEvents event2;
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-    }
-
-    @Test
-    void testGetEventsByUserId_Success() {
-        int userId = 1;
-        MealEvents event1 = new MealEvents();
+        mealEventsController = new MealEventsController(mealEventsService);
+        event1 = new MealEvents();
         event1.setId(1);
-        event1.setUser_id(userId);
+        event1.setUser_id(1);
         event1.setTitle("Event 1");
         event1.setEvent_date(Date.valueOf("2023-10-01"));
         event1.setEvent_time(Time.valueOf("10:00:00"));
 
-        MealEvents event2 = new MealEvents();
+        event2 = new MealEvents();
         event2.setId(2);
-        event2.setUser_id(userId);
+        event2.setUser_id(1);
         event2.setTitle("Event 2");
         event2.setEvent_date(Date.valueOf("2023-10-02"));
         event2.setEvent_time(Time.valueOf("11:00:00"));
+    }
 
+    @Test
+    void testGetEventsByUserId_Success() {
         List<MealEvents> events = Arrays.asList(event1, event2);
 
-        when(mealEventsService.getEventsByUserId(userId)).thenReturn(events);
-        ResponseEntity<List<MealEvents>> response = mealEventsController.getEventsByUserId(userId);
+        when(mealEventsService.getEventsByUserId(1)).thenReturn(events);
+        ResponseEntity<List<MealEvents>> response = mealEventsController.getEventsByUserId(1);
 
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2, Objects.requireNonNull(response.getBody()).size());
         // Assert for the first event
         assertEquals("Event 1", response.getBody().get(0).getTitle());
@@ -72,44 +71,32 @@ class MealEventsControllerTest {
 
     @Test
     void testGetEventsByUserId_EmptyList() {
-        int userId = 2;
+        when(mealEventsService.getEventsByUserId(2)).thenReturn(Arrays.asList());
+        ResponseEntity<List<MealEvents>> response = mealEventsController.getEventsByUserId(2);
 
-        when(mealEventsService.getEventsByUserId(userId)).thenReturn(Arrays.asList());
-        ResponseEntity<List<MealEvents>> response = mealEventsController.getEventsByUserId(userId);
-
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().size());
     }
 
     @Test
     void testGetEventsByUserId_NonExistingUser() {
-        int userId = 999;
+        when(mealEventsService.getEventsByUserId(999)).thenReturn(Arrays.asList());
+        ResponseEntity<List<MealEvents>> response = mealEventsController.getEventsByUserId(999);
 
-        when(mealEventsService.getEventsByUserId(userId)).thenReturn(Arrays.asList());
-        ResponseEntity<List<MealEvents>> response = mealEventsController.getEventsByUserId(userId);
-
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().size());
     }
     @Test
     void testAddEvent_Success() {
-        // Given
-        MealEvents event = new MealEvents();
-        event.setId(1);
-        event.setUser_id(1);
-        event.setTitle("New Meal Event");
-        event.setEvent_date(Date.valueOf("2023-10-10"));
-        event.setEvent_time(Time.valueOf("14:00:00"));
-
         // When
-        when(mealEventsService.saveEvent(event)).thenReturn(event);
+        when(mealEventsService.saveEvent(event1)).thenReturn(event1);
 
         // Act
-        ResponseEntity<MealEvents> response = mealEventsController.addEvent(event);
+        ResponseEntity<MealEvents> response = mealEventsController.addEvent(event1);
 
         // Then
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(1, Objects.requireNonNull(response.getBody()).getId());
-        assertEquals("New Meal Event", response.getBody().getTitle());
+        assertEquals("Event 1", response.getBody().getTitle());
     }
 }

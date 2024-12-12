@@ -1,6 +1,6 @@
 // export const IPAddr = "http://34.204.83.156:8080" // For AWS
 export const IPAddr = "http://127.0.0.1:8080" // For local testing on laptop
-export const logging = true;
+export const logging = false;
 
 export const repeatingData = [
     { label: 'Daily', value: 1 },
