@@ -25,9 +25,9 @@ public class CalendarEventsTest {
     }
 
     @Test
-    public void testGetSetUser_id() {
-        calendarEvents.setUser_id(0);
-        assertEquals(0, calendarEvents.getUser_id());
+    public void testGetsetUserId() {
+        calendarEvents.setUserId(0);
+        assertEquals(0, calendarEvents.getUserId());
     }
 
     @Test

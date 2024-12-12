@@ -25,9 +25,9 @@ public class FinanceEventsTest {
     }
 
     @Test
-    public void testGetSetUser_id() {
-        financeEvents.setUser_id(0);
-        assertEquals(0, financeEvents.getUser_id());
+    public void testGetsetUserId() {
+        financeEvents.setUserId(0);
+        assertEquals(0, financeEvents.getUserId());
     }
 
     @Test

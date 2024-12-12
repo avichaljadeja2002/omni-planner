@@ -37,7 +37,7 @@ class FinanceEventsControllerTest {
 
         event1 = new FinanceEvents();
         event1.setId(1);
-        event1.setUser_id(1);
+        event1.setUserId(1);
         event1.setTitle("Event 1");
         event1.setEvent_date(Date.valueOf("2023-10-01"));
         event1.setEvent_time(Time.valueOf("10:00:00"));
@@ -46,7 +46,7 @@ class FinanceEventsControllerTest {
 
         event2 = new FinanceEvents();
         event2.setId(2);
-        event2.setUser_id(1);
+        event2.setUserId(1);
         event2.setTitle("Event 2");
         event2.setEvent_date(Date.valueOf("2023-10-02"));
         event2.setEvent_time(Time.valueOf("11:00:00"));
@@ -67,7 +67,7 @@ class FinanceEventsControllerTest {
        
         // Assert for the first event
         assertEquals("Event 1", response.getBody().get(0).getTitle());
-        assertEquals(1, response.getBody().get(0).getUser_id());
+        assertEquals(1, response.getBody().get(0).getUserId());
         assertEquals(Date.valueOf("2023-10-01"), response.getBody().get(0).getEvent_date());
         assertEquals(Time.valueOf("10:00:00"), response.getBody().get(0).getEvent_time());
         assertFalse(response.getBody().get(0).isRepeating());
@@ -76,7 +76,7 @@ class FinanceEventsControllerTest {
        
         // Assert for the second event
         assertEquals("Event 2", response.getBody().get(1).getTitle());
-        assertEquals(1, response.getBody().get(1).getUser_id());
+        assertEquals(1, response.getBody().get(1).getUserId());
         assertEquals(Date.valueOf("2023-10-02"), response.getBody().get(1).getEvent_date());
         assertEquals(Time.valueOf("11:00:00"), response.getBody().get(1).getEvent_time());
         assertTrue(response.getBody().get(1).isRepeating());

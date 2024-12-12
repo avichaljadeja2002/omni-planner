@@ -36,7 +36,7 @@ public class HealthEventsServiceTest {
         healthEventsService = new HealthEventsService(healthEventsRepository, eventService);
         healthEvents = new HealthEvents();
         healthEvents.setId(0);
-        healthEvents.setUser_id(0);
+        healthEvents.setUserId(0);
         healthEvents.setTitle("Team Meeting");
         date = Date.valueOf("2024-11-05");
         healthEvents.setEvent_date(date);
@@ -57,7 +57,7 @@ public class HealthEventsServiceTest {
         assertFalse(healthEventsList.isEmpty(), "The list should not be empty");
         HealthEvents testHealthEvents = healthEventsList.get(0);
         assertEquals(0, testHealthEvents.getId());
-        assertEquals(0, testHealthEvents.getUser_id());
+        assertEquals(0, testHealthEvents.getUserId());
         assertEquals("Team Meeting", testHealthEvents.getTitle());
         assertEquals(date, testHealthEvents.getEvent_date());
         assertEquals(time, testHealthEvents.getEvent_time());

@@ -36,7 +36,7 @@ public class CalendarEventsServiceTest {
         calendarEventsService = new CalendarEventsService(calendarEventsRepository, eventService);
         calendarEvents = new CalendarEvents();
         calendarEvents.setId(0);
-        calendarEvents.setUser_id(0);
+        calendarEvents.setUserId(0);
         calendarEvents.setTitle("Team Meeting");
         date = Date.valueOf("2024-11-05");
         calendarEvents.setEvent_date(date);
@@ -57,7 +57,7 @@ public class CalendarEventsServiceTest {
         assertFalse(calendarEventsList.isEmpty(), "The list should not be empty");
         CalendarEvents testCalendarEvents = calendarEventsList.get(0);
         assertEquals(0, testCalendarEvents.getId());
-        assertEquals(0, testCalendarEvents.getUser_id());
+        assertEquals(0, testCalendarEvents.getUserId());
         assertEquals("Team Meeting", testCalendarEvents.getTitle());
         assertEquals(date, testCalendarEvents.getEvent_date());
         assertEquals(time, testCalendarEvents.getEvent_time());

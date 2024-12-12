@@ -26,9 +26,9 @@ public class HealthEventsTest {
     }
 
     @Test
-    public void testGetSetUser_id() {
-        healthEvents.setUser_id(0);
-        assertEquals(0, healthEvents.getUser_id());
+    public void testGetsetUserId() {
+        healthEvents.setUserId(0);
+        assertEquals(0, healthEvents.getUserId());
     }
 
     @Test

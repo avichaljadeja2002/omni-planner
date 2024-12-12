@@ -43,7 +43,7 @@ class CalendarEventsControllerTest {
         int userId = 1;
         CalendarEvents event1 = new CalendarEvents();
         event1.setId(1);
-        event1.setUser_id(userId);
+        event1.setUserId(userId);
         event1.setTitle("Event 1");
         event1.setEvent_date(Date.valueOf("2023-10-01"));
         event1.setEvent_time(Time.valueOf("10:00:00"));
@@ -52,7 +52,7 @@ class CalendarEventsControllerTest {
 
         CalendarEvents event2 = new CalendarEvents();
         event2.setId(2);
-        event2.setUser_id(userId);
+        event2.setUserId(userId);
         event2.setTitle("Event 2");
         event2.setEvent_date(Date.valueOf("2023-10-02"));
         event2.setEvent_time(Time.valueOf("11:00:00"));
@@ -70,7 +70,7 @@ class CalendarEventsControllerTest {
 
         assertEquals("Event 1", response.getBody().getEvents().get(0).getTitle());
         assertEquals("Description 1", response.getBody().getEvents().get(0).getDescription());
-        assertEquals(1, response.getBody().getEvents().get(0).getUser_id());
+        assertEquals(1, response.getBody().getEvents().get(0).getUserId());
         System.out.println(response.getBody().getEvents().get(0).getEvent_date());
         System.out.println(response.getBody().getEvents().get(0).getEvent_time());
         System.out.println(response.getBody().getEvents().get(0).isRepeating());
@@ -78,7 +78,7 @@ class CalendarEventsControllerTest {
 
         assertEquals("Event 2", response.getBody().getEvents().get(1).getTitle());
         assertEquals("Description 2", response.getBody().getEvents().get(1).getDescription());
-        assertEquals(1, response.getBody().getEvents().get(1).getUser_id());
+        assertEquals(1, response.getBody().getEvents().get(1).getUserId());
         System.out.println(response.getBody().getEvents().get(1).getEvent_date());
         System.out.println(response.getBody().getEvents().get(1).getEvent_time());
         System.out.println(response.getBody().getEvents().get(1).isRepeating());
@@ -130,7 +130,7 @@ class CalendarEventsControllerTest {
         // Given
         CalendarEvents event = new CalendarEvents();
         event.setId(1);
-        event.setUser_id(1);
+        event.setUserId(1);
         event.setTitle("New Event");
         event.setEvent_date(Date.valueOf("2023-10-10"));
         event.setEvent_time(Time.valueOf("14:00:00"));

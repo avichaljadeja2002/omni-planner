@@ -21,7 +21,7 @@ public class IngredientsTest {
     }
 
     @Test
-    public void testGetSetUser_id() {
+    public void testGetsetUserId() {
         ingredients.setUserId(0);
         assertEquals(0, ingredients.getUserId());
     }

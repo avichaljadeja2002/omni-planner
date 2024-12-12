@@ -36,7 +36,7 @@ public class FinanceEventsServiceTest {
         financeEventsService = new FinanceEventsService(financeEventsRepository, eventService);
         financeEvents = new FinanceEvents();
         financeEvents.setId(0);
-        financeEvents.setUser_id(0);
+        financeEvents.setUserId(0);
         financeEvents.setTitle("Team Meeting");
         date = Date.valueOf("2024-11-05");
         financeEvents.setEvent_date(date);
@@ -58,7 +58,7 @@ public class FinanceEventsServiceTest {
         assertFalse(financeEventsList.isEmpty(), "The list should not be empty");
         FinanceEvents testFinanceEvents = financeEventsList.get(0);
         assertEquals(0, testFinanceEvents.getId());
-        assertEquals(0, testFinanceEvents.getUser_id());
+        assertEquals(0, testFinanceEvents.getUserId());
         assertEquals("Team Meeting", testFinanceEvents.getTitle());
         assertEquals(date, testFinanceEvents.getEvent_date());
         assertEquals(time, testFinanceEvents.getEvent_time());

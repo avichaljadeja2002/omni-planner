@@ -25,9 +25,9 @@ public class MealEventsTest {
     }
 
     @Test
-    public void testGetSetUser_id() {
-        mealEvents.setUser_id(0);
-        assertEquals(0, mealEvents.getUser_id());
+    public void testGetsetUserId() {
+        mealEvents.setUserId(0);
+        assertEquals(0, mealEvents.getUserId());
     }
 
     @Test
