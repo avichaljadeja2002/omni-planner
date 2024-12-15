@@ -49,7 +49,7 @@
     },
     "plugins": [
       "expo-router",
-      "react-native-safe-area-context"
+      ["react-native-safe-area-context"]
     ],
     "experiments": {
       "typedRoutes": true
