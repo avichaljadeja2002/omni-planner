@@ -48,8 +48,7 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router",
-      ["react-native-safe-area-context"]
+      "expo-router"
     ],
     "experiments": {
       "typedRoutes": true
