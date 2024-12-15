@@ -1,37 +1,30 @@
 {
   "expo": {
+    "newArchEnabled": true,
     "name": "omni-planner",
     "slug": "omni-planner",
-    "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "bundleIdentifier": "com.omniplanner",
-      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
     "android": {
-      "package": "com.omniplanner",
-      "versionCode": 1,
-      "icon": "./assets/images/icon.png"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "updates": {
-      "enabled": true,
-      "checkAutomatically": "ON_ERROR_RECOVERY",
-      "fallbackToCacheTimeout": 0
-    },
-    "notification": {
-      "icon": "./assets/images/icon.png",
-      "color": "#000000"
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.avichaljadeja02.omniplanner"
     },
     "web": {
       "bundler": "metro",
