@@ -21,6 +21,9 @@
       "versionCode": 1,
       "icon": "./assets/images/icon.png"
     },
+    "config":{
+      "apiKey": "AIzaSyB0hBnEFxRwAlfNraiJj7g9OCwE8VQ71uI"
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
