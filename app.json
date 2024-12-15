@@ -2,6 +2,7 @@
   "expo": {
     "name": "omni-planner",
     "slug": "omni-planner",
+    "scheme": "omni-planner",
     "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
