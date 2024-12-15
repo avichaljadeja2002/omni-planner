@@ -4,6 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import App from './index';
 import HealthTracker from './healthTracker';
 import MealTracking from './mealTracker';
+import Notes from './notes';
 import Finance from './finance';
 import CalendarEvents from './calendarEvents';
 import { createStackNavigator, StackHeaderProps } from '@react-navigation/stack';
@@ -34,6 +35,9 @@ const CustomTopBar = ({ navigation }: StackHeaderProps) => {
       <TouchableOpacity onPress={() => navigation.navigate('calendarEvents')}>
         <Ionicons name="calendar-outline" size={28} color="black" />
       </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('notes')}>
+        <Ionicons name="pencil-outline" size={28} color="black" />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -50,6 +54,7 @@ export default function Layout() {
       <Stack.Screen name="index" component={App} />
       <Stack.Screen name="healthTracker" component={HealthTracker} />
       <Stack.Screen name="mealTracker" component={MealTracking} />
+      <Stack.Screen name="notes" component={Notes} />
       <Stack.Screen name="finance" component={Finance} />
       <Stack.Screen name="addFinanceEvents" component={AddFinanceEvents} />
       <Stack.Screen name="calendarEvents" component={CalendarEvents} />
