@@ -70,7 +70,6 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
     handleChange('ingredients', selectedItems);
   };
 
-  cLog(formData)
   return (
     <ScrollView contentContainerStyle={styles.addContainer}>
       <Text style={styles.sectionHeader}>{title}</Text>
