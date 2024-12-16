@@ -19,7 +19,7 @@ export default function FinanceTracker() {
           title: `${event.title} at ${event.event_date}, ${formatTime(event.event_time)}`,
           done: false,
           icon: 'wallet-outline',
-        }));
+        })).slice(0,10);;
         setTasks(events);
       })
       .catch(error => console.error('Error fetching events:', error));
