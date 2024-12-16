@@ -50,7 +50,8 @@ export default function AddMeals() {
       const payload = {
         ...saveData,
         repeating: Boolean(saveData.repeating),
-        repeat_timeline: saveData.repeating
+        repeat_timeline: saveData.repeating,
+        ingredients: saveData.ingredients.join(','),
       };
       cLog('Payload:' + JSON.stringify(payload));
       const hit = IPAddr + '/add_meal_events';

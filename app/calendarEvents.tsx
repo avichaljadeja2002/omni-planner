@@ -10,9 +10,9 @@ import { Task } from '@/components/Types';
 import { useFocusEffect } from '@react-navigation/native';
 import { cLog } from './log'
 
-const CLIENT_ID = '982652547040-6pftl2ggc47iplud47t9cend8scdclkd.apps.googleusercontent.com';
-const CLIENT_SECRET = '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';
-const REDIRECT_URI = Linking.createURL('/');
+const CLIENT_ID = process.env.EXPO_PUBLIC_CLIENT_ID || '';
+const CLIENT_SECRET = process.env.EXPO_PUBLIC_CLIENT_SECRET || '';
+const REDIRECT_URI = Linking.createURL('/') || '';
 const TOKEN_URI = 'https://oauth2.googleapis.com/token';
 const AUTH_URI = 'https://accounts.google.com/o/oauth2/v2/auth';
 
