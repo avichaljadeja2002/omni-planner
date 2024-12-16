@@ -3,7 +3,7 @@
     "newArchEnabled": true,
     "name": "omni-planner",
     "slug": "omni-planner",
-    "scheme": "omni-planner",
+    "scheme": "myapp",
     "platforms": [
       "ios",
       "android"
@@ -11,7 +11,6 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "runtimeVersion": {
       "policy": "sdkVersion"
@@ -22,7 +21,8 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.omniplanner"
     },
     "android": {
       "package": "com.omniplanner",
@@ -61,6 +61,7 @@
       "eas": {
         "projectId": "5e38bdbb-79f1-4876-badc-e3b7a219d88b"
       }
-    }
+    },
+    "owner": "omni-planner"
   }
 }
