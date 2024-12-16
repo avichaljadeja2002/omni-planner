@@ -5,9 +5,8 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { styles } from './styles';
 import { RootStackParamList } from '@/components/Types';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import MultiSelect from 'react-native-multiple-select';
-import { cLog } from './log';
 
 interface FormProps {
   title: string;
