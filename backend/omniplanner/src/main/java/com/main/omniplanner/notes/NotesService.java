@@ -23,14 +23,15 @@ public class NotesService {
         this.eventService = eventService;
     }
 
-    public Notes saveEvent(Notes event) {
+    public Notes saveNote(Notes event) {
         Event event1 = new Event();
         event1.setText(event.getText());
         event1.setUserId(event.getUserId());
+        eventService.saveEvent(event1);
         return notesRepository.save(event);
     }
 
-    public List<Notes> getEventsByUserId(int userId) {
+    public List<Notes> getNotesByUserId(int userId) {
         return notesRepository.findByUserId(userId);
     }
 
