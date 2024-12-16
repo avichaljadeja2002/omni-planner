@@ -5,9 +5,8 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { styles } from './styles';
 import { RootStackParamList } from '@/components/Types';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import MultiSelect from 'react-native-multiple-select';
-import { cLog } from './log';
 
 interface FormProps {
   title: string;
@@ -52,7 +51,6 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
       event_time: formData.event_time?.toTimeString().split(' ')[0],
       repeating: formData.repeat_timeline && formData.repeat_timeline,
       repeat_timeline: formData.repeat_timeline,
-      ingredients: formData.ingredients.join(','),
     };
     onSave(formattedData);
     navigation.navigate(mainPage);
@@ -71,7 +69,6 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
     handleChange('ingredients', selectedItems);
   };
 
-  cLog(formData)
   return (
     <ScrollView contentContainerStyle={styles.addContainer}>
       <Text style={styles.sectionHeader}>{title}</Text>

@@ -4,6 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import App from './index';
 import HealthTracker from './healthTracker';
 import MealTracking from './mealTracker';
+import Notes from './notes';
 import Finance from './finance';
 import CalendarEvents from './calendarEvents';
 import { createStackNavigator, StackHeaderProps } from '@react-navigation/stack';
@@ -12,10 +13,10 @@ import AddCalendarEvents from './addCalendarEvents';
 import AddHealthEvents from './addHealthEvents';
 import AddMeals from './addMeals';
 import AddFinanceEvents from './addFinanceEvents';
+import { NavigationContainer } from '@react-navigation/native';
 
 
 const Stack = createStackNavigator<RootStackParamList>();
-
 const CustomTopBar = ({ navigation }: StackHeaderProps) => {
   return (
     <View style={styles.topBar}>
@@ -34,29 +35,35 @@ const CustomTopBar = ({ navigation }: StackHeaderProps) => {
       <TouchableOpacity onPress={() => navigation.navigate('calendarEvents')}>
         <Ionicons name="calendar-outline" size={28} color="black" />
       </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('notes')}>
+        <Ionicons name="pencil-outline" size={28} color="black" />
+      </TouchableOpacity>
     </View>
   );
 };
 
 export default function Layout() {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        header: (props) => <CustomTopBar {...props} />,
-        gestureEnabled: false,
-        cardStyle: { backgroundColor: 'white'}
-      }}
-    >
-      <Stack.Screen name="index" component={App} />
-      <Stack.Screen name="healthTracker" component={HealthTracker} />
-      <Stack.Screen name="mealTracker" component={MealTracking} />
-      <Stack.Screen name="finance" component={Finance} />
-      <Stack.Screen name="addFinanceEvents" component={AddFinanceEvents} />
-      <Stack.Screen name="calendarEvents" component={CalendarEvents} />
-      <Stack.Screen name="addCalendarEvents" component={AddCalendarEvents} />
-      <Stack.Screen name="addHealthEvents" component={AddHealthEvents} />
-      <Stack.Screen name="addMeals" component={AddMeals} />
-    </Stack.Navigator>
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          header: (props) => <CustomTopBar {...props} />,
+          gestureEnabled: false,
+          cardStyle: { backgroundColor: 'white' }
+        }}
+      >
+        <Stack.Screen name="index" component={App} />
+        <Stack.Screen name="healthTracker" component={HealthTracker} />
+        <Stack.Screen name="mealTracker" component={MealTracking} />
+        <Stack.Screen name="notes" component={Notes} />
+        <Stack.Screen name="finance" component={Finance} />
+        <Stack.Screen name="addFinanceEvents" component={AddFinanceEvents} />
+        <Stack.Screen name="calendarEvents" component={CalendarEvents} />
+        <Stack.Screen name="addCalendarEvents" component={AddCalendarEvents} />
+        <Stack.Screen name="addHealthEvents" component={AddHealthEvents} />
+        <Stack.Screen name="addMeals" component={AddMeals} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 

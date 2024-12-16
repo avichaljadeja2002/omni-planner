@@ -14,3 +14,4 @@ public interface MealEventsRepository extends JpaRepository<MealEvents, Integer>
     @Query("SELECT f FROM MealEvents f WHERE f.userId = :userId AND (f.repeating = true OR f.event_date >= :currentTimeMillis) ORDER BY f.event_date ASC")
     List<MealEvents> findUpcomingByUserId(@Param("userId") int userId, @Param("currentTimeMillis") Long currentTimeMillis);
 }
+

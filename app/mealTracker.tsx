@@ -19,7 +19,7 @@ export default function MealTracker() {
           title: `${event.title} at ${event.event_date}, ${formatTime(event.event_time)}`,
           done: false,
           icon: 'fast-food-outline',
-        }));
+        })).slice(0,10);
         setTasks(events);
       })
       .catch(error => console.error('Error fetching events:', error));
