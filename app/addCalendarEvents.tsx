@@ -6,7 +6,7 @@ import { cLog } from './log'
 
 export default function AddCalendarEvents() {
   const initialData = {
-    user_id: 1,
+    userId: 1,
     title: '',
     event_date: new Date(),
     event_time: new Date(),
@@ -30,6 +30,7 @@ export default function AddCalendarEvents() {
         repeating: Boolean(saveData.repeating),
         repeat_timeline: saveData.repeating
       };
+      cLog(payload);
       const hit = IPAddr + '/add_calendar_event';
       cLog('Saving event to:' + hit);
       const response = await axios.post(hit, payload);
