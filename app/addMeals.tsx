@@ -7,7 +7,7 @@ import { cLog } from './log'
 export default function AddMeals() {
   const [ingredients, setIngredients] = useState([]);
   const initialData = {
-    user_id: 1,
+    userId: 1,
     title: '',
     event_date: new Date(),
     event_time: new Date(),
@@ -50,8 +50,10 @@ export default function AddMeals() {
       const payload = {
         ...saveData,
         repeating: Boolean(saveData.repeating),
-        repeat_timeline: saveData.repeating
+        repeat_timeline: saveData.repeating,
+        ingredients: saveData.ingredients.join(','),
       };
+      cLog(payload);
       cLog('Payload:' + JSON.stringify(payload));
       const hit = IPAddr + '/add_meal_events';
       cLog('Saving event to:' + hit);

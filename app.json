@@ -3,10 +3,15 @@
     "newArchEnabled": true,
     "name": "omni-planner",
     "slug": "omni-planner",
+    "scheme": "myapp",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "runtimeVersion": {
       "policy": "sdkVersion"
@@ -17,14 +22,30 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.omniplanner"
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.avichaljadeja02.omniplanner"
+      "package": "com.omniplanner",
+      "versionCode": 1,
+      "icon": "./assets/images/icon.png"
+    },
+    "config": {
+      "googleCalendar": {
+        "apiKey": "AIzaSyB0hBnEFxRwAlfNraiJj7g9OCwE8VQ71uI"
+      }
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "updates": {
+      "enabled": true,
+      "checkAutomatically": "ON_ERROR_RECOVERY",
+      "fallbackToCacheTimeout": 0
+    },
+    "notification": {
+      "icon": "./assets/images/icon.png",
+      "color": "#000000"
     },
     "web": {
       "bundler": "metro",
@@ -41,6 +62,7 @@
       "eas": {
         "projectId": "5e38bdbb-79f1-4876-badc-e3b7a219d88b"
       }
-    }
+    },
+    "owner": "omni-planner"
   }
 }

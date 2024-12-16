@@ -43,8 +43,8 @@ public class FinanceEvents {
         return userId;
     }
 
-    public void setUserId(int user_id) {
-        this.userId = user_id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getTitle() {

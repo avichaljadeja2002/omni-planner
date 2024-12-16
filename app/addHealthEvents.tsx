@@ -6,7 +6,7 @@ import { cLog } from './log'
 
 export default function AddHealthEvents() {
   const initialData = {
-    user_id: 1,
+    userId: 1,
     title: '',
     event_date: new Date(),
     event_time: new Date(),
@@ -29,6 +29,7 @@ export default function AddHealthEvents() {
         repeating: Boolean(saveData.repeating),
         repeat_timeline: saveData.repeating
       };
+      cLog(payload);
       cLog('Payload:' + JSON.stringify(payload));
       const hit = IPAddr + '/add_health_events';
       cLog('Saving event to:' + hit);
