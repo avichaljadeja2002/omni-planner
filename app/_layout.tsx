@@ -13,10 +13,10 @@ import AddCalendarEvents from './addCalendarEvents';
 import AddHealthEvents from './addHealthEvents';
 import AddMeals from './addMeals';
 import AddFinanceEvents from './addFinanceEvents';
+import { NavigationContainer } from '@react-navigation/native';
 
 
 const Stack = createStackNavigator<RootStackParamList>();
-
 const CustomTopBar = ({ navigation }: StackHeaderProps) => {
   return (
     <View style={styles.topBar}>
@@ -44,24 +44,26 @@ const CustomTopBar = ({ navigation }: StackHeaderProps) => {
 
 export default function Layout() {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        header: (props) => <CustomTopBar {...props} />,
-        gestureEnabled: false,
-        cardStyle: { backgroundColor: 'white'}
-      }}
-    >
-      <Stack.Screen name="index" component={App} />
-      <Stack.Screen name="healthTracker" component={HealthTracker} />
-      <Stack.Screen name="mealTracker" component={MealTracking} />
-      <Stack.Screen name="notes" component={Notes} />
-      <Stack.Screen name="finance" component={Finance} />
-      <Stack.Screen name="addFinanceEvents" component={AddFinanceEvents} />
-      <Stack.Screen name="calendarEvents" component={CalendarEvents} />
-      <Stack.Screen name="addCalendarEvents" component={AddCalendarEvents} />
-      <Stack.Screen name="addHealthEvents" component={AddHealthEvents} />
-      <Stack.Screen name="addMeals" component={AddMeals} />
-    </Stack.Navigator>
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          header: (props) => <CustomTopBar {...props} />,
+          gestureEnabled: false,
+          cardStyle: { backgroundColor: 'white' }
+        }}
+      >
+        <Stack.Screen name="index" component={App} />
+        <Stack.Screen name="healthTracker" component={HealthTracker} />
+        <Stack.Screen name="mealTracker" component={MealTracking} />
+        <Stack.Screen name="notes" component={Notes} />
+        <Stack.Screen name="finance" component={Finance} />
+        <Stack.Screen name="addFinanceEvents" component={AddFinanceEvents} />
+        <Stack.Screen name="calendarEvents" component={CalendarEvents} />
+        <Stack.Screen name="addCalendarEvents" component={AddCalendarEvents} />
+        <Stack.Screen name="addHealthEvents" component={AddHealthEvents} />
+        <Stack.Screen name="addMeals" component={AddMeals} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
