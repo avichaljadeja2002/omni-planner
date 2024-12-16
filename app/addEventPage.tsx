@@ -52,7 +52,6 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
       event_time: formData.event_time?.toTimeString().split(' ')[0],
       repeating: formData.repeat_timeline && formData.repeat_timeline,
       repeat_timeline: formData.repeat_timeline,
-      ingredients: formData.ingredients.join(','),
     };
     onSave(formattedData);
     navigation.navigate(mainPage);
