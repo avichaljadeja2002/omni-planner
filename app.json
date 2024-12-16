@@ -5,7 +5,8 @@
     "scheme": "omni-planner",
     "platforms": [
       "ios",
-      "android"
+      "android",
+      "web"
     ],
     "version": "1.0.0",
     "orientation": "portrait",
