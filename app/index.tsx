@@ -20,7 +20,7 @@ export default function TaskScreen() {
           title: `${event.title} at ${event.eventDate}, ${formatTime(event.eventTime)}`,
           done: false,
           icon: getEventIcon(event.event_type), 
-        }));
+        })).slice(0,10);;
         setTasks(events);
       })
       .catch(error => console.error('Error fetching events:', error));

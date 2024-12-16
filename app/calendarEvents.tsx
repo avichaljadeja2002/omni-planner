@@ -120,7 +120,7 @@ export default function CalendarTracker() {
           title: `${event.title} at ${event.event_date}, ${formatTime(event.event_time)}`,
           done: false,
           icon: 'calendar-outline',
-        }));
+        })).slice(0,20);;
 
         setTasks(formattedEvents);
       } else {
