@@ -1,5 +1,6 @@
 {
   "expo": {
+    "newArchEnabled": true,
     "name": "omni-planner",
     "slug": "omni-planner",
     "scheme": "omni-planner",
@@ -11,14 +12,17 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "bundleIdentifier": "com.omniplanner",
-      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
     "android": {
