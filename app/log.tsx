@@ -1,11 +1,11 @@
 import { logging } from './constants';
 
 interface LogFunction {
-    (message: string): void;
+    (...messages: any[]): void;
 }
 
-export const cLog: LogFunction = (message) => {
+export const cLog: LogFunction = (...messages) => {
     if (logging) {
-        console.log(message);
+        console.log(...messages);
     }
 };

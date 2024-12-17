@@ -23,3 +23,18 @@ export  const formatTime = (time) => {
       return `${hour - 12}:${minutes} PM`;
     }
   };
+
+export const getPageName = (page) => {
+    switch(page){
+        case 'finance':
+            return 'Finance';
+        case 'healthTracker':
+            return 'Health';
+        case 'mealTracker':
+            return 'Meal';
+        case 'calendarEvents':
+            return 'Calendar';
+        default:
+            return 'Home';
+    }
+}

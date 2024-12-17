@@ -19,6 +19,7 @@ export default function FinanceTracker() {
           title: `${event.title} at ${event.event_date}, ${formatTime(event.event_time)}`,
           done: false,
           icon: 'wallet-outline',
+          event: event
         })).slice(0,10);;
         setTasks(events);
       })
@@ -36,6 +37,7 @@ export default function FinanceTracker() {
       title='Finance Tracker'
       header='Upcoming Events'
       nextPage='addFinanceEvents'
+      thisPage='finance'
       tasks={tasks}
     />);
 }

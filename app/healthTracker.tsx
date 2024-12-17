@@ -19,7 +19,8 @@ export default function HealthTracker() {
           title: `${event.title} at ${event.event_date}, ${formatTime(event.event_time)}`,
           done: false,
           icon: 'fitness-outline',
-        })).slice(0,10);;
+          event: event
+        })).slice(0,10);
         setTasks(events);
       })
       .catch(error => console.error('Error fetching events:', error));
@@ -36,6 +37,7 @@ export default function HealthTracker() {
       title='Health Tracker'
       header='Upcoming Events'
       nextPage='addHealthEvents'
+      thisPage='healthTracker'
       tasks={tasks}
     />
   );

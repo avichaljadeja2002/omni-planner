@@ -231,7 +231,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   inputText: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: "500",
     color: "#333",
     alignItems: "flex-start",
