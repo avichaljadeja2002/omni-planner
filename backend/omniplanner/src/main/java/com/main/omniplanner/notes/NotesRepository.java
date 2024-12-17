@@ -6,9 +6,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface NotesRepository extends JpaRepository<Notes, Integer> {
-    @Query("SELECT f FROM Notes f WHERE f.userId = :userId")
+    @Query("SELECT f FROM Notes f WHERE f.userId = :userId ORDER BY f.event_date DESC, f.event_time DESC")
     List<Notes> findByUserId(@Param("userId") int userId);
 }

@@ -1,12 +1,12 @@
 package com.main.omniplanner.notes;
 
 import com.main.omniplanner.user.Event;
-import com.main.omniplanner.user.EventRepository;
 import com.main.omniplanner.user.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class NotesService {
@@ -22,13 +22,17 @@ public class NotesService {
         this.notesRepository = notesRepository;
         this.eventService = eventService;
     }
-
-    public Notes saveNote(Notes event) {
-        Event event1 = new Event();
-        event1.setText(event.getText());
-        event1.setUserId(event.getUserId());
-        eventService.saveEvent(event1);
-        return notesRepository.save(event);
+    public Notes saveOrUpdateNote(Notes note) {
+        // Check if a note for the given userId already exists
+        List<Notes> existingNote = notesRepository.findByUserId(note.getUserId());
+        if (existingNote.size() > 0) {
+            // Update the existing note
+            existingNote.get(0).setText(note.getText());
+            return notesRepository.save(existingNote.get(0));  // Save the updated note
+        } else {
+            // No existing note, create a new one
+            return notesRepository.save(note);
+        }
     }
 
     public List<Notes> getNotesByUserId(int userId) {
