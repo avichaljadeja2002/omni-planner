@@ -18,9 +18,9 @@ public class NotesController {
         this.notesService = notesService;
     }
 
-    @PostMapping("/add_note")
+    @PutMapping("/add_note")
     public ResponseEntity<Notes> addNote(@RequestBody Notes note) {
-        Notes savedNote = notesService.saveNote(note);
+        Notes savedNote = notesService.saveOrUpdateNote(note);
         return new ResponseEntity<>(savedNote, HttpStatus.CREATED);
     }
     @GetMapping("/get_note/{userId}")
@@ -28,5 +28,6 @@ public class NotesController {
         List<Notes> notes = notesService.getNotesByUserId(userId);
         return ResponseEntity.ok(notes);
     }
+
 
 }
