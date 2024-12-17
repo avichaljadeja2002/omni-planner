@@ -120,6 +120,7 @@ export default function CalendarTracker() {
           title: `${event.title} at ${event.event_date}, ${formatTime(event.event_time)}`,
           done: false,
           icon: 'calendar-outline',
+          event: event
         })).slice(0,20);;
 
         setTasks(formattedEvents);
@@ -144,6 +145,7 @@ export default function CalendarTracker() {
         title='Calendar Tracker'
         header='Upcoming Events'
         nextPage='addCalendarEvents'
+        thisPage='calendarEvents'
         tasks={tasks}
       />
       {!isGoogleCalendarLinked && (

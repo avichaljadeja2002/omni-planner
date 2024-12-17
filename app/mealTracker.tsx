@@ -19,6 +19,7 @@ export default function MealTracker() {
           title: `${event.title} at ${event.event_date}, ${formatTime(event.event_time)}`,
           done: false,
           icon: 'fast-food-outline',
+          event: event
         })).slice(0,10);
         setTasks(events);
       })
@@ -36,6 +37,7 @@ export default function MealTracker() {
       title="Meal Tracker"
       header="Upcoming Meals"
       nextPage="addMeals"
+      thisPage="mealTracker"
       tasks={tasks}
     />
   );

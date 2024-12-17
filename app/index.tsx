@@ -20,6 +20,7 @@ export default function TaskScreen() {
           title: `${event.title} at ${event.eventDate}, ${formatTime(event.eventTime)}`,
           done: false,
           icon: getEventIcon(event.event_type), 
+          event: event
         })).slice(0,10);;
         setTasks(events);
       })
@@ -52,6 +53,7 @@ export default function TaskScreen() {
       title='Home'
       header='Welcome Saayeh!'
       nextPage='index'
+      thisPage='index'
       tasks={tasks}
     />
   );

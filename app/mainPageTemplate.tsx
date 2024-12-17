@@ -7,15 +7,17 @@ import { Ionicons } from "@expo/vector-icons";
 import { RootStackParamList, Task } from '../components/Types';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+// import { cLog } from './log';
 
 interface FormProps {
     title: string;
     header: string;
     nextPage: keyof RootStackParamList;
+    thisPage: keyof RootStackParamList;
     tasks: Array<Task>;
 }
 
-const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, tasks }) => {
+const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, thisPage, tasks }) => {
     const [selectedDate, setSelectedDate] = useState('');
     const [isCalendarVisible, setIsCalendarVisible] = useState(true); 
 
@@ -26,8 +28,15 @@ const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, tas
         setSelectedDate(day.dateString);
     };
 
+    const handleViewPress = (item: Task) => {
+        // cLog(item);
+        const route = { ...item, thisPage };
+        // cLog(route);
+        navigation.navigate('viewEvents', { event: route });
+    }
+
     const renderTask = ({ item }: { item: Task }) => (
-        <View style={styles.taskItem}>
+        <TouchableOpacity style={styles.taskItem} onPress={() => handleViewPress(item)}>
             <Text style={styles.bullet}>
                 <View style={styles.taskicon}>
                     <Ionicons name={item.icon} size={30} color={'#000'} />
@@ -42,7 +51,7 @@ const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, tas
                     onPress={(isChecked: boolean) => { item.done = isChecked; }}
                 />
             </View>
-        </View>
+        </TouchableOpacity>
     );
 
     return (
@@ -89,7 +98,7 @@ const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, tas
             {title !== 'Home' &&
                 <TouchableOpacity
                     style={styles.fixedButton}
-                    onPress={() => navigation.navigate(nextPage)}
+                    onPress={() => navigation.navigate(nextPage as any)}
                     hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
                 >
                     <View style={styles.icon}>

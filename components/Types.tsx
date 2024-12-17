@@ -4,7 +4,8 @@ export type Task = {
     id: string;
     title: string;
     done: boolean;
-    icon: IconName
+    icon: IconName;
+    event: any;
   };
 
 export type RootStackParamList = {
@@ -17,7 +18,8 @@ export type RootStackParamList = {
     'calendarEvents': undefined;
     'addCalendarEvents': undefined;
     'addHealthEvents': undefined;
-    'addMeals': undefined
+    'addMeals': undefined;
+    'viewEvents': { event: any };
   };
   
 
