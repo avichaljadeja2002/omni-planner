@@ -3,9 +3,9 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 import { cLog } from './log';
 import { IPAddr } from './constants';
 import axios from 'axios';
-import { useFocusEffect } from 'expo-router';
+import { useFocusEffect } from '@react-navigation/native';
 
-const NotesApp = () => {
+export default function Notes () {
     const initialData = { userId: 1, text: "" };
 
     const [formData, setFormData] = useState(initialData);
@@ -116,5 +116,3 @@ const styles = StyleSheet.create({
         color: '#eee',
     },
 });
-
-export default NotesApp;
