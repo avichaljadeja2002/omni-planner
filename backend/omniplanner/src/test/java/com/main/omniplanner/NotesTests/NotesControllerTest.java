@@ -1,8 +1,9 @@
 package com.main.omniplanner.NotesTests;
 
-import com.main.omniplanner.meals.MealEvents;
-import com.main.omniplanner.meals.MealEventsController;
-import com.main.omniplanner.meals.MealEventsService;
+
+import com.main.omniplanner.notes.Notes;
+import com.main.omniplanner.notes.NotesController;
+import com.main.omniplanner.notes.NotesService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -13,65 +14,58 @@ import org.springframework.http.ResponseEntity;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-class MealEventsControllerTest {
+class NotesControllerTest {
 
     @Mock
-    private MealEventsService mealEventsService;
+    private NotesService notesService;
 
-    private MealEventsController mealEventsController;
-    MealEvents event1;
-    MealEvents event2;
+    private NotesController notesController;
+    Notes note1;
+    Notes note2;
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        mealEventsController = new MealEventsController(mealEventsService);
-        event1 = new MealEvents();
-        event1.setId(1);
-        event1.setUserId(1);
-        event1.setTitle("Event 1");
-        event1.setEvent_date(Date.valueOf("2023-10-01"));
-        event1.setEvent_time(Time.valueOf("10:00:00"));
+        notesController = new NotesController(notesService);
+        note1 = new Notes();
+        note1.setId(1);
+        note1.setUserId(1);
+        note1.setText("This is note 1");
+        note1.setEvent_date(Date.valueOf("2023-10-01"));
+        note1.setEvent_time(Time.valueOf("10:00:00"));
 
-        event2 = new MealEvents();
-        event2.setId(2);
-        event2.setUserId(1);
-        event2.setTitle("Event 2");
-        event2.setEvent_date(Date.valueOf("2023-10-02"));
-        event2.setEvent_time(Time.valueOf("11:00:00"));
+        note2 = new Notes();
+        note2.setId(1);
+        note2.setUserId(1);
+        note2.setText("This is note 2");
+        note2.setEvent_date(Date.valueOf("2023-10-01"));
+        note2.setEvent_time(Time.valueOf("10:00:00"));
     }
 
     @Test
-    void testGetEventsByUserId_Success() {
-        List<MealEvents> events = Arrays.asList(event1, event2);
-
-        when(mealEventsService.getEventsByUserId(1)).thenReturn(events);
-        ResponseEntity<List<MealEvents>> response = mealEventsController.getEventsByUserId(1);
+    void testGetNoteByUserId_Success() {
+        when(notesService.getNotesByUserId(1)).thenReturn(Collections.singletonList(note1));
+        ResponseEntity<List<Notes>> response = notesController.getNotesByUserId(1);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(2, Objects.requireNonNull(response.getBody()).size());
+        assertEquals(1, Objects.requireNonNull(response.getBody()).size());
         // Assert for the first event
-        assertEquals("Event 1", response.getBody().get(0).getTitle());
+        assertEquals("This is note 1", response.getBody().get(0).getText());
         assertEquals(1, response.getBody().get(0).getUserId());
         assertEquals(Date.valueOf("2023-10-01"), response.getBody().get(0).getEvent_date());
         assertEquals(Time.valueOf("10:00:00"), response.getBody().get(0).getEvent_time());
-       
-        // Assert for the second event
-        assertEquals("Event 2", response.getBody().get(1).getTitle());
-        assertEquals(1, response.getBody().get(1).getUserId());
-        assertEquals(Date.valueOf("2023-10-02"), response.getBody().get(1).getEvent_date());
-        assertEquals(Time.valueOf("11:00:00"), response.getBody().get(1).getEvent_time());
     }
 
     @Test
     void testGetEventsByUserId_EmptyList() {
-        when(mealEventsService.getEventsByUserId(2)).thenReturn(Arrays.asList());
-        ResponseEntity<List<MealEvents>> response = mealEventsController.getEventsByUserId(2);
+        when(notesService.getNotesByUserId(2)).thenReturn(Arrays.asList());
+        ResponseEntity<List<Notes>> response = notesController.getNotesByUserId(2);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().size());
@@ -79,8 +73,8 @@ class MealEventsControllerTest {
 
     @Test
     void testGetEventsByUserId_NonExistingUser() {
-        when(mealEventsService.getEventsByUserId(999)).thenReturn(Arrays.asList());
-        ResponseEntity<List<MealEvents>> response = mealEventsController.getEventsByUserId(999);
+        when(notesService.getNotesByUserId(999)).thenReturn(Arrays.asList());
+        ResponseEntity<List<Notes>> response = notesController.getNotesByUserId(999);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().size());
@@ -88,14 +82,35 @@ class MealEventsControllerTest {
     @Test
     void testAddEvent_Success() {
         // When
-        when(mealEventsService.saveEvent(event1)).thenReturn(event1);
+        when(notesService.saveOrUpdateNote(note1)).thenReturn(note1);
 
         // Act
-        ResponseEntity<MealEvents> response = mealEventsController.addEvent(event1);
+        ResponseEntity<Notes> response = notesController.addNote(note1);
 
         // Then
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(1, Objects.requireNonNull(response.getBody()).getId());
-        assertEquals("Event 1", response.getBody().getTitle());
+        assertEquals("This is note 1", response.getBody().getText());
+    }
+
+    @Test
+    void testUpdateEvent_Success() {
+        // When
+        when(notesService.saveOrUpdateNote(note1)).thenReturn(note1);
+        when(notesService.saveOrUpdateNote(note2)).thenReturn(note2);
+        // Act
+        ResponseEntity<Notes> response = notesController.addNote(note1);
+
+        // Then
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(1, Objects.requireNonNull(response.getBody()).getId());
+        assertEquals("This is note 1", response.getBody().getText());
+        // Act
+        response = notesController.addNote(note2);
+
+        // Then
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(1, Objects.requireNonNull(response.getBody()).getId());
+        assertEquals("This is note 2", response.getBody().getText());
     }
 }

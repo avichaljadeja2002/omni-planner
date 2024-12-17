@@ -1,6 +1,6 @@
 package com.main.omniplanner.NotesTests;
 
-import com.main.omniplanner.meals.MealEvents;
+import com.main.omniplanner.notes.Notes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,64 +8,46 @@ import java.sql.Date;
 import java.sql.Time;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MealEventsTest {
+public class NotesTest {
 
-    private MealEvents mealEvents;
+    private Notes notes;
 
     @BeforeEach
     void setUp() {
-        mealEvents = new MealEvents();
+        notes = new Notes();
     }
 
     @Test
     public void testGetSetId() {
-        mealEvents.setId(0);
-        assertEquals(0, mealEvents.getId());
+        notes.setId(0);
+        assertEquals(0, notes.getId());
     }
 
     @Test
-    public void testGetsetUserId() {
-        mealEvents.setUserId(0);
-        assertEquals(0, mealEvents.getUserId());
-    }
-
-    @Test
-    public void testGetSetTitle() {
-        mealEvents.setTitle("Team Meeting");
-        assertEquals("Team Meeting", mealEvents.getTitle());
+    public void testGetSetUserId() {
+        notes.setUserId(0);
+        assertEquals(0, notes.getUserId());
     }
 
     @Test
     public void testGetSetEvent_date() {
         Date date = Date.valueOf("2024-11-05");
-        mealEvents.setEvent_date(date);
-        assertEquals(date, mealEvents.getEvent_date());
+        notes.setEvent_date(date);
+        assertEquals(date, notes.getEvent_date());
     }
 
     @Test
     public void testGetSetEvent_time() {
         Time time = Time.valueOf("10:30:00");
-        mealEvents.setEvent_time(time);
-        assertEquals(time, mealEvents.getEvent_time());
+        notes.setEvent_time(time);
+        assertEquals(time, notes.getEvent_time());
     }
 
     @Test
-    public void testGetSetRepeat_timeline() {
-        mealEvents.setRepeat_timeline("Weekly");
-        assertEquals("Weekly", mealEvents.getRepeat_timeline());
+    public void testGetSetText() {
+        notes.setText("This is a note");
+        assertEquals("This is a note", notes.getText());
     }
 
-    @Test
-    public void testGetSetRepeating() {
-        mealEvents.setRepeating(true);
-        assertTrue(mealEvents.isRepeating());
-    }
-
-    @Test
-    public void testGetSetIngredients() {
-        mealEvents.setIngredients("Chicken, Rice, Broccoli");
-        assertEquals("Chicken, Rice, Broccoli", mealEvents.getIngredients());
-    }
 }

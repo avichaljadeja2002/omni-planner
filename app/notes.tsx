@@ -1,55 +1,64 @@
-import React, { useEffect, useState } from 'react';
-// import { styles } from './styles';
+import React, { useCallback, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { cLog } from './log';
 import { IPAddr } from './constants';
 import axios from 'axios';
+import { useFocusEffect } from 'expo-router';
 
 const NotesApp = () => {
-
-    const initialData = { userId: 1, text: "" }
+    const initialData = { userId: 1, text: "" };
 
     const [formData, setFormData] = useState(initialData);
 
-    const handleSave = async () => { 
-        try { 
-            cLog(formData.text); 
-            const hit = IPAddr + '/add_note'; 
-            const response = await axios.post(hit, formData); 
-            cLog('Note saved successfully:' + response.data); 
-        } catch (error) { 
-            console.error('Error saving note'); 
-        } 
+    const handleSave = async () => {
+        try {
+            // Add current date to formData
+            const currentDate = new Date().toISOString().split('T')[0]; // Get current date in ISO format (e.g., 2024-06-14T10:00:00.000Z)
+            const currentTime = new Date().toTimeString().split(' ')[0];
+            const updatedFormData = {
+                ...formData,
+                event_date: currentDate, // Add date field
+                event_time: currentTime, // Add time field
+            };
+            const hit = IPAddr + '/add_note'; // Backend endpoint
+            const response = await axios.put(hit, updatedFormData); // Send request with updated data
+
+            console.log('Note saved successfully: ' + response.data);
+        } catch (error) {
+            console.error('Error saving note:', error);
+        }
     };
 
-    const handleChange = (name: string, value: any) => {
+    const handleChange = (name: string, value: string) => {
         setFormData({ ...formData, [name]: value });
-    }
+    };
 
     const fetchNote = async () => {
-        const hit = IPAddr + '/get_hnote/1';
+        const hit = IPAddr + '/get_note/1';
         cLog('Fetching note from:' + hit);
         axios.get(hit)
             .then(response => {
-                const events = response.data.map((event: any) => ({
+                const events = response.data.map((event: { text: any; }) => ({
                     text: `${event.text}`,
-                    icon: 'fitness-outline',
-                })).slice(0, 10);;
+                }));
                 setFormData({ ...formData, text: events[0]?.text || "" });
             })
             .catch(error => console.error('Error fetching events:', error));
     };
 
-    useEffect(() => {
-        fetchNote()
-    }, []);
+    useFocusEffect(
+        useCallback(() => {
+            fetchNote();
+        }, [])
+    );
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.title}>Notes</Text>
                 <TextInput
-                    onChangeText={(text) => handleChange("text", text)}
+                    value={formData.text} // Set value to formData.text to make it controlled
+                    onChangeText={(text) => handleChange("text", text)} // Handle text changes
                     style={styles.textInput}
                     placeholder="Write your notes here..."
                     multiline={true}
