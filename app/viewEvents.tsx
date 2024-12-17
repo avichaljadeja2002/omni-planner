@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { getPageName, IPAddr, repeatingData } from './constants';
 import GenericAddPageForm from './addEventPage';
 import { cLog } from './log'
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '@/components/Types';
 import axios from 'axios';
 
@@ -40,20 +40,24 @@ export default function ViewCalendarEvents() {
   const eventDate = new Date(dateTimeString);
 
   const fetchIngredients = async () => {
-    try {
-      const response = await axios.get(IPAddr + '/get_ingredients/13');
-      const fetchedIngredients = response.data.map((item: any) => ({
-        label: item.ingredientName,
-        value: item.id,
-      }));
-      setIngredients(fetchedIngredients); // Update state with fetched ingredients
-    } catch (error) {
-      console.error('Error fetching ingredients:', error);
-    }
+    const hit = IPAddr + '/get_ingredients/13';
+    cLog('Fetching ingredients from:' + hit);
+    axios.get(hit)
+      .then(response => {
+        const fetchedIngredients = response.data.map((item: any) => ({
+          label: item.ingredientName,
+          value: item.id,
+        }));
+        setIngredients(fetchedIngredients);
+      })
+      .catch(error => console.error('Error fetching ingredients:', error));
   };
-  useEffect(() => {
+
+  useFocusEffect(
+    useCallback(() => {
       fetchIngredients();
-    }, []);
+    }, [])
+  );
 
   // Assign values only if they exist
   if (eventDate) orderedValues['event_date'] = eventDate;
@@ -61,7 +65,7 @@ export default function ViewCalendarEvents() {
   if (orderedValues['repeat_timeline']) orderedValues['repeat_timeline'] = parseInt(orderedValues['repeat_timeline'], 10);
   if (orderedValues['repeat_timeline'] !== undefined) orderedValues['repeating'] = orderedValues['repeat_timeline'] !== 0;
   if (event?.event?.userId !== undefined) orderedValues['user_id'] = event.event.userId;
-  
+
   if (event?.event?.ingredients) {
     orderedValues['usedIngredients'] = event.event.ingredients.split(",").map(Number); // Convert string to array of numbers
   }
@@ -90,7 +94,7 @@ export default function ViewCalendarEvents() {
   return (
     <GenericAddPageForm
       title={`View ${getPageName(event.thisPage)} Event`}
-      initialData={{...orderedValues, ingredients}}
+      initialData={{ ...orderedValues, ingredients }}
       fields={filteredFields}
       mainPage={event.thisPage}
       onSave={handleSave}

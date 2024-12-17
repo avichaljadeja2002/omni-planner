@@ -7,7 +7,6 @@ import { RootStackParamList } from '@/components/Types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import MultiSelect from 'react-native-multiple-select';
-import { cLog } from './log';
 
 interface FormProps {
   title: string;
@@ -22,11 +21,6 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [currentField, setCurrentField] = useState<string | null>(null); // Tracks which field is being edited
-
-
-  cLog("Inital Data",initialData);
-  cLog("Fields",fields);
-  cLog("Inital Form Data",formData);
 
   type TrackerNavigationProp = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
   const navigation = useNavigation<TrackerNavigationProp>();
@@ -74,8 +68,6 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
   const handleIngredientChange = (selectedItems: string[]) => {
     handleChange('ingredients', selectedItems);
   };
-  cLog("test",formData)
-  cLog("test1",fields)
   return (
     <ScrollView contentContainerStyle={styles.addContainer}>
       <Text style={styles.sectionHeader}>{title}</Text>
@@ -111,7 +103,7 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
                 <MultiSelect
                   items={initialData.ingredients} // Ensure ingredients is an array
                   uniqueKey="value"
-                  selectedItems={formData['usedIngredients'] || []} // Default to an empty array
+                  selectedItems={formData[field.name] || []} // Default to an empty array
                   onSelectedItemsChange={(selectedItems) => handleIngredientChange(selectedItems)}
                   selectText="Select Ingredients"
                   searchInputPlaceholderText="Search Ingredients..."

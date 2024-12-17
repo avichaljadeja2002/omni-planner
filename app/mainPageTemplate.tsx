@@ -7,6 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { RootStackParamList, Task } from '../components/Types';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { cLog } from './log';
 // import { cLog } from './log';
 
 interface FormProps {
@@ -31,7 +32,8 @@ const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, thi
     const handleViewPress = (item: Task) => {
         // cLog(item);
         const route = { ...item, thisPage };
-        // cLog(route);
+        if(thisPage === 'index')
+        cLog("Route:",route);
         navigation.navigate('viewEvents', { event: route });
     }
 
