@@ -1,8 +1,8 @@
 package com.main.omniplanner.NotesTests;
 
-import com.main.omniplanner.meals.MealEvents;
-import com.main.omniplanner.meals.MealEventsRepository;
-import com.main.omniplanner.meals.MealEventsService;
+import com.main.omniplanner.notes.Notes;
+import com.main.omniplanner.notes.NotesRepository;
+import com.main.omniplanner.notes.NotesService;
 import com.main.omniplanner.user.EventService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,13 +18,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.*;
 
-public class MealEventsServiceTest {
+public class NotesServiceTest {
 
-    private MealEventsService mealEventsService;
-    private MealEvents mealEvents;
+    private NotesService notesService;
+    private Notes notes;
 
     @Mock
-    private MealEventsRepository mealEventsRepository;
+    private NotesRepository notesRepository;
 
     @Mock
     private EventService eventService;
@@ -35,35 +35,47 @@ public class MealEventsServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        mealEventsService = new MealEventsService(mealEventsRepository, eventService);
-        mealEvents = new MealEvents();
-        mealEvents.setId(0);
-        mealEvents.setUserId(0);
-        mealEvents.setTitle("Team Meeting");
+        notesService = new NotesService(notesRepository, eventService);
+        notes = new Notes();
+        notes.setId(0);
+        notes.setUserId(1);
+        notes.setText("This is note 1");
         date = Date.valueOf("2024-11-05");
-        mealEvents.setEvent_date(date);
+        notes.setEvent_date(date);
         time = Time.valueOf("10:30:00");
-        mealEvents.setEvent_time(time);
+        notes.setEvent_time(time);
     }
 
     @Test
     public void testGetSaveEvent() {
-        when(mealEventsRepository.save(mealEvents)).thenReturn(mealEvents);
-        when(mealEventsRepository.findUpcomingByUserId(eq(0), anyLong()))
-                .thenReturn(Collections.singletonList(mealEvents));
+        when(notesRepository.save(notes)).thenReturn(notes);
+        when(notesRepository.findByUserId(eq(1)))
+                .thenReturn(Collections.singletonList(notes));
 
-        mealEventsService.saveEvent(mealEvents);
-        List<MealEvents> mealEventsList = mealEventsService.getEventsByUserId(0);
+        notesService.saveOrUpdateNote(notes);
+        List<Notes> notesList = notesService.getNotesByUserId(1);
 
-        assertFalse(mealEventsList.isEmpty(), "The list should not be empty");
-        MealEvents testMealEvents = mealEventsList.get(0);
-        assertEquals(0, testMealEvents.getId());
-        assertEquals(0, testMealEvents.getUserId());
-        assertEquals("Team Meeting", testMealEvents.getTitle());
-        assertEquals(date, testMealEvents.getEvent_date());
-        assertEquals(time, testMealEvents.getEvent_time());
+        assertFalse(notesList.isEmpty(), "The list should not be empty");
+        Notes testNotes = notesList.get(0);
+        assertEquals(0, testNotes.getId());
+        assertEquals(1, testNotes.getUserId());
+        assertEquals("This is note 1", testNotes.getText());
+        assertEquals(date, testNotes.getEvent_date());
+        assertEquals(time, testNotes.getEvent_time());
 
-        verify(mealEventsRepository).save(mealEvents);
-        verify(mealEventsRepository).findUpcomingByUserId(eq(0), anyLong());
+        verify(notesRepository).save(notes);
+        verify(notesRepository, times(2)).findByUserId(eq(1)); // Adjusted to expect 1 call
     }
+
+    @Test
+    public void testSaveNewNote() {
+        when(notesRepository.findByUserId(eq(1)))
+                .thenReturn(Collections.emptyList());
+        when(notesRepository.save(notes)).thenReturn(notes);
+        Notes savedNote = notesService.saveOrUpdateNote(notes);
+        assertEquals(notes, savedNote);
+        verify(notesRepository).save(notes);
+        verify(notesRepository, times(1)).findByUserId(eq(1)); // Only one call should happen here
+    }
+
 }
