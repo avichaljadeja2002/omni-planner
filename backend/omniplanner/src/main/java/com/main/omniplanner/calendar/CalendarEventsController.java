@@ -3,6 +3,7 @@ package com.main.omniplanner.calendar;
 import com.main.omniplanner.responses.CalendarEventResponse;
 import com.main.omniplanner.user.User;
 import com.main.omniplanner.user.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,5 +59,12 @@ public class CalendarEventsController {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @Transactional
+    @PutMapping("/update_calendar_event")
+    public ResponseEntity<CalendarEvents> updateEvent(@RequestBody CalendarEvents event) {
+        calendarEventsService.updateEvent(event);
+        return new ResponseEntity<>(event, HttpStatus.OK);
     }
 }

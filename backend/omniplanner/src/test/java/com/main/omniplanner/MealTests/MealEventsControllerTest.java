@@ -99,4 +99,13 @@ class MealEventsControllerTest {
         assertEquals(1, Objects.requireNonNull(response.getBody()).getId());
         assertEquals("Event 1", response.getBody().getTitle());
     }
+
+    @Test
+    void testUpdateEvent_Success() {
+        ResponseEntity<MealEvents> response = mealEventsController.updateEvent(event1);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(1, Objects.requireNonNull(response.getBody()).getId());
+        assertEquals("Event 1", response.getBody().getTitle());
+    }
 }

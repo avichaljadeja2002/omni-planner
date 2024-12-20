@@ -1,5 +1,5 @@
 // export const IPAddr = "http://34.204.83.156:8080" // For AWS
-export const IPAddr = "http://137.112.196.177:8080" // For local testing on laptop
+export const IPAddr = "http://137.112.197.27:8080" // For local testing on laptop
 export const logging = true;
 
 export const repeatingData = [
@@ -27,14 +27,27 @@ export  const formatTime = (time) => {
 export const getPageName = (page) => {
     switch(page){
         case 'finance':
-            return 'Finance';
+            return 'viewFinanceEvents';
         case 'healthTracker':
-            return 'Health';
+            return 'viewHealthEvents';
         case 'mealTracker':
-            return 'Meal';
+            return 'viewMealEvents';
         case 'calendarEvents':
-            return 'Calendar';
+            return 'viewCalendarEvents';
         default:
             return 'Home';
+    }
+};
+
+export const getPageFromEventType = (eventType) => {
+    switch(eventType){
+        case 'health':
+            return 'healthTracker';
+        case 'meal':
+            return 'mealTracker';
+        case 'calendar':
+            return 'calendarEvents';
+        default:
+            return eventType;
     }
 }
