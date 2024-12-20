@@ -43,4 +43,8 @@ public class MealEventsService {
         return mealEventsRepository.findUpcomingByUserId(userId, currentTimeMillis);
     }
 
+    public void updateEvent(MealEvents event) {
+        mealEventsRepository.updateEvent(event.getId(), event.getTitle(), event.getEvent_date(), event.getEvent_time(), event.isRepeating(), event.getRepeat_timeline(), event.getIngredients());
+    }
+
 }

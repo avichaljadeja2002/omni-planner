@@ -40,4 +40,8 @@ public class HealthEventsService {
         return healthEventsRepository.findUpcomingByUserId(userId, currentTimeMillis);
     }
 
+    public void updateEvent(HealthEvents event) {
+        healthEventsRepository.updateEvent(event.getId(), event.getTitle(), event.getEvent_date(), event.getEvent_time(), event.isRepeating(), event.getRepeat_timeline());
+    }
+
 }

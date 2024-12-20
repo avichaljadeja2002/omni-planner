@@ -19,7 +19,6 @@ export default function AddHealthEvents() {
     { name: 'event_date', label: 'Date', type: 'date' },
     { name: 'event_time', label: 'Time', type: 'time' },
     { name: 'repeat_timeline', label: 'Repeating', type: 'dropdown', options: repeatingData },
-    { name: 'description', label: 'Description', type: 'textarea' },
   ];
 
   const handleSave = async (saveData: any) => {
