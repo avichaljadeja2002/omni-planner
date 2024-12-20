@@ -43,7 +43,7 @@ public class Event {
     @Column(name = "title", length = 255)
     private String title;
 
-    @Column(name = "user_id")
+    @Column(name = "userId")
     private int userId;
 
     @Column(name = "ingredients")
