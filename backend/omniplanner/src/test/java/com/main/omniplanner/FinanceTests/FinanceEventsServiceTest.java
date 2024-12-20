@@ -69,4 +69,10 @@ public class FinanceEventsServiceTest {
         verify(financeEventsRepository).save(financeEvents);
         verify(financeEventsRepository).findUpcomingByUserId(eq(0), anyLong());
     }
+
+    @Test
+    public void testUpdateEvent() {
+        financeEventsService.updateEvent(financeEvents);
+        verify(financeEventsRepository).updateEvent(eq(0), eq("Team Meeting"), eq(date), eq(time), eq(true), eq("weekly"), eq(9.99));
+    }
 }

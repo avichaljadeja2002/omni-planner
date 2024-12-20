@@ -67,4 +67,10 @@ public class HealthEventsServiceTest {
         verify(healthEventsRepository).save(healthEvents);
         verify(healthEventsRepository).findUpcomingByUserId(eq(0), anyLong());
     }
+
+    @Test
+    public void testUpdateEvent() {
+        healthEventsService.updateEvent(healthEvents);
+        verify(healthEventsRepository).updateEvent(eq(0), eq("Team Meeting"), eq(date), eq(time), eq(true), eq("weekly"));
+    }
 }
