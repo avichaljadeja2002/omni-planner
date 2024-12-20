@@ -13,7 +13,7 @@ import AddCalendarEvents from './addCalendarEvents';
 import AddHealthEvents from './addHealthEvents';
 import AddMeals from './addMeals';
 import AddFinanceEvents from './addFinanceEvents';
-import ViewEvents from './viewEvents';
+import ViewFinanceEvents from './viewFinanceEvents';
 import { NavigationContainer } from '@react-navigation/native';
 
 
@@ -63,7 +63,7 @@ export default function Layout() {
         <Stack.Screen name="addCalendarEvents" component={AddCalendarEvents} />
         <Stack.Screen name="addHealthEvents" component={AddHealthEvents} />
         <Stack.Screen name="addMeals" component={AddMeals} />
-        <Stack.Screen name="viewEvents" component={ViewEvents} />
+        <Stack.Screen name="viewFinanceEvents" component={ViewFinanceEvents} />
       </Stack.Navigator>
     </NavigationContainer>
   );
