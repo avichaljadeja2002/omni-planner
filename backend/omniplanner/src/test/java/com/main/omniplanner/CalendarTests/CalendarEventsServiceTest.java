@@ -68,4 +68,10 @@ public class CalendarEventsServiceTest {
         verify(calendarEventsRepository).save(calendarEvents);
         verify(calendarEventsRepository).findUpcomingByUserId(eq(0), anyLong());
     }
+
+    @Test
+    public void testUpdateEvent() {
+        calendarEventsService.updateEvent(calendarEvents);
+        verify(calendarEventsRepository).updateEvent(0, "Team Meeting", date, time, true, "weekly", "Meeting");
+    }
 }

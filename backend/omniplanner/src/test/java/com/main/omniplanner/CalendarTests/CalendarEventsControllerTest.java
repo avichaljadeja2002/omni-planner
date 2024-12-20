@@ -147,4 +147,23 @@ class CalendarEventsControllerTest {
         assertEquals("New Event", response.getBody().getTitle());
     }
 
+    @Test
+    void updateEvent_Success() {
+        // Given
+        CalendarEvents event = new CalendarEvents();
+        event.setId(1);
+        event.setUserId(1);
+        event.setTitle("New Event");
+        event.setEvent_date(Date.valueOf("2023-10-10"));
+        event.setEvent_time(Time.valueOf("14:00:00"));
+
+        ResponseEntity<CalendarEvents> response = calendarEventsController.updateEvent(event);
+
+        // Then
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(1, Objects.requireNonNull(response.getBody()).getId());
+        assertEquals("New Event", response.getBody().getTitle());
+    }
+
+
 }

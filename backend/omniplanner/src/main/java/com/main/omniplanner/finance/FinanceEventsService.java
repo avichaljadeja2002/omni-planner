@@ -40,4 +40,8 @@ public class FinanceEventsService {
         return financeEventsRepository.findUpcomingByUserId(userId, currentTimeMillis);
     }
 
+    public void updateEvent(FinanceEvents event) {
+        financeEventsRepository.updateEvent(event.getId(), event.getTitle(), event.getEvent_date(), event.getEvent_time(), event.isRepeating(), event.getRepeat_timeline(), event.getMoney());
+    }
+
 }
