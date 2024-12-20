@@ -8,7 +8,7 @@ import { RootStackParamList, Task } from '../components/Types';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { cLog } from './log';
-import { getPageName } from './constants';
+import { getPageFromEventType, getPageName } from './constants';
 // import { cLog } from './log';
 
 interface FormProps {
@@ -33,7 +33,9 @@ const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, thi
     const handleViewPress = (item: Task) => {
         // cLog(item);
         const route = { ...item, thisPage };
-        // if(thisPage === 'index')
+        if(route.thisPage === 'index'){
+            route.thisPage = getPageFromEventType(route.event.event_type) as keyof RootStackParamList;
+        }
         cLog("Route:",route);
         navigation.navigate(getPageName(route.thisPage) as any, { event: route });
     }

@@ -29,12 +29,25 @@ export const getPageName = (page) => {
         case 'finance':
             return 'viewFinanceEvents';
         case 'healthTracker':
-            return 'Health';
+            return 'viewHealthEvents';
         case 'mealTracker':
-            return 'Meal';
+            return 'viewMealEvents';
         case 'calendarEvents':
-            return 'Calendar';
+            return 'viewCalendarEvents';
         default:
             return 'Home';
+    }
+};
+
+export const getPageFromEventType = (eventType) => {
+    switch(eventType){
+        case 'health':
+            return 'healthTracker';
+        case 'meal':
+            return 'mealTracker';
+        case 'calendar':
+            return 'calendarEvents';
+        default:
+            return eventType;
     }
 }

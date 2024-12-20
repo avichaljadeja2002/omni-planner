@@ -1,6 +1,9 @@
 package com.main.omniplanner.meals;
 
 import com.main.omniplanner.Ingredients.Ingredients;
+import com.main.omniplanner.user.Event;
+import com.main.omniplanner.user.EventService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,4 +33,10 @@ public class MealEventsController {
         return ResponseEntity.ok(events);
     }
 
+    @Transactional
+    @PutMapping("/update_meal_event")
+    public ResponseEntity<MealEvents> updateEvent(@RequestBody MealEvents event) {
+        mealEventsService.updateEvent(event);
+        return new ResponseEntity<>(event, HttpStatus.OK);
+    }
 }

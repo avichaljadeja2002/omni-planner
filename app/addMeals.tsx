@@ -67,7 +67,7 @@ export default function AddMeals() {
   useEffect(() => {
     fetchIngredients();
   }, []);
-
+  cLog("AddMeals: Ingredients:", ingredients);
   return (
     <GenericAddPageForm
       title="New Meal"

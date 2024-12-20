@@ -15,6 +15,9 @@ import AddMeals from './addMeals';
 import AddFinanceEvents from './addFinanceEvents';
 import ViewFinanceEvents from './viewFinanceEvents';
 import { NavigationContainer } from '@react-navigation/native';
+import ViewHealthEvents from './viewHealthEvents';
+import ViewCalendarEvents from './viewCalendarEvents';
+import ViewMealEvents from './viewMealEvents';
 
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -64,6 +67,9 @@ export default function Layout() {
         <Stack.Screen name="addHealthEvents" component={AddHealthEvents} />
         <Stack.Screen name="addMeals" component={AddMeals} />
         <Stack.Screen name="viewFinanceEvents" component={ViewFinanceEvents} />
+        <Stack.Screen name="viewHealthEvents" component={ViewHealthEvents} />
+        <Stack.Screen name="viewCalendarEvents" component={ViewCalendarEvents} />
+        <Stack.Screen name="viewMealEvents" component={ViewMealEvents} />
       </Stack.Navigator>
     </NavigationContainer>
   );

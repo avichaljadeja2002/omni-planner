@@ -20,6 +20,9 @@ export type RootStackParamList = {
     'addHealthEvents': undefined;
     'addMeals': undefined;
     'viewFinanceEvents': { event: Task };
+    'viewHealthEvents': { event: Task };
+    'viewMealEvents': { event: Task };
+    'viewCalendarEvents': { event: Task };
   };
   
 
