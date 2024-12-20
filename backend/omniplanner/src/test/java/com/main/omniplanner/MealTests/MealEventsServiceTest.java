@@ -64,4 +64,10 @@ public class MealEventsServiceTest {
         verify(mealEventsRepository).save(mealEvents);
         verify(mealEventsRepository).findUpcomingByUserId(eq(0), anyLong());
     }
+
+    @Test
+    public void testUpdateEvent() {
+        mealEventsService.updateEvent(mealEvents);
+        verify(mealEventsRepository).updateEvent(eq(0), eq("Team Meeting"), eq(date), eq(time), eq(false), isNull(), isNull());
+    }
 }
