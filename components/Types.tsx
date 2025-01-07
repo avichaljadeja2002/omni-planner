@@ -14,6 +14,7 @@ export type RootStackParamList = {
     'mealTracker': undefined;
     'notes': undefined;
     'finance': undefined;
+    'accountSetting': undefined;
     'addFinanceEvents': undefined,
     'calendarEvents': undefined;
     'addCalendarEvents': undefined;
