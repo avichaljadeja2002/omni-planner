@@ -7,6 +7,8 @@ import { RootStackParamList } from '@/components/Types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import MultiSelect from 'react-native-multiple-select';
+import { cLog } from './log';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface FormProps {
   title: string;
@@ -44,14 +46,16 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const formattedData = {
       ...formData,
       event_date: formData.event_date?.toISOString().split('T')[0],
       event_time: formData.event_time?.toTimeString().split(' ')[0],
       repeating: formData.repeat_timeline && formData.repeat_timeline,
       repeat_timeline: formData.repeat_timeline,
+      userId: (await AsyncStorage.getItem('userId'))
     };
+    cLog(formattedData);
     onSave(formattedData);
     navigation.navigate(mainPage as any);
   };

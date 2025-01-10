@@ -5,6 +5,7 @@ import { cLog } from './log'
 import GenericViewPageForm from './viewEventPage';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '@/components/Types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type ViewEventsRouteProp = RouteProp<RootStackParamList, 'viewMealEvents'>;
 
@@ -38,7 +39,7 @@ export default function ViewMealEvents() {
 
     const fetchIngredients = async () => {
         try {
-            const response = await axios.get(IPAddr + '/get_ingredients/13');
+            const response = await axios.get(IPAddr + '/get_ingredients/'+(await AsyncStorage.getItem('userId')));
             const fetchedIngredients = response.data.map((item: any) => ({
                 label: item.ingredientName,
                 value: item.id,

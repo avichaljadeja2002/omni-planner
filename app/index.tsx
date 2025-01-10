@@ -15,13 +15,14 @@ export default function TaskScreen() {
     type Prop = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
     const navigation = useNavigation<Prop>();
 
-    const [username, setUsername] = useState('');
+    const [userName, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const checkLogin = async () => {
         try {
             const userId = await AsyncStorage.getItem('userId');
-            if (userId !== null) {
+            cLog('User id:', userId);
+            if (userId && !isNaN(Number(userId))) {
                 cLog("Navigating Home");
                 navigation.navigate('home');
             } else {
@@ -32,12 +33,19 @@ export default function TaskScreen() {
         }
     }
 
-    const handleLogin = async (username: string, password: string) => {
+    const handleLogin = async (userName: string, password: string) => {
         try {
             const hit = IPAddr + '/login';
-            const response = await axios.post(hit, { username: username, password: password });
+            const response = await axios.put(hit, { userName, password });
             cLog('Login response:', response.data);
-            await AsyncStorage.setItem('userId', response.data.userId.toString());
+            if (!response.data) {
+                return;
+            }
+            const userInfo = response.data.split(",");
+            await AsyncStorage.setItem('userId', userInfo[0]);
+            await AsyncStorage.setItem('userName', userInfo[1]);
+            await AsyncStorage.setItem('email', userInfo[2]);
+            await AsyncStorage.setItem('name', userInfo[3]);
             cLog('User id saved:', response.data.userId);
             navigation.navigate('home');
         } catch (error) {
@@ -52,21 +60,21 @@ export default function TaskScreen() {
     );
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.taskItem}>Login</Text>
+        <View style={styles.loginPage}>
+            <Text style={styles.headerText}>Login</Text>
             <TextInput
-                style={styles.input}
+                style={styles.usernameInput}
                 placeholder="Username"
                 autoCapitalize="none"
                 onChangeText={(text) => setUsername(text)}
             />
             <TextInput
-                style={styles.input}
+                style={styles.passwordInput}
                 placeholder="Password"
                 secureTextEntry
                 onChangeText={(text) => setPassword(text)}
             />
-            <Button title="Login" onPress={() => handleLogin(username, password)} />
+            <Button title="Login" onPress={() => handleLogin(userName, password)} />
         </View>
     );
 }

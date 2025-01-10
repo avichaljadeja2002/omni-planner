@@ -5,12 +5,13 @@ import axios from 'axios';
 import GenericMainPageForm from './mainPageTemplate';
 import { useFocusEffect } from '@react-navigation/native';
 import { cLog } from './log'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function MealTracker() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const fetchEvents = async () => {
-    const hit = IPAddr + '/get_meal_events/1';
+    const hit = IPAddr + '/get_meal_events/'+(await AsyncStorage.getItem('userId'));
     cLog('Fetching meal events from:' + hit);
     axios.get(hit)
       .then(response => {

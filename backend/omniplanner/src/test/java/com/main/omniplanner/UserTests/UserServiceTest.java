@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,6 +34,7 @@ public class UserServiceTest {
         user.setEmail("johndoe@example.com");
         user.setGoogle_calendar_linked(true);
         user.setGoogle_calendar_access_token("access_token_123");
+        user.setPassword("password123");
     }
 
     @Test
@@ -48,5 +50,33 @@ public class UserServiceTest {
         assertEquals("johndoe@example.com", testUser.getEmail());
         assertTrue(testUser.isGoogle_calendar_linked());
         assertEquals("access_token_123", testUser.getGoogle_calendar_access_token());
+    }
+
+    @Test
+    public void testLoginSuccess() {
+        when(userRepository.findByUserName("johndoe")).thenReturn(Arrays.asList(user));
+
+        String result = userService.login("johndoe", "password123");
+
+        assertNotNull(result);
+        assertTrue(result.contains("0"));
+    }
+
+    @Test
+    public void testLoginFailure() {
+        when(userRepository.findByUserName("johndoe")).thenReturn(Arrays.asList(user));
+
+        String result = userService.login("johndoe", "wrongpassword");
+
+        assertNull(result);
+    }
+
+    @Test
+    public void testUserNotFound() {
+        when(userRepository.findByUserName("nonexistent")).thenReturn(Arrays.asList());
+
+        String result = userService.login("nonexistent", "password123");
+
+        assertNull(result);
     }
 }
