@@ -4,6 +4,7 @@ import { cLog } from './log';
 import { IPAddr } from './constants';
 import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Notes () {
     const initialData = { userId: 1, text: "" };
@@ -34,7 +35,7 @@ export default function Notes () {
     };
 
     const fetchNote = async () => {
-        const hit = IPAddr + '/get_note/1';
+        const hit = IPAddr + '/get_note/'+(await AsyncStorage.getItem('userId'));
         cLog('Fetching note from:' + hit);
         axios.get(hit)
             .then(response => {

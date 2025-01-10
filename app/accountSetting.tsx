@@ -3,11 +3,12 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 // import { cLog } from './log';
 import { IPAddr } from './constants';
 import axios from 'axios';
+import { cLog } from './log';
 // import { useFocusEffect } from '@react-navigation/native';
 // import GenericViewPageForm from './viewEventPage';
 
 export default function AccountSetting () {
-    const initialData = { userId: 1, name: "", username: "", email: "" };
+    const initialData = { userId: 1, name: "", userName: "", email: "" };
 
     const [formData, setFormData] = useState(initialData);
 
@@ -24,7 +25,7 @@ export default function AccountSetting () {
             const hit = IPAddr + '/add_note'; // Backend endpoint
             const response = await axios.put(hit, updatedFormData); // Send request with updated data
 
-            console.log('Note saved successfully: ' + response.data);
+            cLog('Note saved successfully: ' + response.data);
         } catch (error) {
             console.error('Error saving note:', error);
         }
@@ -47,7 +48,7 @@ export default function AccountSetting () {
                 />
                 <Text style={styles.title}>Username</Text>
                 <TextInput
-                    value={formData.username} // Set value to formData.text to make it controlled
+                    value={formData.userName} // Set value to formData.text to make it controlled
                     onChangeText={(text) => handleChange("text", text)} // Handle text changes
                     style={styles.textInput}
                     placeholder="username"

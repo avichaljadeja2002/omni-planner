@@ -107,4 +107,18 @@ class UserControllerTest {
         assertTrue(response.getBody().get(0).isGoogle_calendar_linked());
         assertEquals("access_token_123", response.getBody().get(0).getGoogle_calendar_access_token());
     }
-}
+
+    @Test
+    void testLogin_Success() {
+        when(userService.login("jdoe", "password123")).thenReturn("1,jdoe,johndoe@gmail.com,John Doe");
+        String loginRequest = "{\"userName\":\"jdoe\",\"password\":\"password123\"}";
+        assertEquals(userController.login(loginRequest), "1,jdoe,johndoe@gmail.com,John Doe");
+    }
+
+    @Test
+    void testLogin_Fail() {
+        when(userService.login("jdoe", "password123")).thenReturn(null);
+        String loginRequest = "\"userName\":\"jdoe\",\"password\":\"password123\"}";
+        assertNull(userController.login(loginRequest));
+    }
+    }

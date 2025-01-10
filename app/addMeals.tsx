@@ -3,6 +3,7 @@ import axios from 'axios';
 import { IPAddr, repeatingData } from './constants';
 import GenericAddPageForm from './addEventPage';
 import { cLog } from './log'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function AddMeals() {
   const [ingredients, setIngredients] = useState([]);
@@ -16,7 +17,7 @@ export default function AddMeals() {
 
   const fetchIngredients = async () => {
     try {
-      const response = await axios.get(IPAddr + '/get_ingredients/13');
+      const response = await axios.get(IPAddr + '/get_ingredients/' +(await AsyncStorage.getItem('userId')));
       const fetchedIngredients = response.data.map((item: any) => ({
         label: item.ingredientName,
         value: item.id,

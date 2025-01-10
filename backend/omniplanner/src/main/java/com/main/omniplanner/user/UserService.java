@@ -20,5 +20,22 @@ public class UserService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+    public String login(String username, String password) {
+        List<User> users = userRepository.findByUserName(username);
+        if (users.isEmpty()) {
+            System.out.println("No users found with username: " + username);
+            return null;
+        }
+
+        for (User user : users) {
+            if (user.getPassword().equals(password)) {
+                return user.getId() + "," + user.getUserName() + "," + user.getEmail() + "," + user.getName();
+            }
+        }
+
+        System.out.println("No matching password for username: " + username);
+        return null;
+    }
 }
 

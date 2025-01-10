@@ -7,11 +7,14 @@ import { Task } from '../components/Types';
 import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
 import { cLog } from './log'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function TaskScreen() {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [header, setHeader] = useState<string | null>(null);
+
   const fetchAllEvents = async () => {
-    const hit = IPAddr + '/get_all_events/1';
+    const hit = IPAddr + '/get_all_events/'+(await AsyncStorage.getItem('userId'));
     cLog('Fetching all events from:' + hit);
     axios.get(hit)
       .then(response => {
@@ -44,6 +47,11 @@ export default function TaskScreen() {
 
   useFocusEffect(
     useCallback(() => {
+      const fetchHeader = async () => {
+        const name = await AsyncStorage.getItem('name');
+        setHeader(name);
+      };
+      fetchHeader();
       fetchAllEvents();
     }, [])
   );
@@ -51,7 +59,7 @@ export default function TaskScreen() {
   return (
     <GenericMainPageForm
       title='Home'
-      header='Welcome Saayeh!'
+      header={`Welcome ${header ?? 'User'}!`}
       nextPage='home'
       thisPage='home'
       tasks={tasks}

@@ -5,12 +5,13 @@ import GenericMainPageForm from './mainPageTemplate';
 import React, { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { cLog } from './log'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function FinanceTracker() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const fetchEvents = async () => {
-    const hit = IPAddr + '/get_finance_events/1';
+    const hit = IPAddr + '/get_finance_events/'+(await AsyncStorage.getItem('userId'));
     cLog('Fetching finance events from:' + hit);
     axios.get(hit)
       .then(response => {

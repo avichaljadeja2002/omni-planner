@@ -9,6 +9,7 @@ import GenericMainPageForm from './mainPageTemplate';
 import { Task } from '@/components/Types';
 import { useFocusEffect } from '@react-navigation/native';
 import { cLog } from './log'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CLIENT_ID = process.env.EXPO_PUBLIC_CLIENT_ID || '';
 const CLIENT_SECRET = process.env.EXPO_PUBLIC_CLIENT_SECRET || '';
@@ -107,7 +108,7 @@ export default function CalendarTracker() {
 
   const fetchEvents = async () => {
     try {
-      const hit = `${IPAddr}/get_calendar_events/1`;
+      const hit = `${IPAddr}/get_calendar_events/`+(await AsyncStorage.getItem('userId'));
       cLog('Fetching calendar events from:' + hit);
       const response = await axios.get(hit);
 
