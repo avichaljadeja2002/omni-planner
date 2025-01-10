@@ -19,13 +19,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import ViewHealthEvents from './viewHealthEvents';
 import ViewCalendarEvents from './viewCalendarEvents';
 import ViewMealEvents from './viewMealEvents';
+import TaskScreen from './home';
 
 
 const Stack = createStackNavigator<RootStackParamList>();
 const CustomTopBar = ({ navigation }: StackHeaderProps) => {
   return (
     <View style={styles.topBar}>
-      <TouchableOpacity onPress={() => navigation.navigate('index')}>
+      <TouchableOpacity onPress={() => navigation.navigate('home')}>
         <Ionicons name="home-outline" size={28} color="black" />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('healthTracker')}>
@@ -61,6 +62,7 @@ export default function Layout() {
         }}
       >
         <Stack.Screen name="index" component={App} />
+        <Stack.Screen name="home" component={TaskScreen} />
         <Stack.Screen name="healthTracker" component={HealthTracker} />
         <Stack.Screen name="mealTracker" component={MealTracking} />
         <Stack.Screen name="notes" component={Notes} />

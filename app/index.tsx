@@ -1,60 +1,72 @@
 // import { IPAddr } from './constants';
 // import axios from 'axios';
-import GenericMainPageForm from './mainPageTemplate';
 import React, { useState, useCallback } from 'react';
-import { formatTime, IPAddr } from './constants';
-import { Task } from '../components/Types';
+import { IPAddr } from './constants';
+import { RootStackParamList } from '../components/Types';
 import axios from 'axios';
-import { useFocusEffect } from '@react-navigation/native';
+import { styles } from './styles';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { cLog } from './log'
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StackNavigationProp } from '@react-navigation/stack';
+import { Button, TextInput, View, Text } from 'react-native';
 
 export default function TaskScreen() {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const fetchAllEvents = async () => {
-    const hit = IPAddr + '/get_all_events/1';
-    cLog('Fetching all events from:' + hit);
-    axios.get(hit)
-      .then(response => {
-        const events = response.data.map((event: any) => ({
-          id: event.id.toString(),
-          title: `${event.title} at ${event.eventDate}, ${formatTime(event.eventTime)}`,
-          done: false,
-          icon: getEventIcon(event.event_type), 
-          event: event
-        })).slice(0,10);;
-        setTasks(events);
-      })
-      .catch(error => console.error('Error fetching events:', error));
-  }
+    type Prop = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
+    const navigation = useNavigation<Prop>();
 
-  const getEventIcon = (eventType: string) => {
-    switch (eventType.toLowerCase()) {
-      case 'finance':
-        return 'wallet-outline';
-      case 'calendar':
-        return 'calendar-outline';
-      case 'health':
-        return 'fitness-outline';
-      case 'meal':
-        return 'fast-food-outline';
-      default:
-        return 'help-outline';
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    const checkLogin = async () => {
+        try {
+            const userId = await AsyncStorage.getItem('userId');
+            if (userId !== null) {
+                cLog("Navigating Home");
+                navigation.navigate('home');
+            } else {
+                cLog('User not logged in');
+            }
+        } catch (error) {
+            console.error('Error checking login:', error);
+        }
     }
-  };
 
-  useFocusEffect(
-    useCallback(() => {
-      fetchAllEvents();
-    }, [])
-  );
+    const handleLogin = async (username: string, password: string) => {
+        try {
+            const hit = IPAddr + '/login';
+            const response = await axios.post(hit, { username: username, password: password });
+            cLog('Login response:', response.data);
+            await AsyncStorage.setItem('userId', response.data.userId.toString());
+            cLog('User id saved:', response.data.userId);
+            navigation.navigate('home');
+        } catch (error) {
+            console.error('Error logging in:', error);
+        }
+    }
 
-  return (
-    <GenericMainPageForm
-      title='Home'
-      header='Welcome Saayeh!'
-      nextPage='index'
-      thisPage='index'
-      tasks={tasks}
-    />
-  );
+    useFocusEffect(
+        useCallback(() => {
+            checkLogin();
+        }, [])
+    );
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.taskItem}>Login</Text>
+            <TextInput
+                style={styles.input}
+                placeholder="Username"
+                autoCapitalize="none"
+                onChangeText={(text) => setUsername(text)}
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Password"
+                secureTextEntry
+                onChangeText={(text) => setPassword(text)}
+            />
+            <Button title="Login" onPress={() => handleLogin(username, password)} />
+        </View>
+    );
 }
