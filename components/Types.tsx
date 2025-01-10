@@ -10,6 +10,7 @@ export type Task = {
 
 export type RootStackParamList = {
     'index': undefined;
+    'home': undefined;
     'healthTracker': undefined;
     'mealTracker': undefined;
     'notes': undefined;

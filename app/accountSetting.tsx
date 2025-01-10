@@ -1,10 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { cLog } from './log';
+// import { cLog } from './log';
 import { IPAddr } from './constants';
 import axios from 'axios';
-import { useFocusEffect } from '@react-navigation/native';
-import GenericViewPageForm from './viewEventPage';
+// import { useFocusEffect } from '@react-navigation/native';
+// import GenericViewPageForm from './viewEventPage';
 
 export default function AccountSetting () {
     const initialData = { userId: 1, name: "", username: "", email: "" };
