@@ -24,6 +24,26 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @PutMapping("/checkLogin")
+    public String checkLogin(@RequestBody String loginRequest) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode jsonNode = objectMapper.readTree(loginRequest);
+            String username = jsonNode.get("userName").asText();
+            String token = jsonNode.get("token").asText();
+            String userId = jsonNode.has("userId") ? jsonNode.get("userId").asText() : null;
+
+            if(userId != null && !userId.isEmpty()) {
+                return userService.checkLogin(username, token, userId);
+            }
+
+            return userService.checkLogin(username, token);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @PutMapping("/login")
     public String login(@RequestBody String loginRequest) {
         try {

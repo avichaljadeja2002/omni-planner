@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, TextInput, Text, TouchableOpacity, ScrollView } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Dropdown } from 'react-native-element-dropdown';
 import { styles } from './styles';
 import { RootStackParamList } from '@/components/Types';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import MultiSelect from 'react-native-multiple-select';
 import { cLog } from './log';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { verifyToken } from './constants';
 
 interface FormProps {
   title: string;
@@ -47,6 +48,8 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
   };
 
   const handleSave = async () => {
+    const isTokenValid = await verifyToken(navigation);
+    if (!isTokenValid) return;
     const formattedData = {
       ...formData,
       event_date: formData.event_date?.toISOString().split('T')[0],
@@ -72,6 +75,13 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
   const handleIngredientChange = (selectedItems: string[]) => {
     handleChange('ingredients', selectedItems);
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      verifyToken(navigation);
+    }, [])
+  );
+
   return (
     <ScrollView contentContainerStyle={styles.addContainer}>
       <Text style={styles.sectionHeader}>{title}</Text>

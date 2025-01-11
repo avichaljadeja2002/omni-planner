@@ -9,15 +9,16 @@ import com.main.omniplanner.user.UserRepository;
 import com.main.omniplanner.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class UserServiceTest {
 
+    @InjectMocks
     private UserService userService;
 
     @Mock
@@ -28,10 +29,17 @@ public class UserServiceTest {
 
     private User user;
 
+    private String secretKey = "BOAMtX5X45B891q0WTAkICBj5kCRIrwMjF+kOzQ381cdb6wft7WCuxDcpOQsEe/1CA/gG+iUH/9d48kqt6hS9g==";
+    private Long jwtExpiration = 86400000L; // 1 day in milliseconds
+
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this); 
+        MockitoAnnotations.openMocks(this);
         userService = new UserService(userRepository, passwordService);
+
+        userService.SECRET_KEY = secretKey;
+        userService.JWT_EXPIRATION = jwtExpiration;
+
         user = new User();
         user.setId(0);
         user.setName("John Doe");
@@ -61,6 +69,7 @@ public class UserServiceTest {
     public void testLoginSuccess() {
         when(userRepository.findByUserName("johndoe")).thenReturn(Arrays.asList(user));
         when(passwordService.verifyPassword("password123", user.getSalt(), user.getPasswordHash())).thenReturn(true);
+
         String result = userService.login("johndoe", "password123");
 
         assertNotNull(result);
@@ -78,11 +87,81 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testUserNotFound() {
+    public void testNewUserCreated() {
         when(userRepository.findByUserName("nonexistent")).thenReturn(Arrays.asList());
+        when(passwordService.generateSalt()).thenReturn("salt123");
+        when(passwordService.hashPassword("password123", "salt123")).thenReturn("hashedPassword123");
 
         String result = userService.login("nonexistent", "password123");
 
-        assertEquals(result, "0,nonexistent,null,null");
+        verify(userRepository).save(any(User.class));
+        assertNotNull(result); // Ensure that result is not null
+
+
+    }
+
+    @Test
+    public void checkLoginSuccess() {
+        when(userRepository.findByUserName("johndoe")).thenReturn(Arrays.asList(user));
+        String token = userService.generateToken(user);
+        user.setTempToken(token);
+        when(userRepository.save(user)).thenReturn(user);
+
+        String result = userService.checkLogin("johndoe", token);
+
+        assertNotNull(result);
+        assertTrue(result.contains("0"));
+    }
+
+    @Test
+    public void checkLoginFailure() {
+        when(userRepository.findByUserName("johndoe")).thenReturn(Arrays.asList(user));
+
+        String validToken = userService.generateToken(user);
+        user.setTempToken(validToken);
+
+        String result = userService.checkLogin("johndoe", "invalidToken");
+
+        assertNull(result);
+    }
+
+    @Test
+    public void checkLoginEmpty() {
+        String result = userService.checkLogin("nonexistent", "invalidToken");
+
+        assertNull(result);
+    }
+
+    @Test
+    public void checkLoginWithUserIdSuccess() {
+        when(userRepository.findByUserName("johndoe")).thenReturn(Arrays.asList(user));
+        String token = userService.generateToken(user);
+        user.setTempToken(token);
+        String expectedUserId = String.valueOf(user.getId());
+
+        String result = userService.checkLogin("johndoe", token, expectedUserId);
+
+        assertNotNull(result);
+        assertTrue(result.contains(expectedUserId)); // Ensure it contains the correct ID
+    }
+
+    @Test
+    public void checkLoginWithUserIdFailure() {
+        when(userRepository.findByUserName("johndoe")).thenReturn(Arrays.asList(user));
+        String token = userService.generateToken(user);
+        user.setTempToken(token);
+
+        // Use a different ID to simulate failure
+        String wrongUserId = "999";
+        String result = userService.checkLogin("johndoe", token, wrongUserId);
+
+        assertNull(result); // Should return null since IDs do not match
+    }
+
+    @Test
+    public void checkLoginWithUserIdEmpty() {
+        String result = userService.checkLogin("nonexistent", "invalidToken", "1");
+
+        assertNull(result);
     }
 }

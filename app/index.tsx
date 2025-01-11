@@ -20,16 +20,34 @@ export default function TaskScreen() {
 
     const checkLogin = async () => {
         try {
-            const userId = await AsyncStorage.getItem('userId');
-            cLog('User id:', userId);
-            if (userId && !isNaN(Number(userId))) {
-                cLog("Navigating Home");
-                navigation.navigate('home');
-            } else {
-                cLog('User not logged in');
+            const storedToken = await AsyncStorage.getItem('token') || '';
+            const storedUserName = await AsyncStorage.getItem('userName') || '';
+    
+            // Check if we have a valid token and username
+            if (!storedToken || !storedUserName) {
+                console.log('No valid token or username found');
+                return;
             }
+    
+            const hit = IPAddr + '/checkLogin';
+            const response = await axios.put(hit, { userName: storedUserName, token: storedToken });
+            
+            cLog('Login response:', response.data);
+            if (!response.data) {
+                return;
+            }
+            
+            const userInfo = response.data.split(",");
+            await AsyncStorage.setItem('userId', userInfo[0]);
+            await AsyncStorage.setItem('userName', userInfo[1]);
+            await AsyncStorage.setItem('email', userInfo[2]);
+            await AsyncStorage.setItem('name', userInfo[3]);
+            await AsyncStorage.setItem('token', userInfo[4]);
+            
+            cLog('User id saved:', response.data.userId);
+            navigation.navigate('home');
         } catch (error) {
-            console.error('Error checking login:', error);
+            console.error('Error logging in:', error);
         }
     }
 
@@ -46,6 +64,7 @@ export default function TaskScreen() {
             await AsyncStorage.setItem('userName', userInfo[1]);
             await AsyncStorage.setItem('email', userInfo[2]);
             await AsyncStorage.setItem('name', userInfo[3]);
+            await AsyncStorage.setItem('token', userInfo[4]);
             cLog('User id saved:', response.data.userId);
             navigation.navigate('home');
         } catch (error) {

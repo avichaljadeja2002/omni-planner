@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { Calendar } from 'react-native-calendars';
 import { styles } from './styles';
 import { Ionicons } from "@expo/vector-icons";
 import { RootStackParamList, Task } from '../components/Types';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { cLog } from './log';
-import { getPageFromEventType, getPageName } from './constants';
+import { getPageFromEventType, getPageName, verifyToken } from './constants';
 // import { cLog } from './log';
 
 interface FormProps {
@@ -21,7 +21,7 @@ interface FormProps {
 
 const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, thisPage, tasks }) => {
     const [selectedDate, setSelectedDate] = useState('');
-    const [isCalendarVisible, setIsCalendarVisible] = useState(true); 
+    const [isCalendarVisible, setIsCalendarVisible] = useState(true);
 
     type Prop = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
     const navigation = useNavigation<Prop>();
@@ -33,10 +33,10 @@ const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, thi
     const handleViewPress = (item: Task) => {
         // cLog(item);
         const route = { ...item, thisPage };
-        if(route.thisPage === 'index'){
+        if (route.thisPage === 'index') {
             route.thisPage = getPageFromEventType(route.event.event_type) as keyof RootStackParamList;
         }
-        cLog("Route:",route);
+        cLog("Route:", route);
         navigation.navigate(getPageName(route.thisPage) as any, { event: route });
     }
 
@@ -59,6 +59,12 @@ const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, thi
         </TouchableOpacity>
     );
 
+    useFocusEffect(
+        useCallback(() => {
+            verifyToken(navigation);
+        }, [])
+    );
+
     return (
         <View style={styles.container}>
             <View>
@@ -77,9 +83,9 @@ const GenericMainPageForm: React.FC<FormProps> = ({ title, header, nextPage, thi
                 <Text style={styles.calendarHeader}>Events</Text>
                 <TouchableOpacity onPress={() => setIsCalendarVisible(!isCalendarVisible)}>
                     <Ionicons
-                    name={isCalendarVisible ? "chevron-down-outline" : "chevron-forward-outline"}
-                    size={24}
-                    color="#9b59b6"
+                        name={isCalendarVisible ? "chevron-down-outline" : "chevron-forward-outline"}
+                        size={24}
+                        color="#9b59b6"
                     />
                 </TouchableOpacity>
             </View>
