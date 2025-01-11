@@ -45,12 +45,13 @@ export default function TaskScreen() {
     }
   };
 
+  const fetchHeader = async () => {
+    const name = await AsyncStorage.getItem('name');
+    setHeader(name);
+  };
+
   useFocusEffect(
     useCallback(() => {
-      const fetchHeader = async () => {
-        const name = await AsyncStorage.getItem('name');
-        setHeader(name);
-      };
       fetchHeader();
       fetchAllEvents();
     }, [])

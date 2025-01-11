@@ -1,3 +1,7 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { cLog } from './log';
+
 // export const IPAddr = "http://34.204.83.156:8080" // For AWS
 export const IPAddr = "http://137.112.196.132:8080" // For local testing on laptop
 export const logging = true;
@@ -50,4 +54,20 @@ export const getPageFromEventType = (eventType) => {
         default:
             return eventType;
     }
+}
+
+export const verifyToken = async (navigation) => {
+    const hit = IPAddr + '/checkLogin';
+    const storedUserName = await AsyncStorage.getItem('userName');
+    const storedToken = await AsyncStorage.getItem('token');
+    const storedUserId = await AsyncStorage.getItem('userId');
+    const response = await axios.put(hit, { userName: storedUserName, token: storedToken, userId: storedUserId });
+    if (!response.data) {
+      cLog('Token verification failed');
+      await AsyncStorage.clear();
+      navigation.navigate('index');
+      return false;
+    }
+    cLog('Verify response:', response.data);
+    return true;
 }

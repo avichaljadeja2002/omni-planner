@@ -61,7 +61,7 @@ export default function Layout() {
           cardStyle: { backgroundColor: 'white' }
         }}
       >
-        <Stack.Screen name="index" component={App} />
+        <Stack.Screen name="index" component={App} options={{ headerShown: false }} />
         <Stack.Screen name="home" component={TaskScreen} />
         <Stack.Screen name="healthTracker" component={HealthTracker} />
         <Stack.Screen name="mealTracker" component={MealTracking} />

@@ -58,4 +58,16 @@ public class UserTest {
         user.setPasswordHash("password123");
         assertEquals("password123", user.getPasswordHash());
     }
+
+    @Test
+    public void testGetSetSalt() {
+        user.setSalt("random_salt");
+        assertEquals("random_salt", user.getSalt());
+    }
+
+    @Test
+    public void testGetSetTempToken() {
+        user.setTempToken("token123");
+        assertEquals(user.getTempToken(), "token123");
+    }
 }

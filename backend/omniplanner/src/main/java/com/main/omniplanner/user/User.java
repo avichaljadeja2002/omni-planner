@@ -17,6 +17,7 @@ public class User {
     private String userName;
     private String passwordHash;
     private String salt;
+    private String tempToken;
 
     public int getId() {
         return id;
@@ -75,5 +76,17 @@ public class User {
     }
     public void setSalt(String salt) {
         this.salt = salt;
+    }
+
+    public String getTempToken() {
+        return tempToken;
+    }
+
+    public void setTempToken(String tempToken) {
+        this.tempToken = tempToken;
+    }
+
+    public String toString() {
+        return this.id +"," + this.userName + "," + this.email + "," + this.name + "," + this.tempToken;
     }
 }
