@@ -12,9 +12,13 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordService passwordService;
+
     // Constructor injection
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordService passwordService){
         this.userRepository = userRepository;
+        this.passwordService = passwordService;
     }
 
     public List<User> getAllUsers() {
@@ -23,19 +27,31 @@ public class UserService {
 
     public String login(String username, String password) {
         List<User> users = userRepository.findByUserName(username);
+
         if (users.isEmpty()) {
             System.out.println("No users found with username: " + username);
-            return null;
+            User newUser = new User();
+            newUser.setUserName(username);
+            return registerUser(newUser, password)+"," + username + "," + null + "," + null;
         }
 
         for (User user : users) {
-            if (user.getPassword().equals(password)) {
+            if (passwordService.verifyPassword(password, user.getSalt(), user.getPasswordHash())) {
                 return user.getId() + "," + user.getUserName() + "," + user.getEmail() + "," + user.getName();
             }
         }
 
         System.out.println("No matching password for username: " + username);
         return null;
+    }
+
+    public Integer registerUser(User user, String password) {
+        String salt = passwordService.generateSalt();
+        String hashedPassword = passwordService.hashPassword(password, salt);
+        user.setSalt(salt);
+        user.setPasswordHash(hashedPassword);// Ensure the ID is null for new users
+        userRepository.save(user);
+        return user.getId();
     }
 }
 

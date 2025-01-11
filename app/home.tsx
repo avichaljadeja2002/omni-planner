@@ -59,7 +59,7 @@ export default function TaskScreen() {
   return (
     <GenericMainPageForm
       title='Home'
-      header={`Welcome ${header ?? 'User'}!`}
+      header={`Welcome ${header && header !== 'null' ? header : 'User'}!`}
       nextPage='home'
       thisPage='home'
       tasks={tasks}
