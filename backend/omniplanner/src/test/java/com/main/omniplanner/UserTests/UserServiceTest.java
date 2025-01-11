@@ -3,6 +3,7 @@ package com.main.omniplanner.UserTests;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.main.omniplanner.user.PasswordService;
 import com.main.omniplanner.user.User;
 import com.main.omniplanner.user.UserRepository;
 import com.main.omniplanner.user.UserService;
@@ -22,19 +23,23 @@ public class UserServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private PasswordService passwordService;
+
     private User user;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this); 
-        userService = new UserService(userRepository);
+        userService = new UserService(userRepository, passwordService);
         user = new User();
         user.setId(0);
         user.setName("John Doe");
         user.setEmail("johndoe@example.com");
         user.setGoogle_calendar_linked(true);
         user.setGoogle_calendar_access_token("access_token_123");
-        user.setPassword("password123");
+        user.setPasswordHash("passwordhash123");
+        user.setSalt("salt123");
     }
 
     @Test
@@ -55,7 +60,7 @@ public class UserServiceTest {
     @Test
     public void testLoginSuccess() {
         when(userRepository.findByUserName("johndoe")).thenReturn(Arrays.asList(user));
-
+        when(passwordService.verifyPassword("password123", user.getSalt(), user.getPasswordHash())).thenReturn(true);
         String result = userService.login("johndoe", "password123");
 
         assertNotNull(result);
@@ -65,6 +70,7 @@ public class UserServiceTest {
     @Test
     public void testLoginFailure() {
         when(userRepository.findByUserName("johndoe")).thenReturn(Arrays.asList(user));
+        when(passwordService.verifyPassword("wrongpassword", user.getSalt(), user.getPasswordHash())).thenReturn(false);
 
         String result = userService.login("johndoe", "wrongpassword");
 
@@ -77,6 +83,6 @@ public class UserServiceTest {
 
         String result = userService.login("nonexistent", "password123");
 
-        assertNull(result);
+        assertEquals(result, "0,nonexistent,null,null");
     }
 }
