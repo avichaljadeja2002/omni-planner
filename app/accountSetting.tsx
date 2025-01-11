@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-// import { cLog } from './log';
-import { IPAddr } from './constants';
-import axios from 'axios';
+// import { IPAddr } from './constants';
+// import axios from 'axios';
 import { cLog } from './log';
+import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // import { useFocusEffect } from '@react-navigation/native';
 // import GenericViewPageForm from './viewEventPage';
 
@@ -14,18 +15,13 @@ export default function AccountSetting () {
 
     const handleSave = async () => {
         try {
-            // Add current date to formData
-            const currentDate = new Date().toISOString().split('T')[0]; // Get current date in ISO format (e.g., 2024-06-14T10:00:00.000Z)
-            const currentTime = new Date().toTimeString().split(' ')[0];
-            const updatedFormData = {
-                ...formData,
-                event_date: currentDate, // Add date field
-                event_time: currentTime, // Add time field
-            };
-            const hit = IPAddr + '/add_note'; // Backend endpoint
-            const response = await axios.put(hit, updatedFormData); // Send request with updated data
-
-            cLog('Note saved successfully: ' + response.data);
+            cLog(formData);
+            await AsyncStorage.setItem('name', formData.name);
+            await AsyncStorage.setItem('userName', formData.userName);
+            await AsyncStorage.setItem('email', formData.email);
+            // const hit = IPAddr + '/modify_user'; // Backend endpoint
+            // const response = await axios.put(hit, formData); // Send request with updated data
+            // cLog('Note saved successfully: ' + response.data);
         } catch (error) {
             console.error('Error saving note:', error);
         }
@@ -35,13 +31,40 @@ export default function AccountSetting () {
         setFormData({ ...formData, [name]: value });
     };
 
+    // Fetch local data from AsyncStorage
+    const getLocalValues = async () => {
+        try {
+            const userId = await AsyncStorage.getItem('userId');
+            const name = await AsyncStorage.getItem('name');
+            const userName = await AsyncStorage.getItem('userName');
+            const email = await AsyncStorage.getItem('email');
+            
+            // Update state with retrieved values
+            setFormData({
+                userId: userId ? parseInt(userId, 10) : 1,  // Default to 1 if not found
+                name: name || '',
+                userName: userName || '',
+                email: email || '',
+            });
+        } catch (error) {
+            console.error("Error fetching local values from AsyncStorage:", error);
+        }
+    };
+    
+
+    useFocusEffect(
+        useCallback(() => {
+            getLocalValues();
+        }, [])
+      );
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.title}>Name</Text>
                 <TextInput
                     value={formData.name} // Set value to formData.text to make it controlled
-                    onChangeText={(text) => handleChange("text", text)} // Handle text changes
+                    onChangeText={(text) => handleChange("name", text)} // Handle text changes
                     style={styles.textInput}
                     placeholder="name"
                     multiline={true}
@@ -49,7 +72,7 @@ export default function AccountSetting () {
                 <Text style={styles.title}>Username</Text>
                 <TextInput
                     value={formData.userName} // Set value to formData.text to make it controlled
-                    onChangeText={(text) => handleChange("text", text)} // Handle text changes
+                    onChangeText={(text) => handleChange("userName", text)} // Handle text changes
                     style={styles.textInput}
                     placeholder="username"
                     multiline={true}
@@ -57,7 +80,7 @@ export default function AccountSetting () {
                 <Text style={styles.title}>Email</Text>
                 <TextInput
                     value={formData.email} // Set value to formData.text to make it controlled
-                    onChangeText={(text) => handleChange("text", text)} // Handle text changes
+                    onChangeText={(text) => handleChange("email", text)} // Handle text changes
                     style={styles.textInput}
                     placeholder="email"
                     multiline={true}
