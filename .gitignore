@@ -22,4 +22,4 @@ expo-env.d.ts
 # @end expo-cli
 credentials.json
 
-backend/omniplanner/src/main/resources/application.properties
+/backend/omniplanner/src/main/resources/application.properties
