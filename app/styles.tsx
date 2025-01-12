@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
   },
   headerText: {
     textAlign: "center",
-    fontSize: 28,
+    fontSize: 37,
     fontWeight: "bold",
     color: "#333",
   },
@@ -261,9 +261,10 @@ export const styles = StyleSheet.create({
     borderColor: "#ccc",
   },
   loginPage: {
+    flex: 1,
     flexDirection: "column",
     justifyContent: "center",
-    paddingHorizontal: 500,
+    paddingHorizontal: 550,
     backgroundColor: "#ffffff",
   },
   loginPageInput: {
