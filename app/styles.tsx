@@ -261,32 +261,22 @@ export const styles = StyleSheet.create({
     borderColor: "#ccc",
   },
   loginPage: {
-    flex: 1,
     flexDirection: "column",
     justifyContent: "center",
-    paddingHorizontal: 25,
+    paddingHorizontal: 500,
     backgroundColor: "#ffffff",
   },
-  usernameInput: {
-    flex: 1,
-    height: 20,
+  loginPageInput: {
+    height: 40,
     marginHorizontal: 10,
     borderWidth: 1,
     borderColor: "#ccc",
     paddingHorizontal: 10,
     borderRadius: 8,
     backgroundColor: "#fff",
+    marginBottom: 20,
   },
-  passwordInput: {
-    flex: 1,
-    height: 20,
-    marginHorizontal: 10,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    paddingHorizontal: 10,
-    borderRadius: 8,
-    backgroundColor: "#fff",
+  loginPageNonheaderText: {
+    marginBottom: 10,
   },
-
-
 });

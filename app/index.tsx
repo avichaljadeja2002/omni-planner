@@ -81,14 +81,16 @@ export default function TaskScreen() {
     return (
         <View style={styles.loginPage}>
             <Text style={styles.headerText}>Login</Text>
+            <Text style={styles.loginPageNonheaderText}>Username</Text>
             <TextInput
-                style={styles.usernameInput}
-                placeholder="Username"
+                style={styles.loginPageInput}
+                placeholder="Enter Username"
                 autoCapitalize="none"
                 onChangeText={(text) => setUsername(text)}
             />
+            <Text style={styles.loginPageNonheaderText}>Password</Text>
             <TextInput
-                style={styles.passwordInput}
+                style={styles.loginPageInput}
                 placeholder="Password"
                 secureTextEntry
                 onChangeText={(text) => setPassword(text)}
