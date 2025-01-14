@@ -11,7 +11,7 @@ export default function MealTracker() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const fetchEvents = async () => {
-    const hit = IPAddr + '/get_meal_events/'+(await AsyncStorage.getItem('userId'));
+    const hit = IPAddr + '/get_meal_events/' + (await AsyncStorage.getItem('userId'));
     cLog('Fetching meal events from:' + hit);
     axios.get(hit)
       .then(response => {
@@ -21,7 +21,7 @@ export default function MealTracker() {
           done: false,
           icon: 'fast-food-outline',
           event: event
-        })).slice(0,10);
+        })).slice(0, 10);
         setTasks(events);
       })
       .catch(error => console.error('Error fetching events:', error));

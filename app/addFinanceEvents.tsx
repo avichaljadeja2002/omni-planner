@@ -14,7 +14,7 @@ export default function AddFinanceEvents() {
         repeat_timeline: '',
         money: 0.0
     }
-    
+
     const fields = [
         { name: 'title', label: 'Title', type: 'text' },
         { name: 'event_date', label: 'Date', type: 'date' },
@@ -29,10 +29,10 @@ export default function AddFinanceEvents() {
                 ...saveData,
                 repeating: Boolean(saveData.repeating),
                 repeat_timeline: saveData.repeating
-              };
-              cLog(payload);
-              const hit = IPAddr + '/add_finance_events';
-              cLog('Saving event to:' + hit);
+            };
+            cLog(payload);
+            const hit = IPAddr + '/add_finance_events';
+            cLog('Saving event to:' + hit);
             const response = await axios.post(hit, payload);
             cLog('Event saved successfully:' + response.data);
         } catch (error) {

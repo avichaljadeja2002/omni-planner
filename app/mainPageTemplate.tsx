@@ -9,7 +9,6 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { cLog } from './log';
 import { getPageFromEventType, getPageName, verifyToken } from './constants';
-// import { cLog } from './log';
 
 interface FormProps {
     title: string;

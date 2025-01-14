@@ -37,7 +37,7 @@ const GenericEventPage = ({
   fields,
   updateEndpoint,
   fetchEndpoint,
-  }: GenericEventPageProps) => {
+}: GenericEventPageProps) => {
   const [formData, setFormData] = useState<any>({});
   const [additionalData, setAdditionalData] = useState<any>([]);
   const route = useRoute<RouteProp<RootStackParamList, any>>();

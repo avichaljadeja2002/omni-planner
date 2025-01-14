@@ -14,8 +14,8 @@ export default function ViewHealthEvents() {
 
   return (
     <GenericEventPage
-    title="Finance Event"
-    fields={fields}
+      title="Finance Event"
+      fields={fields}
       updateEndpoint={`${IPAddr}/update_finance_event`}
       mainPage="financeTracker"
     />

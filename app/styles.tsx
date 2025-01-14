@@ -42,9 +42,9 @@ export const styles = StyleSheet.create({
   toggleContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center", 
-    marginBottom: 10, 
-  },  
+    alignItems: "center",
+    marginBottom: 10,
+  },
   subHeaderText: {
     fontSize: 18,
     color: "#9b59b6",
@@ -242,7 +242,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 25,
     width: '75%',
-    marginTop:0,
+    marginTop: 0,
     borderRadius: 8,
     alignItems: "center",
   },
