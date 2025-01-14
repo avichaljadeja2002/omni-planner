@@ -3,7 +3,7 @@ import axios from "axios";
 import { cLog } from './log';
 
 // export const IPAddr = "http://34.204.83.156:8080" // For AWS
-export const IPAddr = "http://137.112.196.132:8080" // For local testing on laptop
+export const IPAddr = "http://127.0.0.1:8080" // For local testing on laptop
 export const logging = true;
 
 export const repeatingData = [
@@ -70,4 +70,8 @@ export const verifyToken = async (navigation) => {
     }
     cLog('Verify response:', response.data);
     return true;
+}
+
+export const getUserId = async() => {
+  return await AsyncStorage.getItem('userId');
 }
