@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import MultiSelect from 'react-native-multiple-select';
 import { Dropdown } from 'react-native-element-dropdown';
-import { getUserId, IPAddr, repeatingData } from './constants';
+import { getUserId, } from './constants';
 import { cLog } from './log';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '@/components/Types';
@@ -39,8 +37,7 @@ const GenericEventPage = ({
   fields,
   updateEndpoint,
   fetchEndpoint,
-  mainPage,
-}: GenericEventPageProps) => {
+  }: GenericEventPageProps) => {
   const [formData, setFormData] = useState<any>({});
   const [additionalData, setAdditionalData] = useState<any>([]);
   const route = useRoute<RouteProp<RootStackParamList, any>>();
@@ -73,6 +70,7 @@ const GenericEventPage = ({
     try {
       const response = await axios.get(fetchEndpoint);
       setAdditionalData(response.data);
+      cLog(additionalData);
     } catch (error) {
       console.error('Error fetching additional data:', error);
     }
