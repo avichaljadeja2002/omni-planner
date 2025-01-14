@@ -17,7 +17,7 @@ export default function AddMeals() {
 
   const fetchIngredients = async () => {
     try {
-      const response = await axios.get(IPAddr + '/get_ingredients/' +(await AsyncStorage.getItem('userId')));
+      const response = await axios.get(IPAddr + '/get_ingredients/' + (await AsyncStorage.getItem('userId')));
       const fetchedIngredients = response.data.map((item: any) => ({
         label: item.ingredientName,
         value: item.id,
@@ -37,13 +37,12 @@ export default function AddMeals() {
   //   }
   // };
 
-
   const fields = [
     { name: 'title', label: 'Title', type: 'text' },
     { name: 'event_date', label: 'Date', type: 'date' },
     { name: 'event_time', label: 'Time', type: 'time' },
     { name: 'repeat_timeline', label: 'Repeating', type: 'dropdown', options: repeatingData },
-    { name: 'ingredients', label: 'Ingredients', type: 'multi-select'},
+    { name: 'ingredients', label: 'Ingredients', type: 'multi-select' },
   ];
 
   const handleSave = async (saveData: any) => {

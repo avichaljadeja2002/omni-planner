@@ -1,8 +1,6 @@
-// import { IPAddr } from './constants';
-// import axios from 'axios';
 import GenericMainPageForm from './mainPageTemplate';
 import React, { useState, useCallback } from 'react';
-import { formatTime, IPAddr } from './constants';
+import { formatTime, getEventIcon, IPAddr } from './constants';
 import { Task } from '../components/Types';
 import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
@@ -14,7 +12,7 @@ export default function TaskScreen() {
   const [header, setHeader] = useState<string | null>(null);
 
   const fetchAllEvents = async () => {
-    const hit = IPAddr + '/get_all_events/'+(await AsyncStorage.getItem('userId'));
+    const hit = IPAddr + '/get_all_events/' + (await AsyncStorage.getItem('userId'));
     cLog('Fetching all events from:' + hit);
     axios.get(hit)
       .then(response => {
@@ -22,28 +20,13 @@ export default function TaskScreen() {
           id: event.id.toString(),
           title: `${event.title} at ${event.eventDate}, ${formatTime(event.eventTime)}`,
           done: false,
-          icon: getEventIcon(event.event_type), 
+          icon: getEventIcon(event.event_type),
           event: event
-        })).slice(0,10);;
+        })).slice(0, 10);;
         setTasks(events);
       })
       .catch(error => console.error('Error fetching events:', error));
   }
-
-  const getEventIcon = (eventType: string) => {
-    switch (eventType.toLowerCase()) {
-      case 'finance':
-        return 'wallet-outline';
-      case 'calendar':
-        return 'calendar-outline';
-      case 'health':
-        return 'fitness-outline';
-      case 'meal':
-        return 'fast-food-outline';
-      default:
-        return 'help-outline';
-    }
-  };
 
   const fetchHeader = async () => {
     const name = await AsyncStorage.getItem('name');

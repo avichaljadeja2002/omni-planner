@@ -11,7 +11,7 @@ export default function HealthTracker() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const fetchEvents = async () => {
-    const hit = IPAddr + '/get_health_events/'+(await AsyncStorage.getItem('userId'));
+    const hit = IPAddr + '/get_health_events/' + (await AsyncStorage.getItem('userId'));
     cLog('Fetching health events from:' + hit);
     axios.get(hit)
       .then(response => {
@@ -21,7 +21,7 @@ export default function HealthTracker() {
           done: false,
           icon: 'fitness-outline',
           event: event
-        })).slice(0,10);
+        })).slice(0, 10);
         setTasks(events);
       })
       .catch(error => console.error('Error fetching events:', error));

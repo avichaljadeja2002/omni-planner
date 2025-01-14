@@ -11,7 +11,7 @@ export default function FinanceTracker() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const fetchEvents = async () => {
-    const hit = IPAddr + '/get_finance_events/'+(await AsyncStorage.getItem('userId'));
+    const hit = IPAddr + '/get_finance_events/' + (await AsyncStorage.getItem('userId'));
     cLog('Fetching finance events from:' + hit);
     axios.get(hit)
       .then(response => {
@@ -21,7 +21,7 @@ export default function FinanceTracker() {
           done: false,
           icon: 'wallet-outline',
           event: event
-        })).slice(0,10);;
+        })).slice(0, 10);;
         setTasks(events);
       })
       .catch(error => console.error('Error fetching events:', error));
@@ -32,7 +32,7 @@ export default function FinanceTracker() {
       fetchEvents();
     }, [])
   );
- 
+
   return (
     <GenericMainPageForm
       title='Finance Tracker'

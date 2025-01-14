@@ -108,7 +108,7 @@ export default function CalendarTracker() {
 
   const fetchEvents = async () => {
     try {
-      const hit = `${IPAddr}/get_calendar_events/`+(await AsyncStorage.getItem('userId'));
+      const hit = `${IPAddr}/get_calendar_events/` + (await AsyncStorage.getItem('userId'));
       cLog('Fetching calendar events from:' + hit);
       const response = await axios.get(hit);
 
@@ -122,7 +122,7 @@ export default function CalendarTracker() {
           done: false,
           icon: 'calendar-outline',
           event: event
-        })).slice(0,20);;
+        })).slice(0, 20);;
 
         setTasks(formattedEvents);
       } else {
@@ -150,10 +150,10 @@ export default function CalendarTracker() {
         tasks={tasks}
       />
       {!isGoogleCalendarLinked && (
-        <View style={{alignItems: 'center', marginBottom:25}}>
-        <TouchableOpacity style={styles.linkButton} onPress={handlePress}>
-          <Text style={styles.linkButtonText}>Link to Google Calendar</Text>
-        </TouchableOpacity>
+        <View style={{ alignItems: 'center', marginBottom: 25 }}>
+          <TouchableOpacity style={styles.linkButton} onPress={handlePress}>
+            <Text style={styles.linkButtonText}>Link to Google Calendar</Text>
+          </TouchableOpacity>
         </View>)
       }
     </View>

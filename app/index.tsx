@@ -1,5 +1,3 @@
-// import { IPAddr } from './constants';
-// import axios from 'axios';
 import React, { useState, useCallback } from 'react';
 import { IPAddr } from './constants';
 import { RootStackParamList } from '../components/Types';
@@ -14,7 +12,6 @@ import { Button, TextInput, View, Text } from 'react-native';
 export default function TaskScreen() {
     type Prop = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
     const navigation = useNavigation<Prop>();
-
     const [userName, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -22,28 +19,28 @@ export default function TaskScreen() {
         try {
             const storedToken = await AsyncStorage.getItem('token') || '';
             const storedUserName = await AsyncStorage.getItem('userName') || '';
-    
+
             // Check if we have a valid token and username
             if (!storedToken || !storedUserName) {
                 console.log('No valid token or username found');
                 return;
             }
-    
+
             const hit = IPAddr + '/checkLogin';
             const response = await axios.put(hit, { userName: storedUserName, token: storedToken });
-            
+
             cLog('Login response:', response.data);
             if (!response.data) {
                 return;
             }
-            
+
             const userInfo = response.data.split(",");
             await AsyncStorage.setItem('userId', userInfo[0]);
             await AsyncStorage.setItem('userName', userInfo[1]);
             await AsyncStorage.setItem('email', userInfo[2]);
             await AsyncStorage.setItem('name', userInfo[3]);
             await AsyncStorage.setItem('token', userInfo[4]);
-            
+
             cLog('User id saved:', response.data.userId);
             navigation.navigate('home');
         } catch (error) {

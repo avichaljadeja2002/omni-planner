@@ -2,7 +2,6 @@ import React from 'react';
 import GenericEventPage, { Field } from './genericViewEventPage';
 import { IPAddr, repeatingData } from './constants';
 
-
 export default function ViewMealEvents() {
   const fields: Field[] = [
     { name: 'title', label: 'Title', type: 'text' },

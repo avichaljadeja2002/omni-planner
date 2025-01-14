@@ -1,14 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-// import { IPAddr } from './constants';
-// import axios from 'axios';
 import { cLog } from './log';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import { useFocusEffect } from '@react-navigation/native';
-// import GenericViewPageForm from './viewEventPage';
 
-export default function AccountSetting () {
+export default function AccountSetting() {
     const initialData = { userId: 1, name: "", userName: "", email: "" };
 
     const [formData, setFormData] = useState(initialData);
@@ -38,7 +34,7 @@ export default function AccountSetting () {
             const name = await AsyncStorage.getItem('name');
             const userName = await AsyncStorage.getItem('userName');
             const email = await AsyncStorage.getItem('email');
-            
+
             // Update state with retrieved values
             setFormData({
                 userId: userId ? parseInt(userId, 10) : 1,  // Default to 1 if not found
@@ -50,13 +46,13 @@ export default function AccountSetting () {
             console.error("Error fetching local values from AsyncStorage:", error);
         }
     };
-    
+
 
     useFocusEffect(
         useCallback(() => {
             getLocalValues();
         }, [])
-      );
+    );
 
     return (
         <View style={styles.container}>
