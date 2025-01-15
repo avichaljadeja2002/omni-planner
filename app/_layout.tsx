@@ -5,7 +5,7 @@ import App from './index';
 import HealthTracker from './mainHealthTracker';
 import MealTracking from './mainMealTracker';
 import Notes from './notes';
-import Finance from './mainFinance';
+import Finance from './mainFinanceTracker';
 import CalendarEvents from './mainCalendarEvents';
 import AccountSetting from './accountSetting';
 import { createStackNavigator, StackHeaderProps } from '@react-navigation/stack';

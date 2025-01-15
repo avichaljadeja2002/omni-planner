@@ -17,7 +17,7 @@ export default function AddFinanceEvents() {
             title="New Finance Event"
             initialData={financeInitialData}
             fields={financeFields}
-            mainPage='mainFinance'
+            mainPage='mainFinanceTracker'
             updateEndpoint={`${IPAddr}/add_finance_events`}
             method="POST"
         />

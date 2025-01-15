@@ -22,7 +22,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
     cLog("Initial Data:");
     cLog(initialData);
     let event = initialData.event ? initialData.event : initialData;
-    if(route)event = route.params?.event.event;
+    if(route.params)event = route.params?.event.event;
     cLog("Event:");
     cLog(event);
     const [formData, setFormData] = useState({

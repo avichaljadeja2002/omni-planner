@@ -6,7 +6,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { Field } from "@/components/Types";
 
 // export const IPAddr = "http://34.204.83.156:8080" // For AWS
-export const IPAddr = "http://137.112.196.132:8080" // For local testing on lapto
+export const IPAddr = "http://137.112.198.165:8080" // For local testing on lapto
 
 export const repeatingData = [
   { label: 'Daily', value: 1 },
