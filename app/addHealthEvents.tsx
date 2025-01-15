@@ -1,5 +1,5 @@
 import React from 'react';
-import { healthFields, IPAddr } from '@/constants/constants';
+import { healthFields } from '@/constants/constants';
 import GenericAddViewPageForm from './genericAddViewEventPage';
 
 export default function AddHealthEvents() {
@@ -17,7 +17,7 @@ export default function AddHealthEvents() {
             initialData={healthInitialData}
             fields={healthFields}
             mainPage='mainHealthTracker'
-            updateEndpoint={`${IPAddr}/add_health_events`}
+            updateEndpoint={`/add_health_events`}
             method="POST"
         />
     );

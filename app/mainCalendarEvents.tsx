@@ -3,9 +3,8 @@ import GenericMainPageForm from './genericMainPage';
 import { Alert } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Linking from 'expo-linking';
-import axios from 'axios';
-import { IPAddr } from '@/constants/constants';
-import { cLog } from './log'
+import { cLog } from '../components/log'
+import { call } from '../components/apiCall';
 
 const CLIENT_ID = process.env.EXPO_PUBLIC_CLIENT_ID || '';
 const CLIENT_SECRET = process.env.EXPO_PUBLIC_CLIENT_SECRET || '';
@@ -52,11 +51,7 @@ export default function CalendarTracker() {
       params.append('client_secret', CLIENT_SECRET);
       params.append('redirect_uri', REDIRECT_URI);
       params.append('grant_type', 'authorization_code');
-      const response = await axios.post(TOKEN_URI, params, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      });
+      const response = await call(TOKEN_URI, 'POST', 'application/x-www-form-urlencoded', params);
       if (response.data.access_token) {
         cLog("Received access token:" + response.data.access_token);
         linkGoogleCalendar(1, response.data.access_token);
@@ -73,12 +68,7 @@ export default function CalendarTracker() {
   const linkGoogleCalendar = async (userId: any, token: any) => {
     cLog("Linking Google Calendar for user and fetching events...");
     try {
-      const hit = `${IPAddr}/link_calendar`;
-      cLog("Linking Google Calendar with hit:" + hit);
-      const response = await axios.post(hit, {
-        userId: userId,
-        accessToken: token,
-      });
+      const response = await call(`/link_calendar`, 'POST', undefined, { userId, accessToken: token });
       if (response.status === 200 && response.data.includes("successfully")) {
         cLog('Google Calendar linked successfully:' + response.data);
         Alert.alert('Google Calendar linked successfully!');

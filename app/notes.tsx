@@ -1,11 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
-import { cLog } from './log';
-import { IPAddr } from '@/constants/constants';
+import { cLog } from '../components/log';
 import { styles } from '@/assets/styles/styles';
-import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { call } from '../components/apiCall';
 
 export default function Notes() {
     const initialData = { userId: 1, text: "" };
@@ -20,10 +19,8 @@ export default function Notes() {
                 event_date: currentDate,
                 event_time: currentTime,
             };
-            const hit = IPAddr + '/add_note';
-            const response = await axios.put(hit, updatedFormData);
-
-            console.log('Note saved successfully: ' + response.data);
+            const response = await call('/add_note', 'PUT', undefined, updatedFormData);
+            cLog('Note saved successfully: ' + response.data);
         } catch (error) {
             console.error('Error saving note:', error);
         }
@@ -34,16 +31,22 @@ export default function Notes() {
     };
 
     const fetchNote = async () => {
-        const hit = IPAddr + '/get_note/' + (await AsyncStorage.getItem('userId'));
-        cLog('Fetching note from:' + hit);
-        axios.get(hit)
-            .then(response => {
-                const events = response.data.map((event: { text: any; }) => ({
-                    text: `${event.text}`,
-                }));
-                setFormData({ ...formData, text: events[0]?.text || "" });
-            })
-            .catch(error => console.error('Error fetching events:', error));
+        try {
+            const userId = await AsyncStorage.getItem('userId');
+            if (!userId) throw new Error('User ID not found');
+    
+            const hit = '/get_note/' + userId;
+            cLog('Fetching note from: ' + hit);
+    
+            const response = await call(hit, 'GET');
+            const events = response.data.map((event: { text: any; }) => ({
+                text: `${event.text}`,
+            }));
+    
+            setFormData({ ...formData, text: events[0]?.text || "" });
+        } catch (error) {
+            console.error('Error fetching note:', error);
+        }
     };
 
     useFocusEffect(
