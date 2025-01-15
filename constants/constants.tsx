@@ -1,12 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
-import { cLog } from '@/app/log';
+import { cLog } from '@/components/log';
 import { RootStackParamList } from "@/components/Types";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Field } from "@/components/Types";
+import { call } from '@/components/apiCall';
 
 // export const IPAddr = "http://34.204.83.156:8080" // For AWS
-export const IPAddr = "http://137.112.198.165:8080" // For local testing on lapto
+export const IPAddr = "http://137.112.196.132:8080" // For local testing on lapto
 
 export const repeatingData = [
   { label: 'Daily', value: 1 },
@@ -74,18 +74,16 @@ export const getPageFromEventType = (eventType: any) => {
 }
 
 export const verifyToken = async (navigation: StackNavigationProp<RootStackParamList, keyof RootStackParamList>) => {
-  const hit = IPAddr + '/checkLogin';
   const storedUserName = await AsyncStorage.getItem('userName');
   const storedToken = await AsyncStorage.getItem('token');
   const storedUserId = await AsyncStorage.getItem('userId');
-  const response = await axios.put(hit, { userName: storedUserName, token: storedToken, userId: storedUserId });
+  const response = await call('/checkLogin', 'PUT', undefined, { userName: storedUserName, token: storedToken, userId: storedUserId });
   if (!response.data) {
     cLog('Token verification failed');
     await AsyncStorage.clear();
     navigation.navigate('index');
     return false;
   }
-  cLog('Verify response:', response.data);
   return true;
 }
 

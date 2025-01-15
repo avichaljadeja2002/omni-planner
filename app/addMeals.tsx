@@ -1,5 +1,5 @@
 import React from 'react'
-import { mealFields, IPAddr } from '@/constants/constants';
+import { mealFields } from '@/constants/constants';
 import GenericAddViewPageForm from './genericAddViewEventPage';
 
 export default function AddMeals() {
@@ -16,8 +16,8 @@ export default function AddMeals() {
             initialData={mealInitialData}
             fields={mealFields}
             mainPage="mainMealTracker"
-            updateEndpoint={`${IPAddr}/add_meal_events`}
-            fetchEndpoint={`${IPAddr}/get_ingredients`}
+            updateEndpoint={`/add_meal_events`}
+            fetchEndpoint={`/get_ingredients`}
             keyValue={{'key':"id", "value":"ingredientName"}}
             method="POST"
         />
@@ -32,4 +32,4 @@ export default function AddMeals() {
   //     console.error('Error adding new ingredient:', error);
   //   }
   // };
-
+ 

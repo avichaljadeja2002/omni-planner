@@ -1,13 +1,12 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { IPAddr } from '@/constants/constants';
 import { RootStackParamList, UserInfo } from '@/components/Types';
-import axios from 'axios';
 import { styles } from '@/assets/styles/styles';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { cLog } from './log';
+import { cLog } from '../components/log';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TextInput, View, Text, TouchableOpacity } from 'react-native';
+import { call } from '../components/apiCall';
 
 export default function TaskScreen() {
     type Prop = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
@@ -40,7 +39,7 @@ export default function TaskScreen() {
 
     const performLoginRequest = async (url: string, data: object) => {
         try {
-            const response = await axios.put(url, data);
+            const response = await call(url, 'PUT', undefined, data);
             cLog('Login response:', response.data);
             await handleLoginResponse(response.data);
         } catch (error) {
@@ -51,16 +50,16 @@ export default function TaskScreen() {
     const checkLogin = async () => {
         const [storedToken, storedUserName] = await AsyncStorage.multiGet(['token', 'userName']);
         if (storedToken[1] && storedUserName[1]) {
-            await performLoginRequest(`${IPAddr}/checkLogin`, { userName: storedUserName[1], token: storedToken[1] });
+            await performLoginRequest(`/checkLogin`, { userName: storedUserName[1], token: storedToken[1] });
         } else {
-            console.log('No valid token or username found');
+            cLog('No valid token or username found');
         }
     };
 
     const handleLogin = async () => {
         cLog("Attempting to log in...");
         const { userName, password } = credentials;
-        performLoginRequest(`${IPAddr}/login`, { userName, password })
+        performLoginRequest(`/login`, { userName, password })
     }
 
     const parseUserInfo = (data: string): UserInfo => {

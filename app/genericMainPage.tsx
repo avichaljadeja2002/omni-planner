@@ -7,10 +7,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { EventProps, GoogleCalendarProps, NavigationProps, RootStackParamList, Task } from '@/components/Types';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { cLog } from './log';
-import { formatTime, getPageFromEventType, getPageName, IPAddr, verifyToken } from '@/constants/constants';
-import axios from 'axios';
+import { cLog } from '../components/log';
+import { formatTime, getPageFromEventType, getPageName, verifyToken } from '@/constants/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { call } from '../components/apiCall';
 
 interface FormProps extends EventProps, GoogleCalendarProps, NavigationProps {
     title: string;
@@ -77,22 +77,14 @@ const GenericMainPageForm: React.FC<FormProps> = ({
     const fetchEvents = async () => {
         try {
             const userId = await AsyncStorage.getItem('userId');
-            const hit = `${IPAddr}${hitAddress}${userId}`;
-            cLog(`Fetching events from: ${hit}`);
     
-            const response = await axios.get(hit);
+            const response = await call(`${hitAddress}${userId}`, 'GET');
     
             if (response.status === 200 && response.data) {
                 const { events, googleCalendarLinked } = response.data;
-                cLog(`response.data:`);
-                cLog(response.data);
-                cLog(`events:`);
-                cLog(events);
-    
                 if (googleCalendar) {
                     setIsGoogleCalendarLinked(googleCalendarLinked);
                 }
-    
                 const eventsArray = Array.isArray(events) ? events : response.data;
                 cLog(`eventsArray:`);
                 cLog(eventsArray);

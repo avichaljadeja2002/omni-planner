@@ -1,5 +1,5 @@
 import React from 'react';
-import { calendarFields, IPAddr } from '@/constants/constants';
+import { calendarFields } from '@/constants/constants';
 import GenericAddViewPageForm from './genericAddViewEventPage';
 
 export default function AddCalendarEvents() {
@@ -18,7 +18,7 @@ export default function AddCalendarEvents() {
             initialData={calendarInitialData}
             fields={calendarFields}
             mainPage="mainCalendarEvents"
-            updateEndpoint={`${IPAddr}/add_calendar_event`}
+            updateEndpoint={`/add_calendar_event`}
             method="POST"
         />
     );

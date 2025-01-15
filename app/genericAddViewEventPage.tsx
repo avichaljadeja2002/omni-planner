@@ -1,9 +1,8 @@
 import React, { useCallback, useState } from 'react';
-import axios from 'axios';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { View, Text, TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
-import { cLog } from './log';
+import { cLog } from '../components/log';
 import { styles } from '@/assets/styles/styles';
 import { GenericEventPageProps, RootStackParamList } from '@/components/Types';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -11,6 +10,7 @@ import { useNavigation, useFocusEffect, RouteProp, useRoute } from '@react-navig
 import MultiSelect from 'react-native-multiple-select';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { verifyToken } from '@/constants/constants';
+import { call } from '../components/apiCall';
 
 const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initialData = {}, fields, mainPage, updateEndpoint, fetchEndpoint, keyValue, method }) => {
     const [showDatePicker, setShowDatePicker] = useState(false);
@@ -46,13 +46,8 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
         cLog(formattedData);
         try {
             cLog('Saving event to:' + updateEndpoint);
-            if (method === 'PUT') {
-                const response = await axios.put(updateEndpoint, formattedData);
-                cLog('Event updated successfully:' + response.data);
-            } else {
-                const response = await axios.post(updateEndpoint, formattedData);
-                cLog('Event saved successfully:' + response.data);
-            }
+            const response = await call(updateEndpoint, method, undefined, formattedData)
+            cLog('Event updated successfully:' + response.data);
         } catch (error) {
             console.error('Error saving event:', error);
         }
@@ -87,7 +82,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
         if (!fetchEndpoint) return;
         try {
             const userId = await AsyncStorage.getItem('userId');
-            const response = await axios.get(`${fetchEndpoint}/${userId}`);
+            const response = await call(`${fetchEndpoint}/${userId}`, 'GET');
             const formattedData = response.data.map((item: { [x: string]: any; id: any; name: any; }) => ({
                 value: keyValue ? item[keyValue.key] : item.id,
                 label: keyValue ? item[keyValue.value] : item.name,
