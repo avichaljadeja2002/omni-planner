@@ -7,22 +7,24 @@ import { cLog } from './log';
 import { styles } from '@/assets/styles/styles';
 import { GenericEventPageProps, RootStackParamList } from '@/components/Types';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useNavigation, useFocusEffect, RouteProp, useRoute } from '@react-navigation/native';
 import MultiSelect from 'react-native-multiple-select';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { verifyToken } from '@/constants/constants';
 
-const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initialData, fields, mainPage, updateEndpoint, fetchEndpoint, keyValue, method }) => {
+const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initialData = {}, fields, mainPage, updateEndpoint, fetchEndpoint, keyValue, method }) => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [additionalData, setAdditionalData] = useState<any>([]);
     const [currentField, setCurrentField] = useState<string | null>(null);
-
+    const route = useRoute<RouteProp<RootStackParamList, any>>();
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     cLog("Initial Data:");
     cLog(initialData);
-    const event = initialData.event ? initialData.event : initialData;
-
+    let event = initialData.event ? initialData.event : initialData;
+    if(route)event = route.params?.event.event;
+    cLog("Event:");
+    cLog(event);
     const [formData, setFormData] = useState({
         ...event,
         event_date: event.event_date ? new Date(event.event_date) : new Date(),

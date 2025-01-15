@@ -14,7 +14,6 @@ export default function TaskScreen() {
     const navigation = useNavigation<Prop>();
     const [credentials, setCredentials] = useState({ userName: '', password: '' });
 
-    // Create a reference for the password input field
     const passwordInputRef = useRef<TextInput>(null);
 
     const updateAsyncStorage = async (userInfo: UserInfo) => {
@@ -84,18 +83,18 @@ export default function TaskScreen() {
                 placeholder="Enter Username"
                 autoCapitalize="none"
                 onChangeText={(text) => setCredentials({ ...credentials, userName: text })}
-                returnKeyType="next" // Move to the next input field
-                onSubmitEditing={() => passwordInputRef.current && passwordInputRef.current.focus()} // Focus on the password input when the user presses Enter
+                returnKeyType="next"
+                onSubmitEditing={() => passwordInputRef.current && passwordInputRef.current.focus()}
             />
             <Text style={styles.loginPageNonheaderText}>Password</Text>
             <TextInput
-                ref={passwordInputRef} // Use the ref for the password input
+                ref={passwordInputRef}
                 style={styles.loginPageInput}
                 placeholder="Password"
                 secureTextEntry
                 onChangeText={(text) => setCredentials({ ...credentials, password: text })}
-                returnKeyType="done" // Show "Done" on the keyboard
-                onSubmitEditing={handleLogin} // Trigger the login action when the user presses Enter
+                returnKeyType="done"
+                onSubmitEditing={handleLogin}
             />
             <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
                 <Text style={styles.loginButtonText}>Login</Text>

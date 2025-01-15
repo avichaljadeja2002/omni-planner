@@ -4,12 +4,13 @@ import GenericAddViewPageForm from './genericAddViewEventPage';
 
 export default function AddCalendarEvents() {
     const calendarInitialData = {
-        userId: 1,
+        userId: 0,
         title: '',
         event_date: new Date(),
         event_time: new Date(),
         description: '',
-        repeating: 0, // Or false, depending on the use case
+        repeating: false,
+        repeat_timeline: '',
       };
     return (
         <GenericAddViewPageForm

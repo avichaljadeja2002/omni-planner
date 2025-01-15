@@ -1,11 +1,10 @@
 import React from 'react';
 import { financeFields, IPAddr } from '@/constants/constants';
 import GenericAddViewPageForm from './genericAddViewEventPage';
-import { cLog } from './log';
 
 export default function AddFinanceEvents() {
     const financeInitialData = {
-        userId: 1,
+        userId: 0,
         title: '',
         event_date: new Date(),
         event_time: new Date(),
@@ -13,8 +12,6 @@ export default function AddFinanceEvents() {
         repeat_timeline: '',
         money: 0.0,
       };
-    cLog("Finance Initial Data:");
-    cLog(financeInitialData);
     return (
         <GenericAddViewPageForm
             title="New Finance Event"

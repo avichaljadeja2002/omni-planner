@@ -26,7 +26,7 @@ export default function TaskScreen() {
       nextPage='mainPage'
       thisPage='mainPage'
       hitAddress={`/get_all_events/`}
-      eventTitleFunc = {(event) => `${event.title} at ${event.eventDate}, ${formatTime(event.eventTime)}`}
+      eventTitleFunc={(event) => `${event.title} at ${event.eventDate}, ${formatTime(event.eventTime)}`}
       eventIconFunc={(event) => getEventIcon(event.event_type)}
     />
   );
