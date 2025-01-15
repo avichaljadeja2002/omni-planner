@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import { IPAddr, repeatingData } from './constants';
-import GenericAddPageForm from './addEventPage';
+import { IPAddr, repeatingData } from '../constants/constants';
+import GenericAddPageForm from './genericAddEventPage';
 import { cLog } from './log'
 
 export default function AddFinanceEvents() {

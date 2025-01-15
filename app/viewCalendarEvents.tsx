@@ -1,6 +1,6 @@
 import React from 'react';
 import GenericEventPage, { Field } from './genericViewEventPage';
-import { IPAddr, repeatingData } from './constants';
+import { IPAddr, repeatingData } from '../constants/constants';
 
 export default function ViewHealthEvents() {
   const fields: Field[] = [

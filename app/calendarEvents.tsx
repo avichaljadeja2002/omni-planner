@@ -1,15 +1,11 @@
-import React, { useState, useCallback } from 'react';
-import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import React, { useState } from 'react';
+import GenericMainPageForm from './genericMainPage';
+import { Alert } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Linking from 'expo-linking';
 import axios from 'axios';
-import { IPAddr, formatTime } from './constants';
-import { styles } from './styles';
-import GenericMainPageForm from './mainPageTemplate';
-import { Task } from '@/components/Types';
-import { useFocusEffect } from '@react-navigation/native';
+import { IPAddr } from '../constants/constants';
 import { cLog } from './log'
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CLIENT_ID = process.env.EXPO_PUBLIC_CLIENT_ID || '';
 const CLIENT_SECRET = process.env.EXPO_PUBLIC_CLIENT_SECRET || '';
@@ -20,22 +16,17 @@ const AUTH_URI = 'https://accounts.google.com/o/oauth2/v2/auth';
 WebBrowser.maybeCompleteAuthSession();
 
 export default function CalendarTracker() {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [isGoogleCalendarLinked, setIsGoogleCalendarLinked] = useState<boolean>(false);
+  const [isGoogleCalendarLinked, setIsGoogleCalendarLinked] = useState(false);
 
   const handlePress = async () => {
     try {
       cLog("Initiating OAuth login...");
-
       const authUrl = `${AUTH_URI}?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=https://www.googleapis.com/auth/calendar&access_type=offline&prompt=consent`;
-
       const result = await WebBrowser.openAuthSessionAsync(authUrl, REDIRECT_URI);
       cLog("WebBrowser result:" + result);
-
       if (result.type === 'success' && result.url) {
         const authCodeMatch = result.url.match(/code=([^&]*)/);
         const authCode = authCodeMatch ? authCodeMatch[1] : null;
-
         if (authCode) {
           cLog("Received authorization code:" + authCode);
           getAccessToken(authCode);
@@ -61,13 +52,11 @@ export default function CalendarTracker() {
       params.append('client_secret', CLIENT_SECRET);
       params.append('redirect_uri', REDIRECT_URI);
       params.append('grant_type', 'authorization_code');
-
       const response = await axios.post(TOKEN_URI, params, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
-
       if (response.data.access_token) {
         cLog("Received access token:" + response.data.access_token);
         linkGoogleCalendar(1, response.data.access_token);
@@ -90,12 +79,11 @@ export default function CalendarTracker() {
         userId: userId,
         accessToken: token,
       });
-
       if (response.status === 200 && response.data.includes("successfully")) {
         cLog('Google Calendar linked successfully:' + response.data);
         Alert.alert('Google Calendar linked successfully!');
         setIsGoogleCalendarLinked(true);
-        fetchEvents();
+        // fetchEvents();
       } else {
         console.error("Failed to link Google Calendar");
         Alert.alert('Failed to link Google Calendar');
@@ -106,56 +94,18 @@ export default function CalendarTracker() {
     }
   };
 
-  const fetchEvents = async () => {
-    try {
-      const hit = `${IPAddr}/get_calendar_events/` + (await AsyncStorage.getItem('userId'));
-      cLog('Fetching calendar events from:' + hit);
-      const response = await axios.get(hit);
-
-      if (response.status === 200 && response.data) {
-        const { events, googleCalendarLinked } = response.data;
-
-        setIsGoogleCalendarLinked(googleCalendarLinked);
-        const formattedEvents = events.map((event: any) => ({
-          id: `${event.id}-${event.event_date}-${event.event_time}`,
-          title: `${event.title} at ${event.event_date}, ${formatTime(event.event_time)}`,
-          done: false,
-          icon: 'calendar-outline',
-          event: event
-        })).slice(0, 20);;
-
-        setTasks(formattedEvents);
-      } else {
-        console.error('Failed to fetch events');
-      }
-    } catch (error) {
-      console.error('Error fetching events:', error);
-    }
-  };
-
-
-  useFocusEffect(
-    useCallback(() => {
-      fetchEvents();
-    }, [])
-  );
-
   return (
-    <View style={styles.bigContainer}>
-      <GenericMainPageForm
-        title='Calendar Tracker'
-        header='Upcoming Events'
-        nextPage='addCalendarEvents'
-        thisPage='calendarEvents'
-        tasks={tasks}
-      />
-      {!isGoogleCalendarLinked && (
-        <View style={{ alignItems: 'center', marginBottom: 25 }}>
-          <TouchableOpacity style={styles.linkButton} onPress={handlePress}>
-            <Text style={styles.linkButtonText}>Link to Google Calendar</Text>
-          </TouchableOpacity>
-        </View>)
-      }
-    </View>
+    <GenericMainPageForm
+      title='Calendar Tracker'
+      nextPage='addCalendarEvents'
+      thisPage='calendarEvents'
+      hitAddress={`/get_calendar_events/`}
+      googleCalendar={true}
+      eventIdFunc={(event: any) => `${event.id}-${event.event_date}-${event.event_time}`}
+      eventIconFunc={() => 'calendar-outline'}
+      handlePress={handlePress}
+      isGoogleCalendarLinked={isGoogleCalendarLinked}
+      setIsGoogleCalendarLinked={setIsGoogleCalendarLinked}
+    />
   );
 }

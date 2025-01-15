@@ -2,14 +2,14 @@ import React, { useCallback, useState } from 'react';
 import { View, TextInput, Text, TouchableOpacity, ScrollView } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Dropdown } from 'react-native-element-dropdown';
-import { styles } from './styles';
+import { styles } from '../assets/styles/styles';
 import { RootStackParamList } from '@/components/Types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import MultiSelect from 'react-native-multiple-select';
 import { cLog } from './log';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { verifyToken } from './constants';
+import { verifyToken } from '../constants/constants';
 
 interface FormProps {
   title: string;

@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { cLog } from './log';
-import { IPAddr } from './constants';
+import { IPAddr } from '../constants/constants';
 import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
