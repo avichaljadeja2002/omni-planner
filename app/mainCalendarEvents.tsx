@@ -4,7 +4,7 @@ import { Alert } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Linking from 'expo-linking';
 import axios from 'axios';
-import { IPAddr } from '../constants/constants';
+import { IPAddr } from '@/constants/constants';
 import { cLog } from './log'
 
 const CLIENT_ID = process.env.EXPO_PUBLIC_CLIENT_ID || '';

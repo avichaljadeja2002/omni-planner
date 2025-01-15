@@ -1,39 +1,47 @@
 import React, { useCallback, useState } from 'react';
-import { View, TextInput, Text, TouchableOpacity, ScrollView } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { Dropdown } from 'react-native-element-dropdown';
-import { styles } from '../assets/styles/styles';
-import { RootStackParamList } from '@/components/Types';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import MultiSelect from 'react-native-multiple-select';
-import { cLog } from './log';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { IPAddr, verifyToken } from '../constants/constants';
 import axios from 'axios';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { View, Text, TextInput, ScrollView, TouchableOpacity } from 'react-native';
+import { Dropdown } from 'react-native-element-dropdown';
+import { cLog } from './log';
+import { styles } from '@/assets/styles/styles';
+import { GenericEventPageProps, RootStackParamList } from '@/components/Types';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import MultiSelect from 'react-native-multiple-select';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { verifyToken } from '@/constants/constants';
 
-interface FormProps {
-  title: string;
-  initialData: any;
-  fields: Array<{ name: string; label: string; type: string; options?: any }>;
-  mainPage: keyof RootStackParamList;
-  hitAddress: string;
-  fetchEndpoint?: string;
-  keyValue?: { key: string; value: string };
-}
-
-const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, mainPage, hitAddress, fetchEndpoint, keyValue }) => {
+const GenericAddPageForm: React.FC<GenericEventPageProps> = ({ title, initialData, fields, mainPage, updateEndpoint, fetchEndpoint, keyValue }) => {
   const [formData, setFormData] = useState(initialData);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [additionalData, setAdditionalData] = useState<any>([]);
   const [currentField, setCurrentField] = useState<string | null>(null); // Tracks which field is being edited
 
-  type TrackerNavigationProp = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
-  const navigation = useNavigation<TrackerNavigationProp>();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
-  const handleChange = (name: string, value: any) => {
-    setFormData({ ...formData, [name]: value });
+  const handleSave = async () => {
+    const isTokenValid = await verifyToken(navigation);
+    if (!isTokenValid) return;
+    const formattedData = {
+      ...formData,
+      event_date: formData.event_date?.toISOString().split('T')[0],
+      event_time: formData.event_time?.toTimeString().split(' ')[0],
+      repeating: Boolean(formData.repeat_timeline && formData.repeat_timeline),
+      repeat_timeline: formData.repeat_timeline,
+      userId: (await AsyncStorage.getItem('userId')),
+      ingredients: formData.ingredients?.join(',')
+    };
+    cLog(formattedData);
+    try {
+      cLog('Saving event to:' + updateEndpoint);
+      const response = await axios.post(updateEndpoint, formattedData);
+      cLog('Event saved successfully:' + response.data);
+    } catch (error) {
+      console.error('Error saving event:', error);
+    }
+    navigation.navigate(mainPage as any);
   };
 
   const handleDateChange = (name: string, selectedDate: any) => {
@@ -51,30 +59,6 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
     }
   };
 
-  const handleSave = async () => {
-    const isTokenValid = await verifyToken(navigation);
-    if (!isTokenValid) return;
-    const formattedData = {
-      ...formData,
-      event_date: formData.event_date?.toISOString().split('T')[0],
-      event_time: formData.event_time?.toTimeString().split(' ')[0],
-      repeating: Boolean(formData.repeat_timeline && formData.repeat_timeline),
-      repeat_timeline: formData.repeat_timeline,
-      userId: (await AsyncStorage.getItem('userId')),
-      ingredients: formData.ingredients?.join(',')
-    };
-    cLog(formattedData);
-    try {
-      const hit = `${IPAddr}${hitAddress}`;
-      cLog('Saving event to:' + hit);
-      const response = await axios.post(hit, formattedData);
-      cLog('Event saved successfully:' + response.data);
-    } catch (error) {
-      console.error('Error saving event:', error);
-    }
-    navigation.navigate(mainPage as any);
-  };
-
   const showPicker = (type: 'date' | 'time', fieldName: string) => {
     setCurrentField(fieldName);
     if (type === 'date') {
@@ -84,15 +68,11 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
     }
   };
 
-  const handleAdditionalDataChange = (name: string, selectedItems: string[]) => {
-    handleChange(name, selectedItems);
-  };
-
   const fetchAdditionalData = async () => {
     if (!fetchEndpoint) return;
     try {
       const userId = await AsyncStorage.getItem('userId');
-      const response = await axios.get(`${IPAddr}${fetchEndpoint}/${userId}`);
+      const response = await axios.get(`${fetchEndpoint}/${userId}`);
       const formattedData = response.data.map((item: { [x: string]: any; id: any; name: any; }) => ({
         value: keyValue ? item[keyValue.key] : item.id,
         label: keyValue ? item[keyValue.value] : item.name,
@@ -104,12 +84,115 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
     }
   };
 
+  const handleChange = (name: string, value: any) => {
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleAdditionalDataChange = (name: string, selectedItems: string[]) => {
+    handleChange(name, selectedItems);
+  };
+
   useFocusEffect(
     useCallback(() => {
       verifyToken(navigation);
       fetchAdditionalData();
     }, [])
   );
+
+  const renderField = (field: any) => {
+    switch (field.type) {
+      case 'text':
+        return (
+          <TextInput
+            style={[styles.input, { height: 50 }]}
+            value={formData[field.name]}
+            onChangeText={(text) => handleChange(field.name, text)}
+            placeholder={field.label}
+          />
+        );
+      case 'date':
+        return (
+          <View style={styles.dateTimeInLine}>
+            <TouchableOpacity onPress={() => showPicker('date', field.name)}>
+              <Text style={{ textAlign: 'left' }}>{formData[field.name] ? formData[field.name].toDateString() : 'Select Date'}</Text>
+            </TouchableOpacity>
+            {showDatePicker && (
+              <DateTimePicker
+                value={currentField ? formData[currentField] || new Date() : new Date()}
+                mode="date"
+                display="default"
+                onChange={(event, selectedDate) => handleDateChange(currentField!, selectedDate)}
+              />
+            )}
+          </View>
+        );
+      case 'multi-select':
+        return (
+          <MultiSelect
+            items={additionalData} // Ensure ingredients is an array
+            uniqueKey="value"
+            selectedItems={formData[field.name] || []} // Default to an empty array
+            onSelectedItemsChange={(selectedItems) => handleAdditionalDataChange('ingredients', selectedItems)}
+            selectText="Select Ingredients"
+            searchInputPlaceholderText="Search Ingredients..."
+            displayKey="label"
+            styleDropdownMenuSubsection={styles.dropdown}
+          />
+        );
+      case 'time':
+        return (
+          <View style={styles.dateTimeInLine}>
+            <TouchableOpacity onPress={() => showPicker('time', field.name)}>
+              <Text style={{ textAlign: 'left' }}>{formData[field.name] ? formData[field.name].toLocaleTimeString() : 'Select Time'}</Text>
+            </TouchableOpacity>
+            {showTimePicker && (
+              <DateTimePicker
+                minuteInterval={15}
+                value={currentField ? formData[currentField] || new Date() : new Date()}
+                mode="time"
+                display="default"
+                onChange={(event, selectedTime) => handleTimeChange(currentField!, event, selectedTime)}
+              />
+            )}
+          </View>
+        );
+      case 'dropdown':
+        return (
+          <Dropdown
+            style={[styles.dropdown, { height: 50, width: '80%' }]}
+            data={field.options}
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            value={formData[field.name]}
+            onChange={(item) => handleChange(field.name, item.value)}
+            placeholder="Select"
+          />
+        );
+      case 'textarea':
+        return (
+          <TextInput
+            style={styles.bigInput}
+            value={formData[field.name]}
+            onChangeText={(text) => handleChange(field.name, text)}
+            multiline
+            placeholder={field.label}
+          />
+        );
+      case 'number':
+        return (
+          <TextInput
+            style={[styles.input, { height: 50 }]}
+            value={formData[field.name]}
+            onChangeText={(text) => handleChange(field.name, text)}
+            placeholder={field.label}
+            keyboardType="numeric"
+          />
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.addContainer}>
@@ -119,88 +202,7 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
           <View key={index} style={styles.inputContainer}>
             <View style={field.type === 'textarea' ? styles.inLineDescription : styles.inLine}>
               <Text style={styles.inputText}>{field.label}</Text>
-              {field.type === 'text' && (
-                <TextInput
-                  style={[styles.input, { height: 50 }]}
-                  value={formData[field.name]}
-                  onChangeText={(text) => handleChange(field.name, text)}
-                  placeholder={field.label}
-                />
-              )}
-              {field.type === 'date' && (
-                <View style={styles.dateTimeInLine}>
-                  <TouchableOpacity onPress={() => showPicker('date', field.name)}>
-                    <Text style={{ textAlign: 'left' }}>{formData[field.name] ? formData[field.name].toDateString() : 'Select Date'}</Text>
-                  </TouchableOpacity>
-                  {showDatePicker && (
-                    <DateTimePicker
-                      value={currentField ? formData[currentField] || new Date() : new Date()}
-                      mode="date"
-                      display="default"
-                      onChange={(event, selectedDate) => handleDateChange(currentField!, selectedDate)}
-                    />
-                  )}
-                </View>
-              )}
-              {field.type === 'multi-select' && (
-                <MultiSelect
-                  items={additionalData} // Ensure ingredients is an array
-                  uniqueKey="value"
-                  selectedItems={formData[field.name] || []} // Default to an empty array
-                  onSelectedItemsChange={(selectedItems) => handleAdditionalDataChange('ingredients', selectedItems)}
-                  selectText="Select Ingredients"
-                  searchInputPlaceholderText="Search Ingredients..."
-                  displayKey="label"
-                  styleDropdownMenuSubsection={styles.dropdown}
-                />
-              )}
-              {field.type === 'time' && (
-                <View style={styles.dateTimeInLine}>
-                  <TouchableOpacity onPress={() => showPicker('time', field.name)}>
-                    <Text style={{ textAlign: 'left' }}>{formData[field.name] ? formData[field.name].toLocaleTimeString() : 'Select Time'}</Text>
-                  </TouchableOpacity>
-                  {showTimePicker && (
-                    <DateTimePicker
-                      minuteInterval={15}
-                      value={currentField ? formData[currentField] || new Date() : new Date()}
-                      mode="time"
-                      display="default"
-                      onChange={(event, selectedTime) => handleTimeChange(currentField!, event, selectedTime)}
-                    />
-                  )}
-                </View>
-              )}
-              {field.type === 'dropdown' && (
-                <Dropdown
-                  style={[styles.dropdown, { height: 50, width: '80%' }]}
-                  data={field.options}
-                  maxHeight={300}
-                  labelField="label"
-                  valueField="value"
-                  value={formData[field.name]}
-                  onChange={(item) => handleChange(field.name, item.value)}
-                  placeholder="Select"
-                />
-              )}
-
-              {field.type === 'textarea' && (
-                <TextInput
-                  style={styles.bigInput}
-                  value={formData[field.name]}
-                  onChangeText={(text) => handleChange(field.name, text)}
-                  multiline
-                  placeholder={field.label}
-                />
-              )}
-              {field.type === 'number' && (
-                <TextInput
-                  style={[styles.input, { height: 50 }]}
-                  value={formData[field.name]}
-                  onChangeText={(text) => handleChange(field.name, text)}
-                  placeholder={field.label}
-                  keyboardType="numeric"
-                />
-              )}
+              {renderField(field)}
             </View>
           </View>
         ))}

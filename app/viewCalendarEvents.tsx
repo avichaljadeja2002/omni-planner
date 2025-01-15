@@ -1,10 +1,10 @@
 import React from 'react';
-import GenericEventPage from './genericViewEventPage';
-import { IPAddr, calendarFields } from '../constants/constants';
+import GenericViewEventForm from './genericViewEventPage';
+import { IPAddr, calendarFields } from '@/constants/constants';
 
 export default function ViewHealthEvents() {
   return (
-    <GenericEventPage
+    <GenericViewEventForm
       title="Calendar event"
       fields={calendarFields}
       updateEndpoint={`${IPAddr}/update_calendar_event`}

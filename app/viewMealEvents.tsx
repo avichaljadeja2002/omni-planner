@@ -1,10 +1,10 @@
 import React from 'react';
-import GenericEventPage from './genericViewEventPage';
-import { IPAddr, mealFields } from '../constants/constants';
+import GenericViewEventForm from './genericViewEventPage';
+import { IPAddr, mealFields } from '@/constants/constants';
 
 export default function ViewMealEvents() {
   return (
-    <GenericEventPage
+    <GenericViewEventForm
       title="Meal Event"
       fields={mealFields}
       updateEndpoint={`${IPAddr}/update_meal_event`}

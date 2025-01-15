@@ -57,6 +57,7 @@ export interface NavigationProps {
 
 export type GenericEventPageProps = {
   title: string;
+  initialData?: any;
   fields: Field[];
   updateEndpoint: string;
   fetchEndpoint?: string;
