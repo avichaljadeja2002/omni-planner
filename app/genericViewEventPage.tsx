@@ -1,76 +1,89 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { View, Text, TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
-import { getUserId, } from '../constants/constants';
 import { cLog } from './log';
-import { RouteProp, useRoute } from '@react-navigation/native';
-import { RootStackParamList } from '@/components/Types';
-
-export interface Field {
-  name: string;
-  label: string;
-  type: 'text' | 'date' | 'time' | 'dropdown' | 'multi-select' | 'number' | 'textarea';
-  options?: { label: string; value: any }[];
-}
-
-type EventParams = {
-  event: {
-    event_date: string;
-    event_time: string;
-    repeat_timeline?: string;
-    ingredients?: string;
-    [key: string]: any;
-  };
-};
-
-type GenericEventPageProps = {
-  title: string;
-  fields: Field[];
-  updateEndpoint: string;
-  fetchEndpoint?: string;
-  mainPage: string;
-};
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { EventParams, GenericEventPageProps, RootStackParamList } from '@/components/Types';
+import { styles } from '@/assets/styles/styles';
+import MultiSelect from 'react-native-multiple-select';
+import { StackNavigationProp } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const GenericEventPage = ({
   title,
   fields,
+  mainPage,
   updateEndpoint,
   fetchEndpoint,
+  keyValue,
 }: GenericEventPageProps) => {
   const [formData, setFormData] = useState<any>({});
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
   const [additionalData, setAdditionalData] = useState<any>([]);
+  const [currentField, setCurrentField] = useState<string | null>(null); 
+
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const route = useRoute<RouteProp<RootStackParamList, any>>();
   const { event } = route.params as EventParams;
 
-  const [userId, setUserId] = useState<number | null>(null);
-
-  useEffect(() => {
-    const fetchUserId = async () => {
-      const id = await getUserId();
-      if (id !== null) {
-        setUserId(Number(id));
-      }
-    };
-
-    fetchUserId();
-  }, []);
-  const handleSave = async (saveData: any) => {
+  const handleSave = async () => {
     try {
-      cLog('Save Data:', saveData);
-      const response = await axios.put(updateEndpoint, saveData);
+      const formattedData = {
+        ...formData,
+        event_date: formData.event_date?.toISOString().split('T')[0],
+        event_time: formData.event_time?.toTimeString().split(' ')[0],
+        repeating: Boolean(formData.repeat_timeline && formData.repeat_timeline),
+        repeat_timeline: formData.repeat_timeline,
+        userId: await AsyncStorage.getItem('userId'),
+        ingredients: formData.ingredients?.join(','),
+      };
+      cLog('Save Data:', formattedData);
+      const response = await axios.put(updateEndpoint, formattedData);
       cLog('Event updated successfully:', response.data);
     } catch (error) {
       console.error('Error updating event:', error);
+    }
+    navigation.navigate(mainPage as any);
+  };
+
+  const handleDateChange = (name: string, selectedDate: any) => {
+    if (selectedDate) {
+      handleChange(name, selectedDate);
+      setShowDatePicker(false);
+    }
+  };
+
+  const handleTimeChange = (name: string, event: any, selectedTime: any) => {
+    if (event.type === 'dismissed') {
+      setShowTimePicker(false);
+    } else if (selectedTime) {
+      handleChange(name, selectedTime);
+    }
+  };
+
+  const showPicker = (type: 'date' | 'time', fieldName: string) => {
+    setCurrentField(fieldName);
+    if (type === 'date') {
+      setShowDatePicker(true);
+    } else {
+      setShowTimePicker(true);
     }
   };
 
   const fetchAdditionalData = async () => {
     if (!fetchEndpoint) return;
     try {
-      const response = await axios.get(fetchEndpoint);
-      setAdditionalData(response.data);
-      cLog(additionalData);
+      const userId = await AsyncStorage.getItem('userId');
+      const response = await axios.get(`${fetchEndpoint}/${userId}`);
+      const formattedData = response.data.map((item: { [x: string]: any; id: any; name: any; }) => ({
+        value: keyValue ? item[keyValue.key] : item.id,
+        label: keyValue ? item[keyValue.value] : item.name,
+      }));
+      setAdditionalData(formattedData);
+      cLog('Fetched and formatted data:', formattedData);
     } catch (error) {
       console.error('Error fetching additional data:', error);
     }
@@ -94,147 +107,145 @@ const GenericEventPage = ({
       event.event['repeating'] = event.event['repeat_timeline'] !== 0;
     }
 
-    setFormData(event.event);
+    const parsedIngredients = event.event.ingredients
+      ? event.event.ingredients.split(',').map((item: string) => parseInt(item, 10))
+      : [];
+
+    setFormData({ ...event.event, ingredients: parsedIngredients });
   }, [event]);
 
   const handleChange = (name: string, value: any) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleFormSave = () => {
-    cLog("Saving data:", formData);
-    setFormData({ ...formData, userId: userId });
-    handleSave(formData);
+  const getIngredientNames = (selectedItems: any[]) => {
+    const filteredItems = additionalData.filter((item: { value: any }) => selectedItems.includes(item.value));
+    return filteredItems.map((item: { label: any }) => item.label);
+  };
+
+  // Helper function to render different field types
+  const renderField = (field: any) => {
+    switch (field.type) {
+      case 'text':
+        return (
+          <TextInput
+            style={[styles.input, { height: 50 }]}
+            value={formData[field.name]}
+            onChangeText={(text) => handleChange(field.name, text)}
+            placeholder={field.label}
+          />
+        );
+      case 'date':
+        return (
+          <View style={styles.dateTimeInLine}>
+            <TouchableOpacity onPress={() => showPicker('date', field.name)}>
+              <Text style={{ textAlign: 'left' }}>
+                {formData[field.name] ? formData[field.name].toDateString() : 'Select Date'}
+              </Text>
+            </TouchableOpacity>
+            {showDatePicker && (
+              <DateTimePicker
+                value={currentField ? formData[currentField] || new Date() : new Date()}
+                mode="date"
+                display="default"
+                onChange={(event, selectedDate) => handleDateChange(currentField!, selectedDate)}
+              />
+            )}
+          </View>
+        );
+      case 'multi-select':
+        return (
+          <MultiSelect
+            items={additionalData}
+            uniqueKey="value"
+            selectedItems={Array.isArray(formData["ingredients"]) ? formData["ingredients"] : getIngredientNames(event.event.ingredients.split(',').map((item: string) => parseInt(item, 10)))}
+            onSelectedItemsChange={(selectedItems) => handleChange("ingredients", selectedItems)}
+            selectText="Select Ingredients"
+            searchInputPlaceholderText="Search Ingredients..."
+            displayKey="label"
+            styleDropdownMenuSubsection={styles.dropdown}
+          />
+        );
+      case 'time':
+        return (
+          <View style={styles.dateTimeInLine}>
+            <TouchableOpacity onPress={() => showPicker('time', field.name)}>
+              <Text style={{ textAlign: 'left' }}>
+                {formData[field.name] ? formData[field.name].toLocaleTimeString() : 'Select Time'}
+              </Text>
+            </TouchableOpacity>
+            {showTimePicker && (
+              <DateTimePicker
+                minuteInterval={15}
+                value={currentField ? formData[currentField] || new Date() : new Date()}
+                mode="time"
+                display="default"
+                onChange={(event, selectedTime) => handleTimeChange(currentField!, event, selectedTime)}
+              />
+            )}
+          </View>
+        );
+      case 'dropdown':
+        return (
+          <Dropdown
+            style={[styles.dropdown, { height: 50, width: '80%' }]}
+            data={field.options || []}
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            value={formData[field.name]}
+            onChange={(item) => handleChange(field.name, item.value)}
+            placeholder="Select"
+          />
+        );
+      case 'textarea':
+        return (
+          <TextInput
+            style={styles.bigInput}
+            value={formData[field.name]}
+            onChangeText={(text) => handleChange(field.name, text)}
+            multiline
+            placeholder={field.label}
+          />
+        );
+      case 'number':
+        return (
+          <TextInput
+            style={[styles.input, { height: 50 }]}
+            value={formData[field.name]}
+            onChangeText={(text) => handleChange(field.name, text)}
+            placeholder={field.label}
+            keyboardType="numeric"
+          />
+        );
+      default:
+        return null;
+    }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
-      {fields.map((field) => {
-        switch (field.type) {
-          case 'text':
-            return (
-              <View key={field.name} style={styles.field}>
-                <Text>{field.label}</Text>
-                <TextInput
-                  style={styles.input}
-                  value={formData[field.name]}
-                  onChangeText={(value) => handleChange(field.name, value)}
-                />
-              </View>
-            );
-          case 'date':
-          case 'time':
-            return (
-              <View key={field.name} style={styles.field}>
-                <Text>{field.label}</Text>
-                <TextInput
-                  style={styles.input}
-                  value={formData[field.name]?.toString()}
-                  onChangeText={(value) => handleChange(field.name, value)}
-                  placeholder={field.type === 'date' ? 'YYYY-MM-DD' : 'HH:MM'}
-                />
-              </View>
-            );
-          case 'dropdown':
-            return (
-              <View key={field.name} style={styles.field}>
-                <Text>{field.label}</Text>
-                <Dropdown
-                  style={{ height: 50, width: '80%' }}
-                  data={field.options || []}
-                  maxHeight={300}
-                  labelField="label"
-                  valueField="value"
-                  value={formData[field.name]}
-                  onChange={(item: { label: string; value: any }) =>
-                    handleChange(field.name, item.value)
-                  }
-                  placeholder="Select"
-                />
-              </View>
-
-            );
-          case 'multi-select':
-            return (
-              <View key={field.name} style={styles.field}>
-                <Text>{field.label}</Text>
-                {/* <MultiSelect
-                  items={field.options || []}
-                  uniqueKey="value"
-                  selectedItems={formData[field.name] || []}
-                  onSelectedItemsChange={(selected) => handleChange(field.name, selected)}
-                  selectText="Choose items"
-                  searchInputPlaceholderText="Search items..."
-                  tagRemoveIconColor="#CCC"
-                  tagBorderColor="#CCC"
-                  tagTextColor="#CCC"
-                  selectedItemTextColor="#CCC"
-                  selectedItemIconColor="#CCC"
-                  itemTextColor="#000"
-                  displayKey="label"
-                  searchInputStyle={{ color: '#CCC' }}
-                  submitButtonColor="#48d22b"
-                  submitButtonText="Submit"
-                /> */}
-              </View>
-            );
-          case 'number':
-            {
-              return (
-                <View key={field.name} style={styles.field}>
-                  <Text>{field.label}</Text>
-                  <TextInput
-                    style={[styles.input, { height: 50 }]}
-                    value={formData[field.name]}
-                    onChangeText={(text) => handleChange(field.name, text)}
-                    placeholder={field.label}
-                    keyboardType="numeric"
-                  />
-                </View>
-              )
-            }
-          case 'textarea':
-            {
-              return (
-                <View key={field.name} style={styles.field}>
-                  <Text>{field.label}</Text>
-                  <TextInput
-                    value={formData[field.name]}
-                    onChangeText={(text) => handleChange(field.name, text)}
-                    multiline
-                    placeholder={field.label}
-                  />
-                </View>
-              )
-            }
-          default:
-            return null;
-        }
-      })}
-      <Button title="Save" onPress={handleFormSave} />
-    </View>
+    <ScrollView contentContainerStyle={styles.addContainer}>
+      <Text style={styles.sectionHeader}>{title}</Text>
+      <View>
+        {fields.map((field, index) => (
+          <View key={index} style={styles.inputContainer}>
+            <View style={field.type === 'textarea' ? styles.inLineDescription : styles.inLine}>
+              <Text style={styles.inputText}>{field.label}</Text>
+              {renderField(field)}
+            </View>
+          </View>
+        ))}
+      </View>
+      <View style={styles.saveCancelContainer}>
+        <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+          <Text style={styles.saveText}>Save</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.cancelButton} onPress={() => navigation.navigate(mainPage as any)}>
+          <Text style={styles.cancelText}>Cancel</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  field: {
-    marginBottom: 15,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    borderRadius: 5,
-  },
-});
 
 export default GenericEventPage;

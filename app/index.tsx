@@ -32,7 +32,7 @@ export default function TaskScreen() {
         if (responseData) {
             const userInfo = parseUserInfo(responseData);
             await updateAsyncStorage(userInfo);
-            navigation.navigate('home');
+            navigation.navigate('mainPage');
         }
     };
 

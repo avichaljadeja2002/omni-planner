@@ -98,7 +98,7 @@ export default function CalendarTracker() {
     <GenericMainPageForm
       title='Calendar Tracker'
       nextPage='addCalendarEvents'
-      thisPage='calendarEvents'
+      thisPage='mainCalendarEvents'
       hitAddress={`/get_calendar_events/`}
       googleCalendar={true}
       eventIdFunc={(event: any) => `${event.id}-${event.event_date}-${event.event_time}`}

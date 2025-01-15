@@ -23,8 +23,8 @@ export default function TaskScreen() {
     <GenericMainPageForm
       title='Home'
       header={`Welcome ${header && header !== 'null' ? header : 'User'}!`}
-      nextPage='home'
-      thisPage='home'
+      nextPage='mainPage'
+      thisPage='mainPage'
       hitAddress={`/get_all_events/`}
       eventTitleFunc = {(event) => `${event.title} at ${event.eventDate}, ${formatTime(event.eventTime)}`}
       eventIconFunc={(event) => getEventIcon(event.event_type)}

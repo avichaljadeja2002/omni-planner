@@ -7,7 +7,7 @@ export default function MealTracker() {
       title="Meal Tracker"
       header="Upcoming Meals"
       nextPage="addMeals"
-      thisPage="mealTracker"
+      thisPage="mainMealTracker"
       hitAddress={`/get_meal_events/`}
       eventIconFunc={() => 'fast-food-outline'}
     />
