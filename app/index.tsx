@@ -58,6 +58,7 @@ export default function TaskScreen() {
     };
 
     const handleLogin = async () => {
+        cLog("Attempting to log in...");
         const { userName, password } = credentials;
         performLoginRequest(`${IPAddr}/login`, { userName, password })
     }
