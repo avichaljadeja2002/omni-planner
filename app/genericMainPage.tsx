@@ -101,7 +101,11 @@ const GenericMainPageForm: React.FC<FormProps> = ({
                     title: eventTitleFunc(event),
                     done: false,
                     icon: eventIconFunc(event) as Task['icon'],
-                    event: event,
+                    event: {
+                        ...event,
+                        event_date: new Date(`${event.event_date}T${event.event_time}`),
+                        event_time: new Date(`${event.event_date}T${event.event_time}`)
+                    }
                 })).slice(0, sliceRange);
     
                 setTasks(formattedEvents);

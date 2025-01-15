@@ -13,7 +13,7 @@ export type RootStackParamList = {
     'mainPage': undefined;
     'mainHealthTracker': undefined;
     'mainMealTracker': undefined;
-    'mainFinance': undefined;
+    'mainFinanceTracker': undefined;
     'mainCalendarEvents': undefined;
     'notes': undefined;
     'accountSetting': undefined;
@@ -63,6 +63,7 @@ export type GenericEventPageProps = {
   fetchEndpoint?: string;
   mainPage: string;
   keyValue?: { key: string; value: string };
+  method: string;
 };
 
 export type EventParams = {

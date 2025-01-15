@@ -6,7 +6,7 @@ export default function FinanceTracker() {
     <GenericMainPageForm
       title='Finance Tracker'
       nextPage='addFinanceEvents'
-      thisPage='mainFinance'
+      thisPage='mainFinanceTracker'
       hitAddress={`/get_finance_events/`}
       eventIconFunc={() => 'wallet-outline'}
     />

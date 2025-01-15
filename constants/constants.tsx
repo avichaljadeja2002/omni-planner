@@ -119,34 +119,3 @@ export const financeFields: Field[] = [
   { name: 'repeat_timeline', label: 'Repeating', type: 'dropdown', options: repeatingData },
   { name: 'money', label: 'Money', type: 'number' }
 ];
-
-export const baseInitialData = {
-  userId: 1,
-  title: '',
-  event_date: new Date(),
-  event_time: new Date(),
-};
-
-export const financeInitialData = {
-  ...baseInitialData,
-  repeating: false,
-  repeat_timeline: '',
-  money: 0.0,
-};
-
-export const calendarInitialData = {
-  ...baseInitialData,
-  description: '',
-  repeating: 0, // Or false, depending on the use case
-};
-
-export const healthInitialData = {
-  ...baseInitialData,
-  repeating: false,
-  repeat_timeline: '',
-};
-
-export const mealInitialData = {
-  ...baseInitialData,
-  ingredients: [],
-};
