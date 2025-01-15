@@ -4,7 +4,7 @@ import GenericAddViewPageForm from './genericAddViewEventPage';
 
 export default function AddHealthEvents() {
     const healthInitialData = {
-        userId: 1,
+        userId: 0,
         title: '',
         event_date: new Date(),
         event_time: new Date(),

@@ -47,7 +47,7 @@ export const getEventIcon = (eventType: string) => {
 
 export const getPageName = (page: string) => {
   switch (page) {
-    case 'mainFinance':
+    case 'mainFinanceTracker':
       return 'viewFinanceEvents';
     case 'mainHealthTracker':
       return 'viewHealthEvents';

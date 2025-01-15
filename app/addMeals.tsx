@@ -4,11 +4,11 @@ import GenericAddViewPageForm from './genericAddViewEventPage';
 
 export default function AddMeals() {
     const mealInitialData = {
-        userId: 1,
+        userId: 0,
         title: '',
         event_date: new Date(),
         event_time: new Date(),
-        ingredients: "",
+        ingredients: '',
       };
     return (
         <GenericAddViewPageForm
