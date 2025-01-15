@@ -1,6 +1,20 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
+  topBar: {
+    marginTop: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    height: 60,
+    backgroundColor: '#f5f5f5',
+    paddingHorizontal: 10,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 2,
+  },
   container: {
     flex: 1,
     flexDirection: "column",
