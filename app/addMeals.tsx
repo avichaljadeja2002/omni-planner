@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import { IPAddr, repeatingData } from './constants';
-import GenericAddPageForm from './addEventPage';
+import { IPAddr, repeatingData } from '../constants/constants';
+import GenericAddPageForm from './genericAddEventPage';
 import { cLog } from './log'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 

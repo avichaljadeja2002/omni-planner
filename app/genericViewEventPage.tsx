@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
-import { getUserId, } from './constants';
+import { getUserId, } from '../constants/constants';
 import { cLog } from './log';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '@/components/Types';
