@@ -1,5 +1,5 @@
 import React from 'react';
-import { financeFields, financeInitialData } from '../constants/constants';
+import { financeFields, financeInitialData, IPAddr } from '@/constants/constants';
 import GenericAddPageForm from './genericAddEventPage';
 
 export default function AddFinanceEvents() {
@@ -9,7 +9,7 @@ export default function AddFinanceEvents() {
             initialData={financeInitialData}
             fields={financeFields}
             mainPage='mainFinance'
-            hitAddress='/add_finance_events'
+            updateEndpoint={`${IPAddr}/add_finance_events`}
         />
     );
 }

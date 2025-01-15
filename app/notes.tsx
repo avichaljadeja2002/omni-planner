@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { cLog } from './log';
-import { IPAddr } from '../constants/constants';
+import { IPAddr } from '@/constants/constants';
+import { styles } from '@/assets/styles/styles';
 import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -12,16 +13,15 @@ export default function Notes() {
 
     const handleSave = async () => {
         try {
-            // Add current date to formData
-            const currentDate = new Date().toISOString().split('T')[0]; // Get current date in ISO format (e.g., 2024-06-14T10:00:00.000Z)
+            const currentDate = new Date().toISOString().split('T')[0];
             const currentTime = new Date().toTimeString().split(' ')[0];
             const updatedFormData = {
                 ...formData,
-                event_date: currentDate, // Add date field
-                event_time: currentTime, // Add time field
+                event_date: currentDate,
+                event_time: currentTime,
             };
-            const hit = IPAddr + '/add_note'; // Backend endpoint
-            const response = await axios.put(hit, updatedFormData); // Send request with updated data
+            const hit = IPAddr + '/add_note';
+            const response = await axios.put(hit, updatedFormData);
 
             console.log('Note saved successfully: ' + response.data);
         } catch (error) {
@@ -53,66 +53,22 @@ export default function Notes() {
     );
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.title}>Notes</Text>
+        <View style={styles.noteContainer}>
+            <View style={styles.noteHeader}>
+                <Text style={styles.noteTitle}>Notes</Text>
                 <TextInput
-                    value={formData.text} // Set value to formData.text to make it controlled
-                    onChangeText={(text) => handleChange("text", text)} // Handle text changes
+                    value={formData.text}
+                    onChangeText={(text) => handleChange("text", text)}
                     style={styles.textInput}
                     placeholder="Write your notes here..."
                     multiline={true}
                 />
             </View>
             <View style={styles.footer}>
-                <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-                    <Text style={styles.saveButtonText}>Save</Text>
+                <TouchableOpacity style={styles.noteSaveButton} onPress={handleSave}>
+                    <Text style={styles.saveText}>Save</Text>
                 </TouchableOpacity>
             </View>
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        paddingHorizontal: 20,
-    },
-    header: {
-        alignItems: 'center',
-    },
-    title: {
-        fontSize: 32,
-        fontWeight: 'bold',
-        marginBottom: 20,
-        textAlign: 'center',
-    },
-    textInput: {
-        height: 450,
-        width: '100%',
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 8,
-        padding: 10,
-        textAlignVertical: 'top',
-    },
-    footer: {
-        alignItems: 'flex-end',
-        marginTop: 20,
-    },
-    saveButton: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#65558f',
-        borderRadius: 8,
-        paddingVertical: 15,
-        paddingHorizontal: 50,
-        justifyContent: 'center',
-    },
-    saveButtonText: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#eee',
-    },
-});

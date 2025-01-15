@@ -2,13 +2,13 @@ import React, { useCallback, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { Calendar } from 'react-native-calendars';
-import { styles } from '../assets/styles/styles';
+import { styles } from '@/assets/styles/styles';
 import { Ionicons } from "@expo/vector-icons";
-import { EventProps, GoogleCalendarProps, NavigationProps, RootStackParamList, Task } from '../components/Types';
+import { EventProps, GoogleCalendarProps, NavigationProps, RootStackParamList, Task } from '@/components/Types';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { cLog } from './log';
-import { formatTime, getPageFromEventType, getPageName, IPAddr, verifyToken } from '../constants/constants';
+import { formatTime, getPageFromEventType, getPageName, IPAddr, verifyToken } from '@/constants/constants';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 

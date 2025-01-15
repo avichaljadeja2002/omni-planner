@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
 import App from './index';
 import HealthTracker from './mainHealthTracker';
@@ -20,6 +20,7 @@ import ViewHealthEvents from './viewHealthEvents';
 import ViewCalendarEvents from './viewCalendarEvents';
 import ViewMealEvents from './viewMealEvents';
 import TaskScreen from './mainPage';
+import { styles } from '@/assets/styles/styles';
 
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -81,20 +82,3 @@ export default function Layout() {
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  topBar: {
-    marginTop: 50,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    height: 60,
-    backgroundColor: '#f5f5f5',
-    paddingHorizontal: 10,
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 2,
-  },
-});

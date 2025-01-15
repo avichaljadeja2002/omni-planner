@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import GenericMainPageForm from './genericMainPage';
-import { formatTime, getEventIcon } from '../constants/constants';
+import { formatTime, getEventIcon } from '@/constants/constants';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
