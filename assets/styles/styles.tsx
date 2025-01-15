@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     paddingHorizontal: 20,
-},
+  },
   addContainer: {
     flex: 1,
     paddingHorizontal: 25,
@@ -49,16 +49,16 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
-},
-textInput: {
-  height: 450,
-  width: '100%',
-  borderColor: '#ccc',
-  borderWidth: 1,
-  borderRadius: 8,
-  padding: 10,
-  textAlignVertical: 'top',
-},
+  },
+  textInput: {
+    height: 450,
+    width: '100%',
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 10,
+    textAlignVertical: 'top',
+  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -69,7 +69,7 @@ textInput: {
   footer: {
     alignItems: 'flex-end',
     marginTop: 20,
-},
+  },
   headerText: {
     textAlign: "center",
     fontSize: 37,
@@ -78,7 +78,7 @@ textInput: {
   },
   noteHeader: {
     alignItems: 'center',
-},
+  },
   calendarHeader: {
     textAlign: "center",
     fontSize: 24,
@@ -277,7 +277,7 @@ textInput: {
     paddingVertical: 15,
     paddingHorizontal: 50,
     justifyContent: 'center',
-},
+  },
   saveButton: {
     flexDirection: "row",
     alignItems: "center",
@@ -322,11 +322,12 @@ textInput: {
     flex: 1,
     flexDirection: "column",
     justifyContent: "center",
-    paddingHorizontal: 550,
+    alignItems: 'center',
     backgroundColor: "#ffffff",
   },
   loginPageInput: {
     height: 40,
+    width: '80%',
     marginHorizontal: 10,
     borderWidth: 1,
     borderColor: "#ccc",
@@ -334,6 +335,20 @@ textInput: {
     borderRadius: 8,
     backgroundColor: "#fff",
     marginBottom: 20,
+  },
+  loginButton: {
+    backgroundColor: "#4285F4",
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    width: '50%',
+    marginTop: 0,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  loginButtonText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "bold"
   },
   loginPageNonheaderText: {
     marginBottom: 10,

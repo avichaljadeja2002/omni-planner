@@ -15,5 +15,5 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "constants/constants.tsx"
-  ]
+, "app/log.js"  ]
 }
