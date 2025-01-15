@@ -9,20 +9,24 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import MultiSelect from 'react-native-multiple-select';
 import { cLog } from './log';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { verifyToken } from '../constants/constants';
+import { IPAddr, verifyToken } from '../constants/constants';
+import axios from 'axios';
 
 interface FormProps {
   title: string;
   initialData: any;
   fields: Array<{ name: string; label: string; type: string; options?: any }>;
   mainPage: keyof RootStackParamList;
-  onSave: (data: any) => void;
+  hitAddress: string;
+  fetchEndpoint?: string;
+  keyValue?: { key: string; value: string };
 }
 
-const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, mainPage, onSave }) => {
+const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, mainPage, hitAddress, fetchEndpoint, keyValue }) => {
   const [formData, setFormData] = useState(initialData);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [additionalData, setAdditionalData] = useState<any>([]);
   const [currentField, setCurrentField] = useState<string | null>(null); // Tracks which field is being edited
 
   type TrackerNavigationProp = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
@@ -54,12 +58,20 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
       ...formData,
       event_date: formData.event_date?.toISOString().split('T')[0],
       event_time: formData.event_time?.toTimeString().split(' ')[0],
-      repeating: formData.repeat_timeline && formData.repeat_timeline,
+      repeating: Boolean(formData.repeat_timeline && formData.repeat_timeline),
       repeat_timeline: formData.repeat_timeline,
-      userId: (await AsyncStorage.getItem('userId'))
+      userId: (await AsyncStorage.getItem('userId')),
+      ingredients: formData.ingredients?.join(',')
     };
     cLog(formattedData);
-    onSave(formattedData);
+    try {
+      const hit = `${IPAddr}${hitAddress}`;
+      cLog('Saving event to:' + hit);
+      const response = await axios.post(hit, formattedData);
+      cLog('Event saved successfully:' + response.data);
+    } catch (error) {
+      console.error('Error saving event:', error);
+    }
     navigation.navigate(mainPage as any);
   };
 
@@ -72,13 +84,30 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
     }
   };
 
-  const handleIngredientChange = (selectedItems: string[]) => {
-    handleChange('ingredients', selectedItems);
+  const handleAdditionalDataChange = (name: string, selectedItems: string[]) => {
+    handleChange(name, selectedItems);
+  };
+
+  const fetchAdditionalData = async () => {
+    if (!fetchEndpoint) return;
+    try {
+      const userId = await AsyncStorage.getItem('userId');
+      const response = await axios.get(`${IPAddr}${fetchEndpoint}/${userId}`);
+      const formattedData = response.data.map((item: { [x: string]: any; id: any; name: any; }) => ({
+        value: keyValue ? item[keyValue.key] : item.id,
+        label: keyValue ? item[keyValue.value] : item.name,
+      }));
+      setAdditionalData(formattedData);
+      cLog('Fetched and formatted data:', formattedData);
+    } catch (error) {
+      console.error('Error fetching additional data:', error);
+    }
   };
 
   useFocusEffect(
     useCallback(() => {
       verifyToken(navigation);
+      fetchAdditionalData();
     }, [])
   );
 
@@ -115,10 +144,10 @@ const GenericAddPageForm: React.FC<FormProps> = ({ title, initialData, fields, m
               )}
               {field.type === 'multi-select' && (
                 <MultiSelect
-                  items={initialData.ingredients} // Ensure ingredients is an array
+                  items={additionalData} // Ensure ingredients is an array
                   uniqueKey="value"
                   selectedItems={formData[field.name] || []} // Default to an empty array
-                  onSelectedItemsChange={(selectedItems) => handleIngredientChange(selectedItems)}
+                  onSelectedItemsChange={(selectedItems) => handleAdditionalDataChange('ingredients', selectedItems)}
                   selectText="Select Ingredients"
                   searchInputPlaceholderText="Search Ingredients..."
                   displayKey="label"

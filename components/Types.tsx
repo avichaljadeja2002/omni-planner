@@ -10,14 +10,14 @@ export type Task = {
 
 export type RootStackParamList = {
     'index': undefined;
-    'home': undefined;
-    'healthTracker': undefined;
-    'mealTracker': undefined;
+    'mainPage': undefined;
+    'mainHealthTracker': undefined;
+    'mainMealTracker': undefined;
+    'mainFinance': undefined;
+    'mainCalendarEvents': undefined;
     'notes': undefined;
-    'finance': undefined;
     'accountSetting': undefined;
     'addFinanceEvents': undefined,
-    'calendarEvents': undefined;
     'addCalendarEvents': undefined;
     'addHealthEvents': undefined;
     'addMeals': undefined;
@@ -53,4 +53,30 @@ export interface GoogleCalendarProps {
 export interface NavigationProps {
   nextPage: keyof RootStackParamList;
   thisPage: keyof RootStackParamList;
+}
+
+export type GenericEventPageProps = {
+  title: string;
+  fields: Field[];
+  updateEndpoint: string;
+  fetchEndpoint?: string;
+  mainPage: string;
+  keyValue?: { key: string; value: string };
+};
+
+export type EventParams = {
+  event: {
+    event_date: string;
+    event_time: string;
+    repeat_timeline?: string;
+    ingredients?: string;
+    [key: string]: any;
+  };
+};
+
+export interface Field {
+  name: string;
+  label: string;
+  type: 'text' | 'date' | 'time' | 'dropdown' | 'multi-select' | 'number' | 'textarea';
+  options?: { label: string; value: any }[];
 }

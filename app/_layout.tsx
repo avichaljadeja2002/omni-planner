@@ -2,11 +2,11 @@ import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
 import App from './index';
-import HealthTracker from './healthTracker';
-import MealTracking from './mealTracker';
+import HealthTracker from './mainHealthTracker';
+import MealTracking from './mainMealTracker';
 import Notes from './notes';
-import Finance from './finance';
-import CalendarEvents from './calendarEvents';
+import Finance from './mainFinance';
+import CalendarEvents from './mainCalendarEvents';
 import AccountSetting from './accountSetting';
 import { createStackNavigator, StackHeaderProps } from '@react-navigation/stack';
 import { RootStackParamList } from '@/components/Types';
@@ -19,26 +19,26 @@ import { NavigationContainer } from '@react-navigation/native';
 import ViewHealthEvents from './viewHealthEvents';
 import ViewCalendarEvents from './viewCalendarEvents';
 import ViewMealEvents from './viewMealEvents';
-import TaskScreen from './home';
+import TaskScreen from './mainPage';
 
 
 const Stack = createStackNavigator<RootStackParamList>();
 const CustomTopBar = ({ navigation }: StackHeaderProps) => {
   return (
     <View style={styles.topBar}>
-      <TouchableOpacity onPress={() => navigation.navigate('home')}>
+      <TouchableOpacity onPress={() => navigation.navigate('mainPage')}>
         <Ionicons name="home-outline" size={28} color="black" />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('healthTracker')}>
+      <TouchableOpacity onPress={() => navigation.navigate('mainHealthTracker')}>
         <Ionicons name="fitness-outline" size={28} color="black" />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('mealTracker')}>
+      <TouchableOpacity onPress={() => navigation.navigate('mainMealTracker')}>
         <Ionicons name="fast-food-outline" size={28} color="black" />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('finance')}>
+      <TouchableOpacity onPress={() => navigation.navigate('mainFinance')}>
         <Ionicons name="wallet-outline" size={28} color="black" />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('calendarEvents')}>
+      <TouchableOpacity onPress={() => navigation.navigate('mainCalendarEvents')}>
         <Ionicons name="calendar-outline" size={28} color="black" />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('notes')}>
@@ -62,14 +62,14 @@ export default function Layout() {
         }}
       >
         <Stack.Screen name="index" component={App} options={{ headerShown: false }} />
-        <Stack.Screen name="home" component={TaskScreen} />
-        <Stack.Screen name="healthTracker" component={HealthTracker} />
-        <Stack.Screen name="mealTracker" component={MealTracking} />
+        <Stack.Screen name="mainPage" component={TaskScreen} />
+        <Stack.Screen name="mainHealthTracker" component={HealthTracker} />
+        <Stack.Screen name="mainMealTracker" component={MealTracking} />
         <Stack.Screen name="notes" component={Notes} />
-        <Stack.Screen name="finance" component={Finance} />
+        <Stack.Screen name="mainFinance" component={Finance} />
         <Stack.Screen name="accountSetting" component={AccountSetting} />
         <Stack.Screen name="addFinanceEvents" component={AddFinanceEvents} />
-        <Stack.Screen name="calendarEvents" component={CalendarEvents} />
+        <Stack.Screen name="mainCalendarEvents" component={CalendarEvents} />
         <Stack.Screen name="addCalendarEvents" component={AddCalendarEvents} />
         <Stack.Screen name="addHealthEvents" component={AddHealthEvents} />
         <Stack.Screen name="addMeals" component={AddMeals} />

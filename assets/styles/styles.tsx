@@ -20,6 +20,11 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffffff",
   },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -152,6 +157,9 @@ export const styles = StyleSheet.create({
   flatList: {
     height: 250,
     flexGrow: 1,
+  },
+  field: {
+    marginBottom: 15,
   },
   fixedButton: {
     position: "absolute",

@@ -1,23 +1,16 @@
 import React from 'react';
-import GenericEventPage, { Field } from './genericViewEventPage';
-import { IPAddr, repeatingData } from '../constants/constants';
+import GenericEventPage from './genericViewEventPage';
+import { IPAddr, mealFields } from '../constants/constants';
 
 export default function ViewMealEvents() {
-  const fields: Field[] = [
-    { name: 'title', label: 'Title', type: 'text' },
-    { name: 'event_date', label: 'Date', type: 'date' },
-    { name: 'event_time', label: 'Time', type: 'time' },
-    { name: 'repeat_timeline', label: 'Repeating', type: 'dropdown', options: repeatingData },
-    { name: 'ingredients', label: 'Ingredients', type: 'multi-select' },
-  ];
-
   return (
     <GenericEventPage
       title="Meal Event"
-      fields={fields}
+      fields={mealFields}
       updateEndpoint={`${IPAddr}/update_meal_event`}
-      fetchEndpoint={`${IPAddr}/get_ingredients/13`}
-      mainPage="mealTracker"
+      fetchEndpoint={`${IPAddr}/get_ingredients`}
+      mainPage="mainMealTracker"
+      keyValue={{'key':"id", "value":"ingredientName"}}
     />
   );
 }

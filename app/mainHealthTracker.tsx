@@ -6,7 +6,7 @@ export default function HealthTracker() {
     <GenericMainPageForm
       title='Health Tracker'
       nextPage='addHealthEvents'
-      thisPage='healthTracker'
+      thisPage='mainHealthTracker'
       hitAddress={`/get_health_events/`}
       eventIconFunc={() => 'fitness-outline'}
     />
