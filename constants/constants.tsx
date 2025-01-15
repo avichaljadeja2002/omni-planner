@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { cLog } from '../app/log';
+import { cLog } from '@/app/log';
 import { RootStackParamList } from "@/components/Types";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Field } from "@/components/Types";
