@@ -1,4 +1,4 @@
-import { logging } from '@/constants/constants';
+const logging = true;
 
 interface LogFunction {
     (...messages: any[]): void;
