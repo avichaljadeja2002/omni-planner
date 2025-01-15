@@ -36,7 +36,7 @@ const CustomTopBar = ({ navigation }: StackHeaderProps) => {
       <TouchableOpacity onPress={() => navigation.navigate('mainMealTracker')}>
         <Ionicons name="fast-food-outline" size={28} color="black" />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('mainFinance')}>
+      <TouchableOpacity onPress={() => navigation.navigate('mainFinanceTracker')}>
         <Ionicons name="wallet-outline" size={28} color="black" />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('mainCalendarEvents')}>
@@ -67,7 +67,7 @@ export default function Layout() {
         <Stack.Screen name="mainHealthTracker" component={HealthTracker} />
         <Stack.Screen name="mainMealTracker" component={MealTracking} />
         <Stack.Screen name="notes" component={Notes} />
-        <Stack.Screen name="mainFinance" component={Finance} />
+        <Stack.Screen name="mainFinanceTracker" component={Finance} />
         <Stack.Screen name="accountSetting" component={AccountSetting} />
         <Stack.Screen name="addFinanceEvents" component={AddFinanceEvents} />
         <Stack.Screen name="mainCalendarEvents" component={CalendarEvents} />

@@ -32,6 +32,7 @@ public class FinanceEventsService {
         event1.setRepeating(event.isRepeating());
         event1.setRepeatTimeline(event.getRepeat_timeline());
         eventService.saveEvent(event1);
+        System.out.println(event.getEvent_time());
         return financeEventsRepository.save(event);
     }
 
