@@ -1,29 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import axios from 'axios';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { View, Text, TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { cLog } from './log';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { EventParams, GenericEventPageProps, RootStackParamList } from '@/components/Types';
 import { styles } from '@/assets/styles/styles';
-import MultiSelect from 'react-native-multiple-select';
+import { EventParams, GenericEventPageProps, RootStackParamList } from '@/components/Types';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp, useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
+import MultiSelect from 'react-native-multiple-select';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { verifyToken } from '@/constants/constants';
 
-const GenericEventPage = ({
-  title,
-  fields,
-  mainPage,
-  updateEndpoint,
-  fetchEndpoint,
-  keyValue,
-}: GenericEventPageProps) => {
+const GenericViewEventForm: React.FC<GenericEventPageProps> = ({ title, fields, mainPage, updateEndpoint, fetchEndpoint, keyValue, }) => {
   const [formData, setFormData] = useState<any>({});
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [additionalData, setAdditionalData] = useState<any>([]);
-  const [currentField, setCurrentField] = useState<string | null>(null); 
+  const [currentField, setCurrentField] = useState<string | null>(null);
 
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const route = useRoute<RouteProp<RootStackParamList, any>>();
@@ -89,31 +83,6 @@ const GenericEventPage = ({
     }
   };
 
-  useEffect(() => {
-    fetchAdditionalData();
-    let eventDate = event.event.event_date;
-    if (event.event.event_date !== event.event.event_time) {
-      const dateTimeString = `${event.event.event_date}T${event.event.event_time}`;
-      eventDate = new Date(dateTimeString);
-    }
-
-    if (eventDate) {
-      event.event['event_date'] = eventDate;
-      event.event['event_time'] = eventDate;
-    }
-
-    if (event.event['repeat_timeline']) {
-      event.event['repeat_timeline'] = parseInt(event.event['repeat_timeline'], 10);
-      event.event['repeating'] = event.event['repeat_timeline'] !== 0;
-    }
-
-    const parsedIngredients = event.event.ingredients
-      ? event.event.ingredients.split(',').map((item: string) => parseInt(item, 10))
-      : [];
-
-    setFormData({ ...event.event, ingredients: parsedIngredients });
-  }, [event]);
-
   const handleChange = (name: string, value: any) => {
     setFormData({ ...formData, [name]: value });
   };
@@ -123,7 +92,34 @@ const GenericEventPage = ({
     return filteredItems.map((item: { label: any }) => item.label);
   };
 
-  // Helper function to render different field types
+  useFocusEffect(
+    useCallback(() => {
+      verifyToken(navigation);
+      fetchAdditionalData();
+      let eventDate = event.event.event_date;
+      if (event.event.event_date !== event.event.event_time) {
+        const dateTimeString = `${event.event.event_date}T${event.event.event_time}`;
+        eventDate = new Date(dateTimeString);
+      }
+
+      if (eventDate) {
+        event.event['event_date'] = eventDate;
+        event.event['event_time'] = eventDate;
+      }
+
+      if (event.event['repeat_timeline']) {
+        event.event['repeat_timeline'] = parseInt(event.event['repeat_timeline'], 10);
+        event.event['repeating'] = event.event['repeat_timeline'] !== 0;
+      }
+
+      const parsedIngredients = event.event.ingredients
+        ? event.event.ingredients.split(',').map((item: string) => parseInt(item, 10))
+        : [];
+
+      setFormData({ ...event.event, ingredients: parsedIngredients });
+    }, [event])
+  );
+
   const renderField = (field: any) => {
     switch (field.type) {
       case 'text':
@@ -248,4 +244,4 @@ const GenericEventPage = ({
   );
 };
 
-export default GenericEventPage;
+export default GenericViewEventForm;

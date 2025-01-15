@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from 'react';
-import { IPAddr } from '../constants/constants';
-import { RootStackParamList, UserInfo } from '../components/Types';
+import { IPAddr } from '@/constants/constants';
+import { RootStackParamList, UserInfo } from '@/components/Types';
 import axios from 'axios';
-import { styles } from '../assets/styles/styles';
+import { styles } from '@/assets/styles/styles';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { cLog } from './log'
 import AsyncStorage from "@react-native-async-storage/async-storage";

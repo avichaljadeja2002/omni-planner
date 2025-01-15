@@ -10,6 +10,11 @@ export const styles = StyleSheet.create({
     paddingTop: 10,
     marginBottom: 20,
   },
+  noteContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+},
   addContainer: {
     flex: 1,
     paddingHorizontal: 25,
@@ -25,6 +30,21 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
+  noteTitle: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+},
+textInput: {
+  height: 450,
+  width: '100%',
+  borderColor: '#ccc',
+  borderWidth: 1,
+  borderRadius: 8,
+  padding: 10,
+  textAlignVertical: 'top',
+},
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -32,12 +52,19 @@ export const styles = StyleSheet.create({
     marginTop: 60,
     marginBottom: 20,
   },
+  footer: {
+    alignItems: 'flex-end',
+    marginTop: 20,
+},
   headerText: {
     textAlign: "center",
     fontSize: 37,
     fontWeight: "bold",
     color: "#333",
   },
+  noteHeader: {
+    alignItems: 'center',
+},
   calendarHeader: {
     textAlign: "center",
     fontSize: 24,
@@ -228,6 +255,15 @@ export const styles = StyleSheet.create({
     flex: 0.45,
     justifyContent: "center",
   },
+  noteSaveButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#65558f',
+    borderRadius: 8,
+    paddingVertical: 15,
+    paddingHorizontal: 50,
+    justifyContent: 'center',
+},
   saveButton: {
     flexDirection: "row",
     alignItems: "center",
