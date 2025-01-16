@@ -12,19 +12,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { verifyToken } from '@/constants/constants';
 import { call } from '../components/apiCall';
 
-const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initialData = {}, fields, mainPage, updateEndpoint, fetchEndpoint, keyValue, method }) => {
+const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initialData = {}, fields, mainPage, updateEndpoint, fetchEndpoint, keyValue, method="POST" }) => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [additionalData, setAdditionalData] = useState<any>([]);
     const [currentField, setCurrentField] = useState<string | null>(null);
     const route = useRoute<RouteProp<RootStackParamList, any>>();
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-    cLog("Initial Data:");
-    cLog(initialData);
+    cLog({"Initial Data": initialData});
     let event = initialData.event ? initialData.event : initialData;
     if(route.params)event = route.params?.event.event;
-    cLog("Event:");
-    cLog(event);
+    cLog({"Event":event});
     const [formData, setFormData] = useState({
         ...event,
         event_date: event.event_date ? new Date(event.event_date) : new Date(),

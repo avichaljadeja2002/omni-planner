@@ -18,7 +18,6 @@ export default function AddHealthEvents() {
             fields={healthFields}
             mainPage='mainHealthTracker'
             updateEndpoint={`/add_health_events`}
-            method="POST"
         />
     );
 }

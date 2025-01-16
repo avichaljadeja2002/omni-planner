@@ -19,7 +19,6 @@ export default function AddFinanceEvents() {
             fields={financeFields}
             mainPage='mainFinanceTracker'
             updateEndpoint={`/add_finance_events`}
-            method="POST"
         />
     );
 }
