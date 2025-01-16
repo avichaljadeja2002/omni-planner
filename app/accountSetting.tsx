@@ -15,8 +15,7 @@ export default function AccountSetting() {
             await AsyncStorage.setItem('name', formData.name);
             await AsyncStorage.setItem('userName', formData.userName);
             await AsyncStorage.setItem('email', formData.email);
-            // const hit = IPAddr + '/modify_user'; // Backend endpoint
-            // const response = await axios.put(hit, formData); // Send request with updated data
+            // const response = await call('/modify_user', 'PUT', formData); // Send request with updated data
             // cLog('Note saved successfully: ' + response.data);
         } catch (error) {
             console.error('Error saving note:', error);

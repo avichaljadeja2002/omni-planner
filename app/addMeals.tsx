@@ -26,7 +26,7 @@ export default function AddMeals() {
 
   // const addIngredient = async (newIngredient: string) => {
   //   try {
-  //     const response = await axios.post(IPAddr + '/add_ingredients', { ingredient: newIngredient });
+  //     const response = await call('/add_ingredients', 'POST', { ingredient: newIngredient });
   //     const addedIngredient = response.data.ingredient;
   //   } catch (error) {
   //     console.error('Error adding new ingredient:', error);
