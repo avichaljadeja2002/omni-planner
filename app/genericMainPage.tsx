@@ -77,7 +77,6 @@ const GenericMainPageForm: React.FC<FormProps> = ({
     const fetchEvents = async () => {
         try {
             const userId = await AsyncStorage.getItem('userId');
-    
             const response = await call(`${hitAddress}${userId}`, 'GET');
     
             if (response.status === 200 && response.data) {
