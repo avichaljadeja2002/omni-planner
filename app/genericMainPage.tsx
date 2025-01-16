@@ -51,7 +51,7 @@ const GenericMainPageForm: React.FC<FormProps> = ({
         if (route.thisPage === 'index') {
             route.thisPage = getPageFromEventType(route.event.event_type) as keyof RootStackParamList;
         }
-        cLog("Route:", route);
+        cLog({"Route": route});
         navigation.navigate(getPageName(route.thisPage) as any, { event: route });
     }
 
@@ -85,8 +85,7 @@ const GenericMainPageForm: React.FC<FormProps> = ({
                     setIsGoogleCalendarLinked(googleCalendarLinked);
                 }
                 const eventsArray = Array.isArray(events) ? events : response.data;
-                cLog(`eventsArray:`);
-                cLog(eventsArray);
+                cLog({'eventsArray':eventsArray});
                 const formattedEvents = eventsArray.map((event: any) => ({
                     id: eventIdFunc(event),
                     title: eventTitleFunc(event),

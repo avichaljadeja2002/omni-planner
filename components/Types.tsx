@@ -63,7 +63,7 @@ export type GenericEventPageProps = {
   fetchEndpoint?: string;
   mainPage: string;
   keyValue?: { key: string; value: string };
-  method: string;
+  method?: string;
 };
 
 export type EventParams = {
