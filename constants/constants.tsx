@@ -15,21 +15,6 @@ export const repeatingData = [
   { label: 'Yearly', value: 4 },
 ];
 
-export const formatTime = (time: { split: (arg0: string) => [any, any]; }) => {
-  const [hours, minutes] = time.split(':');
-  const hour = parseInt(hours);
-
-  if (hour === 0) {
-    return `12:${minutes} AM`;
-  } else if (hour < 12) {
-    return `${hour}:${minutes} AM`;
-  } else if (hour === 12) {
-    return `12:${minutes} PM`;
-  } else {
-    return `${hour - 12}:${minutes} PM`;
-  }
-};
-
 export const getEventIcon = (eventType: string) => {
   switch (eventType.toLowerCase()) {
     case 'finance':
