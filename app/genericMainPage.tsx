@@ -8,7 +8,7 @@ import { EventProps, GoogleCalendarProps, NavigationProps, RootStackParamList, T
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { cLog } from '../components/log';
-import { formatTime, getPageFromEventType, getPageName, verifyToken } from '@/constants/constants';
+import { getPageFromEventType, getPageName, verifyToken } from '@/constants/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { call } from '../components/apiCall';
 
@@ -27,7 +27,7 @@ const GenericMainPageForm: React.FC<FormProps> = ({
     hitAddress,
     googleCalendar = false,
     eventIdFunc = (event) => event.id.toString(),
-    eventTitleFunc = (event) => `${event.title} at ${event.event_date}, ${formatTime(event.event_time)}`,
+    eventTitleFunc = (event) => `${event.title}`,
     eventIconFunc,
     handlePress,
     sliceRange = 10,

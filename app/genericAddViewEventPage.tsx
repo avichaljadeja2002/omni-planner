@@ -149,6 +149,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
                 );
             case 'multi-select':
                 return (
+                    <View>
                     <MultiSelect
                         items={additionalData}
                         uniqueKey="value"
@@ -159,6 +160,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
                         displayKey="label"
                         styleDropdownMenuSubsection={styles.dropdown}
                     />
+                    </View>
                 );
             case 'time':
                 return (
