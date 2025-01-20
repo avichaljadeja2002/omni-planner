@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import GenericMainPageForm from './genericMainPage';
-import { formatTime, getEventIcon } from '@/constants/constants';
+import { getEventIcon } from '@/constants/constants';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -26,7 +26,7 @@ export default function TaskScreen() {
       nextPage='mainPage'
       thisPage='mainPage'
       hitAddress={`/get_all_events/`}
-      eventTitleFunc={(event) => `${event.title} at ${event.eventDate}, ${formatTime(event.eventTime)}`}
+      eventTitleFunc={(event) => `${event.title}`}
       eventIconFunc={(event) => getEventIcon(event.event_type)}
     />
   );
