@@ -341,7 +341,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 25,
     width: '50%',
-    marginTop: 0,
+    marginBottom: 20,
     borderRadius: 8,
     alignItems: "center",
   },

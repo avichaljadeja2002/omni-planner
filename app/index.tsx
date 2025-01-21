@@ -7,6 +7,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TextInput, View, Text, TouchableOpacity } from 'react-native';
 import { call } from '../components/apiCall';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
 
 export default function TaskScreen() {
     type Prop = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
@@ -74,31 +76,41 @@ export default function TaskScreen() {
     );
 
     return (
-        <View style={styles.loginPage}>
-            <Text style={styles.headerText}>Login</Text>
-            <View style={{height:"2%"}}></View>
-            <Text style={styles.loginPageNonheaderText}>Username</Text>
-            <TextInput
-                style={styles.loginPageInput}
-                placeholder="Enter Username"
-                autoCapitalize="none"
-                onChangeText={(text) => setCredentials({ ...credentials, userName: text })}
-                returnKeyType="next"
-                onSubmitEditing={() => passwordInputRef.current && passwordInputRef.current.focus()}
-            />
-            <Text style={styles.loginPageNonheaderText}>Password</Text>
-            <TextInput
-                ref={passwordInputRef}
-                style={styles.loginPageInput}
-                placeholder="Password"
-                secureTextEntry
-                onChangeText={(text) => setCredentials({ ...credentials, password: text })}
-                returnKeyType="done"
-                onSubmitEditing={handleLogin}
-            />
-            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-                <Text style={styles.loginButtonText}>Login</Text>
-            </TouchableOpacity>
-        </View>
+        <GoogleOAuthProvider clientId="982652547040-6pftl2ggc47iplud47t9cend8scdclkd.apps.googleusercontent.com">
+            <View style={styles.loginPage}>
+                <Text style={styles.headerText}>Login</Text>
+                <View style={{ height: "2%" }}></View>
+                <Text style={styles.loginPageNonheaderText}>Username</Text>
+                <TextInput
+                    style={styles.loginPageInput}
+                    placeholder="Enter Username"
+                    autoCapitalize="none"
+                    onChangeText={(text) => setCredentials({ ...credentials, userName: text })}
+                    returnKeyType="next"
+                    onSubmitEditing={() => passwordInputRef.current && passwordInputRef.current.focus()}
+                />
+                <Text style={styles.loginPageNonheaderText}>Password</Text>
+                <TextInput
+                    ref={passwordInputRef}
+                    style={styles.loginPageInput}
+                    placeholder="Password"
+                    secureTextEntry
+                    onChangeText={(text) => setCredentials({ ...credentials, password: text })}
+                    returnKeyType="done"
+                    onSubmitEditing={handleLogin}
+                />
+                <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+                    <Text style={styles.loginButtonText}>Login</Text>
+                </TouchableOpacity>
+                <GoogleLogin
+                    onSuccess={credentialResponse => {
+                        console.log(credentialResponse);
+                    }}
+                    onError={() => {
+                        console.log('Login Failed');
+                    }}
+                />
+            </View>
+        </GoogleOAuthProvider>
     );
 }
