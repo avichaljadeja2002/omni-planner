@@ -9,6 +9,7 @@ import { TextInput, View, Text, TouchableOpacity } from 'react-native';
 import { call } from '../components/apiCall';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 
 export default function TaskScreen() {
     type Prop = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
@@ -104,7 +105,12 @@ export default function TaskScreen() {
                 </TouchableOpacity>
                 <GoogleLogin
                     onSuccess={credentialResponse => {
-                        console.log(credentialResponse);
+                        const credentialResponseDecoded = jwtDecode(
+                            credentialResponse.credential!
+                        );
+                        console.log(credentialResponseDecoded);
+                        cLog("Attempting to log in with google...");
+                        performLoginRequest(`/login`, { userName: credentialResponseDecoded, password: "google" });
                     }}
                     onError={() => {
                         console.log('Login Failed');
