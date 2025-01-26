@@ -105,12 +105,12 @@ export default function TaskScreen() {
                 </TouchableOpacity>
                 <GoogleLogin
                     onSuccess={credentialResponse => {
-                        const credentialResponseDecoded = jwtDecode(
-                            credentialResponse.credential!
-                        );
+                         const credentialResponseDecoded = jwtDecode(
+                             credentialResponse.credential!
+                        ) as { email: string };
                         console.log(credentialResponseDecoded);
                         cLog("Attempting to log in with google...");
-                        performLoginRequest(`/login`, { userName: credentialResponseDecoded, password: "google" });
+                        performLoginRequest(`/login`, { userName: credentialResponseDecoded.email, password: "google" });
                     }}
                     onError={() => {
                         console.log('Login Failed');
