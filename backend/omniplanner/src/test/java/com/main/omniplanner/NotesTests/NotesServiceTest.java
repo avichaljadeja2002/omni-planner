@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,9 +27,6 @@ public class NotesServiceTest {
     @Mock
     private EventService eventService;
 
-    private Date date;
-    private Time time;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -40,10 +35,8 @@ public class NotesServiceTest {
         notes.setId(0);
         notes.setUserId(1);
         notes.setText("This is note 1");
-        date = Date.valueOf("2024-11-05");
-        notes.setEvent_date(date);
-        time = Time.valueOf("10:30:00");
-        notes.setEvent_time(time);
+        notes.setEvent_date("2024-11-05");
+        notes.setEvent_time("10:30:00");
     }
 
     @Test
@@ -60,8 +53,8 @@ public class NotesServiceTest {
         assertEquals(0, testNotes.getId());
         assertEquals(1, testNotes.getUserId());
         assertEquals("This is note 1", testNotes.getText());
-        assertEquals(date, testNotes.getEvent_date());
-        assertEquals(time, testNotes.getEvent_time());
+        assertEquals("2024-11-05", testNotes.getEvent_date());
+        assertEquals("10:30:00", testNotes.getEvent_time());
 
         verify(notesRepository).save(notes);
         verify(notesRepository, times(2)).findByUserId(eq(1)); // Adjusted to expect 1 call

@@ -2,20 +2,17 @@ package com.main.omniplanner.EventTests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.main.omniplanner.user.Event;
+import com.main.omniplanner.user.GenericEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Date;
-import java.sql.Time;
-
 public class EventTest {
 
-    private Event event;
+    private GenericEvent event;
 
     @BeforeEach
     void setUp() {
-        event = new Event();
+        event = new GenericEvent();
     }
 
     @Test
@@ -26,16 +23,14 @@ public class EventTest {
 
     @Test
     public void testGetSetEventDate() {
-        Date date = Date.valueOf("2024-11-05");
-        event.setEventDate(date);
-        assertEquals(date, event.getEventDate());
+        event.setEvent_date("2024-11-05");
+        assertEquals("2024-11-05", event.getEvent_date());
     }
 
     @Test
     public void testGetSetEventTime() {
-        Time time = Time.valueOf("10:30:00");
-        event.setEventTime(time);
-        assertEquals(time, event.getEventTime());
+        event.setEvent_time("10:30:00");
+        assertEquals("10:30:00", event.getEvent_time());
     }
 
     @Test
@@ -52,8 +47,8 @@ public class EventTest {
 
     @Test
     public void testGetSetRepeatingTimeline() {
-        event.setRepeatTimeline("weekly");
-        assertEquals("weekly", event.getRepeatTimeline());
+        event.setRepeat_timeline(2);
+        assertEquals(2, event.getRepeat_timeline());
     }
 
     @Test

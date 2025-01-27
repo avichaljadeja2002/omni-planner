@@ -46,9 +46,9 @@ const GenericMainPageForm: React.FC<FormProps> = ({
     };
 
     const handleViewPress = (item: Task) => {
-        // cLog(item);
         const route = { ...item, thisPage };
-        if (route.thisPage === 'index') {
+        cLog({"Pre-Route": route});
+        if (route.thisPage === 'mainPage') {
             route.thisPage = getPageFromEventType(route.event.event_type) as keyof RootStackParamList;
         }
         cLog({"Route": route});
@@ -127,7 +127,7 @@ const GenericMainPageForm: React.FC<FormProps> = ({
                     style={styles.flatList}
                     data={tasks}
                     renderItem={renderTask}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(item) => `${item.id}-${item.event.event_type}`}
                 />
                 <View style={{ height: 15 }}></View>
                 <View style={styles.toggleContainer}>

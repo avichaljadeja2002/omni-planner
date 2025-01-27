@@ -1,8 +1,5 @@
 package com.main.omniplanner.user;
 
-import com.main.omniplanner.finance.FinanceEvents;
-import com.main.omniplanner.health.HealthEvents;
-import com.main.omniplanner.meals.MealEvents;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,9 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface EventRepository extends JpaRepository<Event, Integer> {
-    List<Event> findByUserId(int userId);
+public interface EventRepository extends JpaRepository<GenericEvent, Integer> {
+    @Query("SELECT f FROM GenericEvent f WHERE f.userId = :userId AND (f.repeating = true OR f.event_date >= :currentTimeMillis) ORDER BY f.event_date ASC")
+    List<GenericEvent> findUpcomingByUserId(@Param("userId") int userId, @Param("currentTimeMillis") Long currentTimeMillis);
 
-    @Query("SELECT f FROM Event f WHERE f.userId = :userId AND (f.repeating = true OR f.eventDate >= :currentTimeMillis) ORDER BY f.eventDate ASC")
-    List<Event> findUpcomingByUserId(@Param("userId") int userId, @Param("currentTimeMillis") Long currentTimeMillis);
+    @Query("SELECT f FROM GenericEvent f WHERE f.userId = :userId AND f.event_type = :event_type AND (f.repeating = true OR f.event_date >= :currentTimeMillis) ORDER BY f.event_date ASC")
+    List<GenericEvent> findByEventType(@Param("event_type") String event_type, @Param("userId") int userId, @Param("currentTimeMillis") Long currentTimeMillis);
 }

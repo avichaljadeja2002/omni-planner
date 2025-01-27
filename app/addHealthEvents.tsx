@@ -17,7 +17,7 @@ export default function AddHealthEvents() {
             initialData={healthInitialData}
             fields={healthFields}
             mainPage='mainHealthTracker'
-            updateEndpoint={`/add_health_events`}
+            updateEndpoint={`/add_event/health`}
         />
     );
 }

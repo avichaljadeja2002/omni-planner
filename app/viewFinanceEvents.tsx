@@ -7,7 +7,7 @@ export default function ViewFinanceEvents() {
     <GenericAddViewEventForm
       title="Finance Event"
       fields={financeFields}
-      updateEndpoint={`/update_finance_event`}
+      updateEndpoint={`/update_event/finance`}
       mainPage="mainFinanceTracker"
       method="PUT"
     />

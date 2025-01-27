@@ -7,7 +7,7 @@ export default function HealthTracker() {
       title='Health Tracker'
       nextPage='addHealthEvents'
       thisPage='mainHealthTracker'
-      hitAddress={`/get_health_events/`}
+      hitAddress={`/get_events/health/`}
       eventIconFunc={() => 'fitness-outline'}
     />
   );

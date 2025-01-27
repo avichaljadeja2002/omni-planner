@@ -15,12 +15,20 @@ public class EventService {
         this.eventRepository = eventRepository;
     }
 
-    public List<Event> getEventsByUserId(int userId)
+    public List<GenericEvent> getEventsByUserId(int userId)
     {
         Long currentTimeMillis = System.currentTimeMillis();
          return eventRepository.findUpcomingByUserId(userId, currentTimeMillis);
     }
 
-    public Event saveEvent(Event event) {return eventRepository.save(event);}
+    public List<GenericEvent> getEventsByType(String event_type, int userId) {
+        Long currentTimeMillis = System.currentTimeMillis();
+        return eventRepository.findByEventType(event_type, userId, currentTimeMillis);
+    }
+
+    public GenericEvent saveEvent(GenericEvent event, String event_type) {
+        event.setEvent_type(event_type);
+        return eventRepository.save(event);
+    }
 
 }

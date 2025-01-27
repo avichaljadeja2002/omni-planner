@@ -1,6 +1,5 @@
 package com.main.omniplanner.user;
 
-
 import jakarta.persistence.*;
 
 @Entity

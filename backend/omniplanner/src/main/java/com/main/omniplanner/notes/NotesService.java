@@ -1,12 +1,10 @@
 package com.main.omniplanner.notes;
 
-import com.main.omniplanner.user.Event;
 import com.main.omniplanner.user.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class NotesService {

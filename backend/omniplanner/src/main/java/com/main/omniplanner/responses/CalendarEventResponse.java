@@ -1,24 +1,24 @@
 package com.main.omniplanner.responses;
 
-import com.main.omniplanner.calendar.CalendarEvents;
+import com.main.omniplanner.user.GenericEvent;
 
 import java.util.List;
 
 public class CalendarEventResponse {
 
-    private List<CalendarEvents> events;
+    private List<GenericEvent> events;
     private boolean googleCalendarLinked;
 
-    public CalendarEventResponse(List<CalendarEvents> events, boolean googleCalendarLinked) {
+    public CalendarEventResponse(List<GenericEvent> events, boolean googleCalendarLinked) {
         this.events = events;
         this.googleCalendarLinked = googleCalendarLinked;
     }
 
-    public List<CalendarEvents> getEvents() {
+    public List<GenericEvent> getEvents() {
         return events;
     }
 
-    public void setEvents(List<CalendarEvents> events) {
+    public void setEvents(List<GenericEvent> events) {
         this.events = events;
     }
 

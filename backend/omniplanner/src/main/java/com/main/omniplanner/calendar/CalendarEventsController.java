@@ -1,9 +1,10 @@
 package com.main.omniplanner.calendar;
 
 import com.main.omniplanner.responses.CalendarEventResponse;
+import com.main.omniplanner.user.GenericEvent;
+import com.main.omniplanner.user.EventService;
 import com.main.omniplanner.user.User;
 import com.main.omniplanner.user.UserRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ import java.util.List;
 public class CalendarEventsController {
 
     @Autowired
-    private CalendarEventsService calendarEventsService;
+    private EventService eventsService;
 
     @Autowired
     private UserRepository userRepository;
@@ -25,15 +26,9 @@ public class CalendarEventsController {
     @Autowired
     private LinkGoogleCalendar linkGoogleCalendar;
 
-    @PostMapping("/add_calendar_event")
-    public ResponseEntity<CalendarEvents> addEvent(@RequestBody CalendarEvents event) {
-        CalendarEvents savedEvent = calendarEventsService.saveEvent(event);
-        return new ResponseEntity<>(savedEvent, HttpStatus.CREATED);
-    }
-
     @GetMapping("/get_calendar_events/{userId}")
     public ResponseEntity<CalendarEventResponse> getEventsByUserId(@PathVariable int userId) {
-        List<CalendarEvents> combinedEvents = new ArrayList<>();
+        List<GenericEvent> combinedEvents = new ArrayList<>();
         boolean isGoogleCalendarLinked = false;
 
         try {
@@ -44,12 +39,12 @@ public class CalendarEventsController {
                 String accessToken = user.getGoogle_calendar_access_token();
 
                 if (accessToken != null && !accessToken.isEmpty()) {
-                    List<CalendarEvents> googleEvents = linkGoogleCalendar.getGoogleCalendarEvents(accessToken);
+                    List<GenericEvent> googleEvents = linkGoogleCalendar.getGoogleCalendarEvents(accessToken);
                     combinedEvents.addAll(googleEvents);
                 }
             }
 
-            List<CalendarEvents> localEvents = calendarEventsService.getEventsByUserId(userId);
+            List<GenericEvent> localEvents = eventsService.getEventsByType("calendar", userId);
             combinedEvents.addAll(localEvents);
 
             CalendarEventResponse response = new CalendarEventResponse(combinedEvents, isGoogleCalendarLinked);
@@ -59,12 +54,5 @@ public class CalendarEventsController {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-
-    @Transactional
-    @PutMapping("/update_calendar_event")
-    public ResponseEntity<CalendarEvents> updateEvent(@RequestBody CalendarEvents event) {
-        calendarEventsService.updateEvent(event);
-        return new ResponseEntity<>(event, HttpStatus.OK);
     }
 }

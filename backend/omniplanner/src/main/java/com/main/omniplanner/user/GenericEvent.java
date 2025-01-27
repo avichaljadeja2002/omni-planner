@@ -4,9 +4,9 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "all_events")
-public class Event {
+public class GenericEvent {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     private String event_date;

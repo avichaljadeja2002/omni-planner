@@ -9,6 +9,7 @@ import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
 import com.main.omniplanner.requests.CalendarLinkRequest;
+import com.main.omniplanner.user.GenericEvent;
 import com.main.omniplanner.user.User;
 import com.main.omniplanner.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,8 +51,8 @@ public class LinkGoogleCalendar {
     }
 
     @GetMapping("/get_google_calendar_events")
-    public List<CalendarEvents> getGoogleCalendarEvents(@RequestParam String access_token) {
-        List<CalendarEvents> calendarEventsList = new ArrayList<>();
+    public List<GenericEvent> getGoogleCalendarEvents(@RequestParam String access_token) {
+        List<GenericEvent> calendarEventsList = new ArrayList<>();
         try {
             HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
             Calendar service = new Calendar.Builder(httpTransport, JSON_FACTORY,
@@ -66,19 +68,26 @@ public class LinkGoogleCalendar {
                     .setTimeMin(now)
                     .execute();
 
-            for (Event event : events.getItems()) {
-                CalendarEvents calendarEvent = new CalendarEvents();
+            int loopLimit = Math.min(events.getItems().size(), 10); // If size is less than 10, use the size, else 10
+            for (int i = 0; i < loopLimit; i++) {
+                Event event = events.getItems().get(i);
+                GenericEvent calendarEvent = new GenericEvent();
 
+                calendarEvent.setId(i);
                 calendarEvent.setTitle("Google: " + event.getSummary());
+                calendarEvent.setEvent_type("google_calendar");
                 calendarEvent.setDescription(event.getDescription());
 
-                DateTime start = event.getStart().getDateTime() != null ?
-                        event.getStart().getDateTime() : event.getStart().getDate();
+                LocalDate currentDate = LocalDate.now();
+                LocalTime currentTime = LocalTime.now();
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+                String formattedDate = currentDate.format(dateFormatter);
+                String formattedTime = currentTime.format(timeFormatter);
 
-                if (start != null) {
-                    long eventStartMillis = start.getValue();
-                    calendarEvent.setEvent_date(new Date(eventStartMillis));
-                    calendarEvent.setEvent_time(new Time(eventStartMillis));
+                if (currentDate != null) {
+                    calendarEvent.setEvent_date(formattedDate); // Set the formatted String
+                    calendarEvent.setEvent_time(formattedTime);
                     calendarEventsList.add(calendarEvent);
                 }
             }

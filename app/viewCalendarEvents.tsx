@@ -7,7 +7,7 @@ export default function ViewCalendarEvents() {
     <GenericAddViewEventForm
       title="Calendar event"
       fields={calendarFields}
-      updateEndpoint={`/update_calendar_event`}
+      updateEndpoint={`/update_event/calendar`}
       mainPage="mainCalendarEvents"
       method="PUT"
     />

@@ -18,7 +18,7 @@ export default function AddCalendarEvents() {
             initialData={calendarInitialData}
             fields={calendarFields}
             mainPage="mainCalendarEvents"
-            updateEndpoint={`/add_calendar_event`}
+            updateEndpoint={`/add_event/calendar`}
         />
     );
 }
