@@ -12,17 +12,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { verifyToken } from '@/constants/constants';
 import { call } from '../components/apiCall';
 
-const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initialData = {}, fields, mainPage, updateEndpoint, fetchEndpoint, keyValue, method="POST" }) => {
+const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initialData = {}, fields, mainPage, updateEndpoint, fetchEndpoint, keyValue, method = "POST" }) => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [additionalData, setAdditionalData] = useState<any>([]);
     const [currentField, setCurrentField] = useState<string | null>(null);
     const route = useRoute<RouteProp<RootStackParamList, any>>();
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-    cLog({"Initial Data": initialData});
+    cLog({ "Initial Data": initialData });
     let event = initialData.event ? initialData.event : initialData;
-    if(route.params)event = route.params?.event.event;
-    cLog({"Event":event});
+    if (route.params) event = route.params?.event.event;
+    cLog({ "Event": event });
     const [formData, setFormData] = useState({
         ...event,
         event_date: event.event_date ? new Date(event.event_date) : new Date(),
@@ -150,16 +150,16 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
             case 'multi-select':
                 return (
                     <View>
-                    <MultiSelect
-                        items={additionalData}
-                        uniqueKey="value"
-                        selectedItems={Array.isArray(formData["ingredients"]) ? formData["ingredients"] : getIngredientNames(event.ingredients.split(',').map((item: string) => parseInt(item, 10)))}
-                        onSelectedItemsChange={(selectedItems) => handleChange('ingredients', selectedItems)}
-                        selectText="Select Ingredients"
-                        searchInputPlaceholderText="Search Ingredients..."
-                        displayKey="label"
-                        styleDropdownMenuSubsection={styles.dropdown}
-                    />
+                        <MultiSelect
+                            items={additionalData}
+                            uniqueKey="value"
+                            selectedItems={Array.isArray(formData["ingredients"]) ? formData["ingredients"] : getIngredientNames(event.ingredients.split(',').map((item: string) => parseInt(item, 10)))}
+                            onSelectedItemsChange={(selectedItems) => handleChange('ingredients', selectedItems)}
+                            selectText="Select Ingredients"
+                            searchInputPlaceholderText="Search Ingredients..."
+                            displayKey="label"
+                            styleDropdownMenuSubsection={styles.dropdown}
+                        />
                     </View>
                 );
             case 'time':

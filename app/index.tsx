@@ -14,7 +14,7 @@ import { jwtDecode } from "jwt-decode";
 export default function TaskScreen() {
     type Prop = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
     const navigation = useNavigation<Prop>();
-    const [credentials, setCredentials] = useState({ userName: '', password: '' });
+    const [credentials, setCredentials] = useState({ email: '', password: '' });
 
     const passwordInputRef = useRef<TextInput>(null);
 
@@ -22,7 +22,6 @@ export default function TaskScreen() {
         try {
             await AsyncStorage.multiSet([
                 ['userId', userInfo.userId],
-                ['userName', userInfo.userName],
                 ['email', userInfo.email],
                 ['name', userInfo.name],
                 ['token', userInfo.token],
@@ -43,7 +42,6 @@ export default function TaskScreen() {
     const performLoginRequest = async (url: string, data: object) => {
         try {
             const response = await call(url, 'PUT', undefined, data);
-            cLog('Login response:', response.data);
             await handleLoginResponse(response.data);
         } catch (error) {
             console.error('Error during login request:', error);
@@ -51,23 +49,23 @@ export default function TaskScreen() {
     };
 
     const checkLogin = async () => {
-        const [storedToken, storedUserName] = await AsyncStorage.multiGet(['token', 'userName']);
-        if (storedToken[1] && storedUserName[1]) {
-            await performLoginRequest(`/checkLogin`, { userName: storedUserName[1], token: storedToken[1] });
+        const [storedToken, storedEmail] = await AsyncStorage.multiGet(['token', 'email']);
+        if (storedToken[1] && storedEmail[1]) {
+            await performLoginRequest(`/checkLogin`, { email: storedEmail[1], token: storedToken[1] });
         } else {
-            cLog('No valid token or username found');
+            cLog('No valid token or email found');
         }
     };
 
     const handleLogin = async () => {
         cLog("Attempting to log in...");
-        const { userName, password } = credentials;
-        performLoginRequest(`/login`, { userName, password })
+        const { email, password } = credentials;
+        performLoginRequest(`/login`, { email, password })
     }
 
     const parseUserInfo = (data: string): UserInfo => {
-        const [userId, userName, email, name, token] = data.split(",");
-        return { userId, userName, email, name, token };
+        const [userId, email, name, token] = data.split(",");
+        return { userId, email, name, token };
     };
 
     useFocusEffect(
@@ -77,16 +75,16 @@ export default function TaskScreen() {
     );
 
     return (
-        <GoogleOAuthProvider clientId="982652547040-6pftl2ggc47iplud47t9cend8scdclkd.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId={process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID!}>
             <View style={styles.loginPage}>
                 <Text style={styles.headerText}>Login</Text>
                 <View style={{ height: "2%" }}></View>
-                <Text style={styles.loginPageNonheaderText}>Username</Text>
+                <Text style={styles.loginPageNonheaderText}>Email</Text>
                 <TextInput
                     style={styles.loginPageInput}
-                    placeholder="Enter Username"
+                    placeholder="Enter Email"
                     autoCapitalize="none"
-                    onChangeText={(text) => setCredentials({ ...credentials, userName: text })}
+                    onChangeText={(text) => setCredentials({ ...credentials, email: text })}
                     returnKeyType="next"
                     onSubmitEditing={() => passwordInputRef.current && passwordInputRef.current.focus()}
                 />
@@ -104,16 +102,15 @@ export default function TaskScreen() {
                     <Text style={styles.loginButtonText}>Login</Text>
                 </TouchableOpacity>
                 <GoogleLogin
-                    onSuccess={credentialResponse => {
-                         const credentialResponseDecoded = jwtDecode(
-                             credentialResponse.credential!
+                    onSuccess={(credentialResponse) => {
+                        const credentialResponseDecoded = jwtDecode(
+                            credentialResponse.credential!
                         ) as { email: string };
-                        console.log(credentialResponseDecoded);
                         cLog("Attempting to log in with google...");
-                        performLoginRequest(`/login`, { userName: credentialResponseDecoded.email, password: "google" });
+                        performLoginRequest(`/login`, { email: credentialResponseDecoded.email, password: "google" });
                     }}
                     onError={() => {
-                        console.log('Login Failed');
+                        cLog('Login Failed');
                     }}
                 />
             </View>

@@ -9,8 +9,8 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Integer> {
     User findById(int id);
 
-    @Query("SELECT u FROM User u WHERE u.userName = :userName")
-    List<User> findByUserName(String userName);
+    @Query("SELECT u FROM User u WHERE u.email = :email")
+    List<User> findByEmail(String email);
 
     User save(User user);
 }

@@ -33,8 +33,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public String checkLogin(String username, String token) {
-        List<User> users = userRepository.findByUserName(username);
+    public String checkLogin(String email, String token) {
+        List<User> users = userRepository.findByEmail(email);
 
         if (users.isEmpty()) {
             return null;
@@ -49,8 +49,8 @@ public class UserService {
         return null;
     }
 
-    public String checkLogin(String username, String token, String userId) {
-        String user = checkLogin(username, token);
+    public String checkLogin(String email, String token, String userId) {
+        String user = checkLogin(email, token);
         if (user == null) {
             return null;
         }
@@ -61,13 +61,13 @@ public class UserService {
         return null;
     }
 
-    public String login(String username, String password) {
-        List<User> users = userRepository.findByUserName(username);
+    public String login(String email, String password) {
+        List<User> users = userRepository.findByEmail(email);
 
         if (users.isEmpty()) {
-            System.out.println("No users found with username: " + username);
+            System.out.println("No users found with email: " + email);
             User newUser = new User();
-            newUser.setUserName(username);
+            newUser.setEmail(email);
             String token = generateToken(newUser);
             newUser.setTempToken(token);
             registerUser(newUser, password);
@@ -83,13 +83,13 @@ public class UserService {
             }
         }
 
-        System.out.println("No matching password for username: " + username);
+        System.out.println("No matching password for email: " + email);
         return null;
     }
 
     public String generateToken(User user) {
         return Jwts.builder()
-                .setSubject(user.getUserName())
+                .setSubject(user.getEmail())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION))
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
