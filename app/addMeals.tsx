@@ -16,7 +16,7 @@ export default function AddMeals() {
             initialData={mealInitialData}
             fields={mealFields}
             mainPage="mainMealTracker"
-            updateEndpoint={`/add_meal_events`}
+            updateEndpoint={`/add_event/meal`}
             fetchEndpoint={`/get_ingredients`}
             keyValue={{'key':"id", "value":"ingredientName"}}
         />

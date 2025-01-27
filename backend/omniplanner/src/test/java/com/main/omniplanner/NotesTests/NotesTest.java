@@ -4,9 +4,6 @@ import com.main.omniplanner.notes.Notes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Date;
-import java.sql.Time;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class NotesTest {
@@ -32,16 +29,14 @@ public class NotesTest {
 
     @Test
     public void testGetSetEvent_date() {
-        Date date = Date.valueOf("2024-11-05");
-        notes.setEvent_date(date);
-        assertEquals(date, notes.getEvent_date());
+        notes.setEvent_date("2024-11-05");
+        assertEquals("2024-11-05", notes.getEvent_date());
     }
 
     @Test
     public void testGetSetEvent_time() {
-        Time time = Time.valueOf("10:30:00");
-        notes.setEvent_time(time);
-        assertEquals(time, notes.getEvent_time());
+        notes.setEvent_time("10:30:00");
+        assertEquals("10:30:00", notes.getEvent_time());
     }
 
     @Test

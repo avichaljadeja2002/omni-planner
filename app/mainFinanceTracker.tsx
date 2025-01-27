@@ -7,7 +7,7 @@ export default function FinanceTracker() {
       title='Finance Tracker'
       nextPage='addFinanceEvents'
       thisPage='mainFinanceTracker'
-      hitAddress={`/get_finance_events/`}
+      hitAddress={`/get_events/finance/`}
       eventIconFunc={() => 'wallet-outline'}
     />
   );

@@ -7,7 +7,7 @@ export default function ViewHealthEvents() {
     <GenericAddViewEventForm
       title="Health Event"
       fields={healthFields}
-      updateEndpoint={`/update_health_event`}
+      updateEndpoint={`/update_event/health`}
       mainPage="mainHealthTracker"
       method="PUT"
     />

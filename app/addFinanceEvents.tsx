@@ -10,7 +10,7 @@ export default function AddFinanceEvents() {
         event_time: new Date(),
         repeating: false,
         repeat_timeline: '',
-        money: 0.0,
+        money: null,
       };
     return (
         <GenericAddViewPageForm
@@ -18,7 +18,7 @@ export default function AddFinanceEvents() {
             initialData={financeInitialData}
             fields={financeFields}
             mainPage='mainFinanceTracker'
-            updateEndpoint={`/add_finance_events`}
+            updateEndpoint={`/add_event/finance`}
         />
     );
 }

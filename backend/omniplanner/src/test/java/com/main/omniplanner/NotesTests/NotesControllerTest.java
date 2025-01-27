@@ -11,8 +11,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -37,15 +35,15 @@ class NotesControllerTest {
         note1.setId(1);
         note1.setUserId(1);
         note1.setText("This is note 1");
-        note1.setEvent_date(Date.valueOf("2023-10-01"));
-        note1.setEvent_time(Time.valueOf("10:00:00"));
+        note1.setEvent_date("2023-10-01");
+        note1.setEvent_time("10:00:00");
 
         note2 = new Notes();
         note2.setId(1);
         note2.setUserId(1);
         note2.setText("This is note 2");
-        note2.setEvent_date(Date.valueOf("2023-10-01"));
-        note2.setEvent_time(Time.valueOf("10:00:00"));
+        note2.setEvent_date("2023-10-01");
+        note2.setEvent_time("10:00:00");
     }
 
     @Test
@@ -58,8 +56,8 @@ class NotesControllerTest {
         // Assert for the first event
         assertEquals("This is note 1", response.getBody().get(0).getText());
         assertEquals(1, response.getBody().get(0).getUserId());
-        assertEquals(Date.valueOf("2023-10-01"), response.getBody().get(0).getEvent_date());
-        assertEquals(Time.valueOf("10:00:00"), response.getBody().get(0).getEvent_time());
+        assertEquals("2023-10-01", response.getBody().get(0).getEvent_date());
+        assertEquals("10:00:00", response.getBody().get(0).getEvent_time());
     }
 
     @Test

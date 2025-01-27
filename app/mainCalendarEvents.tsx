@@ -4,7 +4,7 @@ import { Alert } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Linking from 'expo-linking';
 import { cLog } from '../components/log'
-import { call } from '../components/apiCall';
+import { call, full_call } from '../components/apiCall';
 
 const CLIENT_ID = process.env.EXPO_PUBLIC_CLIENT_ID || '';
 const CLIENT_SECRET = process.env.EXPO_PUBLIC_CLIENT_SECRET || '';
@@ -51,7 +51,7 @@ export default function CalendarTracker() {
       params.append('client_secret', CLIENT_SECRET);
       params.append('redirect_uri', REDIRECT_URI);
       params.append('grant_type', 'authorization_code');
-      const response = await call(TOKEN_URI, 'POST', 'application/x-www-form-urlencoded', params);
+      const response = await full_call(TOKEN_URI, 'POST', 'application/x-www-form-urlencoded', params);
       if (response.data.access_token) {
         cLog("Received access token:" + response.data.access_token);
         linkGoogleCalendar(1, response.data.access_token);
@@ -91,6 +91,7 @@ export default function CalendarTracker() {
       thisPage='mainCalendarEvents'
       hitAddress={`/get_calendar_events/`}
       googleCalendar={true}
+      sliceRange={20}
       eventIdFunc={(event: any) => `${event.id}-${event.event_date}-${event.event_time}`}
       eventIconFunc={() => 'calendar-outline'}
       handlePress={handlePress}

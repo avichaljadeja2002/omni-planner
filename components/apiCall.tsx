@@ -19,3 +19,21 @@ export const call = async (endpoint: string, method: string, headers?: string, d
         throw error;
     }
 };
+
+export const full_call = async (endpoint: string, method: string, headers?: string, data?: any): Promise<AxiosResponse<any>> => {
+    cLog('API Call URL:', endpoint);
+
+    try {
+        const response = await axios({
+            url: endpoint,
+            method: method,
+            data: data,
+            headers: headers ? { 'Content-Type': headers } : {},
+        });
+        return response;
+    } catch (error) {
+        console.error('API call error:', error);
+        throw error;
+    }
+};
+

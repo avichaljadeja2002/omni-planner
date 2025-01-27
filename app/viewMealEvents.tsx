@@ -7,7 +7,7 @@ export default function ViewMealEvents() {
     <GenericAddViewEventForm
       title="Meal Event"
       fields={mealFields}
-      updateEndpoint={`/update_meal_event`}
+      updateEndpoint={`/update_event/meal`}
       fetchEndpoint={`/get_ingredients`}
       mainPage="mainMealTracker"
       keyValue={{ 'key': "id", "value": "ingredientName" }}

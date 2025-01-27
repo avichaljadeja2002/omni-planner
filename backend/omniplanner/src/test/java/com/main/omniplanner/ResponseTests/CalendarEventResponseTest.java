@@ -1,7 +1,7 @@
 package com.main.omniplanner.ResponseTests;
 
-import com.main.omniplanner.calendar.CalendarEvents;
 import com.main.omniplanner.responses.CalendarEventResponse;
+import com.main.omniplanner.user.GenericEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -14,15 +14,15 @@ import static org.mockito.Mockito.mock;
 
 public class CalendarEventResponseTest {
 
-    private CalendarEvents mockEvent1;
-    private CalendarEvents mockEvent2;
-    private List<CalendarEvents> mockEvents;
+    private GenericEvent mockEvent1;
+    private GenericEvent mockEvent2;
+    private List<GenericEvent> mockEvents;
 
     @BeforeEach
     public void setUp() {
         // Mock CalendarEvents objects
-        mockEvent1 = mock(CalendarEvents.class);
-        mockEvent2 = mock(CalendarEvents.class);
+        mockEvent1 = mock(GenericEvent.class);
+        mockEvent2 = mock(GenericEvent.class);
 
         // Create a list of mocked events
         mockEvents = Arrays.asList(mockEvent1, mockEvent2);
