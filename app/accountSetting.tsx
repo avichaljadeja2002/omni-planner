@@ -7,7 +7,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/components/Types';
 
 export default function AccountSetting() {
-    const initialData = { userId: 1, name: "", userName: "", email: "" };
+    const initialData = { userId: 1, name: "", email: "" };
     const [formData, setFormData] = useState(initialData);
     const [showLogoutModal, setShowLogoutModal] = useState(false);
     type Prop = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
@@ -17,7 +17,6 @@ export default function AccountSetting() {
         try {
             cLog(formData);
             await AsyncStorage.setItem('name', formData.name);
-            await AsyncStorage.setItem('userName', formData.userName);
             await AsyncStorage.setItem('email', formData.email);
             // const response = await call('/modify_user', 'PUT', formData); // Send request with updated data
             // cLog('Note saved successfully: ' + response.data);
@@ -35,14 +34,12 @@ export default function AccountSetting() {
         try {
             const userId = await AsyncStorage.getItem('userId');
             const name = await AsyncStorage.getItem('name');
-            const userName = await AsyncStorage.getItem('userName');
             const email = await AsyncStorage.getItem('email');
 
             // Update state with retrieved values
             setFormData({
                 userId: userId ? parseInt(userId, 10) : 1,  // Default to 1 if not found
                 name: name || '',
-                userName: userName || '',
                 email: email || '',
             });
         } catch (error) {
@@ -78,14 +75,6 @@ export default function AccountSetting() {
                     onChangeText={(text) => handleChange("name", text)} // Handle text changes
                     style={styles.textInput}
                     placeholder="name"
-                    multiline={true}
-                />
-                <Text style={styles.title}>Username</Text>
-                <TextInput
-                    value={formData.userName} // Set value to formData.text to make it controlled
-                    onChangeText={(text) => handleChange("userName", text)} // Handle text changes
-                    style={styles.textInput}
-                    placeholder="username"
                     multiline={true}
                 />
                 <Text style={styles.title}>Email</Text>

@@ -28,15 +28,15 @@ public class UserController {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readTree(loginRequest);
-            String username = jsonNode.get("email").asText();
+            String email = jsonNode.get("email").asText();
             String token = jsonNode.get("token").asText();
             String userId = jsonNode.has("userId") ? jsonNode.get("userId").asText() : null;
 
             if(userId != null && !userId.isEmpty()) {
-                return userService.checkLogin(username, token, userId);
+                return userService.checkLogin(email, token, userId);
             }
 
-            return userService.checkLogin(username, token);
+            return userService.checkLogin(email, token);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -49,10 +49,10 @@ public class UserController {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readTree(loginRequest);
 
-            String username = jsonNode.get("email").asText();
+            String email = jsonNode.get("email").asText();
             String password = jsonNode.get("password").asText();
 
-            return userService.login(username, password);
+            return userService.login(email, password);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
