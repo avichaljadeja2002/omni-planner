@@ -9,7 +9,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation, useFocusEffect, RouteProp, useRoute } from '@react-navigation/native';
 import MultiSelect from 'react-native-multiple-select';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { verifyToken } from '@/constants/constants';
 import { call } from '../components/apiCall';
 
 const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initialData = {}, fields, mainPage, updateEndpoint, fetchEndpoint, keyValue, method = "POST" }) => {
@@ -32,15 +31,15 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
     });
 
     const handleSave = async () => {
-        const isTokenValid = await verifyToken(navigation);
-        if (!isTokenValid) return;
+        const userId = await AsyncStorage.getItem('userId');
+        if (!userId) return;
         const formattedData = {
             ...formData,
             event_date: formData.event_date?.toISOString().split('T')[0],
             event_time: formData.event_time?.toTimeString().split(' ')[0],
             repeating: Boolean(formData.repeat_timeline && formData.repeat_timeline),
             repeat_timeline: formData.repeat_timeline,
-            userId: (await AsyncStorage.getItem('userId')),
+            userId: userId,
             ingredients: formData.ingredients?.join(',')
         };
         cLog(formattedData);
@@ -103,21 +102,18 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
         return filteredItems.map((item: { label: any }) => item.label);
     };
 
+
     useFocusEffect(
         useCallback(() => {
-            verifyToken(navigation);
-            fetchAdditionalData();
-            if (event['repeat_timeline']) {
-                event['repeat_timeline'] = parseInt(event['repeat_timeline'], 10);
-                event['repeating'] = event['repeat_timeline'] !== 0;
-            }
-
-            const parsedIngredients = event.ingredients
-                ? event.ingredients.split(',').map((item: string) => parseInt(item, 10))
-                : [];
-
-            setFormData({ ...event, ingredients: parsedIngredients });
-        }, [event])
+            const verifyLoginStatus = async () => {
+                const [isLoggedIn, userId] = await AsyncStorage.multiGet(['isLoggedIn', 'userId']);
+                if (isLoggedIn[1] === 'true' && userId[1]) {
+                    console.log(`User is logged in with ID: ${userId[1]}`);
+                }
+            };
+    
+            verifyLoginStatus();
+        }, [])
     );
 
     const renderField = (field: any) => {

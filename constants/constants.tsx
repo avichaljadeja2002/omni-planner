@@ -6,7 +6,7 @@ import { Field } from "@/components/Types";
 import { call } from '@/components/apiCall';
 
 // export const IPAddr = "http://34.204.83.156:8080" // For AWS
-export const IPAddr = "http://137.112.225.92:8080" // For local testing on lapto
+export const IPAddr = "http://127.0.0.1:8080" // For local testing on lapto
 
 export const repeatingData = [
   { label: 'Daily', value: 1 },
@@ -60,19 +60,6 @@ export const getPageFromEventType = (eventType: any) => {
   }
 }
 
-export const verifyToken = async (navigation: StackNavigationProp<RootStackParamList, keyof RootStackParamList>) => {
-  const storedEmail = await AsyncStorage.getItem('email');
-  const storedToken = await AsyncStorage.getItem('token');
-  const storedUserId = await AsyncStorage.getItem('userId');
-  const response = await call('/checkLogin', 'PUT', undefined, { email: storedEmail, token: storedToken, userId: storedUserId });
-  if (!response.data) {
-    cLog('Token verification failed');
-    await AsyncStorage.clear();
-    navigation.navigate('index');
-    return false;
-  }
-  return true;
-}
 
 export const calendarFields: Field[] = [
   { name: 'title', label: 'Title', type: 'text' },
