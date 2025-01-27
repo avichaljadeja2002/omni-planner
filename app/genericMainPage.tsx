@@ -121,7 +121,24 @@ const GenericMainPageForm: React.FC<FormProps> = ({
                 <View>
                     <View style={{ height: 12 }}></View>
                     <Text style={styles.headerText}>{title}</Text>
-                    <Text style={styles.sectionHeader}>{header}</Text>
+                    <View>
+                        <View style={{ height: 12 }}></View>
+                        <View style={styles.headerRow}>
+                            <Text style={styles.sectionHeader}>{header}</Text>
+                            {title !== 'Home' && (
+                                <TouchableOpacity
+                                    style={styles.smallButton}
+                                    onPress={() => navigation.navigate(nextPage as any)}
+                                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                                >
+                                    <View style={styles.smallIcon}>
+                                        <Ionicons name="add-outline" size={20} color={'#eee'} />
+                                    </View>
+                                </TouchableOpacity>
+                            )}
+                        </View>
+                    </View>
+
                 </View>
                 <FlatList
                     style={styles.flatList}
@@ -157,17 +174,6 @@ const GenericMainPageForm: React.FC<FormProps> = ({
                         }}
                     />
                 )}
-                {title !== 'Home' &&
-                    <TouchableOpacity
-                        style={styles.fixedButton}
-                        onPress={() => navigation.navigate(nextPage as any)}
-                        hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
-                    >
-                        <View style={styles.icon}>
-                            <Ionicons name="add-outline" size={40} color={'#eee'} />
-                        </View>
-                    </TouchableOpacity>
-                }
             </View>
             {googleCalendar && !isGoogleCalendarLinked && (
                 <View style={{ alignItems: 'center', marginBottom: 25 }}>

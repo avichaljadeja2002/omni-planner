@@ -32,6 +32,7 @@ export default function TaskScreen() {
     };
 
     const handleLoginResponse = async (responseData: string) => {
+        cLog(responseData)
         if (responseData) {
             const userInfo = parseUserInfo(responseData);
             await updateAsyncStorage(userInfo);
@@ -42,7 +43,8 @@ export default function TaskScreen() {
     const performLoginRequest = async (url: string, data: object) => {
         try {
             const response = await call(url, 'PUT', undefined, data);
-            await handleLoginResponse(response.data);
+            console.log(response)
+            await handleLoginResponse(response?.data);
         } catch (error) {
             console.error('Error during login request:', error);
         }

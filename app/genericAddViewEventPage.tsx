@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { View, Text, TextInput, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, ScrollView, TouchableOpacity, Modal } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { cLog } from '../components/log';
 import { styles } from '@/assets/styles/styles';
@@ -17,6 +17,8 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [additionalData, setAdditionalData] = useState<any>([]);
     const [currentField, setCurrentField] = useState<string | null>(null);
+    const [showCancelModal, setShowCancelModal] = useState(false);
+
     const route = useRoute<RouteProp<RootStackParamList, any>>();
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     cLog({ "Initial Data": initialData });
@@ -220,7 +222,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
     };
 
     return (
-        <ScrollView contentContainerStyle={styles.addContainer}>
+        <><ScrollView contentContainerStyle={styles.addContainer}>
             <Text style={styles.sectionHeader}>{title}</Text>
             <View>
                 {fields.map((field, index) => (
@@ -236,11 +238,39 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
                 <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
                     <Text style={styles.saveText}>Save</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.cancelButton} onPress={() => navigation.navigate(mainPage as any)}>
+                <TouchableOpacity style={styles.cancelButton} onPress={() => setShowCancelModal(true)}>
                     <Text style={styles.cancelText}>Cancel</Text>
                 </TouchableOpacity>
             </View>
-        </ScrollView>
+        </ScrollView><Modal
+            animationType="slide"
+            transparent={true}
+            visible={showCancelModal}
+            onRequestClose={() => setShowCancelModal(false)}
+        >
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.modalText}>Do you want to save your changes before leaving?</Text>
+                        <View style={styles.modalButtons}>
+                            <TouchableOpacity
+                                style={[styles.button, styles.buttonDiscard]}
+                                onPress={() => {
+                                    setShowCancelModal(false);
+                                    navigation.navigate(mainPage as any);
+                                }}
+                            >
+                                <Text style={styles.textStyle}>Discard</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={[styles.button, styles.buttonCancel]}
+                                onPress={() => setShowCancelModal(false)}
+                            >
+                                <Text style={styles.textStyle}>Cancel</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal></>
     );
 };
 

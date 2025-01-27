@@ -75,6 +75,7 @@ export const styles = StyleSheet.create({
     fontSize: 37,
     fontWeight: "bold",
     color: "#333",
+    marginBottom: 20,
   },
   noteHeader: {
     alignItems: 'center',
@@ -202,11 +203,6 @@ export const styles = StyleSheet.create({
   field: {
     marginBottom: 15,
   },
-  fixedButton: {
-    position: "absolute",
-    right: 10,
-    top: 10,
-  },
   icon: {
     borderRadius: 25,
     height: 60,
@@ -320,14 +316,14 @@ export const styles = StyleSheet.create({
   },
   loginPage: {
     flex: 1,
-    flexDirection: "column",
     justifyContent: "center",
-    alignItems: 'center',
+    alignItems: "center",
     backgroundColor: "#ffffff",
+    paddingHorizontal: 20,
   },
   loginPageInput: {
     height: 40,
-    width: '80%',
+    width: "80%",
     marginHorizontal: 10,
     borderWidth: 1,
     borderColor: "#ccc",
@@ -340,17 +336,98 @@ export const styles = StyleSheet.create({
     backgroundColor: "#4285F4",
     paddingVertical: 12,
     paddingHorizontal: 25,
-    width: '50%',
-    marginBottom: 20,
+    width: "20%",
     borderRadius: 8,
     alignItems: "center",
+    marginBottom: 20,
   },
   loginButtonText: {
     color: "#FFFFFF",
     fontSize: 16,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   loginPageNonheaderText: {
     marginBottom: 10,
+    textAlign: "left",
+  },
+  headerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 20,
+  },
+  fixedButton: {
+    position: "relative",
+  },
+  headerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  smallButton: {
+    marginLeft: 20,
+  },
+  smallIcon: {
+    borderRadius: 20,
+    height: 40,
+    width: 40,
+    backgroundColor: "#65558F",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  modalButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    marginTop: 10,
+  },
+  button: {
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+    minWidth: 100,
+    alignItems: 'center',
+    marginHorizontal: 5,
+  },
+  buttonSave: {
+    backgroundColor: "#28a745",
+  },
+  buttonDiscard: {
+    backgroundColor: "#dc3545",
+  },
+  buttonCancel: {
+    backgroundColor: "#6c757d",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
