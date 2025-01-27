@@ -10,8 +10,6 @@ import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
 import com.main.omniplanner.requests.CalendarLinkRequest;
 import com.main.omniplanner.user.GenericEvent;
-import com.main.omniplanner.user.User;
-import com.main.omniplanner.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
