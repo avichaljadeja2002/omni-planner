@@ -7,7 +7,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/components/Types';
 
 export default function AccountSetting() {
-    const initialData = { userId: 1, name: "", email: "" };
+    const initialData = { userId: 1, name: "", email: "", phone: "", age: "" };
     const [formData, setFormData] = useState(initialData);
     const [showLogoutModal, setShowLogoutModal] = useState(false);
     type Prop = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
@@ -15,15 +15,17 @@ export default function AccountSetting() {
 
     const handleSave = async () => {
         try {
-            cLog(formData);
             await AsyncStorage.setItem('name', formData.name);
             await AsyncStorage.setItem('email', formData.email);
+            await AsyncStorage.setItem('phone', formData.phone);
+            await AsyncStorage.setItem('age', formData.age);
             // const response = await call('/modify_user', 'PUT', formData); // Send request with updated data
-            // cLog('Note saved successfully: ' + response.data);
+            cLog('Data saved successfully:', formData);
         } catch (error) {
-            console.error('Error saving note:', error);
+            console.error('Error saving data:', error);
         }
     };
+
 
     const handleChange = (name: string, value: string) => {
         setFormData({ ...formData, [name]: value });
@@ -35,17 +37,21 @@ export default function AccountSetting() {
             const userId = await AsyncStorage.getItem('userId');
             const name = await AsyncStorage.getItem('name');
             const email = await AsyncStorage.getItem('email');
+            const phone = await AsyncStorage.getItem('phone');
+            const age = await AsyncStorage.getItem('age');
 
-            // Update state with retrieved values
             setFormData({
-                userId: userId ? parseInt(userId, 10) : 1,  // Default to 1 if not found
+                userId: userId ? parseInt(userId, 10) : 1,
                 name: name || '',
                 email: email || '',
+                phone: phone || '',
+                age: age || '',
             });
         } catch (error) {
             console.error("Error fetching local values from AsyncStorage:", error);
         }
     };
+
 
     const handleLogout = async () => {
         setShowLogoutModal(true);
@@ -69,23 +75,38 @@ export default function AccountSetting() {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.title}>Name</Text>
+                <Text style={styles.label}>Name</Text>
                 <TextInput
-                    value={formData.name} // Set value to formData.text to make it controlled
-                    onChangeText={(text) => handleChange("name", text)} // Handle text changes
+                    value={formData.name}
+                    onChangeText={(text) => handleChange("name", text)}
                     style={styles.textInput}
-                    placeholder="name"
-                    multiline={true}
+                    placeholder="Enter your name"
                 />
-                <Text style={styles.title}>Email</Text>
+                <Text style={styles.label}>Email</Text>
                 <TextInput
-                    value={formData.email} // Set value to formData.text to make it controlled
-                    onChangeText={(text) => handleChange("email", text)} // Handle text changes
+                    value={formData.email}
+                    onChangeText={(text) => handleChange("email", text)}
                     style={styles.textInput}
-                    placeholder="email"
-                    multiline={true}
+                    placeholder="Enter your email"
+                />
+                <Text style={styles.label}>Phone Number</Text>
+                <TextInput
+                    value={formData.phone || ''}
+                    onChangeText={(text) => handleChange("phone", text)}
+                    style={styles.textInput}
+                    placeholder="Enter your phone number"
+                    keyboardType="phone-pad"
+                />
+                <Text style={styles.label}>Age (Optional)</Text>
+                <TextInput
+                    value={formData.age || ''}
+                    onChangeText={(text) => handleChange("age", text)}
+                    style={styles.textInput}
+                    placeholder="Enter your age"
+                    keyboardType="numeric"
                 />
             </View>
+
             <View style={styles.footer}>
                 <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
                     <Text style={styles.saveButtonText}>Save</Text>
@@ -125,58 +146,11 @@ export default function AccountSetting() {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        paddingHorizontal: 20,
-    },
-    header: {
-        alignItems: 'center',
-    },
     title: {
         fontSize: 32,
         fontWeight: 'bold',
         marginBottom: 20,
         textAlign: 'left',
-    },
-    textInput: {
-        height: 50,
-        width: '100%',
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 8,
-        padding: 10,
-        textAlignVertical: 'top',
-    },
-    footer: {
-        alignItems: 'center',
-        marginTop: 20,
-    },
-    saveButton: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#65558f',
-        borderRadius: 8,
-        paddingVertical: 15,
-        paddingHorizontal: 50,
-        justifyContent: 'center',
-    },
-    saveButtonText: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#eee',
-    },
-    logoutButton: {
-        backgroundColor: '#ff6347',
-        borderRadius: 8,
-        paddingVertical: 15,
-        paddingHorizontal: 50,
-        marginTop: 10,
-    },
-    logoutButtonText: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#fff',
     },
     centeredView: {
         flex: 1,
@@ -224,5 +198,59 @@ const styles = StyleSheet.create({
         color: "white",
         fontWeight: "bold",
         textAlign: "center"
+    },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        paddingHorizontal: 20,
+        backgroundColor: '#fff',
+    },
+    header: {
+        marginBottom: 20,
+        width: '100%',
+        alignItems: 'center',
+    },
+    label: {
+        fontSize: 14,
+        color: '#333',
+        marginBottom: 5,
+        textAlign: 'left',
+    },
+    textInput: {
+        height: 45,
+        borderColor: '#ccc',
+        borderWidth: 1,
+        borderRadius: 8,
+        padding: 10,
+        marginBottom: 15,
+    },
+    footer: {
+        alignItems: 'center',
+        marginTop: 20,
+    },
+    saveButton: {
+        backgroundColor: '#65558f',
+        borderRadius: 8,
+        paddingVertical: 12,
+        paddingHorizontal: 40,
+        alignItems: 'center',
+    },
+    saveButtonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: '600',
+    },
+    logoutButton: {
+        backgroundColor: '#ff6347',
+        borderRadius: 8,
+        paddingVertical: 12,
+        paddingHorizontal: 40,
+        marginTop: 10,
+        alignItems: 'center',
+    },
+    logoutButtonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: '600',
     },
 });
