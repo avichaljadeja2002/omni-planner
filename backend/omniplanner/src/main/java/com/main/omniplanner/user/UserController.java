@@ -28,7 +28,7 @@ public class UserController {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readTree(loginRequest);
-            String username = jsonNode.get("userName").asText();
+            String username = jsonNode.get("email").asText();
             String token = jsonNode.get("token").asText();
             String userId = jsonNode.has("userId") ? jsonNode.get("userId").asText() : null;
 
@@ -49,7 +49,7 @@ public class UserController {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readTree(loginRequest);
 
-            String username = jsonNode.get("userName").asText();
+            String username = jsonNode.get("email").asText();
             String password = jsonNode.get("password").asText();
 
             return userService.login(username, password);

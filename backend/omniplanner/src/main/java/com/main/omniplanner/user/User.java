@@ -13,7 +13,6 @@ public class User {
     private String email;
     private boolean google_calendar_linked;
     private String google_calendar_access_token;
-    private String userName;
     private String passwordHash;
     private String salt;
     private String tempToken;
@@ -58,12 +57,6 @@ public class User {
         this.email = email;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
     public String getPasswordHash() {
         return passwordHash;
     }
@@ -86,6 +79,6 @@ public class User {
     }
 
     public String toString() {
-        return this.id +"," + this.userName + "," + this.email + "," + this.name + "," + this.tempToken;
+        return this.id +"," + this.email + "," + this.name + "," + this.tempToken;
     }
 }

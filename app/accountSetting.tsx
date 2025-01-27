@@ -1,13 +1,17 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import { cLog } from '../components/log';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '@/components/Types';
 
 export default function AccountSetting() {
     const initialData = { userId: 1, name: "", userName: "", email: "" };
-
     const [formData, setFormData] = useState(initialData);
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
+    type Prop = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
+    const navigation = useNavigation<Prop>();
 
     const handleSave = async () => {
         try {
@@ -46,6 +50,18 @@ export default function AccountSetting() {
         }
     };
 
+    const handleLogout = async () => {
+        setShowLogoutModal(true);
+    };
+
+    const confirmLogout = async () => {
+        try {
+            await AsyncStorage.clear();
+            navigation.navigate("index");
+        } catch (error) {
+            console.error("Error during logout:", error);
+        }
+    };
 
     useFocusEffect(
         useCallback(() => {
@@ -85,7 +101,36 @@ export default function AccountSetting() {
                 <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
                     <Text style={styles.saveButtonText}>Save</Text>
                 </TouchableOpacity>
+                <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+                    <Text style={styles.logoutButtonText}>Logout</Text>
+                </TouchableOpacity>
             </View>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={showLogoutModal}
+                onRequestClose={() => setShowLogoutModal(false)}
+            >
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.modalText}>Are you sure you want to logout?</Text>
+                        <View style={styles.modalButtons}>
+                            <TouchableOpacity
+                                style={[styles.button, styles.buttonCancel]}
+                                onPress={() => setShowLogoutModal(false)}
+                            >
+                                <Text style={styles.textStyle}>Cancel</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={[styles.button, styles.buttonConfirm]}
+                                onPress={confirmLogout}
+                            >
+                                <Text style={styles.textStyle}>Logout</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 };
@@ -115,7 +160,7 @@ const styles = StyleSheet.create({
         textAlignVertical: 'top',
     },
     footer: {
-        alignItems: 'flex-end',
+        alignItems: 'center',
         marginTop: 20,
     },
     saveButton: {
@@ -131,5 +176,64 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         color: '#eee',
+    },
+    logoutButton: {
+        backgroundColor: '#ff6347',
+        borderRadius: 8,
+        paddingVertical: 15,
+        paddingHorizontal: 50,
+        marginTop: 10,
+    },
+    logoutButtonText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#fff',
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: "center"
+    },
+    modalButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%'
+    },
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+        minWidth: 100,
+    },
+    buttonCancel: {
+        backgroundColor: "#2196F3",
+    },
+    buttonConfirm: {
+        backgroundColor: "#f44336",
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
     },
 });

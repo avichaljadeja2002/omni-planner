@@ -61,10 +61,10 @@ export const getPageFromEventType = (eventType: any) => {
 }
 
 export const verifyToken = async (navigation: StackNavigationProp<RootStackParamList, keyof RootStackParamList>) => {
-  const storedUserName = await AsyncStorage.getItem('userName');
+  const storedEmail = await AsyncStorage.getItem('email');
   const storedToken = await AsyncStorage.getItem('token');
   const storedUserId = await AsyncStorage.getItem('userId');
-  const response = await call('/checkLogin', 'PUT', undefined, { userName: storedUserName, token: storedToken, userId: storedUserId });
+  const response = await call('/checkLogin', 'PUT', undefined, { email: storedEmail, token: storedToken, userId: storedUserId });
   if (!response.data) {
     cLog('Token verification failed');
     await AsyncStorage.clear();

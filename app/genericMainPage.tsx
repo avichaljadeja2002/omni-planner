@@ -47,11 +47,11 @@ const GenericMainPageForm: React.FC<FormProps> = ({
 
     const handleViewPress = (item: Task) => {
         const route = { ...item, thisPage };
-        cLog({"Pre-Route": route});
+        cLog({ "Pre-Route": route });
         if (route.thisPage === 'mainPage') {
             route.thisPage = getPageFromEventType(route.event.event_type) as keyof RootStackParamList;
         }
-        cLog({"Route": route});
+        cLog({ "Route": route });
         navigation.navigate(getPageName(route.thisPage) as any, { event: route });
     }
 
@@ -78,14 +78,14 @@ const GenericMainPageForm: React.FC<FormProps> = ({
         try {
             const userId = await AsyncStorage.getItem('userId');
             const response = await call(`${hitAddress}${userId}`, 'GET');
-    
+
             if (response.status === 200 && response.data) {
                 const { events, googleCalendarLinked } = response.data;
                 if (googleCalendar) {
                     setIsGoogleCalendarLinked(googleCalendarLinked);
                 }
                 const eventsArray = Array.isArray(events) ? events : response.data;
-                cLog({'eventsArray':eventsArray});
+                cLog({ 'eventsArray': eventsArray });
                 const formattedEvents = eventsArray.map((event: any) => ({
                     id: eventIdFunc(event),
                     title: eventTitleFunc(event),
@@ -97,7 +97,7 @@ const GenericMainPageForm: React.FC<FormProps> = ({
                         event_time: new Date(`${event.event_date}T${event.event_time}`)
                     }
                 })).slice(0, sliceRange);
-    
+
                 setTasks(formattedEvents);
             } else {
                 console.error('Failed to fetch events');

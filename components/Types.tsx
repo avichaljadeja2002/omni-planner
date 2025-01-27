@@ -31,7 +31,6 @@ export type IconName = keyof typeof Ionicons.glyphMap;
 
 export type UserInfo = {
   userId: string;
-  userName: string;
   email: string;
   name: string;
   token: string;
