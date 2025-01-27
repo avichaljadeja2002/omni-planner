@@ -1,55 +1,41 @@
 package com.main.omniplanner.user;
 
 import jakarta.persistence.*;
-import java.sql.Date;
-import java.sql.Time;
 
 @Entity
 @Table(name = "all_events")
 public class Event {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
+    private String event_date;
+
+    private String event_type;
+
+    private String description;
+
+    private String event_time;
+
+    private float money;
+
+    private Integer repeat_timeline;
+
+    private Boolean repeating;
+
+    private String title;
+
+    private int userId;
+
+    private String ingredients;
+
+    // Getters and Setters
     public String getDescription() {
         return description;
     }
     public void setDescription(String description) {
         this.description = description;
     }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Column(name = "event_date")
-    private Date eventDate;
-
-    @Column(name = "event_type")
-    private String event_type;
-    
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "event_time")
-    private Time eventTime;
-
-    @Column(name = "money")
-    private float money;
-
-    @Column(name = "repeat_timeline", length = 50)
-    private String repeatTimeline;
-
-    @Column(name = "repeating")
-    private Boolean repeating;
-
-    @Column(name = "title", length = 255)
-    private String title;
-
-    @Column(name = "userId")
-    private int userId;
-
-    @Column(name = "ingredients")
-    private String ingredients;
-
-    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -58,20 +44,20 @@ public class Event {
         this.id = id;
     }
 
-    public Date getEventDate() {
-        return eventDate;
+    public String getEvent_date() {
+        return event_date;
     }
 
-    public void setEventDate(Date eventDate) {
-        this.eventDate = eventDate;
+    public void setEvent_date(String event_date) {
+        this.event_date = event_date;
     }
 
-    public Time getEventTime() {
-        return eventTime;
+    public String getEvent_time() {
+        return event_time;
     }
 
-    public void setEventTime(Time eventTime) {
-        this.eventTime = eventTime;
+    public void setEvent_time(String event_time) {
+        this.event_time = event_time;
     }
 
     public float getMoney() {
@@ -82,12 +68,12 @@ public class Event {
         this.money = money;
     }
 
-    public String getRepeatTimeline() {
-        return repeatTimeline;
+    public Integer getRepeat_timeline() {
+        return repeat_timeline;
     }
 
-    public void setRepeatTimeline(String repeatTimeline) {
-        this.repeatTimeline = repeatTimeline;
+    public void setRepeat_timeline(Integer repeat_timeline) {
+        this.repeat_timeline = repeat_timeline;
     }
 
     public Boolean getRepeating() {
