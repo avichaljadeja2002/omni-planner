@@ -101,8 +101,6 @@ export const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "#333",
-    marginBottom: 20,
-    marginTop: 10,
   },
   bullet: {
     fontSize: 36,
@@ -362,6 +360,7 @@ export const styles = StyleSheet.create({
   headerRow: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 10,
   },
   smallButton: {
