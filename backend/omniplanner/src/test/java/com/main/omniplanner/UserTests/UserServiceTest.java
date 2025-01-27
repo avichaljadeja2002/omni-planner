@@ -67,10 +67,10 @@ public class UserServiceTest {
 
     @Test
     public void testLoginSuccess() {
-        when(userRepository.findByUserName("johndoe")).thenReturn(Arrays.asList(user));
+        when(userRepository.findByEmail("johndoe@example.com")).thenReturn(Arrays.asList(user));
         when(passwordService.verifyPassword("password123", user.getSalt(), user.getPasswordHash())).thenReturn(true);
 
-        String result = userService.login("johndoe", "password123");
+        String result = userService.login("johndoe@example.com", "password123");
 
         assertNotNull(result);
         assertTrue(result.contains("0"));
@@ -78,17 +78,17 @@ public class UserServiceTest {
 
     @Test
     public void testLoginFailure() {
-        when(userRepository.findByUserName("johndoe")).thenReturn(Arrays.asList(user));
+        when(userRepository.findByEmail("johndoe@example.com")).thenReturn(Arrays.asList(user));
         when(passwordService.verifyPassword("wrongpassword", user.getSalt(), user.getPasswordHash())).thenReturn(false);
 
-        String result = userService.login("johndoe", "wrongpassword");
+        String result = userService.login("johndoe@example.com", "wrongpassword");
 
         assertNull(result);
     }
 
     @Test
     public void testNewUserCreated() {
-        when(userRepository.findByUserName("nonexistent")).thenReturn(Arrays.asList());
+        when(userRepository.findByEmail("nonexistent")).thenReturn(Arrays.asList());
         when(passwordService.generateSalt()).thenReturn("salt123");
         when(passwordService.hashPassword("password123", "salt123")).thenReturn("hashedPassword123");
 
@@ -102,12 +102,12 @@ public class UserServiceTest {
 
     @Test
     public void checkLoginSuccess() {
-        when(userRepository.findByUserName("johndoe")).thenReturn(Arrays.asList(user));
+        when(userRepository.findByEmail("johndoe@example.com")).thenReturn(Arrays.asList(user));
         String token = userService.generateToken(user);
         user.setTempToken(token);
         when(userRepository.save(user)).thenReturn(user);
 
-        String result = userService.checkLogin("johndoe", token);
+        String result = userService.checkLogin("johndoe@example.com", token);
 
         assertNotNull(result);
         assertTrue(result.contains("0"));
@@ -115,12 +115,12 @@ public class UserServiceTest {
 
     @Test
     public void checkLoginFailure() {
-        when(userRepository.findByUserName("johndoe")).thenReturn(Arrays.asList(user));
+        when(userRepository.findByEmail("johndoe@example.com")).thenReturn(Arrays.asList(user));
 
         String validToken = userService.generateToken(user);
         user.setTempToken(validToken);
 
-        String result = userService.checkLogin("johndoe", "invalidToken");
+        String result = userService.checkLogin("johndoe@example.com", "invalidToken");
 
         assertNull(result);
     }
@@ -134,12 +134,12 @@ public class UserServiceTest {
 
     @Test
     public void checkLoginWithUserIdSuccess() {
-        when(userRepository.findByUserName("johndoe")).thenReturn(Arrays.asList(user));
+        when(userRepository.findByEmail("johndoe@example.com")).thenReturn(Arrays.asList(user));
         String token = userService.generateToken(user);
         user.setTempToken(token);
         String expectedUserId = String.valueOf(user.getId());
 
-        String result = userService.checkLogin("johndoe", token, expectedUserId);
+        String result = userService.checkLogin("johndoe@example.com", token, expectedUserId);
 
         assertNotNull(result);
         assertTrue(result.contains(expectedUserId)); // Ensure it contains the correct ID
@@ -147,13 +147,13 @@ public class UserServiceTest {
 
     @Test
     public void checkLoginWithUserIdFailure() {
-        when(userRepository.findByUserName("johndoe")).thenReturn(Arrays.asList(user));
+        when(userRepository.findByEmail("johndoe@example.com")).thenReturn(Arrays.asList(user));
         String token = userService.generateToken(user);
         user.setTempToken(token);
 
         // Use a different ID to simulate failure
         String wrongUserId = "999";
-        String result = userService.checkLogin("johndoe", token, wrongUserId);
+        String result = userService.checkLogin("johndoe@example.com", token, wrongUserId);
 
         assertNull(result); // Should return null since IDs do not match
     }

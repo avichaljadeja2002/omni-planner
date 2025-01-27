@@ -48,12 +48,6 @@ public class UserTest {
         user.setGoogle_calendar_access_token(token);
         assertEquals(token, user.getGoogle_calendar_access_token());
     }
-
-    @Test
-    public void testGetSetUserName() {
-        user.setUserName("johndoe");
-        assertEquals("johndoe", user.getUserName());
-    }
     @Test public void testGetSetPasswordHash() {
         user.setPasswordHash("password123");
         assertEquals("password123", user.getPasswordHash());

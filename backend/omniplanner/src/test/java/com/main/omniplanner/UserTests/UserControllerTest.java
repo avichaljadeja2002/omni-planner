@@ -107,45 +107,45 @@ class UserControllerTest {
 
     @Test
     void testLogin_Success() {
-        when(userService.login("jdoe", "password123")).thenReturn("1,jdoe,johndoe@gmail.com,John Doe");
-        String loginRequest = "{\"userName\":\"jdoe\",\"password\":\"password123\"}";
-        assertEquals(userController.login(loginRequest), "1,jdoe,johndoe@gmail.com,John Doe");
+        when(userService.login("johndoe@gmail.com", "password123")).thenReturn("1,johndoe@gmail.com,John Doe");
+        String loginRequest = "{\"email\":\"johndoe@gmail.com\",\"password\":\"password123\"}";
+        assertEquals(userController.login(loginRequest), "1,johndoe@gmail.com,John Doe");
     }
 
     @Test
     void testLogin_Fail() {
-        when(userService.login("jdoe", "password123")).thenReturn(null);
-        String loginRequest = "\"userName\":\"jdoe\",\"password\":\"password123\"}";
+        when(userService.login("johndoe@gmail.com", "password123")).thenReturn(null);
+        String loginRequest = "\"email\":\"johndoe@gmail.com\",\"password\":\"password123\"}";
         assertNull(userController.login(loginRequest));
     }
 
     @Test
     void checkLogin_Success() {
-        when(userService.checkLogin("jdoe", "valid_token")).thenReturn("1,jdoe,johndoe@example.com,John Doe,access_token_123");
-        assertEquals("1,jdoe,johndoe@example.com,John Doe,access_token_123", userController.checkLogin("{\"userName\":\"jdoe\",\"token\":\"valid_token\"}"));
+        when(userService.checkLogin("johndoe@example.com", "valid_token")).thenReturn("1,johndoe@example.com,John Doe,access_token_123");
+        assertEquals("1,johndoe@example.com,John Doe,access_token_123", userController.checkLogin("{\"email\":\"johndoe@example.com\",\"token\":\"valid_token\"}"));
     }
 
     @Test
     void checkLogin_Failure() {
-        when(userService.checkLogin("jdoe", "valid_token")).thenReturn(null);
-        assertNull(userController.checkLogin("{\"userName\":\"jdoe\",\"token\":\"valid_token\"}"));
+        when(userService.checkLogin("johndoe@example.com", "valid_token")).thenReturn(null);
+        assertNull(userController.checkLogin("{\"email\":\"johndoe@example.com\",\"token\":\"valid_token\"}"));
     }
 
     @Test
     void checkLogin_Error() {
-        when(userService.checkLogin("jdoe", "valid_token")).thenReturn(null);
-        assertNull(userController.checkLogin("\"userName\":\"jdoe\",\"token\":\"valid_token\"}"));
+        when(userService.checkLogin("johndoe@example.com", "valid_token")).thenReturn(null);
+        assertNull(userController.checkLogin("\"email\":\"johndoe@example.com\",\"token\":\"valid_token\"}"));
     }
 
     @Test
     void checkLogin_Success_WithID() {
-        when(userService.checkLogin("jdoe", "valid_token", "1")).thenReturn("1,jdoe,johndoe@example.com,John Doe,access_token_123");
-        assertEquals("1,jdoe,johndoe@example.com,John Doe,access_token_123", userController.checkLogin("{\"userName\":\"jdoe\",\"token\":\"valid_token\",\"userId\":\"1\"}"));
+        when(userService.checkLogin("johndoe@example.com", "valid_token", "1")).thenReturn("1,johndoe@example.com,John Doe,access_token_123");
+        assertEquals("1,johndoe@example.com,John Doe,access_token_123", userController.checkLogin("{\"email\":\"johndoe@example.com\",\"token\":\"valid_token\",\"userId\":\"1\"}"));
     }
 
     @Test
     void checkLogin_Failure_WithID() {
-        when(userService.checkLogin("jdoe", "valid_token", "1")).thenReturn(null);
-        assertNull(userController.checkLogin("{\"userName\":\"jdoe\",\"token\":\"valid_token\",\"userId\":\"1\"}"));
+        when(userService.checkLogin("johndoe@example.com", "valid_token", "1")).thenReturn(null);
+        assertNull(userController.checkLogin("{\"email\":\"johndoe@example.com\",\"token\":\"valid_token\",\"userId\":\"1\"}"));
     }
     }
