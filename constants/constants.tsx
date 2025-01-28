@@ -1,7 +1,7 @@
 import { Field } from "@/components/Types";
 
 // export const IPAddr = "http://34.204.83.156:8080" // For AWS
-export const IPAddr = "http://137.112.154.239:8080" // For local testing on laptop
+export const IPAddr = "http://127.0.0.1:8080" // For local testing on laptop
 
 export const repeatingData = [
   { label: 'Daily', value: 1 },

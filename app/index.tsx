@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -26,11 +26,11 @@ export default function AuthScreen() {
             const response = await call(url, 'POST', undefined, { username, password });
 
             if (isLogin) {
-                const { token, id } = response.data;
+                const { token, userId } = response.data;
                 await AsyncStorage.multiSet([
                     ['isLoggedIn', 'true'],
                     ['token', token],
-                    ['id', id],
+                    ['userId', userId],
                 ]);
 
                 Alert.alert('Success', 'Logged in successfully!');
@@ -73,19 +73,21 @@ export default function AuthScreen() {
         }
     };
 
-    useFocusEffect(
-        useCallback(() => {
-            const verifyLoginStatus = async () => {
-                const [isLoggedIn, userId] = await AsyncStorage.multiGet(['isLoggedIn', 'userId']);
-                if (isLoggedIn[1] === 'true' && userId[1]) {
-                    console.log(`User is logged in with ID: ${userId[1]}`);
-                    navigation.navigate('mainPage');
-                }
-            };
+    const verifyLoginStatus = async () => {
+        const [isLoggedIn, userId] = await AsyncStorage.multiGet(['isLoggedIn', 'userId']);
+        console.log(userId)
+        if (isLoggedIn[1] === 'true' && userId[1]) {
+            console.log(`User is logged in with ID: ${userId[1]}`);
+            navigation.navigate('mainPage');
+        }
+    };
 
-            verifyLoginStatus();
-        }, [navigation])
-    );
+
+
+    useEffect(() => {
+        verifyLoginStatus()
+    }, []);
+
 
     return (
         <GoogleOAuthProvider clientId={CLIENT_ID}>
@@ -93,7 +95,7 @@ export default function AuthScreen() {
                 <Text style={styles.headerText}>{isLogin ? 'Login' : 'Sign Up'}</Text>
                 <View style={{ height: "2%" }}></View>
                 <Text
-                    style={[styles.authPageNonheaderText, { textAlign: 'left', alignSelf: 'flex-start'}]}
+                    style={[styles.authPageNonheaderText, { textAlign: 'left', alignSelf: 'flex-start' }]}
                 >
                     Username
                 </Text>
