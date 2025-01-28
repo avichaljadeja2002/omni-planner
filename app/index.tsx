@@ -34,7 +34,7 @@ export default function AuthScreen() {
                 ]);
 
                 Alert.alert('Success', 'Logged in successfully!');
-                navigation.navigate('mainPage'); 
+                navigation.navigate('mainPage');
             } else {
                 Alert.alert('Success', 'Account created successfully! Please log in.');
                 setIsLogin(true);
@@ -46,16 +46,16 @@ export default function AuthScreen() {
     };
 
     const handleGoogleLoginSuccess = async (credentialResponse: any) => {
-    
+
         try {
             const decodedToken = jwtDecode<{ email: string; name: string }>(credentialResponse.credential);
             console.log("Decoded Google Token:", decodedToken);
 
             const { email, name } = decodedToken;
-    
-    
+
+
             const response = await call('/api/users/google-login', 'POST', undefined, { email, name });
-    
+
             if (response.status === 200) {
                 const { id } = response.data;
                 console.log("User ID", id)
@@ -63,7 +63,7 @@ export default function AuthScreen() {
                     ['isLoggedIn', 'true'],
                     ['userId', id],
                 ]);
-    
+
                 Alert.alert('Success', 'Logged in with Google successfully!');
                 navigation.navigate('mainPage');
             }
@@ -72,7 +72,7 @@ export default function AuthScreen() {
             Alert.alert('Error', 'Failed to log in with Google');
         }
     };
-        
+
     useFocusEffect(
         useCallback(() => {
             const verifyLoginStatus = async () => {
@@ -92,7 +92,11 @@ export default function AuthScreen() {
             <View style={styles.authPage}>
                 <Text style={styles.headerText}>{isLogin ? 'Login' : 'Sign Up'}</Text>
                 <View style={{ height: "2%" }}></View>
-                <Text style={styles.authPageNonheaderText}>Username</Text>
+                <Text
+                    style={[styles.authPageNonheaderText, { textAlign: 'left', alignSelf: 'flex-start'}]}
+                >
+                    Username
+                </Text>
                 <TextInput
                     style={styles.authPageInput}
                     placeholder="Enter Username"
@@ -101,7 +105,11 @@ export default function AuthScreen() {
                     returnKeyType="next"
                     onSubmitEditing={() => passwordInputRef.current && passwordInputRef.current.focus()}
                 />
-                <Text style={styles.authPageNonheaderText}>Password</Text>
+                <Text
+                    style={[styles.authPageNonheaderText, { textAlign: 'left', alignSelf: 'flex-start' }]}
+                >
+                    Password
+                </Text>
                 <TextInput
                     ref={passwordInputRef}
                     style={styles.authPageInput}
