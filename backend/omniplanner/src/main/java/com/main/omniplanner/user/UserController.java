@@ -35,6 +35,7 @@ public class UserController {
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setEnabled(true);
         User savedUser = userRepository.save(user);
 
         // Return only username and userId

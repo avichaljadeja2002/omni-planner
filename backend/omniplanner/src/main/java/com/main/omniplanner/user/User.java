@@ -17,7 +17,7 @@ public class User {
     @Column()
     private String password;
 
-    @Column(nullable = false)
+    @Column()
     private boolean enabled;
 
     @Column(name = "google_calendar_linked")
