@@ -1,119 +1,128 @@
-import React, { useState, useCallback, useRef } from 'react';
-import { RootStackParamList, UserInfo } from '@/components/Types';
-import { styles } from '@/assets/styles/styles';
+import React, { useState, useRef, useCallback } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { cLog } from '../components/log';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { StackNavigationProp } from '@react-navigation/stack';
-import { TextInput, View, Text, TouchableOpacity } from 'react-native';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { styles } from '@/assets/styles/styles';
 import { call } from '../components/apiCall';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import { GoogleLogin } from '@react-oauth/google';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '@/components/Types';
 import { jwtDecode } from "jwt-decode";
 
-export default function TaskScreen() {
-    type Prop = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
-    const navigation = useNavigation<Prop>();
-    const [credentials, setCredentials] = useState({ email: '', password: '' });
+export default function AuthScreen() {
+    type NavigationProp = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
+    const navigation = useNavigation<NavigationProp>();
 
+    const [isLogin, setIsLogin] = useState(true);
+    const [credentials, setCredentials] = useState({ username: '', password: '' });
     const passwordInputRef = useRef<TextInput>(null);
+    const CLIENT_ID = process.env.EXPO_PUBLIC_CLIENT_ID || '';
 
-    const updateAsyncStorage = async (userInfo: UserInfo) => {
+    const handleAuthRequest = async () => {
+        const url = isLogin ? '/api/users/login' : '/api/users/register';
+        const { username, password } = credentials;
+
         try {
-            await AsyncStorage.multiSet([
-                ['userId', userInfo.userId],
-                ['email', userInfo.email],
-                ['name', userInfo.name],
-                ['token', userInfo.token],
-            ]);
+            const response = await call(url, 'POST', undefined, { username, password });
+
+            if (isLogin) {
+                const { token, id } = response.data;
+                await AsyncStorage.multiSet([
+                    ['isLoggedIn', 'true'],
+                    ['token', token],
+                    ['id', id],
+                ]);
+
+                Alert.alert('Success', 'Logged in successfully!');
+                navigation.navigate('mainPage'); 
+            } else {
+                Alert.alert('Success', 'Account created successfully! Please log in.');
+                setIsLogin(true);
+            }
         } catch (error) {
-            console.error('Error updating AsyncStorage:', error);
+            const errorMessage = (error as any)?.response?.data?.message || 'Something went wrong';
+            Alert.alert('Error', errorMessage);
         }
     };
 
-    const handleLoginResponse = async (responseData: string) => {
-        cLog(responseData)
-        if (responseData) {
-            const userInfo = parseUserInfo(responseData);
-            await updateAsyncStorage(userInfo);
-            navigation.navigate('mainPage');
-        }
-    };
-
-    const performLoginRequest = async (url: string, data: object) => {
+    const handleGoogleLoginSuccess = async (credentialResponse: any) => {
+    
         try {
-            const response = await call(url, 'PUT', undefined, data);
-            console.log(response)
-            await handleLoginResponse(response?.data);
+            const decodedToken = jwtDecode<{ email: string; name: string }>(credentialResponse.credential);
+            console.log("Decoded Google Token:", decodedToken);
+
+            const { email, name } = decodedToken;
+    
+    
+            const response = await call('/api/users/google-login', 'POST', undefined, { email, name });
+    
+            if (response.status === 200) {
+                const { id } = response.data;
+                console.log("User ID", id)
+                await AsyncStorage.multiSet([
+                    ['isLoggedIn', 'true'],
+                    ['userId', id],
+                ]);
+    
+                Alert.alert('Success', 'Logged in with Google successfully!');
+                navigation.navigate('mainPage');
+            }
         } catch (error) {
-            console.error('Error during login request:', error);
+            console.error("Error during Google login:", error);
+            Alert.alert('Error', 'Failed to log in with Google');
         }
     };
-
-    const checkLogin = async () => {
-        const [storedToken, storedEmail] = await AsyncStorage.multiGet(['token', 'email']);
-        if (storedToken[1] && storedEmail[1]) {
-            await performLoginRequest(`/checkLogin`, { email: storedEmail[1], token: storedToken[1] });
-        } else {
-            cLog('No valid token or email found');
-        }
-    };
-
-    const handleLogin = async () => {
-        cLog("Attempting to log in...");
-        const { email, password } = credentials;
-        performLoginRequest(`/login`, { email, password })
-    }
-
-    const parseUserInfo = (data: string): UserInfo => {
-        const [userId, email, name, token] = data.split(",");
-        return { userId, email, name, token };
-    };
-
+        
     useFocusEffect(
         useCallback(() => {
-            checkLogin();
-        }, [])
+            const verifyLoginStatus = async () => {
+                const [isLoggedIn, userId] = await AsyncStorage.multiGet(['isLoggedIn', 'userId']);
+                if (isLoggedIn[1] === 'true' && userId[1]) {
+                    console.log(`User is logged in with ID: ${userId[1]}`);
+                    navigation.navigate('mainPage');
+                }
+            };
+
+            verifyLoginStatus();
+        }, [navigation])
     );
 
     return (
-        <GoogleOAuthProvider clientId={process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID!}>
-            <View style={styles.loginPage}>
-                <Text style={styles.headerText}>Login</Text>
+        <GoogleOAuthProvider clientId={CLIENT_ID}>
+            <View style={styles.authPage}>
+                <Text style={styles.headerText}>{isLogin ? 'Login' : 'Sign Up'}</Text>
                 <View style={{ height: "2%" }}></View>
-                <Text style={styles.loginPageNonheaderText}>Email</Text>
+                <Text style={styles.authPageNonheaderText}>Username</Text>
                 <TextInput
-                    style={styles.loginPageInput}
-                    placeholder="Enter Email"
+                    style={styles.authPageInput}
+                    placeholder="Enter Username"
                     autoCapitalize="none"
-                    onChangeText={(text) => setCredentials({ ...credentials, email: text })}
+                    onChangeText={(text) => setCredentials({ ...credentials, username: text })}
                     returnKeyType="next"
                     onSubmitEditing={() => passwordInputRef.current && passwordInputRef.current.focus()}
                 />
-                <Text style={styles.loginPageNonheaderText}>Password</Text>
+                <Text style={styles.authPageNonheaderText}>Password</Text>
                 <TextInput
                     ref={passwordInputRef}
-                    style={styles.loginPageInput}
+                    style={styles.authPageInput}
                     placeholder="Password"
                     secureTextEntry
                     onChangeText={(text) => setCredentials({ ...credentials, password: text })}
                     returnKeyType="done"
-                    onSubmitEditing={handleLogin}
+                    onSubmitEditing={handleAuthRequest}
                 />
-                <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-                    <Text style={styles.loginButtonText}>Login</Text>
+                <TouchableOpacity style={styles.authButton} onPress={handleAuthRequest}>
+                    <Text style={styles.authButtonText}>{isLogin ? 'Login' : 'Sign Up'}</Text>
                 </TouchableOpacity>
+                <TouchableOpacity onPress={() => setIsLogin(!isLogin)}>
+                    <Text style={styles.switchText}>
+                        {isLogin ? "Don't have an account? Sign Up" : 'Already have an account? Login'}
+                    </Text>
+                </TouchableOpacity>
+
                 <GoogleLogin
-                    onSuccess={(credentialResponse) => {
-                        const credentialResponseDecoded = jwtDecode(
-                            credentialResponse.credential!
-                        ) as { email: string };
-                        cLog("Attempting to log in with google...");
-                        performLoginRequest(`/login`, { email: credentialResponseDecoded.email, password: "google" });
-                    }}
-                    onError={() => {
-                        cLog('Login Failed');
-                    }}
+                    onSuccess={handleGoogleLoginSuccess}
+                    onError={() => Alert.alert('Error', 'Google login failed')}
                 />
             </View>
         </GoogleOAuthProvider>

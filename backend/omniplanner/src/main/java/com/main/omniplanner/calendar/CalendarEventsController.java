@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -32,11 +33,11 @@ public class CalendarEventsController {
         boolean isGoogleCalendarLinked = false;
 
         try {
-            User user = userRepository.findById(userId);
+            Optional<User> user = userRepository.findById(String.valueOf(userId));
 
-            if (user != null && user.isGoogle_calendar_linked()) {
+            if (user.isPresent() && user.get().isGoogleCalendarLinked()) {
                 isGoogleCalendarLinked = true;
-                String accessToken = user.getGoogle_calendar_access_token();
+                String accessToken = user.get().getGoogleCalendarAccessToken();
 
                 if (accessToken != null && !accessToken.isEmpty()) {
                     List<GenericEvent> googleEvents = linkGoogleCalendar.getGoogleCalendarEvents(accessToken);
