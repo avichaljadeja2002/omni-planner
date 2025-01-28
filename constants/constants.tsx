@@ -1,12 +1,7 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { cLog } from '@/components/log';
-import { RootStackParamList } from "@/components/Types";
-import { StackNavigationProp } from "@react-navigation/stack";
 import { Field } from "@/components/Types";
-import { call } from '@/components/apiCall';
 
 // export const IPAddr = "http://34.204.83.156:8080" // For AWS
-export const IPAddr = "http://127.0.0.1:8080" // For local testing on lapto
+export const IPAddr = "http://137.112.154.239:8080" // For local testing on laptop
 
 export const repeatingData = [
   { label: 'Daily', value: 1 },
