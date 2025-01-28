@@ -19,9 +19,10 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
     const [showCancelModal, setShowCancelModal] = useState(false);
 
     const route = useRoute<RouteProp<RootStackParamList, any>>();
+    cLog({ "Recieved Route": route });
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-    cLog({ "Initial Data": initialData });
     let event = initialData.event ? initialData.event : initialData;
+    cLog({ "Initial Data": initialData });
     if (route.params) event = route.params?.event.event;
     cLog({ "Event": event });
     const [formData, setFormData] = useState({
@@ -29,23 +30,22 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
         event_date: event.event_date ? new Date(event.event_date) : new Date(),
         event_time: event.event_time ? new Date(`1970-01-01T${event.event_time}`) : new Date(),
     });
+    cLog({ "Form Data": formData });
 
     const handleSave = async () => {
-        const userId = await AsyncStorage.getItem('userId');
-        if (!userId) return;
         const formattedData = {
             ...formData,
             event_date: formData.event_date?.toISOString().split('T')[0],
             event_time: formData.event_time?.toTimeString().split(' ')[0],
             repeating: Boolean(formData.repeat_timeline && formData.repeat_timeline),
             repeat_timeline: formData.repeat_timeline,
-            userId: userId,
             ingredients: formData.ingredients?.join(',')
         };
         cLog(formattedData);
         try {
+            const token = await AsyncStorage.getItem('token');
             cLog('Saving event to:' + updateEndpoint);
-            const response = await call(updateEndpoint, method, undefined, formattedData)
+            const response = await call(`${updateEndpoint}/${token}`, method, undefined, formattedData)
             cLog('Event updated successfully:' + response.data);
         } catch (error) {
             console.error('Error saving event:', error);
@@ -80,8 +80,8 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
     const fetchAdditionalData = async () => {
         if (!fetchEndpoint) return;
         try {
-            const userId = await AsyncStorage.getItem('userId');
-            const response = await call(`${fetchEndpoint}/${userId}`, 'GET');
+            const token = await AsyncStorage.getItem('token');
+            const response = await call(`${fetchEndpoint}/${token}`, 'GET');
             const formattedData = response.data.map((item: { [x: string]: any; id: any; name: any; }) => ({
                 value: keyValue ? item[keyValue.key] : item.id,
                 label: keyValue ? item[keyValue.value] : item.name,
@@ -97,22 +97,17 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
         setFormData({ ...formData, [name]: value });
     };
 
-    const getIngredientNames = (selectedItems: any[]) => {
-        const filteredItems = additionalData.filter((item: { value: any }) => selectedItems.includes(item.value));
-        return filteredItems.map((item: { label: any }) => item.label);
-    };
-
-
     useFocusEffect(
         useCallback(() => {
             const verifyLoginStatus = async () => {
-                const [isLoggedIn, userId] = await AsyncStorage.multiGet(['isLoggedIn', 'userId']);
-                if (isLoggedIn[1] === 'true' && userId[1]) {
-                    console.log(`User is logged in with ID: ${userId[1]}`);
+                const [isLoggedIn, token] = await AsyncStorage.multiGet(['isLoggedIn', 'token']);
+                if (isLoggedIn[1] === 'true' && token[1]) {
+                    cLog(`User is logged in with Token: ${token[1]}`);
                 }
             };
-    
+
             verifyLoginStatus();
+            fetchAdditionalData();
         }, [])
     );
 
@@ -151,7 +146,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
                         <MultiSelect
                             items={additionalData}
                             uniqueKey="value"
-                            selectedItems={Array.isArray(formData["ingredients"]) ? formData["ingredients"] : getIngredientNames(event.ingredients.split(',').map((item: string) => parseInt(item, 10)))}
+                            selectedItems={Array.isArray(formData["ingredients"]) ? formData["ingredients"] : event.ingredients ? event.ingredients.split(',').map((item: string) => parseInt(item, 10)) : []}
                             onSelectedItemsChange={(selectedItems) => handleChange('ingredients', selectedItems)}
                             selectText="Select Ingredients"
                             searchInputPlaceholderText="Search Ingredients..."

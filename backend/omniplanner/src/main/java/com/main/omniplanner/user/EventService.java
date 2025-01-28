@@ -10,9 +10,13 @@ public class EventService {
     @Autowired
     private EventRepository eventRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     // Constructor injection
-    public EventService(EventRepository eventRepository) {
+    public EventService(EventRepository eventRepository, UserRepository userRepository) {
         this.eventRepository = eventRepository;
+        this.userRepository = userRepository;
     }
 
     public List<GenericEvent> getEventsByUserId(int userId)
@@ -26,8 +30,10 @@ public class EventService {
         return eventRepository.findByEventType(event_type, userId, currentTimeMillis);
     }
 
-    public GenericEvent saveEvent(GenericEvent event, String event_type) {
+    public GenericEvent saveEvent(GenericEvent event, String event_type, String token) {
+        int userId = userRepository.getIdByToken(token);
         event.setEvent_type(event_type);
+        event.setUserId(userId);
         return eventRepository.save(event);
     }
 

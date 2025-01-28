@@ -1,5 +1,6 @@
 package com.main.omniplanner.Ingredients;
 
+import com.main.omniplanner.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +13,17 @@ public class IngredientsController {
     @Autowired
     private IngredientsService ingredientsService;
 
-    public IngredientsController(IngredientsService ingredientsService) {
+    @Autowired
+    private UserRepository userRepository;
+
+    public IngredientsController(IngredientsService ingredientsService, UserRepository userRepository) {
         this.ingredientsService = ingredientsService;
+        this.userRepository = userRepository;
     }
 
-    @GetMapping("/get_ingredients/{userId}")
-    public ResponseEntity<List<Ingredients>> getIngredients(@PathVariable int userId) {
+    @GetMapping("/get_ingredients/{token}")
+    public ResponseEntity<List<Ingredients>> getIngredients(@PathVariable String token) {
+        int userId = userRepository.getIdByToken(token);
         List<Ingredients> events = ingredientsService.getIngredients(userId);
         return ResponseEntity.ok(events);
     }

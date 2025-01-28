@@ -5,21 +5,25 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/components/Types';
+import { call } from '@/components/apiCall';
 
 export default function AccountSetting() {
-    const initialData = { userId: 1, name: "", email: "", phone: "", age: "" };
+    const initialData = { name: "", phone: "", age: "" };
     const [formData, setFormData] = useState(initialData);
     const [showLogoutModal, setShowLogoutModal] = useState(false);
     type Prop = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
     const navigation = useNavigation<Prop>();
 
     const handleSave = async () => {
+        const token = await AsyncStorage.getItem('token'); // Retrieve token from AsyncStorage
         try {
             await AsyncStorage.setItem('name', formData.name);
-            await AsyncStorage.setItem('email', formData.email);
             await AsyncStorage.setItem('phone', formData.phone);
             await AsyncStorage.setItem('age', formData.age);
-            // const response = await call('/modify_user', 'PUT', formData); // Send request with updated data
+            const response = await call(`/api/users/modify_user/${token}`, 'PUT', undefined, formData); // Send request with updated data
+            if (response.status == 401) {
+                throw new Error(response.data.message);
+            }
             cLog('Data saved successfully:', formData);
         } catch (error) {
             console.error('Error saving data:', error);
@@ -34,16 +38,12 @@ export default function AccountSetting() {
     // Fetch local data from AsyncStorage
     const getLocalValues = async () => {
         try {
-            const userId = await AsyncStorage.getItem('userId');
             const name = await AsyncStorage.getItem('name');
-            const email = await AsyncStorage.getItem('email');
             const phone = await AsyncStorage.getItem('phone');
             const age = await AsyncStorage.getItem('age');
 
             setFormData({
-                userId: userId ? parseInt(userId, 10) : 1,
                 name: name || '',
-                email: email || '',
                 phone: phone || '',
                 age: age || '',
             });
@@ -81,13 +81,6 @@ export default function AccountSetting() {
                     onChangeText={(text) => handleChange("name", text)}
                     style={styles.textInput}
                     placeholder="Enter your name"
-                />
-                <Text style={styles.label}>Email</Text>
-                <TextInput
-                    value={formData.email}
-                    onChangeText={(text) => handleChange("email", text)}
-                    style={styles.textInput}
-                    placeholder="Enter your email"
                 />
                 <Text style={styles.label}>Phone Number</Text>
                 <TextInput

@@ -3,10 +3,12 @@ package com.main.omniplanner.IngredientsTests;
 import com.main.omniplanner.Ingredients.Ingredients;
 import com.main.omniplanner.Ingredients.IngredientsController;
 import com.main.omniplanner.Ingredients.IngredientsService;
+import com.main.omniplanner.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -15,21 +17,27 @@ import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class IngredientsControllerTest {
     @Mock
     private IngredientsService ingredientsService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     private IngredientsController ingredientsController;
     Ingredients ingredient1;
     Ingredients ingredient2;
-
+    private String token;
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        ingredientsController = new IngredientsController(ingredientsService);
-
+        userRepository = mock(UserRepository.class);
+        ingredientsService = mock(IngredientsService.class);
+        ingredientsController = new IngredientsController(ingredientsService, userRepository);
+        token = "1a2b3c4d";
         ingredient1 = new Ingredients();
         ingredient1.setId(10);
         ingredient1.setUserId(1);
@@ -44,9 +52,9 @@ public class IngredientsControllerTest {
     @Test
     void testGetIngredientsByUserId_Success() {
         List<Ingredients> events = Arrays.asList(ingredient1, ingredient2);
-
-        when(ingredientsService.getIngredients(1)).thenReturn(events);
-        ResponseEntity<List<Ingredients>> response = ingredientsController.getIngredients(1);
+        when(userRepository.getIdByToken(token)).thenReturn(2);
+        when(ingredientsService.getIngredients(2)).thenReturn(events);
+        ResponseEntity<List<Ingredients>> response = ingredientsController.getIngredients(token);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2, Objects.requireNonNull(response.getBody()).size());
@@ -65,7 +73,8 @@ public class IngredientsControllerTest {
     @Test
     void testGetEventsByUserId_EmptyList() {
         when(ingredientsService.getIngredients(2)).thenReturn(Arrays.asList());
-        ResponseEntity<List<Ingredients>> response = ingredientsController.getIngredients(2);
+        when(userRepository.getIdByToken(token)).thenReturn(2);
+        ResponseEntity<List<Ingredients>> response = ingredientsController.getIngredients(token);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().size());
@@ -74,7 +83,8 @@ public class IngredientsControllerTest {
     @Test
     void testGetEventsByUserId_NonExistingUser() {
         when(ingredientsService.getIngredients(999)).thenReturn(List.of());
-        ResponseEntity<List<Ingredients>> response = ingredientsController.getIngredients(999);
+        when(userRepository.getIdByToken(token)).thenReturn(999);
+        ResponseEntity<List<Ingredients>> response = ingredientsController.getIngredients(token);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().size());

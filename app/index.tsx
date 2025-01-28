@@ -1,6 +1,6 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { styles } from '@/assets/styles/styles';
@@ -8,6 +8,7 @@ import { call } from '../components/apiCall';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/components/Types';
 import { jwtDecode } from "jwt-decode";
+import { cLog } from '@/components/log';
 
 export default function AuthScreen() {
     type NavigationProp = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
@@ -24,13 +25,19 @@ export default function AuthScreen() {
 
         try {
             const response = await call(url, 'POST', undefined, { username, password });
-
+            cLog("Response:", response);
+            if (response.status == 401) {
+                throw new Error(response.data.message);
+            }
             if (isLogin) {
-                const { token, userId } = response.data;
+                const { token, name, age, phone, email } = response.data;
                 await AsyncStorage.multiSet([
                     ['isLoggedIn', 'true'],
                     ['token', token],
-                    ['userId', userId],
+                    ['name', name],
+                    ['age', age],
+                    ['phone', phone],
+                    ['email', email],
                 ]);
 
                 Alert.alert('Success', 'Logged in successfully!');
@@ -49,19 +56,15 @@ export default function AuthScreen() {
 
         try {
             const decodedToken = jwtDecode<{ email: string; name: string }>(credentialResponse.credential);
-            console.log("Decoded Google Token:", decodedToken);
-
             const { email, name } = decodedToken;
-
-
             const response = await call('/api/users/google-login', 'POST', undefined, { email, name });
 
             if (response.status === 200) {
-                const { id } = response.data;
-                console.log("User ID", id)
+                const { token } = response.data;
+                cLog("User token", token)
                 await AsyncStorage.multiSet([
                     ['isLoggedIn', 'true'],
-                    ['userId', id],
+                    ['token', token],
                 ]);
 
                 Alert.alert('Success', 'Logged in with Google successfully!');
@@ -74,15 +77,13 @@ export default function AuthScreen() {
     };
 
     const verifyLoginStatus = async () => {
-        const [isLoggedIn, userId] = await AsyncStorage.multiGet(['isLoggedIn', 'userId']);
-        console.log(userId)
-        if (isLoggedIn[1] === 'true' && userId[1]) {
-            console.log(`User is logged in with ID: ${userId[1]}`);
+        const [isLoggedIn, token] = await AsyncStorage.multiGet(['isLoggedIn', 'token']);
+        cLog(token)
+        if (isLoggedIn[1] === 'true' && token[1]) {
+            cLog(`User is logged in with Token: ${token[1]}`);
             navigation.navigate('mainPage');
         }
     };
-
-
 
     useEffect(() => {
         verifyLoginStatus()

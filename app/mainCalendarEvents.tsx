@@ -5,6 +5,7 @@ import * as WebBrowser from 'expo-web-browser';
 import * as Linking from 'expo-linking';
 import { cLog } from '../components/log'
 import { call, full_call } from '../components/apiCall';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CLIENT_ID = process.env.EXPO_PUBLIC_CLIENT_ID || '';
 const CLIENT_SECRET = process.env.EXPO_PUBLIC_CLIENT_SECRET || '';
@@ -54,7 +55,7 @@ export default function CalendarTracker() {
       const response = await full_call(TOKEN_URI, 'POST', 'application/x-www-form-urlencoded', params);
       if (response.data.access_token) {
         cLog("Received access token:" + response.data.access_token);
-        linkGoogleCalendar(1, response.data.access_token);
+        linkGoogleCalendar(response.data.access_token);
       } else {
         console.error("Failed to retrieve access token");
         Alert.alert('Failed to retrieve access token');
@@ -65,15 +66,15 @@ export default function CalendarTracker() {
     }
   };
 
-  const linkGoogleCalendar = async (userId: any, token: any) => {
+  const linkGoogleCalendar = async (accessToken: any) => {
     cLog("Linking Google Calendar for user and fetching events...");
     try {
-      const response = await call(`/link_calendar`, 'POST', undefined, { userId, accessToken: token });
+      const token = await AsyncStorage.getItem('token');
+      const response = await call(`/link_calendar/${token}`, 'POST', undefined, { accessToken: accessToken });
       if (response.status === 200 && response.data.includes("successfully")) {
         cLog('Google Calendar linked successfully:' + response.data);
         Alert.alert('Google Calendar linked successfully!');
         setIsGoogleCalendarLinked(true);
-        // fetchEvents();
       } else {
         console.error("Failed to link Google Calendar");
         Alert.alert('Failed to link Google Calendar');

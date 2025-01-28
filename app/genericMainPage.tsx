@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { Calendar } from 'react-native-calendars';
@@ -74,20 +74,11 @@ const GenericMainPageForm: React.FC<FormProps> = ({
         </TouchableOpacity>
     );
 
-    useEffect(() => {
-        const initializeEvents = async () => {
-            await fetchEvents();
-        };
-    
-        initializeEvents();
-    }, [hitAddress, sliceRange]);
-    
-
     const fetchEvents = async () => {
         try {
-            const userId = await AsyncStorage.getItem('userId');
-            console.log(userId)
-            const response = await call(`${hitAddress}${userId}`, 'GET');
+            const token = await AsyncStorage.getItem('token');
+            cLog(token)
+            const response = await call(`${hitAddress}${token}`, 'GET');
 
             if (response.status === 200 && response.data) {
                 const { events, googleCalendarLinked } = response.data;
@@ -101,11 +92,7 @@ const GenericMainPageForm: React.FC<FormProps> = ({
                     title: eventTitleFunc(event),
                     done: false,
                     icon: eventIconFunc(event) as Task['icon'],
-                    event: {
-                        ...event,
-                        event_date: new Date(`${event.event_date}T${event.event_time}`),
-                        event_time: new Date(`${event.event_date}T${event.event_time}`)
-                    }
+                    event: event,
                 })).slice(0, sliceRange);
 
                 setTasks(formattedEvents);
@@ -117,16 +104,20 @@ const GenericMainPageForm: React.FC<FormProps> = ({
         }
     };
 
-
     useFocusEffect(
         useCallback(() => {
             const verifyLoginStatus = async () => {
-                const [isLoggedIn, userId] = await AsyncStorage.multiGet(['isLoggedIn', 'userId']);
-                if (isLoggedIn[1] === 'true' && userId[1]) {
-                    console.log(`User is logged in with ID: ${userId[1]}`);
+                const [isLoggedIn, token] = await AsyncStorage.multiGet(['isLoggedIn', 'token']);
+                if (isLoggedIn[1] === 'true' && token[1]) {
+                    cLog(`User is logged in with Token: ${token[1]}`);
                 }
             };
 
+            const initializeEvents = async () => {
+                await fetchEvents();
+            };
+
+            initializeEvents();
             verifyLoginStatus();
         }, [])
     );

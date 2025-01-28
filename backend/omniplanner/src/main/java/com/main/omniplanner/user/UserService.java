@@ -1,5 +1,6 @@
 package com.main.omniplanner.user;
 
+import com.main.omniplanner.requests.UpdateUserRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,5 +29,13 @@ public class UserService implements UserDetailsService {
                 .credentialsExpired(false)
                 .disabled(!user.isEnabled())
                 .build();
+    }
+
+    public void modifyUser(UpdateUserRequest userRequest, int userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        user.setName(userRequest.getName());
+        user.setPhone(userRequest.getPhone());
+        user.setAge(userRequest.getAge());
+        userRepository.save(user);
     }
 }
