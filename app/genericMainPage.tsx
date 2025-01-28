@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { Calendar } from 'react-native-calendars';
@@ -8,7 +8,7 @@ import { EventProps, GoogleCalendarProps, NavigationProps, RootStackParamList, T
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { cLog } from '../components/log';
-import { getPageFromEventType, getPageName, verifyToken } from '@/constants/constants';
+import { getPageFromEventType, getPageName } from '@/constants/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { call } from '../components/apiCall';
 
@@ -74,9 +74,19 @@ const GenericMainPageForm: React.FC<FormProps> = ({
         </TouchableOpacity>
     );
 
+    useEffect(() => {
+        const initializeEvents = async () => {
+            await fetchEvents();
+        };
+    
+        initializeEvents();
+    }, [hitAddress, sliceRange]);
+    
+
     const fetchEvents = async () => {
         try {
             const userId = await AsyncStorage.getItem('userId');
+            console.log(userId)
             const response = await call(`${hitAddress}${userId}`, 'GET');
 
             if (response.status === 200 && response.data) {
@@ -110,8 +120,14 @@ const GenericMainPageForm: React.FC<FormProps> = ({
 
     useFocusEffect(
         useCallback(() => {
-            verifyToken(navigation);
-            fetchEvents();
+            const verifyLoginStatus = async () => {
+                const [isLoggedIn, userId] = await AsyncStorage.multiGet(['isLoggedIn', 'userId']);
+                if (isLoggedIn[1] === 'true' && userId[1]) {
+                    console.log(`User is logged in with ID: ${userId[1]}`);
+                }
+            };
+
+            verifyLoginStatus();
         }, [])
     );
 

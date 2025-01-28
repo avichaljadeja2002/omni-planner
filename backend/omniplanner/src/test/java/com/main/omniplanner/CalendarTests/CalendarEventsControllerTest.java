@@ -111,7 +111,7 @@ class CalendarEventsControllerTest {
     void testGetEventsByUserId_ExceptionThrown() {
         int userId = 1;
 
-        when(userRepository.findById(userId)).thenThrow(new RuntimeException("Database error"));
+        when(userRepository.findById(String.valueOf(userId))).thenThrow(new RuntimeException("Database error"));
 
         ResponseEntity<CalendarEventResponse> response = calendarEventsController.getEventsByUserId(userId);
 

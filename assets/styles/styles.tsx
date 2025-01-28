@@ -70,13 +70,6 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-end',
     marginTop: 20,
   },
-  headerText: {
-    textAlign: "center",
-    fontSize: 37,
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: 20,
-  },
   noteHeader: {
     alignItems: 'center',
   },
@@ -429,4 +422,49 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
+  authPage: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+    backgroundColor: '#f5f5f5',
+  },
+  headerText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    color: '#333',
+  },
+  authPageNonheaderText: {
+    fontSize: 16,
+    marginBottom: 8,
+    color: '#555',
+  },
+  authPageInput: {
+    width: '100%',
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    marginBottom: 16,
+    backgroundColor: '#fff',
+  },
+  authButton: {
+    width: '100%',
+    padding: 12,
+    backgroundColor: '#007BFF',
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  authButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  switchText: {
+    color: '#007BFF',
+    textDecorationLine: 'underline',
+  },
+
 });

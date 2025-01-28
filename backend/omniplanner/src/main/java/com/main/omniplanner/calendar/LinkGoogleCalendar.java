@@ -37,11 +37,11 @@ public class LinkGoogleCalendar {
     public String linkCalendar(@RequestBody CalendarLinkRequest request) {
         try {
             System.out.println("Linking Google Calendar for user ID: " + request.getUserId());
-            User user = userRepository.findById(request.getUserId())
+            User user = userRepository.findById(String.valueOf(request.getUserId()))
                     .orElseThrow(() -> new RuntimeException("User not found"));
 
-            user.setGoogle_calendar_linked(true);
-            user.setGoogle_calendar_access_token(request.getAccessToken());
+            user.setGoogleCalendarLinked(true);
+            user.setGoogleCalendarAccessToken(request.getAccessToken());
             userRepository.save(user);
             return "Google Calendar linked successfully for user ID: " + request.getUserId();
         } catch (Exception e) {

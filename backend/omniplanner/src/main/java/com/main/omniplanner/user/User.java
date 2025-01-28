@@ -1,6 +1,7 @@
 package com.main.omniplanner.user;
 
 import jakarta.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -9,76 +10,87 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String name;
-    private String email;
-    private boolean google_calendar_linked;
-    private String google_calendar_access_token;
-    private String passwordHash;
-    private String salt;
-    private String tempToken;
+
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column()
+    private String password;
+
+    @Column(nullable = false)
+    private boolean enabled;
+
+    @Column(name = "google_calendar_linked")
+    private boolean googleCalendarLinked = false;
+
+    @Column(name = "google_calendar_access_token")
+    private String googleCalendarAccessToken;
+    @Column(name = "is_google_login", nullable = false)
+    private boolean isGoogleLogin = false;
+
+    public boolean isGoogleLogin() {
+        return isGoogleLogin;
+    }
+
+    public void setGoogleLogin(boolean isGoogleLogin) {
+        this.isGoogleLogin = isGoogleLogin;
+    }
+
+
+    public User() {}
+
+    public User(String username, String password, boolean enabled) {
+        this.username = username;
+        this.password = password;
+        this.enabled = enabled;
+    }
+
 
     public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPassword() {
+        return password;
     }
 
-    public boolean isGoogle_calendar_linked() {
-        return google_calendar_linked;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public void setGoogle_calendar_linked(boolean google_calendar_linked) {
-        this.google_calendar_linked = google_calendar_linked;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public String getGoogle_calendar_access_token() {
-        return google_calendar_access_token;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
-    public void setGoogle_calendar_access_token(String google_calendar_access_token) {
-        this.google_calendar_access_token = google_calendar_access_token;
+    public boolean isGoogleCalendarLinked() {
+        return googleCalendarLinked;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setGoogleCalendarLinked(boolean googleCalendarLinked) {
+        this.googleCalendarLinked = googleCalendarLinked;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
-    public String getSalt() {
-        return salt;
-    }
-    public void setSalt(String salt) {
-        this.salt = salt;
+    public String getGoogleCalendarAccessToken() {
+        return googleCalendarAccessToken;
     }
 
-    public String getTempToken() {
-        return tempToken;
-    }
-
-    public void setTempToken(String tempToken) {
-        this.tempToken = tempToken;
-    }
-
-    public String toString() {
-        return this.id +"," + this.email + "," + this.name + "," + this.tempToken;
+    public void setGoogleCalendarAccessToken(String googleCalendarAccessToken) {
+        this.googleCalendarAccessToken = googleCalendarAccessToken;
     }
 }

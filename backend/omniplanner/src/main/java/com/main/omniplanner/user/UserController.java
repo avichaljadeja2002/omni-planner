@@ -1,63 +1,96 @@
 package com.main.omniplanner.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+        import org.springframework.http.ResponseEntity;
+        import org.springframework.security.authentication.AuthenticationManager;
+        import org.springframework.security.authentication.BadCredentialsException;
+        import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+        import org.springframework.security.core.Authentication;
+        import org.springframework.security.core.context.SecurityContextHolder;
+        import org.springframework.security.core.userdetails.UsernameNotFoundException;
+        import org.springframework.security.crypto.password.PasswordEncoder;
+        import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+        import java.util.Map;
+        import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "*")
+@RequestMapping("/api/users")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    private final AuthenticationManager authenticationManager;
+
+    public UserController(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
     }
 
-    @GetMapping("/users")
-    public List<User> getUsers() {
-        return userService.getAllUsers();
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody User user) {
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            return ResponseEntity.badRequest().body("Username is already taken");
+        }
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        User savedUser = userRepository.save(user);
+
+        // Return only username and userId
+        return ResponseEntity.ok(Map.of(
+                "username", savedUser.getUsername(),
+                "userId", savedUser.getId()
+        ));
     }
 
-    @PutMapping("/checkLogin")
-    public String checkLogin(@RequestBody String loginRequest) {
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode jsonNode = objectMapper.readTree(loginRequest);
-            String email = jsonNode.get("email").asText();
-            String token = jsonNode.get("token").asText();
-            String userId = jsonNode.has("userId") ? jsonNode.get("userId").asText() : null;
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+            );
 
-            if(userId != null && !userId.isEmpty()) {
-                return userService.checkLogin(email, token, userId);
-            }
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            return userService.checkLogin(email, token);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            User user = userRepository.findByUsername(loginRequest.getUsername())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+            return ResponseEntity.ok(Map.of(
+                    "message", "Login successful",
+                    "userId", user.getId()
+            ));
+        } catch (BadCredentialsException ex) {
+            return ResponseEntity.status(401).body("Invalid username or password");
         }
     }
 
-    @PutMapping("/login")
-    public String login(@RequestBody String loginRequest) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode jsonNode = objectMapper.readTree(loginRequest);
+    @PostMapping("/google-login")
+    public ResponseEntity<?> googleLogin(@RequestBody Map<String, String> payload) {
+        String email = payload.get("email");
+        String name = payload.get("name");
 
-            String email = jsonNode.get("email").asText();
-            String password = jsonNode.get("password").asText();
+        Optional<User> existingUser = userRepository.findByUsername(email);
 
-            return userService.login(email, password);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+        User user;
+        if (existingUser.isPresent()) {
+            user = existingUser.get();
+        } else {
+            user = new User();
+            user.setUsername(email);
+            user.setEnabled(true);
+            user.setGoogleLogin(true);
+            user.setPassword(null);
+            userRepository.save(user);
         }
+
+        return ResponseEntity.ok(Map.of(
+                "id", user.getId()
+        ));
     }
+
 }
+
 
 
