@@ -7,10 +7,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { call } from '../components/apiCall';
 
 export default function Notes() {
-    const initialData = { userId: 1, text: "" };
+    const initialData = { text: "" };
     const [formData, setFormData] = useState(initialData);
 
     const handleSave = async () => {
+        const token = await AsyncStorage.getItem('token');
         try {
             const currentDate = new Date().toISOString().split('T')[0];
             const currentTime = new Date().toTimeString().split(' ')[0];
@@ -19,7 +20,7 @@ export default function Notes() {
                 event_date: currentDate,
                 event_time: currentTime,
             };
-            const response = await call('/add_note', 'PUT', undefined, updatedFormData);
+            const response = await call(`/add_note/${token}`, 'PUT', undefined, updatedFormData);
             cLog('Note saved successfully: ' + response.data);
         } catch (error) {
             console.error('Error saving note:', error);
@@ -32,17 +33,15 @@ export default function Notes() {
 
     const fetchNote = async () => {
         try {
-            const userId = await AsyncStorage.getItem('userId');
-            if (!userId) throw new Error('User ID not found');
-    
-            const hit = '/get_note/' + userId;
+            const token = await AsyncStorage.getItem('token');
+            const hit = '/get_note/' + token;
             cLog('Fetching note from: ' + hit);
-    
+
             const response = await call(hit, 'GET');
             const events = response.data.map((event: { text: any; }) => ({
                 text: `${event.text}`,
             }));
-    
+
             setFormData({ ...formData, text: events[0]?.text || "" });
         } catch (error) {
             console.error('Error fetching note:', error);

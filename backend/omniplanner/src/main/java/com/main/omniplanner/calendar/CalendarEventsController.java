@@ -1,5 +1,6 @@
 package com.main.omniplanner.calendar;
 
+import com.main.omniplanner.notes.NotesService;
 import com.main.omniplanner.responses.CalendarEventResponse;
 import com.main.omniplanner.user.GenericEvent;
 import com.main.omniplanner.user.EventService;
@@ -27,8 +28,14 @@ public class CalendarEventsController {
     @Autowired
     private LinkGoogleCalendar linkGoogleCalendar;
 
-    @GetMapping("/get_calendar_events/{userId}")
-    public ResponseEntity<CalendarEventResponse> getEventsByUserId(@PathVariable int userId) {
+    public CalendarEventsController(EventService eventService, UserRepository userRepository) {
+        this.eventsService = eventService;
+        this.userRepository = userRepository;
+    }
+
+    @GetMapping("/get_calendar_events/{token}")
+    public ResponseEntity<CalendarEventResponse> getEventsByToken(@PathVariable String token) {
+        int userId = userRepository.getIdByToken(token);
         List<GenericEvent> combinedEvents = new ArrayList<>();
         boolean isGoogleCalendarLinked = false;
 

@@ -20,15 +20,16 @@ public class NotesService {
         this.notesRepository = notesRepository;
         this.eventService = eventService;
     }
-    public Notes saveOrUpdateNote(Notes note) {
+    public Notes saveOrUpdateNote(Notes note, int userId) {
         // Check if a note for the given userId already exists
-        List<Notes> existingNote = notesRepository.findByUserId(note.getUserId());
+        List<Notes> existingNote = notesRepository.findByUserId(userId);
         if (existingNote.size() > 0) {
             // Update the existing note
             existingNote.get(0).setText(note.getText());
             return notesRepository.save(existingNote.get(0));  // Save the updated note
         } else {
             // No existing note, create a new one
+            note.setUserId(userId);
             return notesRepository.save(note);
         }
     }

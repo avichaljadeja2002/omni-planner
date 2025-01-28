@@ -2,15 +2,14 @@ package com.main.omniplanner.CalendarTests;
 
 import com.main.omniplanner.calendar.CalendarEventsController;
 import com.main.omniplanner.responses.CalendarEventResponse;
-import com.main.omniplanner.user.EventController;
 import com.main.omniplanner.user.EventService;
 import com.main.omniplanner.user.GenericEvent;
 import com.main.omniplanner.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -19,16 +18,15 @@ import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class CalendarEventsControllerTest {
 
-    @Mock
+    @Autowired
     private UserRepository userRepository;
 
-    private EventController eventController;
-
-    @Mock
+    @Autowired
     private EventService eventService;
 
     @InjectMocks
@@ -37,12 +35,15 @@ class CalendarEventsControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        eventController = new EventController(eventService);
+        userRepository = mock(UserRepository.class);
+        eventService = mock(EventService.class);
+        calendarEventsController = new CalendarEventsController(eventService, userRepository);
     }
 
     @Test
     void testGetEventsByUserId_Success() {
         int userId = 1;
+        String token = "1a2b3c4d";
         GenericEvent event1 = new GenericEvent();
         event1.setId(1);
         event1.setUserId(userId);
@@ -63,9 +64,9 @@ class CalendarEventsControllerTest {
         event2.setDescription("Description 2");
 
         List<GenericEvent> events = Arrays.asList(event1, event2);
-
+        when(userRepository.getIdByToken(token)).thenReturn(userId);
         when(eventService.getEventsByType("calendar", userId)).thenReturn(events);
-        ResponseEntity<CalendarEventResponse> response = calendarEventsController.getEventsByUserId(userId);
+        ResponseEntity<CalendarEventResponse> response = calendarEventsController.getEventsByToken(token);
         // Then
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2, Objects.requireNonNull(Objects.requireNonNull(response.getBody()).getEvents()).size());
@@ -83,10 +84,10 @@ class CalendarEventsControllerTest {
     void testGetEventsByUserId_EmptyList() {
         // Given
         int userId = 2;
-
+        String token = "1a2b3c4d";
         // When
         when(eventService.getEventsByType("calendar", userId)).thenReturn(Arrays.asList());
-        ResponseEntity<CalendarEventResponse> response = calendarEventsController.getEventsByUserId(userId);
+        ResponseEntity<CalendarEventResponse> response = calendarEventsController.getEventsByToken(token);
 
         // Then
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -97,10 +98,10 @@ class CalendarEventsControllerTest {
     void testGetEventsByUserId_NonExistingUser() {
         // Given
         int userId = 999; // Assuming this user doesn't exist
-
+        String token = "1a2b3c4d";
         // When
         when(eventService.getEventsByType("calendar", userId)).thenReturn(Arrays.asList());
-        ResponseEntity<CalendarEventResponse> response = calendarEventsController.getEventsByUserId(userId);
+        ResponseEntity<CalendarEventResponse> response = calendarEventsController.getEventsByToken(token);
 
         // Then
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -110,10 +111,11 @@ class CalendarEventsControllerTest {
   @Test
     void testGetEventsByUserId_ExceptionThrown() {
         int userId = 1;
-
+        String token = "1a2b3c4d";
+        when(userRepository.getIdByToken(token)).thenReturn(userId);
         when(userRepository.findById(String.valueOf(userId))).thenThrow(new RuntimeException("Database error"));
 
-        ResponseEntity<CalendarEventResponse> response = calendarEventsController.getEventsByUserId(userId);
+        ResponseEntity<CalendarEventResponse> response = calendarEventsController.getEventsByToken(token);
 
         assertEquals(500, response.getStatusCodeValue());
     }

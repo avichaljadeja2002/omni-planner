@@ -1,4 +1,4 @@
-package com.main.omniplanner.CalendarTests;
+package com.main.omniplanner.RequestTests;
 
 import com.main.omniplanner.requests.CalendarLinkRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,25 +18,11 @@ public class CalendarLinkRequestTest {
     }
 
     @Test
-    public void testGetSetUserId() {
-        Integer userId = 123;
-
-        calendarLinkRequest.setUserId(userId);  // Set userId
-        assertEquals(userId, calendarLinkRequest.getUserId());  // Assert that getUserId returns the same value
-    }
-
-    @Test
     public void testGetSetAccessToken() {
         String accessToken = "abcdef123456";
 
         calendarLinkRequest.setAccessToken(accessToken);  // Set accessToken
         assertEquals(accessToken, calendarLinkRequest.getAccessToken());  // Assert that getAccessToken returns the same value
-    }
-
-    @Test
-    public void testNullUserId() {
-        calendarLinkRequest.setUserId(null);  // Set userId to null
-        assertNull(calendarLinkRequest.getUserId());  // Assert that getUserId returns null
     }
 
     @Test

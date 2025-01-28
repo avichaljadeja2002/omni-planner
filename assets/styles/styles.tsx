@@ -90,10 +90,18 @@ export const styles = StyleSheet.create({
     color: "#9b59b6",
     marginBottom: 15,
   },
+  addSectionHeader: {
+    fontSize: 28,
+    marginBottom: 10,
+    fontWeight: "bold",
+    color: "#333",
+    alignSelf: "center",
+  },
   sectionHeader: {
     fontSize: 24,
     fontWeight: "bold",
     color: "#333",
+    alignSelf: "center",
   },
   bullet: {
     fontSize: 36,
@@ -430,10 +438,11 @@ export const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
   },
   headerText: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 16,
+    marginBottom: 8,
     color: '#333',
+    alignSelf: 'center',
   },
   authPageNonheaderText: {
     fontSize: 16,

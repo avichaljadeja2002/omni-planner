@@ -6,10 +6,12 @@ import static org.mockito.Mockito.*;
 import com.main.omniplanner.user.GenericEvent;
 import com.main.omniplanner.user.EventService;
 import com.main.omniplanner.user.EventRepository;
+import com.main.omniplanner.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 
@@ -18,13 +20,20 @@ public class EventServiceTest {
     private EventService eventService;
     private GenericEvent event;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Mock
     private EventRepository eventRepository;
 
+    private String token;
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        eventService = new EventService(eventRepository);
+        token = "1a2b3c4d";
+        userRepository = mock(UserRepository.class); // Mock the userRepository
+        eventRepository = mock(EventRepository.class);
+        eventService = new EventService(eventRepository, userRepository);
         event = new GenericEvent();
         event.setId(0);
         event.setEvent_date("2024-11-05");
@@ -40,10 +49,11 @@ public class EventServiceTest {
     @Test
     public void testGetSaveEvent() {
         when(eventRepository.save(event)).thenReturn(event);
+        when(userRepository.getIdByToken(token)).thenReturn(0);
         when(eventRepository.findUpcomingByUserId(eq(0), anyLong()))
                 .thenReturn(Collections.singletonList(event));
 
-        eventService.saveEvent(event, "Work");
+        eventService.saveEvent(event, "Work", token);
         List<GenericEvent> eventList = eventService.getEventsByUserId(0);
         assertFalse(eventList.isEmpty(), "The list should not be empty");
         GenericEvent testEvent = eventList.get(0);

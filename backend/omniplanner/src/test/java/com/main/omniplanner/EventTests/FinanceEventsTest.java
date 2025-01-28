@@ -3,10 +3,12 @@ package com.main.omniplanner.EventTests;
 import com.main.omniplanner.user.EventController;
 import com.main.omniplanner.user.EventService;
 import com.main.omniplanner.user.GenericEvent;
+import com.main.omniplanner.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -15,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class FinanceEventsTest {
@@ -22,16 +25,22 @@ class FinanceEventsTest {
     @Mock
     private EventService eventService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     private EventController eventController;
 
     private GenericEvent event1;
     private GenericEvent event2;
+    private String token;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        eventController = new EventController(eventService);
-
+        userRepository = mock(UserRepository.class);
+        eventService = mock(EventService.class);
+        eventController = new EventController(eventService, userRepository);
+        token = "1234567890";
         event1 = new GenericEvent();
         event1.setId(1);
         event1.setUserId(1);
@@ -55,9 +64,9 @@ class FinanceEventsTest {
     @Test
     void testGetEventsByUserId_Success() {
         List<GenericEvent> events = Arrays.asList(event1, event2);
-
+        when(userRepository.getIdByToken(token)).thenReturn(1);
         when(eventService.getEventsByUserId(1)).thenReturn(events);
-        ResponseEntity<List<GenericEvent>> response = eventController.getEventsByUserId(1);
+        ResponseEntity<List<GenericEvent>> response = eventController.getEventsByUserId(token);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2, Objects.requireNonNull(response.getBody()).size());
@@ -84,9 +93,9 @@ class FinanceEventsTest {
     @Test
     void testGetEventsByUserId_EmptyList() {
         int userId = 2;
-
+        when(userRepository.getIdByToken(token)).thenReturn(userId);
         when(eventService.getEventsByUserId(userId)).thenReturn(Arrays.asList());
-        ResponseEntity<List<GenericEvent>> response = eventController.getEventsByUserId(userId);
+        ResponseEntity<List<GenericEvent>> response = eventController.getEventsByUserId(token);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().size());
@@ -95,9 +104,9 @@ class FinanceEventsTest {
     @Test
     void testGetEventsByUserId_NonExistingUser() {
         int userId = 999;
-
+        when(userRepository.getIdByToken(token)).thenReturn(userId);
         when(eventService.getEventsByUserId(userId)).thenReturn(List.of());
-        ResponseEntity<List<GenericEvent>> response = eventController.getEventsByUserId(userId);
+        ResponseEntity<List<GenericEvent>> response = eventController.getEventsByUserId(token);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().size());
@@ -106,10 +115,10 @@ class FinanceEventsTest {
     @Test
     void testAddEvent_Success() {
         // When
-        when(eventService.saveEvent(event1, "Work")).thenReturn(event1);
+        when(eventService.saveEvent(event1, "Work", token)).thenReturn(event1);
 
         // Act
-        ResponseEntity<GenericEvent> response = eventController.addEvent(event1, "Work");
+        ResponseEntity<GenericEvent> response = eventController.addEvent(event1, "Work", token);
 
         // Then
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -119,8 +128,8 @@ class FinanceEventsTest {
 
     @Test
     void testUpdateEvent_Success() {
-        when(eventService.saveEvent(event1, "Work")).thenReturn(event1);
-        ResponseEntity<GenericEvent> response = eventController.updateEvent(event1, "Work");
+        when(eventService.saveEvent(event1, "Work", token)).thenReturn(event1);
+        ResponseEntity<GenericEvent> response = eventController.updateEvent(event1, "Work", token);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(1, Objects.requireNonNull(response.getBody()).getId());

@@ -17,8 +17,18 @@ public class User {
     @Column()
     private String password;
 
+    @Column
+    private String token;
+    @Column
+    private String phone;
+    @Column
+    private String age;
+
     @Column()
     private boolean enabled;
+
+    @Column()
+    private String name;
 
     @Column(name = "google_calendar_linked")
     private boolean googleCalendarLinked = false;
@@ -38,13 +48,6 @@ public class User {
 
 
     public User() {}
-
-    public User(String username, String password, boolean enabled) {
-        this.username = username;
-        this.password = password;
-        this.enabled = enabled;
-    }
-
 
     public int getId() {
         return id;
@@ -93,4 +96,38 @@ public class User {
     public void setGoogleCalendarAccessToken(String googleCalendarAccessToken) {
         this.googleCalendarAccessToken = googleCalendarAccessToken;
     }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String generateToken() {
+        return UUID.randomUUID().toString();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+    public String getAge() {
+        return age;
+    }
+    public void setAge(String age) {
+        this.age = age;
+    }
+
 }

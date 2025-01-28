@@ -13,31 +13,37 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
-    public EventController(EventService eventService) {
+    @Autowired
+    private UserRepository userRepository;
+
+    public EventController(EventService eventService, UserRepository userRepository) {
         this.eventService = eventService;
+        this.userRepository = userRepository;
     }
-    @GetMapping("/get_all_events/{userId}")
-    public ResponseEntity<List<GenericEvent>> getEventsByUserId(@PathVariable int userId) {
+    @GetMapping("/get_all_events/{token}")
+    public ResponseEntity<List<GenericEvent>> getEventsByUserId(@PathVariable String token) {
+        int userId = userRepository.getIdByToken(token);
         List<GenericEvent> events = eventService.getEventsByUserId(userId);
         return ResponseEntity.ok(events);
     }
 
-    @GetMapping("/get_events/{event_type}/{userId}")
-    public ResponseEntity<List<GenericEvent>> getEventsByType(@PathVariable int userId, @PathVariable String event_type) {
+    @GetMapping("/get_events/{event_type}/{token}")
+    public ResponseEntity<List<GenericEvent>> getEventsByType(@PathVariable String token, @PathVariable String event_type) {
+        int userId = userRepository.getIdByToken(token);
         List<GenericEvent> events = eventService.getEventsByType(event_type, userId);
         return ResponseEntity.ok(events);
     }
 
-    @PostMapping("/add_event/{event_type}")
-    public ResponseEntity<GenericEvent> addEvent(@RequestBody GenericEvent event, @PathVariable String event_type) {
-        GenericEvent savedEvent = eventService.saveEvent(event, event_type);
+    @PostMapping("/add_event/{event_type}/{token}")
+    public ResponseEntity<GenericEvent> addEvent(@RequestBody GenericEvent event, @PathVariable String event_type, @PathVariable String token) {
+        GenericEvent savedEvent = eventService.saveEvent(event, event_type, token);
         return ResponseEntity.ok(savedEvent);
     }
 
     @Transactional
-    @PutMapping("/update_event/{event_type}")
-    public ResponseEntity<GenericEvent> updateEvent(@RequestBody GenericEvent event, @PathVariable String event_type) {
-        GenericEvent updatedEvent = eventService.saveEvent(event, event_type);
+    @PutMapping("/update_event/{event_type}/{token}")
+    public ResponseEntity<GenericEvent> updateEvent(@RequestBody GenericEvent event, @PathVariable String event_type, @PathVariable String token) {
+        GenericEvent updatedEvent = eventService.saveEvent(event, event_type, token);
         return ResponseEntity.ok(updatedEvent);
     }
 }

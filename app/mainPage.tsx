@@ -1,26 +1,29 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import GenericMainPageForm from './genericMainPage';
 import { getEventIcon } from '@/constants/constants';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { cLog } from '@/components/log';
 
 export default function TaskScreen() {
   const [header, setHeader] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
 
   useFocusEffect(
     useCallback(() => {
       const verifyLoginStatus = async () => {
-        const [isLoggedIn, storedUserId] = await AsyncStorage.multiGet(['isLoggedIn', 'userId']);
-        if (isLoggedIn[1] === 'true' && storedUserId[1]) {
-          console.log(`User is logged in with ID: ${storedUserId[1]}`);
-          setUserId(storedUserId[1]);
+        const [isLoggedIn, storedToken] = await AsyncStorage.multiGet(['isLoggedIn', 'token']);
+        if (isLoggedIn[1] === 'true' && storedToken[1]) {
+          cLog(`User is logged in with Token: ${storedToken[1]}`);
         } else {
-          console.log('User is not logged in');
+          cLog('User is not logged in');
         }
       };
-
+      const initializeHeader = async () => {
+        const name = await AsyncStorage.getItem('name');
+        setHeader(name);
+      };
       verifyLoginStatus();
+      initializeHeader();
     }, [])
   );
 

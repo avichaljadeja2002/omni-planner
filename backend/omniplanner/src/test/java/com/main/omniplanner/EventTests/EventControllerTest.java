@@ -3,10 +3,12 @@ package com.main.omniplanner.EventTests;
 import com.main.omniplanner.user.GenericEvent;
 import com.main.omniplanner.user.EventController;
 import com.main.omniplanner.user.EventService;
+import com.main.omniplanner.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -15,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class EventControllerTest {
@@ -22,15 +25,21 @@ class EventControllerTest {
     @Mock
     private EventService eventService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     private EventController eventController;
 
     private GenericEvent event1;
     private GenericEvent event2;
-
+    String token;
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        eventController = new EventController(eventService);
+        userRepository = mock(UserRepository.class);
+        eventService = mock(EventService.class);
+        eventController = new EventController(eventService, userRepository);
+        token = "1a2b3c4d";
 
         event1 = new GenericEvent();
         event1.setDescription("Meeting 1");
@@ -59,9 +68,9 @@ class EventControllerTest {
     @Test
     void testGetEventsByUserId_Success() {
         List<GenericEvent> events = Arrays.asList(event1, event2);
-
+        when(userRepository.getIdByToken(token)).thenReturn(1);
         when(eventService.getEventsByUserId(1)).thenReturn(events);
-        ResponseEntity<List<GenericEvent>> response = eventController.getEventsByUserId(1);
+        ResponseEntity<List<GenericEvent>> response = eventController.getEventsByUserId(token);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2, Objects.requireNonNull(response.getBody()).size());
@@ -93,9 +102,9 @@ class EventControllerTest {
     @Test
     void testGetEventsByUserId_EmptyList() {
         int userId = 2;
-
+        when(userRepository.getIdByToken(token)).thenReturn(1);
         when(eventService.getEventsByUserId(userId)).thenReturn(Arrays.asList());
-        ResponseEntity<List<GenericEvent>> response = eventController.getEventsByUserId(userId);
+        ResponseEntity<List<GenericEvent>> response = eventController.getEventsByUserId(token);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().size());
@@ -104,9 +113,9 @@ class EventControllerTest {
     @Test
     void testGetEventsByUserId_NonExistingUser() {
         int userId = 999;
-
+        when(userRepository.getIdByToken(token)).thenReturn(1);
         when(eventService.getEventsByUserId(userId)).thenReturn(List.of());
-        ResponseEntity<List<GenericEvent>> response = eventController.getEventsByUserId(userId);
+        ResponseEntity<List<GenericEvent>> response = eventController.getEventsByUserId(token);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().size());
@@ -115,9 +124,9 @@ class EventControllerTest {
     @Test
     void testGetEventsByType_Success() {
         List<GenericEvent> events = Arrays.asList(event1, event2);
-
+        when(userRepository.getIdByToken(token)).thenReturn(1);
         when(eventService.getEventsByType("Work", 1)).thenReturn(events);
-        ResponseEntity<List<GenericEvent>> response = eventController.getEventsByType(1, "Work");
+        ResponseEntity<List<GenericEvent>> response = eventController.getEventsByType(token, "Work");
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2, Objects.requireNonNull(response.getBody()).size());
@@ -148,10 +157,9 @@ class EventControllerTest {
 
     @Test
     void testGetEventsByType_EmptyList() {
-        int userId = 2;
-
-        when(eventService.getEventsByType("Work", userId)).thenReturn(Arrays.asList());
-        ResponseEntity<List<GenericEvent>> response = eventController.getEventsByType(userId, "Work");
+        when(userRepository.getIdByToken(token)).thenReturn(2);
+        when(eventService.getEventsByType("Work", 2)).thenReturn(Arrays.asList());
+        ResponseEntity<List<GenericEvent>> response = eventController.getEventsByType(token, "Work");
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().size());
@@ -160,9 +168,9 @@ class EventControllerTest {
     @Test
     void testGetEventsByType_NonExistingUser() {
         int userId = 999;
-
+        when(userRepository.getIdByToken(token)).thenReturn(userId);
         when(eventService.getEventsByType("Work", userId)).thenReturn(List.of());
-        ResponseEntity<List<GenericEvent>> response = eventController.getEventsByType(userId, "Work");
+        ResponseEntity<List<GenericEvent>> response = eventController.getEventsByType(token, "Work");
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().size());
@@ -171,9 +179,9 @@ class EventControllerTest {
     @Test
     void testAddEvent_Success() {
         List<GenericEvent> events = Arrays.asList(event1);
-
+        when(userRepository.getIdByToken(token)).thenReturn(1);
         when(eventService.getEventsByUserId(1)).thenReturn(events);
-        ResponseEntity<List<GenericEvent>> response = eventController.getEventsByUserId(1);
+        ResponseEntity<List<GenericEvent>> response = eventController.getEventsByUserId(token);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(1, Objects.requireNonNull(response.getBody()).get(0).getId());

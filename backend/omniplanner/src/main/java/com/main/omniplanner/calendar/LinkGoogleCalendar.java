@@ -33,20 +33,21 @@ public class LinkGoogleCalendar {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping("/link_calendar")
-    public String linkCalendar(@RequestBody CalendarLinkRequest request) {
+    @PostMapping("/link_calendar/{token}")
+    public String linkCalendar(@RequestBody CalendarLinkRequest request, @PathVariable String token) {
+        int userId = userRepository.getIdByToken(token);
         try {
-            System.out.println("Linking Google Calendar for user ID: " + request.getUserId());
-            User user = userRepository.findById(String.valueOf(request.getUserId()))
+            System.out.println("Linking Google Calendar for user ID: " + userId);
+            User user = userRepository.findById(String.valueOf(userId))
                     .orElseThrow(() -> new RuntimeException("User not found"));
 
             user.setGoogleCalendarLinked(true);
             user.setGoogleCalendarAccessToken(request.getAccessToken());
             userRepository.save(user);
-            return "Google Calendar linked successfully for user ID: " + request.getUserId();
+            return "Google Calendar linked successfully for user ID: " + userId;
         } catch (Exception e) {
             e.printStackTrace();
-            return "Failed to link Google Calendar for user ID: " + request.getUserId();
+            return "Failed to link Google Calendar for user ID: " + userId;
         }
     }
 

@@ -45,7 +45,7 @@ public class NotesServiceTest {
         when(notesRepository.findByUserId(eq(1)))
                 .thenReturn(Collections.singletonList(notes));
 
-        notesService.saveOrUpdateNote(notes);
+        notesService.saveOrUpdateNote(notes, 1);
         List<Notes> notesList = notesService.getNotesByUserId(1);
 
         assertFalse(notesList.isEmpty(), "The list should not be empty");
@@ -65,7 +65,7 @@ public class NotesServiceTest {
         when(notesRepository.findByUserId(eq(1)))
                 .thenReturn(Collections.emptyList());
         when(notesRepository.save(notes)).thenReturn(notes);
-        Notes savedNote = notesService.saveOrUpdateNote(notes);
+        Notes savedNote = notesService.saveOrUpdateNote(notes, 1);
         assertEquals(notes, savedNote);
         verify(notesRepository).save(notes);
         verify(notesRepository, times(1)).findByUserId(eq(1)); // Only one call should happen here

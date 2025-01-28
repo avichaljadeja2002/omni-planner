@@ -6,7 +6,7 @@ import com.main.omniplanner.user.GenericEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class EventTest {
+public class GenericEventTest {
 
     private GenericEvent event;
 
