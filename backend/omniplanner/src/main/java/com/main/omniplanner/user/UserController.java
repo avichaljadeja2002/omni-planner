@@ -11,6 +11,7 @@ package com.main.omniplanner.user;
         import org.springframework.web.bind.annotation.*;
 
         import java.util.Map;
+        import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -64,6 +65,31 @@ public class UserController {
             return ResponseEntity.status(401).body("Invalid username or password");
         }
     }
+
+    @PostMapping("/google-login")
+    public ResponseEntity<?> googleLogin(@RequestBody Map<String, String> payload) {
+        String email = payload.get("email");
+        String name = payload.get("name");
+
+        Optional<User> existingUser = userRepository.findByUsername(email);
+
+        User user;
+        if (existingUser.isPresent()) {
+            user = existingUser.get();
+        } else {
+            user = new User();
+            user.setUsername(email);
+            user.setEnabled(true);
+            user.setGoogleLogin(true);
+            user.setPassword(null);
+            userRepository.save(user);
+        }
+
+        return ResponseEntity.ok(Map.of(
+                "id", user.getId()
+        ));
+    }
+
 }
 
 
