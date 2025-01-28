@@ -14,7 +14,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false)
+    @Column()
     private String password;
 
     @Column(nullable = false)
@@ -25,6 +25,16 @@ public class User {
 
     @Column(name = "google_calendar_access_token")
     private String googleCalendarAccessToken;
+    @Column(name = "is_google_login", nullable = false)
+    private boolean isGoogleLogin = false;
+
+    public boolean isGoogleLogin() {
+        return isGoogleLogin;
+    }
+
+    public void setGoogleLogin(boolean isGoogleLogin) {
+        this.isGoogleLogin = isGoogleLogin;
+    }
 
 
     public User() {}
