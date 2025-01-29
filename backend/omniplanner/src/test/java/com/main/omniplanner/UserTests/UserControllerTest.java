@@ -51,6 +51,9 @@ public class UserControllerTest {
         user = new User();
         user.setUsername("test_username");
         user.setPassword("test_password");
+        user.setName(null);
+        user.setPhone(null);
+        user.setAge(null);
 
         loginRequest = new LoginRequest("test_username", "test_password");
 
@@ -109,6 +112,13 @@ public class UserControllerTest {
     @Test
     public void testLoginUser_FailInvalid() {
         when(userRepository.findByUsername("test_username")).thenReturn(Optional.empty());
+        ResponseEntity<?> response = userController.loginUser(loginRequest);
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    }
+    @Test
+    public void testLoginUser_FailBCGoogle() {
+        user.setGoogleLogin(true);
+        when(userRepository.findByUsername("test_username")).thenReturn(Optional.of(user));
         ResponseEntity<?> response = userController.loginUser(loginRequest);
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
