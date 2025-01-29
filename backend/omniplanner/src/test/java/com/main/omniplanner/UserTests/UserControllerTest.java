@@ -107,9 +107,9 @@ public class UserControllerTest {
         assertEquals("test_token", responseBody.get("token"));
         assertEquals("Login successful", responseBody.get("message"));
         assertEquals("test_username", responseBody.get("email"));
-        assertEquals("", responseBody.get("name"));
-        assertEquals("", responseBody.get("phone"));
-        assertEquals("", responseBody.get("age"));
+        assertEquals("test_name", responseBody.get("name"));
+        assertEquals("test_phone", responseBody.get("phone"));
+        assertEquals("test_age", responseBody.get("age"));
     }
 
     @Test
