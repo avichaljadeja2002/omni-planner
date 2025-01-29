@@ -90,6 +90,9 @@ public class UserControllerTest {
         when(mockUser.getUsername()).thenReturn("test_username");
         when(mockUser.getPassword()).thenReturn("test_password");
         when(mockUser.getToken()).thenReturn("test_token");
+        when(mockUser.getName()).thenReturn("test_name");
+        when(mockUser.getPhone()).thenReturn("test_phone");
+        when(mockUser.getAge()).thenReturn("test_age");
         when(userRepository.findByUsername("test_username")).thenReturn(Optional.of(mockUser));
         when(authenticationManager.authenticate(any())).thenReturn(null);
         when(userRepository.save(mockUser)).thenReturn(mockUser);
