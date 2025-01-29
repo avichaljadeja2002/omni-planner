@@ -47,9 +47,9 @@ public class UserController {
         // Return only username and userId
         return ResponseEntity.ok(Map.of(
                 "email", user.getUsername(),
-                "name", user.getName() != null ? user.getName() : "",
-                "phone", user.getPhone() != null ? user.getPhone() : "",
-                "age", user.getAge() != null ? user.getAge() : ""
+                "name", "",
+                "phone",  "",
+                "age",  ""
         ));
     }
 
