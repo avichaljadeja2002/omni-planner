@@ -14,7 +14,7 @@ public class Notes {
     @GeneratedValue
     private int id;
 
-    private int userId;
+    private Integer userId;
 
     private String text;
 
@@ -22,11 +22,11 @@ public class Notes {
 
     private String event_time;
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

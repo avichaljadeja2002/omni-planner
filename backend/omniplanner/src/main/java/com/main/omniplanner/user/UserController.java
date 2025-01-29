@@ -119,8 +119,8 @@ public class UserController {
 
     @PutMapping("/modify_user/{token}")
     public ResponseEntity<?> modifyUser(@PathVariable String token, @RequestBody UpdateUserRequest updateUser) {
-        int userId = userRepository.getIdByToken(token);
-        if (userId == -1) {
+        Integer userId = userRepository.getIdByToken(token);
+        if (userId == null) {
             return ResponseEntity.status(401).body("Invalid token");
         }
         userService.modifyUser(updateUser, userId);

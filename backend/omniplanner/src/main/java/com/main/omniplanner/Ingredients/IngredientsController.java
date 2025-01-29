@@ -23,7 +23,7 @@ public class IngredientsController {
 
     @GetMapping("/get_ingredients/{token}")
     public ResponseEntity<List<Ingredients>> getIngredients(@PathVariable String token) {
-        int userId = userRepository.getIdByToken(token);
+        Integer userId = userRepository.getIdByToken(token);
         List<Ingredients> events = ingredientsService.getIngredients(userId);
         return ResponseEntity.ok(events);
     }

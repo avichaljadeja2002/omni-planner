@@ -14,7 +14,7 @@ public class IngredientsService {
         this.ingredientsRepository = ingredientsRepository;
     }
 
-    public List<Ingredients> getIngredients(int userId) {
+    public List<Ingredients> getIngredients(Integer userId) {
         return ingredientsRepository.findIngredientsByUserId(userId);
     }
 

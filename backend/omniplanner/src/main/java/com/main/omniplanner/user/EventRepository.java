@@ -10,8 +10,8 @@ import java.util.List;
 @Repository
 public interface EventRepository extends JpaRepository<GenericEvent, Integer> {
     @Query("SELECT f FROM GenericEvent f WHERE f.userId = :userId AND (f.repeating = true OR f.event_date >= :currentTimeMillis) ORDER BY f.event_date ASC")
-    List<GenericEvent> findUpcomingByUserId(@Param("userId") int userId, @Param("currentTimeMillis") Long currentTimeMillis);
+    List<GenericEvent> findUpcomingByUserId(@Param("userId") Integer userId, @Param("currentTimeMillis") Long currentTimeMillis);
 
     @Query("SELECT f FROM GenericEvent f WHERE f.userId = :userId AND f.event_type = :event_type AND (f.repeating = true OR f.event_date >= :currentTimeMillis) ORDER BY f.event_date ASC")
-    List<GenericEvent> findByEventType(@Param("event_type") String event_type, @Param("userId") int userId, @Param("currentTimeMillis") Long currentTimeMillis);
+    List<GenericEvent> findByEventType(@Param("event_type") String event_type, @Param("userId") Integer userId, @Param("currentTimeMillis") Long currentTimeMillis);
 }

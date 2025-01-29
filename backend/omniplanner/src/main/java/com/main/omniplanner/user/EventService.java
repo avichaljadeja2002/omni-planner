@@ -19,19 +19,19 @@ public class EventService {
         this.userRepository = userRepository;
     }
 
-    public List<GenericEvent> getEventsByUserId(int userId)
+    public List<GenericEvent> getEventsByUserId(Integer userId)
     {
         Long currentTimeMillis = System.currentTimeMillis();
          return eventRepository.findUpcomingByUserId(userId, currentTimeMillis);
     }
 
-    public List<GenericEvent> getEventsByType(String event_type, int userId) {
+    public List<GenericEvent> getEventsByType(String event_type, Integer userId) {
         Long currentTimeMillis = System.currentTimeMillis();
         return eventRepository.findByEventType(event_type, userId, currentTimeMillis);
     }
 
     public GenericEvent saveEvent(GenericEvent event, String event_type, String token) {
-        int userId = userRepository.getIdByToken(token);
+        Integer userId = userRepository.getIdByToken(token);
         event.setEvent_type(event_type);
         event.setUserId(userId);
         return eventRepository.save(event);

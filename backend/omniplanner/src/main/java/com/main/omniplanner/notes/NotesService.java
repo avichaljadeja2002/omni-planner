@@ -20,7 +20,7 @@ public class NotesService {
         this.notesRepository = notesRepository;
         this.eventService = eventService;
     }
-    public Notes saveOrUpdateNote(Notes note, int userId) {
+    public Notes saveOrUpdateNote(Notes note, Integer userId) {
         // Check if a note for the given userId already exists
         List<Notes> existingNote = notesRepository.findByUserId(userId);
         if (existingNote.size() > 0) {
@@ -34,7 +34,7 @@ public class NotesService {
         }
     }
 
-    public List<Notes> getNotesByUserId(int userId) {
+    public List<Notes> getNotesByUserId(Integer userId) {
         return notesRepository.findByUserId(userId);
     }
 

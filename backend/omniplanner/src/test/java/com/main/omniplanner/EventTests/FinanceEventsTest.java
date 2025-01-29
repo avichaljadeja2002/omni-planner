@@ -92,7 +92,7 @@ class FinanceEventsTest {
 
     @Test
     void testGetEventsByUserId_EmptyList() {
-        int userId = 2;
+        Integer userId = 2;
         when(userRepository.getIdByToken(token)).thenReturn(userId);
         when(eventService.getEventsByUserId(userId)).thenReturn(Arrays.asList());
         ResponseEntity<List<GenericEvent>> response = eventController.getEventsByUserId(token);
@@ -103,7 +103,7 @@ class FinanceEventsTest {
 
     @Test
     void testGetEventsByUserId_NonExistingUser() {
-        int userId = 999;
+        Integer userId = 999;
         when(userRepository.getIdByToken(token)).thenReturn(userId);
         when(eventService.getEventsByUserId(userId)).thenReturn(List.of());
         ResponseEntity<List<GenericEvent>> response = eventController.getEventsByUserId(token);

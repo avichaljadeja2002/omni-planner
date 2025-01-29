@@ -22,14 +22,14 @@ public class EventController {
     }
     @GetMapping("/get_all_events/{token}")
     public ResponseEntity<List<GenericEvent>> getEventsByUserId(@PathVariable String token) {
-        int userId = userRepository.getIdByToken(token);
+        Integer userId = userRepository.getIdByToken(token);
         List<GenericEvent> events = eventService.getEventsByUserId(userId);
         return ResponseEntity.ok(events);
     }
 
     @GetMapping("/get_events/{event_type}/{token}")
     public ResponseEntity<List<GenericEvent>> getEventsByType(@PathVariable String token, @PathVariable String event_type) {
-        int userId = userRepository.getIdByToken(token);
+        Integer userId = userRepository.getIdByToken(token);
         List<GenericEvent> events = eventService.getEventsByType(event_type, userId);
         return ResponseEntity.ok(events);
     }

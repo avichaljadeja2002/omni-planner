@@ -35,7 +35,7 @@ public class CalendarEventsController {
 
     @GetMapping("/get_calendar_events/{token}")
     public ResponseEntity<CalendarEventResponse> getEventsByToken(@PathVariable String token) {
-        int userId = userRepository.getIdByToken(token);
+        Integer userId = userRepository.getIdByToken(token);
         List<GenericEvent> combinedEvents = new ArrayList<>();
         boolean isGoogleCalendarLinked = false;
 

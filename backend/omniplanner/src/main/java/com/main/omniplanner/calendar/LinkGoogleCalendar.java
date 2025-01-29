@@ -35,7 +35,7 @@ public class LinkGoogleCalendar {
 
     @PostMapping("/link_calendar/{token}")
     public String linkCalendar(@RequestBody CalendarLinkRequest request, @PathVariable String token) {
-        int userId = userRepository.getIdByToken(token);
+        Integer userId = userRepository.getIdByToken(token);
         try {
             System.out.println("Linking Google Calendar for user ID: " + userId);
             User user = userRepository.findById(String.valueOf(userId))

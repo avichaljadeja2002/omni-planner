@@ -211,7 +211,7 @@ public class UserControllerTest {
     public void testModifyUser_Fail() {
         UpdateUserRequest updateUser = new UpdateUserRequest("test_name", "test_phone", "test_age");
 
-        when(userRepository.getIdByToken("test_token")).thenReturn(-1);
+        when(userRepository.getIdByToken("test_token")).thenReturn(null);
 
         ResponseEntity<?> response = userController.modifyUser("test_token", updateUser);
 
