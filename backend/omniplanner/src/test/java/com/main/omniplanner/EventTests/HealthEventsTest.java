@@ -88,7 +88,7 @@ class HealthEventTest {
     @Test
     void testGetEventsByUserId_EmptyList() {
         // Given
-        int userId = 2;
+        Integer userId = 2;
         when(userRepository.getIdByToken(token)).thenReturn(2);
         // When
         when(eventService.getEventsByUserId(userId)).thenReturn(Arrays.asList());

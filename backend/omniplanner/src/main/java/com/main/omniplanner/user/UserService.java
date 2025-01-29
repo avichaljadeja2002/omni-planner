@@ -31,7 +31,7 @@ public class UserService implements UserDetailsService {
                 .build();
     }
 
-    public void modifyUser(UpdateUserRequest userRequest, int userId) {
+    public void modifyUser(UpdateUserRequest userRequest, Integer userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         user.setName(userRequest.getName());
         user.setPhone(userRequest.getPhone());

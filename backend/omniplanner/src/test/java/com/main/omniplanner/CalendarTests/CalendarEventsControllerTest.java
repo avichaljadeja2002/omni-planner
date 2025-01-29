@@ -42,7 +42,7 @@ class CalendarEventsControllerTest {
 
     @Test
     void testGetEventsByUserId_Success() {
-        int userId = 1;
+        Integer userId = 1;
         String token = "1a2b3c4d";
         GenericEvent event1 = new GenericEvent();
         event1.setId(1);
@@ -83,7 +83,7 @@ class CalendarEventsControllerTest {
     @Test
     void testGetEventsByUserId_EmptyList() {
         // Given
-        int userId = 2;
+        Integer userId = 2;
         String token = "1a2b3c4d";
         // When
         when(eventService.getEventsByType("calendar", userId)).thenReturn(Arrays.asList());
@@ -97,7 +97,7 @@ class CalendarEventsControllerTest {
     @Test
     void testGetEventsByUserId_NonExistingUser() {
         // Given
-        int userId = 999; // Assuming this user doesn't exist
+        Integer userId = 999; // Assuming this user doesn't exist
         String token = "1a2b3c4d";
         // When
         when(eventService.getEventsByType("calendar", userId)).thenReturn(Arrays.asList());
@@ -110,7 +110,7 @@ class CalendarEventsControllerTest {
 
   @Test
     void testGetEventsByUserId_ExceptionThrown() {
-        int userId = 1;
+        Integer userId = 1;
         String token = "1a2b3c4d";
         when(userRepository.getIdByToken(token)).thenReturn(userId);
         when(userRepository.findById(String.valueOf(userId))).thenThrow(new RuntimeException("Database error"));

@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface NotesRepository extends JpaRepository<Notes, Integer> {
     @Query("SELECT f FROM Notes f WHERE f.userId = :userId ORDER BY f.event_date DESC, f.event_time DESC")
-    List<Notes> findByUserId(@Param("userId") int userId);
+    List<Notes> findByUserId(@Param("userId") Integer userId);
 }

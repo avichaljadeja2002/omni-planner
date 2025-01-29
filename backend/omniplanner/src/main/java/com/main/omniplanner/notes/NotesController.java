@@ -25,13 +25,13 @@ public class NotesController {
 
     @PutMapping("/add_note/{token}")
     public ResponseEntity<Notes> addNote(@RequestBody Notes note, @PathVariable String token) {
-        int userId = userRepository.getIdByToken(token);
+        Integer userId = userRepository.getIdByToken(token);
         Notes savedNote = notesService.saveOrUpdateNote(note, userId);
         return new ResponseEntity<>(savedNote, HttpStatus.CREATED);
     }
     @GetMapping("/get_note/{token}")
     public ResponseEntity<List<Notes>> getNotesByUserId(@PathVariable String token) {
-        int userId = userRepository.getIdByToken(token);
+        Integer userId = userRepository.getIdByToken(token);
         List<Notes> notes = notesService.getNotesByUserId(userId);
         return ResponseEntity.ok(notes);
     }

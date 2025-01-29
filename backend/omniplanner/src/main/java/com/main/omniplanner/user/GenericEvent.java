@@ -25,7 +25,7 @@ public class GenericEvent {
 
     private String title;
 
-    private int userId;
+    private Integer userId;
 
     private String ingredients;
 
@@ -100,11 +100,11 @@ public class GenericEvent {
         this.event_type = event_type;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

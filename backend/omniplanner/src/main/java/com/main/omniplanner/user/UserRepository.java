@@ -13,5 +13,5 @@ public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findById(int id);
 
     @Query("SELECT id FROM User WHERE token = :token")
-    int getIdByToken(String token);
+    Integer getIdByToken(String token);
 }
