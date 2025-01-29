@@ -90,7 +90,13 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
 
-      - name: Run Tests
-        run: | 
-          cd backend/omniplanner 
-          ./gradlew test
+      - name: Run Tests with Coverage
+        run: |
+          cd backend/omniplanner
+          ./gradlew test jacocoTestReport
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: jacoco-report
+          path: backend/omniplanner/build/reports/jacoco/test/html
