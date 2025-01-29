@@ -54,6 +54,16 @@ public class UserServiceTest {
         assertThrows(UsernameNotFoundException.class, () -> userService.loadUserByUsername("test_username"));
     }
 
+    @Test
+    void testLoadUserByUsername_DisabledUser() {
+        user.setEnabled(false);  // Simulate a disabled user
+        when(userRepository.findByUsername("test_username")).thenReturn(Optional.of(user));
+
+        UserDetails userDetails = userService.loadUserByUsername("test_username");
+
+        assertFalse(userDetails.isEnabled());  // Ensure the user is marked as disabled
+    }
+
     // Test modifyUser method
     @Test
     void testModifyUser_Success() {
