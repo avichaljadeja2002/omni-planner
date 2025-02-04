@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { View, Text, TextInput, ScrollView, TouchableOpacity, Modal } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -77,28 +77,31 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
         }
     };
 
-    const fetchAdditionalData = async () => {
-        if (!fetchEndpoint) return;
-        try {
-            const token = await AsyncStorage.getItem('token');
-            const response = await call(`${fetchEndpoint}/${token}`, 'GET');
-            const formattedData = response.data.map((item: { [x: string]: any; id: any; name: any; }) => ({
-                value: keyValue ? item[keyValue.key] : item.id,
-                label: keyValue ? item[keyValue.value] : item.name,
-            }));
-            setAdditionalData(formattedData);
-            cLog('Fetched and formatted data:', formattedData);
-        } catch (error) {
-            console.error('Error fetching additional data:', error);
-        }
-    };
-
     const handleChange = (name: string, value: any) => {
         setFormData({ ...formData, [name]: value });
     };
 
     useFocusEffect(
         useCallback(() => {
+            const fetchData = async () => {
+                cLog('Fetching additional data...');
+                try {
+                    const token = await AsyncStorage.getItem('token');
+                    const response = await call(`${fetchEndpoint}/${token}`, 'GET');
+    
+                    const formattedData = response.data.map((item: { [x: string]: any; id: any; name: any }) => ({
+                        value: keyValue ? item[keyValue.key] : item.id,
+                        label: keyValue ? item[keyValue.value] : item.name,
+                    }));
+    
+                    setTimeout(() => {
+                        setAdditionalData(formattedData);
+                    }, 100);
+                    cLog('Fetched and formatted data:', formattedData);
+                } catch (error) {
+                    console.error('Error fetching additional data:', error);
+                }
+            };
             const verifyLoginStatus = async () => {
                 const [isLoggedIn, token] = await AsyncStorage.multiGet(['isLoggedIn', 'token']);
                 if (isLoggedIn[1] === 'true' && token[1]) {
@@ -107,9 +110,13 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
             };
 
             verifyLoginStatus();
-            fetchAdditionalData();
+    
+            fetchData();
         }, [])
     );
+    useEffect(() => {
+        cLog('Updated Additional Data:', additionalData);
+    }, [additionalData]);
 
     const renderField = (field: any) => {
         switch (field.type) {
