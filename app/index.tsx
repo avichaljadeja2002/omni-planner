@@ -1,8 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-auth-session/providers/google';
 import { styles } from '@/assets/styles/styles';
 import { call } from '../components/apiCall';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -10,14 +11,14 @@ import { RootStackParamList } from '@/components/Types';
 import { jwtDecode } from "jwt-decode";
 import { cLog } from '@/components/log';
 
+WebBrowser.maybeCompleteAuthSession();
+
 export default function AuthScreen() {
     type NavigationProp = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
     const navigation = useNavigation<NavigationProp>();
 
     const [isLogin, setIsLogin] = useState(true);
     const [credentials, setCredentials] = useState({ username: '', password: '' });
-    const passwordInputRef = useRef<TextInput>(null);
-    const CLIENT_ID = process.env.EXPO_PUBLIC_CLIENT_ID || '';
 
     const handleAuthRequest = async () => {
         const url = isLogin ? '/api/users/login' : '/api/users/register';
@@ -52,16 +53,31 @@ export default function AuthScreen() {
         }
     };
 
-    const handleGoogleLoginSuccess = async (credentialResponse: any) => {
+
+    // Set up Google OAuth
+    const [request, response, promptAsync] = Google.useAuthRequest({
+        clientId: process.env.EXPO_PUBLIC_CLIENT_ID,
+        iosClientId: process.env.EXPO_PUBLIC_IOS_CLIENT_ID,
+        androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
+    });
+
+    useEffect(() => {
+        if (response?.type === 'success') {
+            const { authentication } = response;
+            handleGoogleLoginSuccess(authentication?.idToken);
+        }
+    }, [response]);
+
+    const handleGoogleLoginSuccess = async (idToken: string | undefined) => {
+        if (!idToken) return;
 
         try {
-            const decodedToken = jwtDecode<{ email: string; name: string }>(credentialResponse.credential);
+            const decodedToken = jwtDecode<{ email: string; name: string }>(idToken);
             const { email, name } = decodedToken;
             const response = await call('/api/users/google-login', 'POST', undefined, { email, name });
 
             if (response.status === 200) {
                 const { token } = response.data;
-                cLog("User token", token)
                 await AsyncStorage.multiSet([
                     ['isLoggedIn', 'true'],
                     ['token', token],
@@ -91,51 +107,45 @@ export default function AuthScreen() {
 
 
     return (
-        <GoogleOAuthProvider clientId={CLIENT_ID}>
-            <View style={styles.authPage}>
-                <Text style={styles.headerText}>{isLogin ? 'Login' : 'Sign Up'}</Text>
-                <View style={{ height: "2%" }}></View>
-                <Text
-                    style={[styles.authPageNonheaderText, { textAlign: 'left', alignSelf: 'flex-start' }]}
-                >
-                    Username
+        <View style={styles.authPage}>
+            <Text style={styles.headerText}>{isLogin ? 'Login' : 'Sign Up'}</Text>
+            <View style={{ height: "2%" }}></View>
+            <Text
+                style={[styles.authPageNonheaderText, { textAlign: 'left', alignSelf: 'flex-start' }]}
+            >
+                Username
+            </Text>
+            <TextInput
+                style={styles.authPageInput}
+                placeholder="Enter Username"
+                autoCapitalize="none"
+                onChangeText={(text) => setCredentials({ ...credentials, username: text })}
+            />
+            <Text
+                style={[styles.authPageNonheaderText, { textAlign: 'left', alignSelf: 'flex-start' }]}
+            >
+                Password
+            </Text>
+            <TextInput
+                style={styles.authPageInput}
+                placeholder="Password"
+                secureTextEntry
+                onChangeText={(text) => setCredentials({ ...credentials, password: text })}
+            />
+            <TouchableOpacity style={styles.authButton} onPress={handleAuthRequest}>
+                <Text style={styles.authButtonText}>{isLogin ? 'Login' : 'Sign Up'}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setIsLogin(!isLogin)}>
+                <Text style={styles.switchText}>
+                    {isLogin ? "Don't have an account? Sign Up" : 'Already have an account? Login'}
                 </Text>
-                <TextInput
-                    style={styles.authPageInput}
-                    placeholder="Enter Username"
-                    autoCapitalize="none"
-                    onChangeText={(text) => setCredentials({ ...credentials, username: text })}
-                    returnKeyType="next"
-                    onSubmitEditing={() => passwordInputRef.current && passwordInputRef.current.focus()}
-                />
-                <Text
-                    style={[styles.authPageNonheaderText, { textAlign: 'left', alignSelf: 'flex-start' }]}
-                >
-                    Password
-                </Text>
-                <TextInput
-                    ref={passwordInputRef}
-                    style={styles.authPageInput}
-                    placeholder="Password"
-                    secureTextEntry
-                    onChangeText={(text) => setCredentials({ ...credentials, password: text })}
-                    returnKeyType="done"
-                    onSubmitEditing={handleAuthRequest}
-                />
-                <TouchableOpacity style={styles.authButton} onPress={handleAuthRequest}>
-                    <Text style={styles.authButtonText}>{isLogin ? 'Login' : 'Sign Up'}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => setIsLogin(!isLogin)}>
-                    <Text style={styles.switchText}>
-                        {isLogin ? "Don't have an account? Sign Up" : 'Already have an account? Login'}
-                    </Text>
-                </TouchableOpacity>
+            </TouchableOpacity>
 
-                <GoogleLogin
-                    onSuccess={handleGoogleLoginSuccess}
-                    onError={() => Alert.alert('Error', 'Google login failed')}
-                />
-            </View>
-        </GoogleOAuthProvider>
+            <TouchableOpacity style={styles.authButton} onPress={() => promptAsync()}>
+                <Text style={styles.authButtonText}>Sign in with Google</Text>
+            </TouchableOpacity>
+
+
+        </View>
     );
 }
