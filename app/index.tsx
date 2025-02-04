@@ -60,6 +60,7 @@ export default function AuthScreen() {
         iosClientId: process.env.EXPO_PUBLIC_IOS_CLIENT_ID,
         androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
     });
+    // cLog("Request:", request);
 
     useEffect(() => {
         if (response?.type === 'success') {
@@ -113,7 +114,7 @@ export default function AuthScreen() {
             <Text
                 style={[styles.authPageNonheaderText, { textAlign: 'left', alignSelf: 'flex-start' }]}
             >
-                Username
+                Email
             </Text>
             <TextInput
                 style={styles.authPageInput}
