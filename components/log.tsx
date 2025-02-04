@@ -1,11 +1,12 @@
 const logging = true;
+const loggingLevel = 2;
 
 interface LogFunction {
-    (...messages: any[]): void;
+    (logLevel?: number, ...messages: any[]): void;
 }
 
-export const cLog: LogFunction = (...messages) => {
-    if (logging) {
+export const cLog: LogFunction = (logLevel = 0, ...messages) => {
+    if (logging && logLevel <= loggingLevel) {
         console.log(...messages);
     }
 };

@@ -47,11 +47,11 @@ const GenericMainPageForm: React.FC<FormProps> = ({
 
     const handleViewPress = (item: Task) => {
         const route = { ...item, thisPage };
-        cLog({ "Pre-Route": route });
+        cLog(1, { "Pre-Route": route });
         if (route.thisPage === 'mainPage') {
             route.thisPage = getPageFromEventType(route.event.event_type) as keyof RootStackParamList;
         }
-        cLog({ "Route": route });
+        cLog(1, { "Route": route });
         navigation.navigate(getPageName(route.thisPage) as any, { event: route });
     }
 
@@ -77,7 +77,7 @@ const GenericMainPageForm: React.FC<FormProps> = ({
     const fetchEvents = async () => {
         try {
             const token = await AsyncStorage.getItem('token');
-            cLog(token)
+            cLog(1, token)
             const response = await call(`${hitAddress}${token}`, 'GET');
 
             if (response.status === 200 && response.data) {
@@ -86,7 +86,7 @@ const GenericMainPageForm: React.FC<FormProps> = ({
                     setIsGoogleCalendarLinked(googleCalendarLinked);
                 }
                 const eventsArray = Array.isArray(events) ? events : response.data;
-                cLog({ 'eventsArray': eventsArray });
+                cLog(1, { 'eventsArray': eventsArray });
                 const formattedEvents = eventsArray.map((event: any) => ({
                     id: eventIdFunc(event),
                     title: eventTitleFunc(event),
@@ -109,7 +109,7 @@ const GenericMainPageForm: React.FC<FormProps> = ({
             const verifyLoginStatus = async () => {
                 const [isLoggedIn, token] = await AsyncStorage.multiGet(['isLoggedIn', 'token']);
                 if (isLoggedIn[1] === 'true' && token[1]) {
-                    cLog(`User is logged in with Token: ${token[1]}`);
+                    cLog(1, `User is logged in with Token: ${token[1]}`);
                 }
             };
 

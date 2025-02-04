@@ -4,7 +4,7 @@ import { cLog } from './log';
 
 export const call = async (endpoint: string, method: string, headers?: string, data?: any): Promise<AxiosResponse<any>> => {
     const fullUrl = `${IPAddr}${endpoint}`;
-    cLog('API Call URL:', fullUrl);
+    cLog(1, 'API Call URL:', fullUrl);
 
     try {
         const response = await axios({
@@ -21,7 +21,7 @@ export const call = async (endpoint: string, method: string, headers?: string, d
 };
 
 export const full_call = async (endpoint: string, method: string, headers?: string, data?: any): Promise<AxiosResponse<any>> => {
-    cLog('API Call URL:', endpoint);
+    cLog(1, 'API Call URL:', endpoint);
 
     try {
         const response = await axios({

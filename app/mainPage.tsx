@@ -13,9 +13,9 @@ export default function TaskScreen() {
       const verifyLoginStatus = async () => {
         const [isLoggedIn, storedToken] = await AsyncStorage.multiGet(['isLoggedIn', 'token']);
         if (isLoggedIn[1] === 'true' && storedToken[1]) {
-          cLog(`User is logged in with Token: ${storedToken[1]}`);
+          cLog(1, `User is logged in with Token: ${storedToken[1]}`);
         } else {
-          cLog('User is not logged in');
+          cLog(1, 'User is not logged in');
         }
       };
       const initializeHeader = async () => {
