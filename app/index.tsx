@@ -26,7 +26,7 @@ export default function AuthScreen() {
 
         try {
             const response = await call(url, 'POST', undefined, { username, password });
-            cLog("Response:", response);
+            cLog(1, "Response:", response);
             if (response.status == 401) {
                 throw new Error(response.data.message);
             }
@@ -60,7 +60,7 @@ export default function AuthScreen() {
         iosClientId: process.env.EXPO_PUBLIC_IOS_CLIENT_ID,
         androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
     });
-    // cLog("Request:", request);
+    cLog(3, "Request:", request);
 
     useEffect(() => {
         if (response?.type === 'success') {
@@ -95,9 +95,9 @@ export default function AuthScreen() {
 
     const verifyLoginStatus = async () => {
         const [isLoggedIn, token] = await AsyncStorage.multiGet(['isLoggedIn', 'token']);
-        cLog(token)
+        cLog(1, token)
         if (isLoggedIn[1] === 'true' && token[1]) {
-            cLog(`User is logged in with Token: ${token[1]}`);
+            cLog(1, `User is logged in with Token: ${token[1]}`);
             navigation.navigate('mainPage');
         }
     };

@@ -21,7 +21,7 @@ export default function Notes() {
                 event_time: currentTime,
             };
             const response = await call(`/add_note/${token}`, 'PUT', undefined, updatedFormData);
-            cLog('Note saved successfully: ' + response.data);
+            cLog(1, 'Note saved successfully: ' + response.data);
         } catch (error) {
             console.error('Error saving note:', error);
         }
@@ -35,7 +35,7 @@ export default function Notes() {
         try {
             const token = await AsyncStorage.getItem('token');
             const hit = '/get_note/' + token;
-            cLog('Fetching note from: ' + hit);
+            cLog(1, 'Fetching note from: ' + hit);
 
             const response = await call(hit, 'GET');
             const events = response.data.map((event: { text: any; }) => ({

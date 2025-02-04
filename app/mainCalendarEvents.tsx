@@ -20,15 +20,15 @@ export default function CalendarTracker() {
 
   const handlePress = async () => {
     try {
-      cLog("Initiating OAuth login...");
+      cLog(1, "Initiating OAuth login...");
       const authUrl = `${AUTH_URI}?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=https://www.googleapis.com/auth/calendar&access_type=offline&prompt=consent`;
       const result = await WebBrowser.openAuthSessionAsync(authUrl, REDIRECT_URI);
-      cLog("WebBrowser result:" + result);
+      cLog(1, "WebBrowser result:" + result);
       if (result.type === 'success' && result.url) {
         const authCodeMatch = result.url.match(/code=([^&]*)/);
         const authCode = authCodeMatch ? authCodeMatch[1] : null;
         if (authCode) {
-          cLog("Received authorization code:" + authCode);
+          cLog(1, "Received authorization code:" + authCode);
           getAccessToken(authCode);
         } else {
           console.error("Authorization code not found in the redirect URL");
@@ -44,7 +44,7 @@ export default function CalendarTracker() {
   };
 
   const getAccessToken = async (authCode: string) => {
-    cLog("Exchanging authorization code for access token...");
+    cLog(1, "Exchanging authorization code for access token...");
     try {
       const params = new URLSearchParams();
       params.append('code', authCode);
@@ -54,7 +54,7 @@ export default function CalendarTracker() {
       params.append('grant_type', 'authorization_code');
       const response = await full_call(TOKEN_URI, 'POST', 'application/x-www-form-urlencoded', params);
       if (response.data.access_token) {
-        cLog("Received access token:" + response.data.access_token);
+        cLog(1, "Received access token:" + response.data.access_token);
         linkGoogleCalendar(response.data.access_token);
       } else {
         console.error("Failed to retrieve access token");
@@ -67,12 +67,12 @@ export default function CalendarTracker() {
   };
 
   const linkGoogleCalendar = async (accessToken: any) => {
-    cLog("Linking Google Calendar for user and fetching events...");
+    cLog(1, "Linking Google Calendar for user and fetching events...");
     try {
       const token = await AsyncStorage.getItem('token');
       const response = await call(`/link_calendar/${token}`, 'POST', undefined, { accessToken: accessToken });
       if (response.status === 200 && response.data.includes("successfully")) {
-        cLog('Google Calendar linked successfully:' + response.data);
+        cLog(1, 'Google Calendar linked successfully:' + response.data);
         Alert.alert('Google Calendar linked successfully!');
         setIsGoogleCalendarLinked(true);
       } else {

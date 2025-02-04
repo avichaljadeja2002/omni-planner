@@ -24,7 +24,7 @@ export default function AccountSetting() {
             if (response.status == 401) {
                 throw new Error(response.data.message);
             }
-            cLog('Data saved successfully:', formData);
+            cLog(1, 'Data saved successfully:', formData);
         } catch (error) {
             console.error('Error saving data:', error);
         }

@@ -19,18 +19,18 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
     const [showCancelModal, setShowCancelModal] = useState(false);
 
     const route = useRoute<RouteProp<RootStackParamList, any>>();
-    cLog({ "Recieved Route": route });
+    cLog(1,{ "Recieved Route": route });
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     let event = initialData.event ? initialData.event : initialData;
-    cLog({ "Initial Data": initialData });
+    cLog(1, { "Initial Data": initialData });
     if (route.params) event = route.params?.event.event;
-    cLog({ "Event": event });
+    cLog(1, { "Event": event });
     const [formData, setFormData] = useState({
         ...event,
         event_date: event.event_date ? new Date(event.event_date) : new Date(),
         event_time: event.event_time ? new Date(`1970-01-01T${event.event_time}`) : new Date(),
     });
-    cLog({ "Form Data": formData });
+    cLog(1, { "Form Data": formData });
 
     const handleSave = async () => {
         const formattedData = {
@@ -41,12 +41,12 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
             repeat_timeline: formData.repeat_timeline,
             ingredients: formData.ingredients?.join(',')
         };
-        cLog(formattedData);
+        cLog(1, formattedData);
         try {
             const token = await AsyncStorage.getItem('token');
-            cLog('Saving event to:' + updateEndpoint);
+            cLog(1, 'Saving event to:' + updateEndpoint);
             const response = await call(`${updateEndpoint}/${token}`, method, undefined, formattedData)
-            cLog('Event updated successfully:' + response.data);
+            cLog(1, 'Event updated successfully:' + response.data);
         } catch (error) {
             console.error('Error saving event:', error);
         }
@@ -84,7 +84,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
     useFocusEffect(
         useCallback(() => {
             const fetchData = async () => {
-                cLog('Fetching additional data...');
+                cLog(1, 'Fetching additional data...');
                 try {
                     const token = await AsyncStorage.getItem('token');
                     const response = await call(`${fetchEndpoint}/${token}`, 'GET');
@@ -97,7 +97,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
                     setTimeout(() => {
                         setAdditionalData(formattedData);
                     }, 100);
-                    cLog('Fetched and formatted data:', formattedData);
+                    cLog(1, 'Fetched and formatted data:', formattedData);
                 } catch (error) {
                     console.error('Error fetching additional data:', error);
                 }
@@ -105,7 +105,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
             const verifyLoginStatus = async () => {
                 const [isLoggedIn, token] = await AsyncStorage.multiGet(['isLoggedIn', 'token']);
                 if (isLoggedIn[1] === 'true' && token[1]) {
-                    cLog(`User is logged in with Token: ${token[1]}`);
+                    cLog(1, `User is logged in with Token: ${token[1]}`);
                 }
             };
 
@@ -115,7 +115,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
         }, [])
     );
     useEffect(() => {
-        cLog('Updated Additional Data:', additionalData);
+        cLog(1, 'Updated Additional Data:', additionalData);
     }, [additionalData]);
 
     const renderField = (field: any) => {
