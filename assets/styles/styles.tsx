@@ -483,5 +483,22 @@ export const styles = StyleSheet.create({
     color: '#007BFF',
     textDecorationLine: 'underline',
   },
+  googleButton: {
+    marginTop: 20,
+    backgroundColor: '#4285F4', // Google's blue color
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  googleButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
 
 });

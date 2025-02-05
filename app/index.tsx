@@ -11,6 +11,7 @@ import { RootStackParamList } from '@/components/Types';
 import { jwtDecode } from "jwt-decode";
 import { cLog } from '@/components/log';
 
+
 WebBrowser.maybeCompleteAuthSession();
 
 export default function AuthScreen() {
@@ -19,6 +20,31 @@ export default function AuthScreen() {
 
     const [isLogin, setIsLogin] = useState(true);
     const [credentials, setCredentials] = useState({ username: '', password: '' });
+
+
+    const [request, response, promptAsync] = Google.useAuthRequest({
+        clientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
+        //iosClientId: process.env.EXPO_PUBLIC_IOS_CLIENT_ID,
+        webClientId: process.env.EXPO_PUBLIC_CLIENT_ID,
+        redirectUri: 'http://localhost:8081',
+    });
+    
+
+    useEffect(() => {
+        console.log("Google Auth Response:", response); 
+    
+        if (response?.type === 'success' && response.authentication) {
+            const idToken  = response.authentication.accessToken;
+            console.log(idToken)
+                if (idToken) {
+                handleGoogleLoginSuccess(idToken);
+            }
+        } else if (response?.type === 'error') {
+            console.error("Google login failed:", response);
+            Alert.alert("Google Login Failed", "Please try again.");
+        }
+    }, [response]);
+    
 
     const handleAuthRequest = async () => {
         const url = isLogin ? '/api/users/login' : '/api/users/register';
@@ -29,15 +55,17 @@ export default function AuthScreen() {
             cLog(1, "Credentials:", credentials);
             const response = await call(url, 'POST', undefined, { username, password });
             cLog(1, "Response:", response);
+
             if (isLogin) {
                 const { token, name, age, phone, email } = response.data;
+
                 await AsyncStorage.multiSet([
                     ['isLoggedIn', 'true'],
-                    ['token', token],
                     ['name', name],
                     ['age', age],
                     ['phone', phone],
                     ['email', email],
+                    ['token', token]
                 ]);
 
                 Alert.alert('Success', 'Logged in successfully!');
@@ -52,37 +80,28 @@ export default function AuthScreen() {
         }
     };
 
-
-    // Set up Google OAuth
-    const [request, response, promptAsync] = Google.useAuthRequest({
-        clientId: process.env.EXPO_PUBLIC_CLIENT_ID,
-        iosClientId: process.env.EXPO_PUBLIC_IOS_CLIENT_ID,
-        androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
-    });
-    cLog(3, "Request:", request);
-
-    useEffect(() => {
-        if (response?.type === 'success') {
-            const { authentication } = response;
-            handleGoogleLoginSuccess(authentication?.idToken);
-        }
-    }, [response]);
-
-    const handleGoogleLoginSuccess = async (idToken: string | undefined) => {
-        if (!idToken) return;
-
+    const handleGoogleLoginSuccess = async (accessToken: string) => {
         try {
-            const decodedToken = jwtDecode<{ email: string; name: string }>(idToken);
-            const { email, name } = decodedToken;
+            console.log("Access Token = ", accessToken);
+    
+            // Fetch user info from Google API
+            const userInfoResponse = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+                headers: { Authorization: `Bearer ${accessToken}` },
+            });
+    
+            const userInfo = await userInfoResponse.json();
+            console.log("Google User Info:", userInfo);
+    
+            const { email, name } = userInfo;
+    
             const response = await call('/api/users/google-login', 'POST', undefined, { email, name });
-
+    
             if (response.status === 200) {
                 const { token } = response.data;
-                await AsyncStorage.multiSet([
-                    ['isLoggedIn', 'true'],
-                    ['token', token],
-                ]);
-
+    
+                await AsyncStorage.setItem('token', token);
+                await AsyncStorage.setItem('isLoggedIn', 'true');
+    
                 Alert.alert('Success', 'Logged in with Google successfully!');
                 navigation.navigate('mainPage');
             }
@@ -92,27 +111,47 @@ export default function AuthScreen() {
         }
     };
 
+    const handleGoogleLogin = async () => {
+        if (!request) {
+            Alert.alert("Google Sign-In", "Google login is not ready yet. Please try again.");
+            return;
+        }
+    
+        const result = await promptAsync();
+        console.log("Google Login Result:", result); // Debugging
+    
+        if (result?.type === 'success' && result.authentication) {
+            const { idToken } = result.authentication;
+            console.log("ID Token from Google:", idToken);
+    
+            if (idToken) {
+                handleGoogleLoginSuccess(idToken);
+            }
+        } else {
+            Alert.alert("Google Login Failed", "Authentication was not completed.");
+        }
+    };
+    
     const verifyLoginStatus = async () => {
-        const [isLoggedIn, token] = await AsyncStorage.multiGet(['isLoggedIn', 'token']);
-        cLog(1, token)
-        if (isLoggedIn[1] === 'true' && token[1]) {
-            cLog(1, `User is logged in with Token: ${token[1]}`);
+        const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
+        const token = await AsyncStorage.getItem('token');
+    
+        cLog(1, token);
+        if (isLoggedIn === 'true' && token) {
+            cLog(1, `User is logged in with Token: ${token}`);
             navigation.navigate('mainPage');
         }
     };
-
+    
     useEffect(() => {
-        verifyLoginStatus()
+        verifyLoginStatus();
     }, []);
-
 
     return (
         <View style={styles.authPage}>
             <Text style={styles.headerText}>{isLogin ? 'Login' : 'Sign Up'}</Text>
             <View style={{ height: "2%" }}></View>
-            <Text
-                style={[styles.authPageNonheaderText, { textAlign: 'left', alignSelf: 'flex-start' }]}
-            >
+            <Text style={[styles.authPageNonheaderText, { textAlign: 'left', alignSelf: 'flex-start' }]}>
                 Email
             </Text>
             <TextInput
@@ -121,9 +160,7 @@ export default function AuthScreen() {
                 autoCapitalize="none"
                 onChangeText={(text) => setCredentials({ ...credentials, username: text })}
             />
-            <Text
-                style={[styles.authPageNonheaderText, { textAlign: 'left', alignSelf: 'flex-start' }]}
-            >
+            <Text style={[styles.authPageNonheaderText, { textAlign: 'left', alignSelf: 'flex-start' }]}>
                 Password
             </Text>
             <TextInput
@@ -140,12 +177,9 @@ export default function AuthScreen() {
                     {isLogin ? "Don't have an account? Sign Up" : 'Already have an account? Login'}
                 </Text>
             </TouchableOpacity>
-
-            <TouchableOpacity style={styles.authButton} onPress={() => promptAsync()}>
-                <Text style={styles.authButtonText}>Sign in with Google</Text>
+            <TouchableOpacity style={styles.googleButton} onPress={handleGoogleLogin}>
+                <Text style={styles.googleButtonText}>Sign in with Google</Text>
             </TouchableOpacity>
-
-
         </View>
     );
 }
