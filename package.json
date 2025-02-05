@@ -7,7 +7,7 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "test": "cd ./backend/omniplanner && gradlew.bat",
+    "test": "(npx tsc || echo 'TypeScript failed') && (npx eslint . || echo 'ESLint failed') && cd backend/omniplanner && gradlew.bat",
     "lint": "expo lint",
     "build-ios": "npx eas build -p ios --profile preview",
     "build-android": "npx eas build -p android --profile preview"

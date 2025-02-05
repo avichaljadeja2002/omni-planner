@@ -25,11 +25,10 @@ export default function AuthScreen() {
         const { username, password } = credentials;
 
         try {
+            cLog(1, "Sending request to:", url);
+            cLog(1, "Credentials:", credentials);
             const response = await call(url, 'POST', undefined, { username, password });
             cLog(1, "Response:", response);
-            if (response.status == 401) {
-                throw new Error(response.data.message);
-            }
             if (isLogin) {
                 const { token, name, age, phone, email } = response.data;
                 await AsyncStorage.multiSet([
@@ -48,7 +47,7 @@ export default function AuthScreen() {
                 setIsLogin(true);
             }
         } catch (error) {
-            const errorMessage = (error as any)?.response?.data?.message || 'Something went wrong';
+            const errorMessage = (error as any)?.response?.data || 'Something went wrong';
             Alert.alert('Error', errorMessage);
         }
     };
@@ -118,7 +117,7 @@ export default function AuthScreen() {
             </Text>
             <TextInput
                 style={styles.authPageInput}
-                placeholder="Enter Username"
+                placeholder="Enter Email"
                 autoCapitalize="none"
                 onChangeText={(text) => setCredentials({ ...credentials, username: text })}
             />
