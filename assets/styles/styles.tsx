@@ -474,6 +474,7 @@ export const styles = StyleSheet.create({
   toggleContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: 20,
     backgroundColor: '#f0f0f0', 
     borderRadius: 8,

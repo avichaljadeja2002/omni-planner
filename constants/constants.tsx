@@ -1,7 +1,7 @@
 import { Field } from "@/components/Types";
 
 // export const IPAddr = "http://34.204.83.156:8080" // For AWS
-export const IPAddr = "http://127.0.0.1:8080" // For local testing on laptop
+export const IPAddr = "http://137.112.196.212:8080" // For local testing on laptop
 
 export const repeatingData = [
   { label: 'Daily', value: 1 },
@@ -9,6 +9,15 @@ export const repeatingData = [
   { label: 'Monthly', value: 3 },
   { label: 'Yearly', value: 4 },
 ];
+
+export const roundTimeQuarterHour = (): Date => {
+  const timeToReturn = new Date();
+
+  timeToReturn.setMilliseconds(Math.round(timeToReturn.getMilliseconds() / 1000) * 1000);
+  timeToReturn.setSeconds(Math.round(timeToReturn.getSeconds() / 60) * 60);
+  timeToReturn.setMinutes(Math.round(timeToReturn.getMinutes() / 15) * 15);
+  return timeToReturn;
+}
 
 export const getEventIcon = (eventType: string) => {
   switch (eventType.toLowerCase()) {

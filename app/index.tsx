@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as WebBrowser from 'expo-web-browser';
@@ -9,6 +9,7 @@ import { call } from '../components/apiCall';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/components/Types';
 import { cLog } from '@/components/log';
+import Alert from './alert';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -19,6 +20,18 @@ export default function AuthScreen() {
     const [isLogin, setIsLogin] = useState(true);
     const [credentials, setCredentials] = useState({ username: '', password: '' });
 
+    const [alertModal, setAlertModal] = useState({
+        visible: false,
+        header: '',
+        message: '',
+        closeText: 'Close',
+        saveText: '',
+        onSave: () => { },
+    });
+
+    const showAlert = (header: string, message: string, closeText: string, saveText: string, onSave: () => void = () => { }) => {
+        setAlertModal({ visible: true, header, message, closeText, saveText, onSave });
+    };
 
     const [request, response, promptAsync] = Google.useAuthRequest({
         clientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
@@ -39,7 +52,7 @@ export default function AuthScreen() {
             }
         } else if (response?.type === 'error') {
             console.error("Google login failed:", response);
-            Alert.alert("Google Login Failed", "Please try again.");
+            showAlert("Google Login Failed", "Please try again.", "Cancel", "");
         }
     }, [response]);
 
@@ -66,15 +79,15 @@ export default function AuthScreen() {
                     ['token', token]
                 ]);
 
-                Alert.alert('Success', 'Logged in successfully!');
+                showAlert('Success', 'Logged in successfully!', 'Close', "");
                 navigation.navigate('mainPage');
             } else {
-                Alert.alert('Success', 'Account created successfully! Please log in.');
+                showAlert('Success', 'Account created successfully! Please log in.', 'Close', "");
                 setIsLogin(true);
             }
         } catch (error) {
             const errorMessage = (error as any)?.response?.data || 'Something went wrong';
-            Alert.alert('Error', errorMessage);
+            showAlert('Error', errorMessage, 'Close', "");
         }
     };
 
@@ -100,18 +113,18 @@ export default function AuthScreen() {
                 await AsyncStorage.setItem('token', token);
                 await AsyncStorage.setItem('isLoggedIn', 'true');
 
-                Alert.alert('Success', 'Logged in with Google successfully!');
+                showAlert('Success', 'Logged in with Google successfully!', 'Close', "");
                 navigation.navigate('mainPage');
             }
         } catch (error) {
             console.error("Error during Google login:", error);
-            Alert.alert('Error', 'Failed to log in with Google');
+            showAlert('Error', 'Failed to log in with Google', 'Close', "");
         }
     };
 
     const handleGoogleLogin = async () => {
         if (!request) {
-            Alert.alert("Google Sign-In", "Google login is not ready yet. Please try again.");
+            showAlert("Google Sign-In", "Google login is not ready yet. Please try again.", "Close", "");
             return;
         }
 
@@ -126,7 +139,7 @@ export default function AuthScreen() {
                 handleGoogleLoginSuccess(idToken);
             }
         } else {
-            Alert.alert("Google Login Failed", "Authentication was not completed.");
+            showAlert("Google Login Failed", "Authentication was not completed.", "Close", "");
         }
     };
 
@@ -192,6 +205,15 @@ export default function AuthScreen() {
             <TouchableOpacity style={styles.googleButton} onPress={handleGoogleLogin}>
                 <Text style={styles.googleButtonText}>{isLogin ? 'Login with google' : 'Sign Up with google'}</Text>
             </TouchableOpacity>
+            <Alert
+                isVisible={alertModal.visible}
+                toggleModal={() => setAlertModal({ ...alertModal, visible: false })}
+                header={alertModal.header}
+                description={alertModal.message}
+                onSave={() => alertModal.onSave()}
+                saveButtonText={alertModal.saveText}
+                closeButtonText={alertModal.closeText}
+            />
         </View>
     );
 }
