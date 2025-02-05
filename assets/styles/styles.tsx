@@ -103,6 +103,14 @@ export const styles = StyleSheet.create({
     color: "#333",
     alignSelf: "center",
   },
+  addViewSectionHeader: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#333",
+    alignSelf: "center",
+    marginBottom: 20,
+    marginTop: 10,
+  },
   bullet: {
     fontSize: 36,
     color: "#9b59b6",
