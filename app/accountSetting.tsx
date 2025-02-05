@@ -14,34 +14,52 @@ export default function AccountSetting() {
     type Prop = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
     const navigation = useNavigation<Prop>();
 
+    const [alertModal, setAlertModal] = useState({
+        visible: false,
+        header: '',
+        message: '',
+    });
+
+    const showAlert = (header: string, message: string) => {
+        setAlertModal({ visible: true, header, message });
+    };
+
     const handleSave = async () => {
-        const token = await AsyncStorage.getItem('token'); // Retrieve token from AsyncStorage
+        const token = await AsyncStorage.getItem('token');
+
         try {
-            
+            if (!formData.name.trim()) {
+                showAlert('Invalid!', 'Name cannot be empty.');
+                return;
+            }
+
             if (formData.age) {
                 const age = Number(formData.age);
                 if (isNaN(age) || age < 1 || age > 150) {
                     cLog(1, 'Invalid Age:', formData.age);
-                    Alert.alert('Invalid Age', 'Please enter a valid age (1-150).');
+                    showAlert('Invalid Age', 'Please enter a valid age (1-150).');
                     return;
                 }
             }
-    
+
             const phoneRegex = /^[0-9]{7,15}$/;
             if (formData.phone && !phoneRegex.test(formData.phone)) {
                 cLog(1, 'Invalid Phone:', formData.phone);
-                Alert.alert('Invalid Phone', 'Please enter a valid phone number (7-15 digits).');
+                showAlert('Invalid Phone', 'Please enter a valid phone number (7-15 digits).');
                 return;
             }
+
             await AsyncStorage.setItem('age', formData.age);
             await AsyncStorage.setItem('phone', formData.phone);
             await AsyncStorage.setItem('name', formData.name);
-            const response = await call(`/api/users/modify_user/${token}`, 'PUT', undefined, formData); // Send request with updated data
-            if (response.status == 401) {
+
+            const response = await call(`/api/users/modify_user/${token}`, 'PUT', undefined, formData);
+
+            if (response.status === 401) {
                 throw new Error(response.data.message);
             } else {
                 Keyboard.dismiss();
-                Alert.alert('Success', 'Data saved successfully!');
+                showAlert('Success', 'Data saved successfully!');
                 cLog(1, 'Account Information saved successfully:', formData);
             }
         } catch (error) {
@@ -49,12 +67,10 @@ export default function AccountSetting() {
         }
     };
 
-
     const handleChange = (name: string, value: string) => {
         setFormData({ ...formData, [name]: value });
     };
 
-    // Fetch local data from AsyncStorage
     const getLocalValues = async () => {
         try {
             const name = await AsyncStorage.getItem('name');
@@ -159,6 +175,26 @@ export default function AccountSetting() {
                     </View>
                 </View>
             </Modal>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={alertModal.visible}
+                onRequestClose={() => setAlertModal({ ...alertModal, visible: false })}
+            >
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.modalHeader}>{alertModal.header}</Text>
+                        <Text style={styles.modalMessage}>{alertModal.message}</Text>
+                        <TouchableOpacity
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={() => setAlertModal({ ...alertModal, visible: false })}
+                        >
+                            <Text style={styles.textStyle}>Close</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+
         </View>
     );
 };
@@ -224,7 +260,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         backgroundColor: '#fff',
     },
-    accountSetting:{
+    accountSetting: {
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -241,7 +277,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#333',
         textAlign: 'left',
-        
+
     },
     textInput: {
         height: 45,
@@ -280,4 +316,22 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '600',
     },
+    modalHeader: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        textAlign: 'center',
+    },
+    modalMessage: {
+        fontSize: 14,
+        textAlign: 'center',
+        marginBottom: 20,
+    },
+    buttonClose: {
+        backgroundColor: "#2196F3",
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 10,
+    },
+
 });

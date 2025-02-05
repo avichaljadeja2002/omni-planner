@@ -39,7 +39,8 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
             event_time: formData.event_time?.toTimeString().split(' ')[0],
             repeating: Boolean(formData.repeat_timeline && formData.repeat_timeline),
             repeat_timeline: formData.repeat_timeline,
-            ingredients: formData.ingredients?.join(',')
+            ingredients: formData.ingredients?.join(','),
+            money: formData.money
         };
         cLog(1, formattedData);
         try {
