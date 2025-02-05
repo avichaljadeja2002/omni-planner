@@ -36,9 +36,6 @@ const CustomTopBar = ({ navigation }: StackHeaderProps) => {
       <TouchableOpacity onPress={() => navigation.navigate('mainMealTracker')}>
         <Ionicons name="fast-food-outline" size={28} color="black" />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('accountSetting')}>
-        <Ionicons name="person-circle-outline" size={28} color="black" />
-      </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('mainFinanceTracker')}>
         <Ionicons name="wallet-outline" size={28} color="black" />
       </TouchableOpacity>
@@ -47,6 +44,9 @@ const CustomTopBar = ({ navigation }: StackHeaderProps) => {
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('notes')}>
         <Ionicons name="pencil-outline" size={28} color="black" />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('accountSetting')}>
+        <Ionicons name="person-circle-outline" size={28} color="black" />
       </TouchableOpacity>
     </View>
   );
