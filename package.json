@@ -4,9 +4,10 @@
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
-    "test": "(npx tsc || echo 'TypeScript failed') && (npx eslint . || echo 'ESLint failed') && cd backend/omniplanner && gradlew.bat",
+    "test": "(npx tsc || echo 'TypeScript failed') && (npx eslint . || echo 'ESLint failed') && cd backend/omniplanner && gradle",
     "build-ios": "npx eas build -p ios --profile preview",
-    "build-android": "npx eas build -p android --profile preview"
+    "build-android": "npx eas build -p android --profile preview",
+    "backend": "cd backend/omniplanner && gradle bootRun"
   },
   "jest": {
     "preset": "jest-expo"
