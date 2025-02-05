@@ -1,10 +1,11 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { cLog } from '../components/log';
 import { styles } from '@/assets/styles/styles';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { call } from '../components/apiCall';
+import { Keyboard } from 'react-native'
 
 export default function Notes() {
     const initialData = { text: "" };
@@ -55,22 +56,24 @@ export default function Notes() {
     );
 
     return (
-        <View style={styles.noteContainer}>
-            <View style={styles.noteHeader}>
-                <Text style={styles.noteTitle}>Notes</Text>
-                <TextInput
-                    value={formData.text}
-                    onChangeText={(text) => handleChange("text", text)}
-                    style={styles.textInput}
-                    placeholder="Write your notes here..."
-                    multiline={true}
-                />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.noteContainer}>
+                <View style={styles.noteHeader}>
+                    <Text style={styles.noteTitle}>Notes</Text>
+                    <TextInput
+                        value={formData.text}
+                        onChangeText={(text) => handleChange("text", text)}
+                        style={styles.textInput}
+                        placeholder="Write your notes here..."
+                        multiline={true}
+                    />
+                </View>
+                <View style={styles.footer}>
+                    <TouchableOpacity style={styles.noteSaveButton} onPress={handleSave}>
+                        <Text style={styles.saveText}>Save</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-            <View style={styles.footer}>
-                <TouchableOpacity style={styles.noteSaveButton} onPress={handleSave}>
-                    <Text style={styles.saveText}>Save</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
+        </TouchableWithoutFeedback>
     );
 };
