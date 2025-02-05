@@ -64,7 +64,7 @@ public class UserController {
 
         User user = userOptional.get();
 
-        if(user.isGoogleLogin())return ResponseEntity.status(401).body("Try Logging In a Different Way");
+        if(user.isGoogleLogin())return ResponseEntity.status(401).body("Try Logging In With Google");
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())

@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal, Alert, Keyboard } from 'react-native';
 import { cLog } from '../components/log';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -17,14 +17,33 @@ export default function AccountSetting() {
     const handleSave = async () => {
         const token = await AsyncStorage.getItem('token'); // Retrieve token from AsyncStorage
         try {
-            await AsyncStorage.setItem('name', formData.name);
-            await AsyncStorage.setItem('phone', formData.phone);
+            
+            if (formData.age) {
+                const age = Number(formData.age);
+                if (isNaN(age) || age < 1 || age > 150) {
+                    cLog(1, 'Invalid Age:', formData.age);
+                    Alert.alert('Invalid Age', 'Please enter a valid age (1-150).');
+                    return;
+                }
+            }
+    
+            const phoneRegex = /^[0-9]{7,15}$/;
+            if (formData.phone && !phoneRegex.test(formData.phone)) {
+                cLog(1, 'Invalid Phone:', formData.phone);
+                Alert.alert('Invalid Phone', 'Please enter a valid phone number (7-15 digits).');
+                return;
+            }
             await AsyncStorage.setItem('age', formData.age);
+            await AsyncStorage.setItem('phone', formData.phone);
+            await AsyncStorage.setItem('name', formData.name);
             const response = await call(`/api/users/modify_user/${token}`, 'PUT', undefined, formData); // Send request with updated data
             if (response.status == 401) {
                 throw new Error(response.data.message);
+            } else {
+                Keyboard.dismiss();
+                Alert.alert('Success', 'Data saved successfully!');
+                cLog(1, 'Account Information saved successfully:', formData);
             }
-            cLog(1, 'Data saved successfully:', formData);
         } catch (error) {
             console.error('Error saving data:', error);
         }
@@ -75,29 +94,35 @@ export default function AccountSetting() {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.label}>Name</Text>
-                <TextInput
-                    value={formData.name}
-                    onChangeText={(text) => handleChange("name", text)}
-                    style={styles.textInput}
-                    placeholder="Enter your name"
-                />
-                <Text style={styles.label}>Phone Number</Text>
-                <TextInput
-                    value={formData.phone || ''}
-                    onChangeText={(text) => handleChange("phone", text)}
-                    style={styles.textInput}
-                    placeholder="Enter your phone number"
-                    keyboardType="phone-pad"
-                />
-                <Text style={styles.label}>Age (Optional)</Text>
-                <TextInput
-                    value={formData.age || ''}
-                    onChangeText={(text) => handleChange("age", text)}
-                    style={styles.textInput}
-                    placeholder="Enter your age"
-                    keyboardType="numeric"
-                />
+                <View style={styles.accountSetting}>
+                    <Text style={styles.label}>Name</Text>
+                    <TextInput
+                        value={formData.name}
+                        onChangeText={(text) => handleChange("name", text)}
+                        style={styles.textInput}
+                        placeholder="Enter your name"
+                    />
+                </View>
+                <View style={styles.accountSetting}>
+                    <Text style={styles.label}>Phone (Optional)</Text>
+                    <TextInput
+                        value={formData.phone || ''}
+                        onChangeText={(text) => handleChange("phone", text)}
+                        style={styles.textInput}
+                        placeholder="Enter your phone number"
+                        keyboardType="phone-pad"
+                    />
+                </View>
+                <View style={styles.accountSetting}>
+                    <Text style={styles.label}>Age (Optional)</Text>
+                    <TextInput
+                        value={formData.age || ''}
+                        onChangeText={(text) => handleChange("age", text)}
+                        style={styles.textInput}
+                        placeholder="Enter your age"
+                        keyboardType="numeric"
+                    />
+                </View>
             </View>
 
             <View style={styles.footer}>
@@ -195,10 +220,19 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
+        flexDirection: 'column',
         paddingHorizontal: 20,
         backgroundColor: '#fff',
     },
+    accountSetting:{
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
     header: {
+        flexDirection: 'column',
+        gap: 20,
         marginBottom: 20,
         width: '100%',
         alignItems: 'center',
@@ -206,16 +240,16 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 14,
         color: '#333',
-        marginBottom: 5,
         textAlign: 'left',
+        
     },
     textInput: {
         height: 45,
         borderColor: '#ccc',
+        width: '70%',
         borderWidth: 1,
         borderRadius: 8,
         padding: 10,
-        marginBottom: 15,
     },
     footer: {
         alignItems: 'center',
