@@ -8,9 +8,7 @@ import { styles } from '@/assets/styles/styles';
 import { call } from '../components/apiCall';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/components/Types';
-import { jwtDecode } from "jwt-decode";
 import { cLog } from '@/components/log';
-
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -28,15 +26,15 @@ export default function AuthScreen() {
         webClientId: process.env.EXPO_PUBLIC_CLIENT_ID,
         redirectUri: 'http://localhost:8081',
     });
-    
+
 
     useEffect(() => {
-        console.log("Google Auth Response:", response); 
-    
+        console.log("Google Auth Response:", response);
+
         if (response?.type === 'success' && response.authentication) {
-            const idToken  = response.authentication.accessToken;
+            const idToken = response.authentication.accessToken;
             console.log(idToken)
-                if (idToken) {
+            if (idToken) {
                 handleGoogleLoginSuccess(idToken);
             }
         } else if (response?.type === 'error') {
@@ -44,7 +42,7 @@ export default function AuthScreen() {
             Alert.alert("Google Login Failed", "Please try again.");
         }
     }, [response]);
-    
+
 
     const handleAuthRequest = async () => {
         const url = isLogin ? '/api/users/login' : '/api/users/register';
@@ -83,25 +81,25 @@ export default function AuthScreen() {
     const handleGoogleLoginSuccess = async (accessToken: string) => {
         try {
             console.log("Access Token = ", accessToken);
-    
+
             // Fetch user info from Google API
             const userInfoResponse = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
                 headers: { Authorization: `Bearer ${accessToken}` },
             });
-    
+
             const userInfo = await userInfoResponse.json();
             console.log("Google User Info:", userInfo);
-    
+
             const { email, name } = userInfo;
-    
+
             const response = await call('/api/users/google-login', 'POST', undefined, { email, name });
-    
+
             if (response.status === 200) {
                 const { token } = response.data;
-    
+
                 await AsyncStorage.setItem('token', token);
                 await AsyncStorage.setItem('isLoggedIn', 'true');
-    
+
                 Alert.alert('Success', 'Logged in with Google successfully!');
                 navigation.navigate('mainPage');
             }
@@ -116,14 +114,14 @@ export default function AuthScreen() {
             Alert.alert("Google Sign-In", "Google login is not ready yet. Please try again.");
             return;
         }
-    
+
         const result = await promptAsync();
         console.log("Google Login Result:", result); // Debugging
-    
+
         if (result?.type === 'success' && result.authentication) {
             const { idToken } = result.authentication;
             console.log("ID Token from Google:", idToken);
-    
+
             if (idToken) {
                 handleGoogleLoginSuccess(idToken);
             }
@@ -131,26 +129,42 @@ export default function AuthScreen() {
             Alert.alert("Google Login Failed", "Authentication was not completed.");
         }
     };
-    
+
     const verifyLoginStatus = async () => {
         const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
         const token = await AsyncStorage.getItem('token');
-    
+
         cLog(1, token);
         if (isLoggedIn === 'true' && token) {
             cLog(1, `User is logged in with Token: ${token}`);
             navigation.navigate('mainPage');
         }
     };
-    
+
     useEffect(() => {
         verifyLoginStatus();
     }, []);
 
     return (
         <View style={styles.authPage}>
-            <Text style={styles.headerText}>{isLogin ? 'Login' : 'Sign Up'}</Text>
+
+            <View style={styles.toggleContainer}>
+                <TouchableOpacity
+                    style={[styles.toggleButton, isLogin && styles.toggleActive]}
+                    onPress={() => setIsLogin(true)}
+                >
+                    <Text style={[styles.toggleButtonText, isLogin && styles.toggleActiveText]}>Sign In</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={[styles.toggleButton, !isLogin && styles.toggleActive]}
+                    onPress={() => setIsLogin(false)}
+                >
+                    <Text style={[styles.toggleButtonText, !isLogin && styles.toggleActiveText]}>Sign Up</Text>
+                </TouchableOpacity>
+            </View>
+
             <View style={{ height: "2%" }}></View>
+
             <Text style={[styles.authPageNonheaderText, { textAlign: 'left', alignSelf: 'flex-start' }]}>
                 Email
             </Text>
@@ -160,6 +174,7 @@ export default function AuthScreen() {
                 autoCapitalize="none"
                 onChangeText={(text) => setCredentials({ ...credentials, username: text })}
             />
+
             <Text style={[styles.authPageNonheaderText, { textAlign: 'left', alignSelf: 'flex-start' }]}>
                 Password
             </Text>
@@ -169,16 +184,13 @@ export default function AuthScreen() {
                 secureTextEntry
                 onChangeText={(text) => setCredentials({ ...credentials, password: text })}
             />
+
             <TouchableOpacity style={styles.authButton} onPress={handleAuthRequest}>
-                <Text style={styles.authButtonText}>{isLogin ? 'Login' : 'Sign Up'}</Text>
+                <Text style={styles.authButtonText}>{isLogin ? 'Log In' : 'Sign Up'}</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setIsLogin(!isLogin)}>
-                <Text style={styles.switchText}>
-                    {isLogin ? "Don't have an account? Sign Up" : 'Already have an account? Login'}
-                </Text>
-            </TouchableOpacity>
+
             <TouchableOpacity style={styles.googleButton} onPress={handleGoogleLogin}>
-                <Text style={styles.googleButtonText}>Sign in with Google</Text>
+                <Text style={styles.googleButtonText}>{isLogin ? 'Login with google' : 'Sign Up with google'}</Text>
             </TouchableOpacity>
         </View>
     );

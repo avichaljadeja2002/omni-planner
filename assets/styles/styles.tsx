@@ -79,12 +79,6 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#333",
   },
-  toggleContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 10,
-  },
   subHeaderText: {
     fontSize: 18,
     color: "#9b59b6",
@@ -166,7 +160,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 8,
     backgroundColor: "#fff",
-    justifyContent: 'center', // Centering content vertically
+    justifyContent: 'center',
   },
   bigInput: {
     flex: 1,
@@ -438,13 +432,6 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
-  authPage: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#f5f5f5',
-  },
   headerText: {
     fontSize: 28,
     fontWeight: 'bold',
@@ -466,39 +453,71 @@ export const styles = StyleSheet.create({
     marginBottom: 16,
     backgroundColor: '#fff',
   },
-  authButton: {
-    width: '100%',
-    padding: 12,
-    backgroundColor: '#007BFF',
-    borderRadius: 8,
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  authButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
+
   switchText: {
     color: '#007BFF',
     textDecorationLine: 'underline',
+    marginTop: 20
   },
-  googleButton: {
-    marginTop: 20,
-    backgroundColor: '#4285F4', // Google's blue color
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
+  authPage: {
+    flex: 1,
     justifyContent: 'center',
+    paddingHorizontal: 20,
+    backgroundColor: '#fff',
   },
-
-  googleButtonText: {
-    color: '#fff',
+  toggleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 20,
+    backgroundColor: '#f0f0f0', 
+    borderRadius: 8,
+    padding: 5,
+  },
+  toggleButton: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderRadius: 8,
+  },
+  toggleActive: {
+    backgroundColor: '#fff', 
+    borderWidth: 1,
+    borderColor: '#6A0DAD',
+  },
+  toggleButtonText: {
+    fontSize: 16,
+    color: '#6A0DAD',
+    fontWeight: 'bold',
+  },
+  toggleActiveText: {
+    color: 'purple',
+  },
+  authButton: {
+    backgroundColor: '#ff6600', 
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginVertical: 10,
+    width: '100%',
+  },
+  authButtonText: {
+    color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
   },
-
-
+  googleButton: {
+    backgroundColor: '#4285F4',
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 10,
+    width: '100%',
+  },
+  googleButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
