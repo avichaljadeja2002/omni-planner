@@ -228,6 +228,12 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  titleContainer: {
+    flexDirection: 'row', 
+    justifyContent: 'space-between',
+    alignItems: 'center', 
+    marginBottom: 15,
+},
   saveCancel: {
     display: "flex",
     flexDirection: "row",
@@ -520,4 +526,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  trashButton: {
+    
+  }
 });

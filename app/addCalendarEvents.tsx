@@ -27,6 +27,7 @@ export default function AddCalendarEvents() {
             fields={calendarFields}
             mainPage="mainCalendarEvents"
             updateEndpoint={`/add_event/calendar`}
+            mode="add"
         />
     );
 }

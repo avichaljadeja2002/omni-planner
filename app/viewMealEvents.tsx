@@ -12,6 +12,7 @@ export default function ViewMealEvents() {
       mainPage="mainMealTracker"
       keyValue={{ 'key': "id", "value": "ingredientName" }}
       method="PUT"
+      mode='view'
     />
   );
 }

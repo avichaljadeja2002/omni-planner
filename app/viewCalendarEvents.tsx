@@ -10,6 +10,7 @@ export default function ViewCalendarEvents() {
       updateEndpoint={`/update_event/calendar`}
       mainPage="mainCalendarEvents"
       method="PUT"
+      mode='view'
     />
   );
 }

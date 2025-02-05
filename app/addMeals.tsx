@@ -27,6 +27,7 @@ export default function AddMeals() {
             updateEndpoint={`/add_event/meal`}
             fetchEndpoint={`/get_ingredients`}
             keyValue={{ 'key': "id", "value": "ingredientName" }}
+            mode='add'
         />
     );
 };

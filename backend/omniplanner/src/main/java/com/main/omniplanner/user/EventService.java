@@ -37,4 +37,8 @@ public class EventService {
         return eventRepository.save(event);
     }
 
+    public boolean deleteEvent(int id, String token) {
+        Integer userId = userRepository.getIdByToken(token);
+        return eventRepository.deleteEvent(id, userId) > 0;
+    }
 }
