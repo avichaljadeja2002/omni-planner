@@ -84,6 +84,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
     useFocusEffect(
         useCallback(() => {
             const fetchData = async () => {
+                if (!fetchEndpoint) return;
                 cLog(1, 'Fetching additional data...');
                 try {
                     const token = await AsyncStorage.getItem('token');
@@ -221,7 +222,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
 
     return (
         <><ScrollView contentContainerStyle={styles.addContainer}>
-            <Text style={styles.sectionHeader}>{title}</Text>
+            <Text style={styles.addViewSectionHeader}>{title}</Text>
             <View>
                 {fields.map((field, index) => (
                     <View key={index} style={styles.inputContainer}>
