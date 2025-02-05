@@ -8,9 +8,7 @@ import { styles } from '@/assets/styles/styles';
 import { call } from '../components/apiCall';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/components/Types';
-import { jwtDecode } from "jwt-decode";
 import { cLog } from '@/components/log';
-
 
 WebBrowser.maybeCompleteAuthSession();
 
