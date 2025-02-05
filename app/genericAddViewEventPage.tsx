@@ -10,16 +10,18 @@ import { useNavigation, useFocusEffect, RouteProp, useRoute } from '@react-navig
 import MultiSelect from 'react-native-multiple-select';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { call } from '../components/apiCall';
+import { FontAwesome } from '@expo/vector-icons';
 
-const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initialData = {}, fields, mainPage, updateEndpoint, fetchEndpoint, keyValue, method = "POST" }) => {
+const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initialData = {}, fields, mainPage, updateEndpoint, fetchEndpoint, keyValue, method = "POST", mode }) => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [additionalData, setAdditionalData] = useState<any>([]);
     const [currentField, setCurrentField] = useState<string | null>(null);
     const [showCancelModal, setShowCancelModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const route = useRoute<RouteProp<RootStackParamList, any>>();
-    cLog(1,{ "Recieved Route": route });
+    cLog(1, { "Recieved Route": route });
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     let event = initialData.event ? initialData.event : initialData;
     cLog(1, { "Initial Data": initialData });
@@ -90,12 +92,12 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
                 try {
                     const token = await AsyncStorage.getItem('token');
                     const response = await call(`${fetchEndpoint}/${token}`, 'GET');
-    
+
                     const formattedData = response.data.map((item: { [x: string]: any; id: any; name: any }) => ({
                         value: keyValue ? item[keyValue.key] : item.id,
                         label: keyValue ? item[keyValue.value] : item.name,
                     }));
-    
+
                     setTimeout(() => {
                         setAdditionalData(formattedData);
                     }, 100);
@@ -112,13 +114,25 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
             };
 
             verifyLoginStatus();
-    
+
             fetchData();
         }, [])
     );
     useEffect(() => {
         cLog(1, 'Updated Additional Data:', additionalData);
     }, [additionalData]);
+
+    const handleDelete = async () => {
+        try {
+            const token = await AsyncStorage.getItem('token');
+            await call(`/delete_event/${formData.id}/${token}`, 'DELETE');
+            setShowDeleteModal(false);
+            navigation.navigate(mainPage as any);
+        } catch (error) {
+            console.error('Error deleting event:', error);
+        }
+    };
+
 
     const renderField = (field: any) => {
         switch (field.type) {
@@ -222,8 +236,17 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
     };
 
     return (
-        <><ScrollView contentContainerStyle={styles.addContainer}>
-            <Text style={styles.addViewSectionHeader}>{title}</Text>
+        <>    <ScrollView contentContainerStyle={styles.addContainer}>
+            <View style={styles.titleContainer}>
+                <Text style={styles.addViewSectionHeader}>{title}</Text>
+
+                {mode === "view" && (
+                    <TouchableOpacity style={styles.trashButton} onPress={handleDelete}>
+                        <FontAwesome name="trash" size={24} color="red" />
+                    </TouchableOpacity>
+                )}
+            </View>
+
             <View>
                 {fields.map((field, index) => (
                     <View key={index} style={styles.inputContainer}>
@@ -238,39 +261,13 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
                 <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
                     <Text style={styles.saveText}>Save</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.cancelButton} onPress={() => setShowCancelModal(true)}>
+                <TouchableOpacity style={styles.cancelButton} onPress={() => { navigation.navigate(mainPage as any); }}>
                     <Text style={styles.cancelText}>Cancel</Text>
                 </TouchableOpacity>
             </View>
-        </ScrollView><Modal
-            animationType="slide"
-            transparent={true}
-            visible={showCancelModal}
-            onRequestClose={() => setShowCancelModal(false)}
-        >
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <Text style={styles.modalText}>Do you want to save your changes before leaving?</Text>
-                        <View style={styles.modalButtons}>
-                            <TouchableOpacity
-                                style={[styles.button, styles.buttonDiscard]}
-                                onPress={() => {
-                                    setShowCancelModal(false);
-                                    navigation.navigate(mainPage as any);
-                                }}
-                            >
-                                <Text style={styles.textStyle}>Discard</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={[styles.button, styles.buttonCancel]}
-                                onPress={() => setShowCancelModal(false)}
-                            >
-                                <Text style={styles.textStyle}>Cancel</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-            </Modal></>
+        </ScrollView>
+            {/* TO DO - ADD confirm delete and cancel models */}
+        </>
     );
 };
 

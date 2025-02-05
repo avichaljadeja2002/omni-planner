@@ -10,6 +10,7 @@ export default function ViewHealthEvents() {
       updateEndpoint={`/update_event/health`}
       mainPage="mainHealthTracker"
       method="PUT"
+      mode='view'
     />
   );
 }

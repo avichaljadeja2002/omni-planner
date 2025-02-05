@@ -27,6 +27,7 @@ export default function AddFinanceEvents() {
             fields={financeFields}
             mainPage='mainFinanceTracker'
             updateEndpoint={`/add_event/finance`}
+            mode='add'
         />
     );
 }

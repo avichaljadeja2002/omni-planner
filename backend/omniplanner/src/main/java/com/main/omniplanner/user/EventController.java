@@ -46,4 +46,10 @@ public class EventController {
         GenericEvent updatedEvent = eventService.saveEvent(event, event_type, token);
         return ResponseEntity.ok(updatedEvent);
     }
+
+    @DeleteMapping("/delete_event/{eventId}/{token}")
+    public ResponseEntity<Boolean> deleteEvent(@PathVariable int eventId, @PathVariable String token) {
+        boolean update = eventService.deleteEvent(eventId, token);
+        return ResponseEntity.ok(update);
+    }
 }

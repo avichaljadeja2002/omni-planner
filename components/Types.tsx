@@ -65,7 +65,9 @@ export type GenericEventPageProps = {
   mainPage: string;
   keyValue?: { key: string; value: string };
   method?: string;
+  mode: string
 };
+
 
 export type EventParams = {
   event: {

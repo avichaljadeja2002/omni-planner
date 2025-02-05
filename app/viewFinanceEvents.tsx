@@ -10,6 +10,7 @@ export default function ViewFinanceEvents() {
       updateEndpoint={`/update_event/finance`}
       mainPage="mainFinanceTracker"
       method="PUT"
+      mode='view'
     />
   );
 }
