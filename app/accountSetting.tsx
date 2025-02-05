@@ -1,16 +1,16 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal, Alert, Keyboard } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Keyboard } from 'react-native';
 import { cLog } from '../components/log';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/components/Types';
 import { call } from '@/components/apiCall';
+import Alert from './alert';
 
 export default function AccountSetting() {
     const initialData = { name: "", phone: "", age: "" };
     const [formData, setFormData] = useState(initialData);
-    const [showLogoutModal, setShowLogoutModal] = useState(false);
     type Prop = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
     const navigation = useNavigation<Prop>();
 
@@ -18,10 +18,13 @@ export default function AccountSetting() {
         visible: false,
         header: '',
         message: '',
+        closeText: 'Close',
+        saveText: '',
+        onSave: () => { },
     });
 
-    const showAlert = (header: string, message: string) => {
-        setAlertModal({ visible: true, header, message });
+    const showAlert = (header: string, message: string, closeText: string, saveText: string, onSave: () => void = () => { }) => {
+        setAlertModal({ visible: true, header, message, closeText, saveText, onSave });
     };
 
     const handleSave = async () => {
@@ -29,7 +32,7 @@ export default function AccountSetting() {
 
         try {
             if (!formData.name.trim()) {
-                showAlert('Invalid!', 'Name cannot be empty.');
+                showAlert('Invalid!', 'Name cannot be empty.', 'Close', '');
                 return;
             }
 
@@ -37,7 +40,7 @@ export default function AccountSetting() {
                 const age = Number(formData.age);
                 if (isNaN(age) || age < 1 || age > 150) {
                     cLog(1, 'Invalid Age:', formData.age);
-                    showAlert('Invalid Age', 'Please enter a valid age (1-150).');
+                    showAlert('Invalid Age', 'Please enter a valid age (1-150).', 'Close', '');
                     return;
                 }
             }
@@ -45,7 +48,7 @@ export default function AccountSetting() {
             const phoneRegex = /^[0-9]{7,15}$/;
             if (formData.phone && !phoneRegex.test(formData.phone)) {
                 cLog(1, 'Invalid Phone:', formData.phone);
-                showAlert('Invalid Phone', 'Please enter a valid phone number (7-15 digits).');
+                showAlert('Invalid Phone', 'Please enter a valid phone number (7-15 digits).', 'Close', '');
                 return;
             }
 
@@ -59,7 +62,7 @@ export default function AccountSetting() {
                 throw new Error(response.data.message);
             } else {
                 Keyboard.dismiss();
-                showAlert('Success', 'Data saved successfully!');
+                showAlert('Success', 'Data saved successfully!', 'Close', '');
                 cLog(1, 'Account Information saved successfully:', formData);
             }
         } catch (error) {
@@ -85,11 +88,6 @@ export default function AccountSetting() {
         } catch (error) {
             console.error("Error fetching local values from AsyncStorage:", error);
         }
-    };
-
-
-    const handleLogout = async () => {
-        setShowLogoutModal(true);
     };
 
     const confirmLogout = async () => {
@@ -145,56 +143,19 @@ export default function AccountSetting() {
                 <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
                     <Text style={styles.saveButtonText}>Save</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+                <TouchableOpacity style={styles.logoutButton} onPress={() => showAlert('Logout', 'Are you sure you want to logout?', 'Cancel', 'Logout', confirmLogout)}>
                     <Text style={styles.logoutButtonText}>Logout</Text>
                 </TouchableOpacity>
             </View>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={showLogoutModal}
-                onRequestClose={() => setShowLogoutModal(false)}
-            >
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <Text style={styles.modalText}>Are you sure you want to logout?</Text>
-                        <View style={styles.modalButtons}>
-                            <TouchableOpacity
-                                style={[styles.button, styles.buttonCancel]}
-                                onPress={() => setShowLogoutModal(false)}
-                            >
-                                <Text style={styles.textStyle}>Cancel</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={[styles.button, styles.buttonConfirm]}
-                                onPress={confirmLogout}
-                            >
-                                <Text style={styles.textStyle}>Logout</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={alertModal.visible}
-                onRequestClose={() => setAlertModal({ ...alertModal, visible: false })}
-            >
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <Text style={styles.modalHeader}>{alertModal.header}</Text>
-                        <Text style={styles.modalMessage}>{alertModal.message}</Text>
-                        <TouchableOpacity
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => setAlertModal({ ...alertModal, visible: false })}
-                        >
-                            <Text style={styles.textStyle}>Close</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </Modal>
-
+            <Alert
+                isVisible={alertModal.visible}
+                toggleModal={() => setAlertModal({ ...alertModal, visible: false })}
+                header={alertModal.header}
+                description={alertModal.message}
+                onSave={() => alertModal.onSave()}
+                saveButtonText={alertModal.saveText}
+                closeButtonText={alertModal.closeText}
+            />
         </View>
     );
 };

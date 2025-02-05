@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { View, Text, TextInput, ScrollView, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { cLog } from '../components/log';
 import { styles } from '@/assets/styles/styles';
@@ -11,14 +11,26 @@ import MultiSelect from 'react-native-multiple-select';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { call } from '../components/apiCall';
 import { FontAwesome } from '@expo/vector-icons';
+import Alert from './alert';
 
 const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initialData = {}, fields, mainPage, updateEndpoint, fetchEndpoint, keyValue, method = "POST", mode }) => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [additionalData, setAdditionalData] = useState<any>([]);
     const [currentField, setCurrentField] = useState<string | null>(null);
-    const [showCancelModal, setShowCancelModal] = useState(false);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+    const [alertModal, setAlertModal] = useState({
+        visible: false,
+        header: '',
+        message: '',
+        closeText: 'Close',
+        saveText: '',
+        onSave: () => { },
+    });
+
+    const showAlert = (header: string, message: string, closeText: string, saveText: string, onSave: () => void = () => { }) => {
+        setAlertModal({ visible: true, header, message, closeText, saveText, onSave });
+    };
 
     const route = useRoute<RouteProp<RootStackParamList, any>>();
     cLog(1, { "Recieved Route": route });
@@ -126,13 +138,11 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
         try {
             const token = await AsyncStorage.getItem('token');
             await call(`/delete_event/${formData.id}/${token}`, 'DELETE');
-            setShowDeleteModal(false);
             navigation.navigate(mainPage as any);
         } catch (error) {
             console.error('Error deleting event:', error);
         }
     };
-
 
     const renderField = (field: any) => {
         switch (field.type) {
@@ -239,9 +249,8 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
         <>    <ScrollView contentContainerStyle={styles.addContainer}>
             <View style={styles.titleContainer}>
                 <Text style={styles.addViewSectionHeader}>{title}</Text>
-
                 {mode === "view" && (
-                    <TouchableOpacity style={styles.trashButton} onPress={handleDelete}>
+                    <TouchableOpacity style={styles.trashButton} onPress={() => showAlert('Delete Event', 'Are you sure you want to delete this event?', 'Cancel', 'Delete', handleDelete)}>
                         <FontAwesome name="trash" size={24} color="red" />
                     </TouchableOpacity>
                 )}
@@ -266,7 +275,15 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
                 </TouchableOpacity>
             </View>
         </ScrollView>
-            {/* TO DO - ADD confirm delete and cancel models */}
+            <Alert
+                isVisible={alertModal.visible}
+                toggleModal={() => setAlertModal({ ...alertModal, visible: false })}
+                header={alertModal.header}
+                description={alertModal.message}
+                onSave={() => alertModal.onSave()}
+                saveButtonText={alertModal.saveText}
+                closeButtonText={alertModal.closeText}
+            />
         </>
     );
 };
