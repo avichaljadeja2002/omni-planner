@@ -54,6 +54,8 @@ export default function AuthScreen() {
             console.error("Google login failed:", response);
             showAlert("Google Login Failed", "Please try again.", "Cancel", "");
         }
+
+        verifyLoginStatus();
     }, [response]);
 
 
@@ -153,10 +155,6 @@ export default function AuthScreen() {
             navigation.navigate('mainPage');
         }
     };
-
-    useEffect(() => {
-        verifyLoginStatus();
-    }, []);
 
     return (
         <View style={styles.authPage}>
