@@ -10,6 +10,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/components/Types';
 import { cLog } from '@/components/log';
 import Alert from './alert';
+import GoogleSignInButton from './googleSignInButton';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -191,7 +192,7 @@ export default function AuthScreen() {
             </Text>
             <TextInput
                 style={styles.authPageInput}
-                placeholder="Password"
+                placeholder="Enter Password"
                 secureTextEntry
                 onChangeText={(text) => setCredentials({ ...credentials, password: text })}
             />
@@ -200,9 +201,8 @@ export default function AuthScreen() {
                 <Text style={styles.authButtonText}>{isLogin ? 'Log In' : 'Sign Up'}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.googleButton} onPress={handleGoogleLogin}>
-                <Text style={styles.googleButtonText}>{isLogin ? 'Login with google' : 'Sign Up with google'}</Text>
-            </TouchableOpacity>
+            <GoogleSignInButton onPress={handleGoogleLogin} signIn={isLogin} />
+
             <Alert
                 isVisible={alertModal.visible}
                 toggleModal={() => setAlertModal({ ...alertModal, visible: false })}

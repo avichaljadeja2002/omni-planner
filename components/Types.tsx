@@ -1,31 +1,31 @@
 import { Ionicons } from "@expo/vector-icons";
 
 export type Task = {
-    id: string;
-    title: string;
-    done: boolean;
-    icon: IconName;
-    event: any;
-  };
+  id: string;
+  title: string;
+  done: boolean;
+  icon: IconName;
+  event: any;
+};
 
 export type RootStackParamList = {
-    'index': undefined;
-    'mainPage': undefined;
-    'mainHealthTracker': undefined;
-    'mainMealTracker': undefined;
-    'mainFinanceTracker': undefined;
-    'mainCalendarEvents': undefined;
-    'notes': undefined;
-    'accountSetting': undefined;
-    'addFinanceEvents': undefined,
-    'addCalendarEvents': undefined;
-    'addHealthEvents': undefined;
-    'addMeals': undefined;
-    'viewFinanceEvents': { event: Task };
-    'viewHealthEvents': { event: Task };
-    'viewMealEvents': { event: Task };
-    'viewCalendarEvents': { event: Task };
-  };
+  'index': undefined;
+  'mainPage': undefined;
+  'mainHealthTracker': undefined;
+  'mainMealTracker': undefined;
+  'mainFinanceTracker': undefined;
+  'mainCalendarEvents': undefined;
+  'notes': undefined;
+  'accountSetting': undefined;
+  'addFinanceEvents': undefined,
+  'addCalendarEvents': undefined;
+  'addHealthEvents': undefined;
+  'addMeals': undefined;
+  'viewFinanceEvents': { event: Task };
+  'viewHealthEvents': { event: Task };
+  'viewMealEvents': { event: Task };
+  'viewCalendarEvents': { event: Task };
+};
 
 export type IconName = keyof typeof Ionicons.glyphMap;
 
