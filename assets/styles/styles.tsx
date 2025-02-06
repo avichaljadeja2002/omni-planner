@@ -513,20 +513,28 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   googleButton: {
-    backgroundColor: '#4285F4',
-    padding: 12,
+    backgroundColor: '#4285F4',  // Google's primary color
     borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
     alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginVertical: 10,
-    width: '100%',
-  },
-  googleButtonText: {
+    flexDirection: 'row',  // To align the Google logo and text
+    justifyContent: 'center',  // Center the content
+    marginTop: 15,  // Space between the button and other elements
+},
+
+googleButtonText: {
     color: 'white',
     fontSize: 16,
-    fontWeight: 'bold',
-  },
+    fontWeight: '600',
+    marginLeft: 10,  // Space between the logo and the text
+},
+
+googleIcon: {
+    width: 20,  // Adjust based on your needs
+    height: 20,
+    marginRight: 10,
+},
   trashButton: {
     
   }
