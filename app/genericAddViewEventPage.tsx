@@ -12,6 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { call } from '../components/apiCall';
 import { FontAwesome } from '@expo/vector-icons';
 import Alert from './alert';
+import { useAlert } from '@/hooks/useAlert';
 
 const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initialData = {}, fields, mainPage, updateEndpoint, fetchEndpoint, keyValue, method = "POST", mode }) => {
     const [showDatePicker, setShowDatePicker] = useState(false);
@@ -19,18 +20,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
     const [additionalData, setAdditionalData] = useState<any>([]);
     const [currentField, setCurrentField] = useState<string | null>(null);
 
-    const [alertModal, setAlertModal] = useState({
-        visible: false,
-        header: '',
-        message: '',
-        closeText: 'Close',
-        saveText: '',
-        onSave: () => { },
-    });
-
-    const showAlert = (header: string, message: string, closeText: string, saveText: string, onSave: () => void = () => { }) => {
-        setAlertModal({ visible: true, header, message, closeText, saveText, onSave });
-    };
+    const { alertModal, showAlert, hideAlert } = useAlert();
 
     const route = useRoute<RouteProp<RootStackParamList, any>>();
     cLog(1, { "Recieved Route": route });
@@ -62,6 +52,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
             cLog(1, 'Saving event to:' + updateEndpoint);
             const response = await call(`${updateEndpoint}/${token}`, method, undefined, formattedData)
             cLog(1, 'Event updated successfully:' + response.data);
+            showAlert('Success', 'Event saved successfully!', 'Close', '');
         } catch (error) {
             console.error('Error saving event:', error);
         }
@@ -277,10 +268,13 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({ title, initia
         </ScrollView>
             <Alert
                 isVisible={alertModal.visible}
-                toggleModal={() => setAlertModal({ ...alertModal, visible: false })}
+                toggleModal={hideAlert}  // Updated to use hideAlert
                 header={alertModal.header}
                 description={alertModal.message}
-                onSave={() => alertModal.onSave()}
+                onSave={() => {
+                    alertModal.onSave();
+                    hideAlert();
+                }}
                 saveButtonText={alertModal.saveText}
                 closeButtonText={alertModal.closeText}
             />

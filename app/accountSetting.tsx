@@ -7,25 +7,14 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/components/Types';
 import { call } from '@/components/apiCall';
 import Alert from './alert';
+import { useAlert } from '@/hooks/useAlert';
 
 export default function AccountSetting() {
     const initialData = { name: "", phone: "", age: "" };
     const [formData, setFormData] = useState(initialData);
     type Prop = StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
     const navigation = useNavigation<Prop>();
-
-    const [alertModal, setAlertModal] = useState({
-        visible: false,
-        header: '',
-        message: '',
-        closeText: 'Close',
-        saveText: '',
-        onSave: () => { },
-    });
-
-    const showAlert = (header: string, message: string, closeText: string, saveText: string, onSave: () => void = () => { }) => {
-        setAlertModal({ visible: true, header, message, closeText, saveText, onSave });
-    };
+    const { alertModal, showAlert, hideAlert } = useAlert();
 
     const handleSave = async () => {
         const token = await AsyncStorage.getItem('token');
@@ -149,10 +138,13 @@ export default function AccountSetting() {
             </View>
             <Alert
                 isVisible={alertModal.visible}
-                toggleModal={() => setAlertModal({ ...alertModal, visible: false })}
+                toggleModal={hideAlert}  // Updated to use hideAlert
                 header={alertModal.header}
                 description={alertModal.message}
-                onSave={() => alertModal.onSave()}
+                onSave={() => {
+                    alertModal.onSave();
+                    hideAlert();
+                }}
                 saveButtonText={alertModal.saveText}
                 closeButtonText={alertModal.closeText}
             />

@@ -7,6 +7,7 @@ import { cLog } from '../components/log'
 import { call, full_call } from '../components/apiCall';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Alert from './alert';
+import { useAlert } from '../hooks/useAlert';
 
 const CLIENT_ID = process.env.EXPO_PUBLIC_CLIENT_ID || '';
 const CLIENT_SECRET = process.env.EXPO_PUBLIC_CLIENT_SECRET || '';
@@ -16,18 +17,7 @@ const AUTH_URI = 'https://accounts.google.com/o/oauth2/v2/auth';
 
 WebBrowser.maybeCompleteAuthSession();
 
-const [alertModal, setAlertModal] = useState({
-  visible: false,
-  header: '',
-  message: '',
-  closeText: 'Close',
-  saveText: '',
-  onSave: () => { },
-});
-
-const showAlert = (header: string, message: string, closeText: string, saveText: string, onSave: () => void = () => { }) => {
-  setAlertModal({ visible: true, header, message, closeText, saveText, onSave });
-};
+const { alertModal, showAlert, hideAlert } = useAlert();
 
 export default function CalendarTracker() {
   const [isGoogleCalendarLinked, setIsGoogleCalendarLinked] = useState(false);
@@ -116,10 +106,13 @@ export default function CalendarTracker() {
       />
       <Alert
         isVisible={alertModal.visible}
-        toggleModal={() => setAlertModal({ ...alertModal, visible: false })}
+        toggleModal={hideAlert}  // Updated to use hideAlert
         header={alertModal.header}
         description={alertModal.message}
-        onSave={() => alertModal.onSave()}
+        onSave={() => {
+          alertModal.onSave();
+          hideAlert();
+        }}
         saveButtonText={alertModal.saveText}
         closeButtonText={alertModal.closeText}
       />
