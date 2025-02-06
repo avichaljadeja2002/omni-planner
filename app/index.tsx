@@ -11,6 +11,7 @@ import { RootStackParamList } from '@/components/Types';
 import { cLog } from '@/components/log';
 import Alert from './alert';
 import GoogleSignInButton from './googleSignInButton';
+import { useAlert } from '@/hooks/useAlert';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -20,19 +21,9 @@ export default function AuthScreen() {
 
     const [isLogin, setIsLogin] = useState(true);
     const [credentials, setCredentials] = useState({ username: '', password: '' });
+    const { alertModal, showAlert, hideAlert } = useAlert();
 
-    const [alertModal, setAlertModal] = useState({
-        visible: false,
-        header: '',
-        message: '',
-        closeText: 'Close',
-        saveText: '',
-        onSave: () => { },
-    });
 
-    const showAlert = (header: string, message: string, closeText: string, saveText: string, onSave: () => void = () => { }) => {
-        setAlertModal({ visible: true, header, message, closeText, saveText, onSave });
-    };
 
     const [request, response, promptAsync] = Google.useAuthRequest({
         clientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
@@ -205,10 +196,13 @@ export default function AuthScreen() {
 
             <Alert
                 isVisible={alertModal.visible}
-                toggleModal={() => setAlertModal({ ...alertModal, visible: false })}
+                toggleModal={hideAlert}  // Updated to use hideAlert
                 header={alertModal.header}
                 description={alertModal.message}
-                onSave={() => alertModal.onSave()}
+                onSave={() => {
+                    alertModal.onSave();
+                    hideAlert();
+                }}
                 saveButtonText={alertModal.saveText}
                 closeButtonText={alertModal.closeText}
             />
