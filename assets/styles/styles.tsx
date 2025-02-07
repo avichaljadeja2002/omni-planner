@@ -500,7 +500,7 @@ export const styles = StyleSheet.create({
     color: 'purple',
   },
   authButton: {
-    backgroundColor: '#ff6600', 
+    backgroundColor: '#6A0DAD', 
     padding: 12,
     borderRadius: 8,
     alignItems: 'center',
