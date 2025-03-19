@@ -23,8 +23,6 @@ export default function AuthScreen() {
     const [credentials, setCredentials] = useState({ username: '', password: '' });
     const { alertModal, showAlert, hideAlert } = useAlert();
 
-
-
     const [request, response, promptAsync] = Google.useAuthRequest({
         clientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
         //iosClientId: process.env.EXPO_PUBLIC_IOS_CLIENT_ID,
@@ -57,7 +55,22 @@ export default function AuthScreen() {
 
         try {
             cLog(1, "Sending request to:", url);
-            cLog(1, "Credentials:", credentials);
+            //cLog(1, "Credentials:", credentials);
+            if(password == password.toLowerCase()) {
+                cLog(1, "Password must include at least one uppercase character");
+            }
+            if(password.length < 15) {
+                cLog(1, "Password must have at least 15 characters");
+            }
+            if (/^[a-zA-Z0-9]*$/.test(password)) {
+                cLog(1, "Password must contain at least one special character");
+            }
+            if(!/\d/.test(password)) {
+                cLog(1, "Password must contain at least one number");
+            }
+            if(password == password.toUpperCase()) {
+                cLog(1, "Password must include at least one lowercase character");
+            }
             const response = await call(url, 'POST', undefined, { username, password });
             cLog(1, "Response:", response);
 
