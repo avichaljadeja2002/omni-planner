@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.Map;
 import java.util.Optional;
 
@@ -45,7 +46,6 @@ public class UserController {
         user.setEnabled(true);
         userRepository.save(user);
 
-        // Return only username and userId
         return ResponseEntity.ok(Map.of(
                 "email", user.getUsername(),
                 "name", "",
@@ -134,36 +134,6 @@ public class UserController {
         if (userId == null) {
             return ResponseEntity.status(401).body("Invalid token");
         }
-
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isEmpty()) {
-            return ResponseEntity.status(404).body("User not found");
-        }
-
-        User user = userOptional.get();
-
-        if (!passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword())) {
-            return ResponseEntity.badRequest().body("Incorrect old password");
-        }
-
-        if (changePasswordRequest.getNewPassword().length() < 8) {
-            return ResponseEntity.badRequest().body("New password must be at least 8 characters long");
-        }
-
-        int diffCount = 0;
-        for (int i = 0; i < Math.max(changePasswordRequest.getOldPassword().length(), changePasswordRequest.getNewPassword().length()); i++) {
-            if (i >= changePasswordRequest.getOldPassword().length() || i >= changePasswordRequest.getNewPassword().length() ||
-                    changePasswordRequest.getOldPassword().charAt(i) != changePasswordRequest.getNewPassword().charAt(i)) {
-                diffCount++;
-            }
-        }
-
-        if (diffCount < 8) {
-            return ResponseEntity.badRequest().body("New password must have at least 8 different characters from the old password");
-        }
-
-        user.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
-        userRepository.save(user);
-        return ResponseEntity.ok("Password changed successfully");
+        return userService.changePassword(userId, changePasswordRequest.getOldPassword(),changePasswordRequest.getNewPassword());
     }
 }
