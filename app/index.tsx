@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as WebBrowser from 'expo-web-browser';
@@ -21,6 +21,7 @@ export default function AuthScreen() {
 
     const [isLogin, setIsLogin] = useState(true);
     const [credentials, setCredentials] = useState({ username: '', password: '' });
+    const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
     const { alertModal, showAlert, hideAlert } = useAlert();
 
     const [request, response, promptAsync] = Google.useAuthRequest({
@@ -29,7 +30,6 @@ export default function AuthScreen() {
         webClientId: process.env.EXPO_PUBLIC_CLIENT_ID,
         redirectUri: 'http://localhost:8081',
     });
-
 
     useEffect(() => {
         console.log("Google Auth Response:", response);
@@ -48,10 +48,46 @@ export default function AuthScreen() {
         verifyLoginStatus();
     }, [response]);
 
+    const validatePassword = (password: string): string[] => {
+        const errors: string[] = [];
+        
+        if (password.length < 8) {
+            errors.push("Password must be at least 8 characters long");
+        }
+        if (!/[a-z]/.test(password)) {
+            errors.push("Password must contain at least one lowercase letter");
+        }
+        if (!/[A-Z]/.test(password)) {
+            errors.push("Password must contain at least one uppercase letter");
+        }
+        if (!/[0-9]/.test(password)) {
+            errors.push("Password must contain at least one number");
+        }
+        if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+            errors.push("Password must contain at least one special character");
+        }
+        
+        return errors;
+    };
+
+    const handlePasswordChange = (text: string) => {
+        setCredentials({ ...credentials, password: text });
+        if (!isLogin) {
+            setPasswordErrors(validatePassword(text));
+        }
+    };
 
     const handleAuthRequest = async () => {
         const url = isLogin ? '/api/users/login' : '/api/users/register';
         const { username, password } = credentials;
+        if (!isLogin) {
+            const errors = validatePassword(password);
+            if (errors.length > 0) {
+                setPasswordErrors(errors);
+                showAlert('Password Requirements', 'Please fix the password issues below.', 'Close', "");
+                return;
+            }
+        }
 
         try {
             cLog(1, "Sending request to:", url);
@@ -162,63 +198,90 @@ export default function AuthScreen() {
     };
 
     return (
-        <View style={styles.authPage}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+            <View style={styles.authPage}>
+            
+                <View style={styles.toggleContainer}>
+                    <TouchableOpacity
+                        style={[styles.toggleButton, isLogin && styles.toggleActive]}
+                        onPress={() => {
+                            setIsLogin(true);
+                            setPasswordErrors([]);
+                        }}
+                    >
+                        <Text style={[styles.toggleButtonText, isLogin && styles.toggleActiveText]}>Sign In</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.toggleButton, !isLogin && styles.toggleActive]}
+                        onPress={() => setIsLogin(false)}
+                    >
+                        <Text style={[styles.toggleButtonText, !isLogin && styles.toggleActiveText]}>Sign Up</Text>
+                    </TouchableOpacity>
+                </View>
 
-            <View style={styles.toggleContainer}>
-                <TouchableOpacity
-                    style={[styles.toggleButton, isLogin && styles.toggleActive]}
-                    onPress={() => setIsLogin(true)}
-                >
-                    <Text style={[styles.toggleButtonText, isLogin && styles.toggleActiveText]}>Sign In</Text>
+                <View style={{ height: "2%" }}></View>
+
+                <Text style={[styles.authPageNonheaderText, { textAlign: 'left', alignSelf: 'flex-start' }]}>
+                    Email
+                </Text>
+                <TextInput
+                    style={styles.authPageInput}
+                    placeholder="Enter Email"
+                    autoCapitalize="none"
+                    onChangeText={(text) => setCredentials({ ...credentials, username: text })}
+                />
+
+                <Text style={[styles.authPageNonheaderText, { textAlign: 'left', alignSelf: 'flex-start' }]}>
+                    Password
+                </Text>
+                <TextInput
+                    style={styles.authPageInput}
+                    placeholder="Enter Password"
+                    secureTextEntry
+                    onChangeText={handlePasswordChange}
+                />
+                {!isLogin && (
+                    <View style={{ alignSelf: 'flex-start', marginTop: 5, marginBottom: 10 }}>
+                        <Text style={[styles.authPageNonheaderText, { fontSize: 12, color: '#777' }]}>
+                            Password requirements:
+                        </Text>
+                        <Text style={[styles.authPageNonheaderText, { fontSize: 12, color: passwordErrors.includes("Password must be at least 8 characters long") ? 'red' : 'green' }]}>
+                            • At least 8 characters long
+                        </Text>
+                        <Text style={[styles.authPageNonheaderText, { fontSize: 12, color: passwordErrors.includes("Password must contain at least one lowercase letter") ? 'red' : 'green' }]}>
+                            • At least one lowercase letter
+                        </Text>
+                        <Text style={[styles.authPageNonheaderText, { fontSize: 12, color: passwordErrors.includes("Password must contain at least one uppercase letter") ? 'red' : 'green' }]}>
+                            • At least one uppercase letter
+                        </Text>
+                        <Text style={[styles.authPageNonheaderText, { fontSize: 12, color: passwordErrors.includes("Password must contain at least one number") ? 'red' : 'green' }]}>
+                            • At least one number
+                        </Text>
+                        <Text style={[styles.authPageNonheaderText, { fontSize: 12, color: passwordErrors.includes("Password must contain at least one special character") ? 'red' : 'green' }]}>
+                            • At least one special character
+                        </Text>
+                    </View>
+                )}
+
+                <TouchableOpacity style={styles.authButton} onPress={handleAuthRequest}>
+                    <Text style={styles.authButtonText}>{isLogin ? 'Log In' : 'Sign Up'}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                    style={[styles.toggleButton, !isLogin && styles.toggleActive]}
-                    onPress={() => setIsLogin(false)}
-                >
-                    <Text style={[styles.toggleButtonText, !isLogin && styles.toggleActiveText]}>Sign Up</Text>
-                </TouchableOpacity>
+
+                <GoogleSignInButton onPress={handleGoogleLogin} signIn={isLogin} />
+
+                <Alert
+                    isVisible={alertModal.visible}
+                    toggleModal={hideAlert}
+                    header={alertModal.header}
+                    description={alertModal.message}
+                    onSave={() => {
+                        alertModal.onSave();
+                        hideAlert();
+                    }}
+                    saveButtonText={alertModal.saveText}
+                    closeButtonText={alertModal.closeText}
+                />
             </View>
-
-            <View style={{ height: "2%" }}></View>
-
-            <Text style={[styles.authPageNonheaderText, { textAlign: 'left', alignSelf: 'flex-start' }]}>
-                Email
-            </Text>
-            <TextInput
-                style={styles.authPageInput}
-                placeholder="Enter Email"
-                autoCapitalize="none"
-                onChangeText={(text) => setCredentials({ ...credentials, username: text })}
-            />
-
-            <Text style={[styles.authPageNonheaderText, { textAlign: 'left', alignSelf: 'flex-start' }]}>
-                Password
-            </Text>
-            <TextInput
-                style={styles.authPageInput}
-                placeholder="Enter Password"
-                secureTextEntry
-                onChangeText={(text) => setCredentials({ ...credentials, password: text })}
-            />
-
-            <TouchableOpacity style={styles.authButton} onPress={handleAuthRequest}>
-                <Text style={styles.authButtonText}>{isLogin ? 'Log In' : 'Sign Up'}</Text>
-            </TouchableOpacity>
-
-            <GoogleSignInButton onPress={handleGoogleLogin} signIn={isLogin} />
-
-            <Alert
-                isVisible={alertModal.visible}
-                toggleModal={hideAlert}  // Updated to use hideAlert
-                header={alertModal.header}
-                description={alertModal.message}
-                onSave={() => {
-                    alertModal.onSave();
-                    hideAlert();
-                }}
-                saveButtonText={alertModal.saveText}
-                closeButtonText={alertModal.closeText}
-            />
-        </View>
+        </ScrollView>
     );
 }
