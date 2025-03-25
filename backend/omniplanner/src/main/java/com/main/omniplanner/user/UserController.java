@@ -12,8 +12,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+
+import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 @RequestMapping("/api/users")
@@ -27,11 +31,47 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    public UserController(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserService userService) {
+    @Autowired
+    private AuditService auditService;
+
+    // Track failed login attempts in memory
+    private final ConcurrentHashMap<String, AtomicInteger> failedLoginAttempts = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Instant> lockoutExpiry = new ConcurrentHashMap<>();
+
+    private static final int MAX_ATTEMPTS = 3;
+    private static final int LOCKOUT_DURATION_MINUTES = 15;
+
+    // Check for locked account logic
+    private boolean isAccountLocked(String username) {
+        if (lockoutExpiry.containsKey(username)) {
+            Instant lockoutTime = lockoutExpiry.get(username);
+            if (Instant.now().isBefore(lockoutTime)) {
+                return true; // Account is still locked
+            } else {
+                // Unlock the account after lockout period
+                lockoutExpiry.remove(username);
+                failedLoginAttempts.remove(username); // Reset attempts after unlock
+            }
+        }
+        return false;
+    }
+
+    private void trackFailedAttempt(String username) {
+        failedLoginAttempts.putIfAbsent(username, new AtomicInteger(0));
+        int attempts = failedLoginAttempts.get(username).incrementAndGet();
+
+        if (attempts >= MAX_ATTEMPTS) {
+            auditService.logAccountEvent(username, "Account Locked");
+            lockoutExpiry.put(username, Instant.now().plusSeconds(LOCKOUT_DURATION_MINUTES * 60));
+        }
+    }
+
+    public UserController(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, UserService userService, AuditService auditService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.userService = userService;
+        this.auditService = auditService;
     }
 
     @PostMapping("/register")
@@ -40,10 +80,14 @@ public class UserController {
             return ResponseEntity.badRequest().body("Email is already taken");
         }
 
+        if (!userService.isValidPassword(user.getPassword())) {
+            return ResponseEntity.badRequest().body("Password must include at least one uppercase, one lowercase, one number, one special character, and be 8 characters long.");
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEnabled(true);
         userRepository.save(user);
-
+        auditService.logAccountEvent(user.getUsername(), "Account Created");
         // Return only username and userId
         return ResponseEntity.ok(Map.of(
                 "email", user.getUsername(),
@@ -64,6 +108,11 @@ public class UserController {
 
         User user = userOptional.get();
 
+        // Block accounts after 3 failed attempts
+        if(isAccountLocked(user.getUsername())) {
+            return ResponseEntity.status(403).body("Account temporarily locked due to multiple failed attempts. Please try again later.");
+        }
+
         if(user.isGoogleLogin())return ResponseEntity.status(401).body("Try Logging In With Google");
         try {
             Authentication authentication = authenticationManager.authenticate(
@@ -74,6 +123,9 @@ public class UserController {
             user.setToken(user.generateToken());
             userRepository.save(user);
 
+            // Reset failed attempts on successful login
+            failedLoginAttempts.remove(user.getUsername());
+            auditService.logAccountEvent(user.getUsername(), "Login Successful");
             return ResponseEntity.ok(Map.of(
                     "token", user.getToken(),
                     "message", "Login successful",
@@ -84,6 +136,8 @@ public class UserController {
 
             ));
         } catch (BadCredentialsException ex) {
+            trackFailedAttempt(user.getUsername());
+            auditService.logAccountEvent(user.getUsername(), "Login Failed");
             return ResponseEntity.status(401).body("Invalid username or password");
         }
     }
@@ -110,6 +164,8 @@ public class UserController {
             user.setPassword(null);
             user.setToken(user.generateToken());
             userRepository.save(user);
+
+            auditService.logAccountEvent(user.getUsername(), "Google Account Linked");
         }
 
         return ResponseEntity.ok(Map.of(
@@ -123,7 +179,19 @@ public class UserController {
         if (userId == null) {
             return ResponseEntity.status(401).body("Invalid token");
         }
+        //handle new password
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!userService.isValidPassword(updateUser.getPassword())) {
+            return ResponseEntity.badRequest().body("Password must include at least one uppercase, one lowercase, one number, one special character, and be 8 characters long.");
+        }
+
+        if (!userService.isSignificantlyDifferent(user.getPassword(), updateUser.getPassword())) {
+            return ResponseEntity.badRequest().body("New password must differ by at least 8 characters from the old password.");
+        }
+
         userService.modifyUser(updateUser, userId);
+        auditService.logAccountEvent(user.getUsername(), "User Modified");
         return ResponseEntity.ok("User modified successfully");
     }
 
