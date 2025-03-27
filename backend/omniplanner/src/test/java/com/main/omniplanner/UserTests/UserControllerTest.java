@@ -1,5 +1,6 @@
 package com.main.omniplanner.UserTests;
 
+import com.main.omniplanner.requests.ChangePasswordRequest;
 import com.main.omniplanner.requests.LoginRequest;
 import com.main.omniplanner.requests.UpdateUserRequest;
 import com.main.omniplanner.user.*;
@@ -13,8 +14,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -39,6 +43,9 @@ public class UserControllerTest {
     private LoginRequest loginRequest;
     private UserController userController;
     private User user;
+
+    private final Map<String, Instant> lockoutExpiry = new ConcurrentHashMap<>();
+    private final Map<String, AtomicInteger> failedLoginAttempts = new ConcurrentHashMap<>();
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -237,5 +244,43 @@ public class UserControllerTest {
         ResponseEntity<?> response = userController.modifyUser("test_token", updateUser);
 
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    }
+
+    @Test
+    public void testIsAccountLocked_NoLockoutRecord() {
+        String username = "new_user";
+        boolean result = userController.isAccountLocked(username);
+        assertFalse(result, "Account should not be locked as no lockout record exists");
+    }
+
+    @Test
+    public void testChangePassword_Success() {
+        String token = "valid_token";
+        Integer userId = 1;
+        ChangePasswordRequest request = new ChangePasswordRequest();
+        request.setOldPassword("oldPass123");
+        request.setNewPassword("newPass456");
+
+        when(userRepository.getIdByToken(token)).thenReturn(userId);
+        when(userService.changePassword(userId, "oldPass123", "newPass456")).thenReturn((ResponseEntity) ResponseEntity.ok("Password changed successfully"));
+        ResponseEntity<?> response = userController.changePassword(token, request);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Password changed successfully", response.getBody());
+    }
+
+    @Test
+    public void testChangePassword_InvalidToken() {
+        String token = "invalid_token";
+        ChangePasswordRequest request = new ChangePasswordRequest();
+        request.setOldPassword("oldPass123");
+        request.setNewPassword("newPass456");
+
+        when(userRepository.getIdByToken(token)).thenReturn(null);
+
+        ResponseEntity<?> response = userController.changePassword(token, request);
+
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        assertEquals("Invalid token", response.getBody());
     }
 }

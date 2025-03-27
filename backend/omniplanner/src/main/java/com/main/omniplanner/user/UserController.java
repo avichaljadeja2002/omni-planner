@@ -43,7 +43,7 @@ public class UserController {
     private static final int LOCKOUT_DURATION_MINUTES = 15;
 
     // Check for locked account logic
-    private boolean isAccountLocked(String username) {
+    public boolean isAccountLocked(String username) {
         if (lockoutExpiry.containsKey(username)) {
             Instant lockoutTime = lockoutExpiry.get(username);
             if (Instant.now().isBefore(lockoutTime)) {
@@ -57,7 +57,7 @@ public class UserController {
         return false;
     }
 
-    private void trackFailedAttempt(String username) {
+    public void trackFailedAttempt(String username) {
         failedLoginAttempts.putIfAbsent(username, new AtomicInteger(0));
         int attempts = failedLoginAttempts.get(username).incrementAndGet();
 

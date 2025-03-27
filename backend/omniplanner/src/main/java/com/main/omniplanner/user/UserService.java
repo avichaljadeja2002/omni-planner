@@ -13,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.Timestamp;
 import java.util.Optional;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 
 
@@ -54,6 +53,7 @@ public class UserService implements UserDetailsService {
 
     public boolean isSignificantlyDifferent(String oldPassword, String newPassword) {
         // New password must differ by at least 8 characters from the old password
+        System.out.println("\"" + oldPassword + "\"" + " " + "\"" + newPassword+ "\"");
         return new LevenshteinDistance().apply(oldPassword, newPassword) >= 8;
     }
 
