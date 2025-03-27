@@ -2,10 +2,7 @@ package com.main.omniplanner.UserTests;
 
 import com.main.omniplanner.requests.LoginRequest;
 import com.main.omniplanner.requests.UpdateUserRequest;
-import com.main.omniplanner.user.User;
-import com.main.omniplanner.user.UserController;
-import com.main.omniplanner.user.UserRepository;
-import com.main.omniplanner.user.UserService;
+import com.main.omniplanner.user.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -36,6 +33,9 @@ public class UserControllerTest {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AuditService auditService;
+
     private LoginRequest loginRequest;
     private UserController userController;
     private User user;
@@ -46,26 +46,30 @@ public class UserControllerTest {
         passwordEncoder = mock(PasswordEncoder.class);
         authenticationManager = mock(AuthenticationManager.class);
         userService = mock(UserService.class);
-        userController = new UserController(userRepository, passwordEncoder, authenticationManager, userService);
+        auditService = mock(AuditService.class);
+        userController = new UserController(userRepository, passwordEncoder, authenticationManager, userService, auditService);
 
         user = new User();
         user.setUsername("test_username");
-        user.setPassword("test_password");
+        user.setPassword("Test_password1@");
         user.setName(null);
         user.setPhone(null);
         user.setAge(null);
 
-        loginRequest = new LoginRequest("test_username", "test_password");
+        loginRequest = new LoginRequest("test_username", "Test_password1@");
 
     }
 
     @Test
     public void testRegisterUser_Success() {
         when(userRepository.findByUsername("test_username")).thenReturn(Optional.empty());
-        when(passwordEncoder.encode("test_password")).thenReturn("test_password_encoded");
+        when(passwordEncoder.encode("Test_password1@")).thenReturn("test_password_encoded");
         when(userRepository.save(user)).thenReturn(user);
+        when(userService.isValidPassword("Test_password1@")).thenReturn(true);
 
         ResponseEntity<?> response = userController.registerUser(user);
+        System.out.println(user.getPassword());
+        System.out.println(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         // Assert response body as a Map
         @SuppressWarnings("unchecked")
@@ -207,22 +211,26 @@ public class UserControllerTest {
 
     @Test
     public void testModifyUser_Success() {
-        UpdateUserRequest updateUser = new UpdateUserRequest("test_name", "test_phone", "test_age");
+        UpdateUserRequest updateUser = new UpdateUserRequest("test_name", "test_phone", "test_age", "Test_password1@");
         User user2 = user;
         user2.setName("test_name");
         user2.setPhone("test_phone");
         user2.setAge("test_age");
 
         when(userRepository.getIdByToken("test_token")).thenReturn(1);
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+        when(userRepository.save(user)).thenReturn(user);
+        when(userService.isValidPassword("Test_password1@")).thenReturn(true);
+        when(userService.isSignificantlyDifferent(user.getPassword(), "Test_password1@")).thenReturn(true);
 
         ResponseEntity<?> response = userController.modifyUser("test_token", updateUser);
-
+        System.out.println(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
     public void testModifyUser_Fail() {
-        UpdateUserRequest updateUser = new UpdateUserRequest("test_name", "test_phone", "test_age");
+        UpdateUserRequest updateUser = new UpdateUserRequest("test_name", "test_phone", "test_age", "Test_password1@");
 
         when(userRepository.getIdByToken("test_token")).thenReturn(null);
 
