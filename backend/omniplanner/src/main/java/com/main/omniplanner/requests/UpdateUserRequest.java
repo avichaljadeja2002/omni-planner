@@ -4,11 +4,13 @@ public class UpdateUserRequest {
     public String name;
     public String phone;
     public String age;
+    public String password;
 
-    public UpdateUserRequest(String name, String phone, String age) {
+    public UpdateUserRequest(String name, String phone, String age, String password) {
         this.name = name;
         this.phone = phone;
         this.age = age;
+        this.password = password;
     }
 
     public String getName() {
@@ -33,5 +35,13 @@ public class UpdateUserRequest {
 
     public void setAge(String age) {
         this.age = age;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
