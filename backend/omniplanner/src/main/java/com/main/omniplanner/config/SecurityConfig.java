@@ -43,9 +43,6 @@ public class SecurityConfig {
                             ClearSiteDataHeaderWriter.Directive.STORAGE,
                             ClearSiteDataHeaderWriter.Directive.EXECUTION_CONTEXTS
                         ))
-                        .addHeaderWriter((request, response) -> {
-                            response.setHeader("Set-Cookie", "HttpOnly; Secure; SameSite=Strict");
-                        })
                 )
 
                 .sessionManagement(session -> session

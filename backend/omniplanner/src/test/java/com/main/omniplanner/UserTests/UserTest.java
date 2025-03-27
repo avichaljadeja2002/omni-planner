@@ -110,7 +110,32 @@ public class UserTest {
         assertTrue(token.matches("[0-9a-fA-F-]{36}"), "Token should follow UUID format");
     }
 
+    @Test
+    public void testGetSetLastPasswordUpdate(){
+        // Arrange
+        User user = new User();
+        long currentTime = System.currentTimeMillis();
+        java.sql.Timestamp timestamp = new java.sql.Timestamp(currentTime);
 
+        // Act
+        user.setLastPasswordUpdate(timestamp);
 
+        // Assert
+        assertEquals(timestamp, user.getLastPasswordUpdate(), "Last password update should be set correctly");
+    }
 
-}
+    @Test
+    public void testGetSetPreviousPasswords(){
+        // Arrange
+        User user = new User();
+        java.util.List<String> previousPasswords = new java.util.ArrayList<String>();
+        previousPasswords.add("password1");
+        previousPasswords.add("password2");
+
+        // Act
+        user.setPreviousPasswords(previousPasswords);
+
+        // Assert
+        assertEquals(previousPasswords, user.getPreviousPasswords(), "Previous passwords should be set correctly");
+    }
+    }

@@ -39,5 +39,13 @@ public class UpdateUserRequestTest {
         updateUserRequest.setAge(age);  // Set age
         assertEquals(age, updateUserRequest.getAge());  // Assert that getAge returns the same value
     }
+
+    @Test
+    public void testGetSetPassword(){
+        String pass = "abcdef123456";
+
+        updateUserRequest.setPassword(pass);  // Set password
+        assertEquals(pass, updateUserRequest.getPassword());  // Assert that getPassword returns the same value
+    }
 }
 
