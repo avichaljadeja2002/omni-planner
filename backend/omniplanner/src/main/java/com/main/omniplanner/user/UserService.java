@@ -25,9 +25,7 @@ public class UserService implements UserDetailsService {
     private final AuditService auditService;
     private final PasswordEncoder passwordEncoder;
 
-    private final PasswordEncoder passwordEncoder;
-
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuditService auditService, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, AuditService auditService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.auditService = auditService;
         this.passwordEncoder = passwordEncoder;
@@ -47,6 +45,16 @@ public class UserService implements UserDetailsService {
                 .credentialsExpired(false)
                 .disabled(!user.isEnabled())
                 .build();
+    }
+
+    public boolean isValidPassword(String password) {
+        // Password must include at least one uppercase, one lowercase, one number, one special character, and be 8 characters long
+        return Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{8,}$").matcher(password).matches();
+    }
+
+    public boolean isSignificantlyDifferent(String oldPassword, String newPassword) {
+        // New password must differ by at least 8 characters from the old password
+        return new LevenshteinDistance().apply(oldPassword, newPassword) >= 8;
     }
 
     public void modifyUser(UpdateUserRequest userRequest, Integer userId) {
@@ -73,7 +81,7 @@ public class UserService implements UserDetailsService {
         auditService.logAccountEvent(user.getUsername(), "User Modified");
     }
 
-    public ResponseEntity<?>  changePassword(Integer userId, String oldPassword, String newPassword){
+    public ResponseEntity<?> changePassword(Integer userId, String oldPassword, String newPassword){
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
             return ResponseEntity.status(404).body("User not found");
@@ -92,19 +100,16 @@ public class UserService implements UserDetailsService {
             return ResponseEntity.badRequest().body("Incorrect old password");
         }
 
-        if (newPassword.length() < 8) {
-            return ResponseEntity.badRequest().body("New password must be at least 8 characters long");
+        if (newPassword.length() < 15) {
+            return ResponseEntity.badRequest().body("New password must be at least 15 characters long");
         }
 
-        int diffCount = 0;
-        for (int i = 0; i < Math.max(oldPassword.length(), newPassword.length()); i++) {
-            if (i >= oldPassword.length() || i >= newPassword.length() ||
-                    oldPassword.charAt(i) != newPassword.charAt(i)) {
-                diffCount++;
-            }
-        }
-        if (diffCount < 8) {
+        if (!isSignificantlyDifferent(user.getPassword(), newPassword)){
             return ResponseEntity.badRequest().body("New password must have at least 8 different characters from the old password");
+        }
+
+        if(!isValidPassword(newPassword)){
+            return ResponseEntity.badRequest().body("Password must include at least one uppercase, one lowercase, one number, one special character, and be 8 characters long.");
         }
 
         if (user.getPreviousPasswords().contains(passwordEncoder.encode(oldPassword))) {
