@@ -1,5 +1,6 @@
 package com.main.omniplanner.user;
 
+import com.main.omniplanner.requests.ChangePasswordRequest;
 import com.main.omniplanner.requests.LoginRequest;
 import com.main.omniplanner.requests.UpdateUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -195,8 +196,12 @@ public class UserController {
         return ResponseEntity.ok("User modified successfully");
     }
 
-
+    @PutMapping("/change_password/{token}")
+    public ResponseEntity<?> changePassword(@PathVariable String token, @RequestBody ChangePasswordRequest changePasswordRequest) {
+        Integer userId = userRepository.getIdByToken(token);
+        if (userId == null) {
+            return ResponseEntity.status(401).body("Invalid token");
+        }
+        return userService.changePassword(userId, changePasswordRequest.getOldPassword(),changePasswordRequest.getNewPassword());
+    }
 }
-
-
-
