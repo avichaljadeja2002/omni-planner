@@ -1,6 +1,9 @@
 package com.main.omniplanner.user;
 
 import jakarta.persistence.*;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -37,6 +40,14 @@ public class User {
     private String googleCalendarAccessToken;
     @Column(name = "is_google_login", nullable = false)
     private boolean isGoogleLogin = false;
+
+    @Column(name = "last_password_update")
+    private Timestamp lastPasswordUpdate;
+
+    @ElementCollection
+    @CollectionTable(name = "previous_passwords", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "password")
+    private List<String> previousPasswords = new ArrayList<>();
 
     public boolean isGoogleLogin() {
         return isGoogleLogin;
@@ -95,6 +106,22 @@ public class User {
 
     public void setGoogleCalendarAccessToken(String googleCalendarAccessToken) {
         this.googleCalendarAccessToken = googleCalendarAccessToken;
+    }
+
+    public Timestamp getLastPasswordUpdate() {
+        return lastPasswordUpdate;
+    }
+
+    public void setLastPasswordUpdate(Timestamp lastPasswordUpdate) {
+        this.lastPasswordUpdate = lastPasswordUpdate;
+    }
+
+    public List<String> getPreviousPasswords() {
+        return previousPasswords;
+    }
+
+    public void setPreviousPasswords(List<String> previousPasswords) {
+        this.previousPasswords = previousPasswords;
     }
 
     public String getToken() {
