@@ -175,34 +175,35 @@ export default function AccountSetting() {
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Account Settings</Text>
-            <View style={styles.accountSetting}>
-                <Text style={styles.label}>Name</Text>
-                <TextInput
-                    value={formData.name}
-                    onChangeText={(text) => handleChange('name', text)}
-                    style={styles.textInput}
-                    placeholder="Enter your name"
-                />
-            </View>
-            <View style={styles.accountSetting}>
-                <Text style={styles.label}>Phone (Optional)</Text>
-                <TextInput
-                    value={formData.phone || ''}
-                    onChangeText={(text) => handleChange('phone', text)}
-                    style={styles.textInput}
-                    placeholder="Enter your phone number"
-                    keyboardType="phone-pad"
-                />
-            </View>
-            <View style={styles.accountSetting}>
-                <Text style={styles.label}>Age (Optional)</Text>
-                <TextInput
-                    value={formData.age || ''}
-                    onChangeText={(text) => handleChange('age', text)}
-                    style={styles.textInput}
-                    placeholder="Enter your age"
-                    keyboardType="numeric"
-                />
+
+            <View style={styles.sectionContainer}>
+                <Text style={styles.sectionTitle}>Profile Information</Text>
+                <View style={styles.accountSetting}>
+                    <Text style={styles.label}>Name</Text>
+                    <TextInput
+                        value={formData.name}
+                        onChangeText={(text) => handleChange('name', text)}
+                        style={styles.textInput}
+                        placeholder="Enter your name" />
+                </View>
+                <View style={styles.accountSetting}>
+                    <Text style={styles.label}>Phone (Optional)</Text>
+                    <TextInput
+                        value={formData.phone || ''}
+                        onChangeText={(text) => handleChange('phone', text)}
+                        style={styles.textInput}
+                        placeholder="Enter your phone number"
+                        keyboardType="phone-pad" />
+                </View>
+                <View style={styles.accountSetting}>
+                    <Text style={styles.label}>Age (Optional)</Text>
+                    <TextInput
+                        value={formData.age || ''}
+                        onChangeText={(text) => handleChange('age', text)}
+                        style={styles.textInput}
+                        placeholder="Enter your age"
+                        keyboardType="numeric" />
+                </View>
             </View>
 
             <View style={styles.footer}>
@@ -211,9 +212,7 @@ export default function AccountSetting() {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.logoutButton}
-                    onPress={() =>
-                        showAlert('Logout', 'Are you sure you want to logout?', 'Cancel', 'Logout', confirmLogout)
-                    }
+                    onPress={() => showAlert('Logout', 'Are you sure you want to logout?', 'Cancel', 'Logout', confirmLogout)}
                 >
                     <Text style={styles.logoutButtonText}>Logout</Text>
                 </TouchableOpacity>
@@ -224,12 +223,12 @@ export default function AccountSetting() {
                     <Text style={styles.changePasswordButtonText}>Change Password</Text>
                 </TouchableOpacity>
             </View>
-
+            
             <Modal
-                visible={changePasswordModalVisible}
-                animationType="slide"
-                transparent={true}
-            >
+            visible={changePasswordModalVisible}
+            animationType="slide"
+            transparent={true}
+        >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
                         <Text style={styles.modalHeader}>Change Password</Text>
@@ -238,15 +237,13 @@ export default function AccountSetting() {
                             placeholder="Old Password"
                             secureTextEntry={true}
                             value={oldPassword}
-                            onChangeText={setOldPassword}
-                        />
+                            onChangeText={setOldPassword} />
                         <TextInput
                             style={styles.modalTextInput}
                             placeholder="New Password"
                             secureTextEntry={true}
                             value={newPassword}
-                            onChangeText={setNewPassword}
-                        />
+                            onChangeText={setNewPassword} />
                         <View style={styles.modalButtons}>
                             <TouchableOpacity
                                 style={styles.buttonCancel}
@@ -260,9 +257,7 @@ export default function AccountSetting() {
                         </View>
                     </View>
                 </View>
-            </Modal>
-
-            <Alert
+            </Modal><Alert
                 isVisible={alertModal.visible}
                 toggleModal={hideAlert}
                 header={alertModal.header}
@@ -270,157 +265,161 @@ export default function AccountSetting() {
                 onSave={() => {
                     alertModal.onSave();
                     hideAlert();
-                }}
+                } }
                 saveButtonText={alertModal.saveText}
-                closeButtonText={alertModal.closeText}
-            />
-        </View>
+                closeButtonText={alertModal.closeText} />
+        </View >
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#ffffff',
-        paddingHorizontal: 20,
-        paddingVertical: 20,
+    flex: 1,
+    backgroundColor: '#ffffff',
+    paddingHorizontal: 20,
+    paddingVertical: 20,
     },
     header: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        color: '#333',
-        marginBottom: 20,
-        alignSelf: 'center',
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 20,
+    alignSelf: 'center',
+    },
+    sectionContainer: { 
+    marginBottom: 20,
+    },
+    sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#555',
+    marginBottom: 10,
     },
     accountSetting: {
-        width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 15,
+    width: '100%',
+    marginBottom: 15,
     },
     label: {
-        fontSize: 16,
-        color: '#333',
-        width: '30%',
+    fontSize: 16,
+    color: '#333',
+    marginBottom: 5,
     },
     textInput: {
-        flex: 1,
-        height: 45,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 8,
-        paddingHorizontal: 10,
-        backgroundColor: '#fff',
+    height: 45,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    backgroundColor: '#fff',
     },
     footer: {
-        alignItems: 'center',
-        marginTop: 30,
+    alignItems: 'center',
+    marginTop: 30,
     },
     saveButton: {
-        backgroundColor: '#65558f',
-        borderRadius: 8,
-        paddingVertical: 12,
-        paddingHorizontal: 40,
-        alignItems: 'center',
-        marginBottom: 10,
-        width: '100%',
+    backgroundColor: '#65558f',
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 40,
+    alignItems: 'center',
+    marginBottom: 10,
+    width: '100%',
     },
     saveButtonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
     },
     logoutButton: {
-        backgroundColor: '#ff6347',
-        borderRadius: 8,
-        paddingVertical: 12,
-        paddingHorizontal: 40,
-        alignItems: 'center',
-        marginBottom: 10,
-        width: '100%',
+    backgroundColor: '#ff6347',
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 40,
+    alignItems: 'center',
+    marginBottom: 10,
+    width: '100%',
     },
     logoutButtonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
     },
     changePasswordButton: {
-        backgroundColor: '#4a6572',
-        borderRadius: 8,
-        paddingVertical: 12,
-        paddingHorizontal: 40,
-        alignItems: 'center',
-        width: '100%',
+    backgroundColor: '#4a6572',
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 40,
+    alignItems: 'center',
+    width: '100%',
     },
     changePasswordButtonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
     },
     centeredView: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     modalView: {
-        margin: 20,
-        backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 35,
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-        width: '90%',
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+    width: 0,
+    height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    width: '90%',
     },
     modalHeader: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
-        color: '#333',
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: '#333',
     },
     modalTextInput: {
-        height: 45,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 8,
-        paddingHorizontal: 10,
-        marginBottom: 15,
-        width: '100%',
-        backgroundColor: '#fff',
+    height: 45,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    marginBottom: 15,
+    width: '100%',
+    backgroundColor: '#fff',
     },
     modalButtons: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '100%',
-        marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginTop: 10,
     },
     buttonCancel: {
-        backgroundColor: '#6c757d',
-        borderRadius: 10,
-        paddingVertical: 12,
-        paddingHorizontal: 20,
-        flex: 0.48,
-        alignItems: 'center',
+    backgroundColor: '#6c757d',
+    borderRadius: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    flex: 0.48,
+    alignItems: 'center',
     },
     buttonConfirm: {
-        backgroundColor: '#28a745',
-        borderRadius: 10,
-        paddingVertical: 12,
-        paddingHorizontal: 20,
-        flex: 0.48,
-        alignItems: 'center',
+    backgroundColor: '#28a745',
+    borderRadius: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    flex: 0.48,
+    alignItems: 'center',
     },
     textStyle: {
-        color: 'white',
-        fontWeight: 'bold',
-        textAlign: 'center',
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
     },
-});
+   });
