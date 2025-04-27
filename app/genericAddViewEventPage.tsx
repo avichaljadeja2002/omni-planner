@@ -328,9 +328,6 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({
       </View>
 
       <View style={styles2.buttonContainer}>
-        <TouchableOpacity style={styles2.saveButton} onPress={handleSave}>
-          <Text style={styles2.saveButtonText}>Save</Text>
-        </TouchableOpacity>
         <TouchableOpacity
           style={styles2.cancelButton}
           onPress={() => {
@@ -338,6 +335,9 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({
           }}
         >
           <Text style={styles2.cancelButtonText}>Cancel</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles2.saveButton} onPress={handleSave}>
+          <Text style={styles2.saveButtonText}>Save</Text>
         </TouchableOpacity>
       </View>
 
