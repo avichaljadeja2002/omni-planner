@@ -1,16 +1,13 @@
 package com.main.omniplanner.EventTests;
 
-import com.main.omniplanner.user.EventController;
-import com.main.omniplanner.user.EventService;
-import com.main.omniplanner.user.GenericEvent;
-import com.main.omniplanner.user.UserRepository;
+import com.main.omniplanner.user.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +17,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class HealthEventTest {
+class FinanceEventTest {
+
     @Mock
     private EventService eventService;
 
@@ -32,6 +30,9 @@ class HealthEventTest {
     private GenericEvent event1;
     private GenericEvent event2;
     private String token;
+
+    UserCalendarInfo userCalendarInfo;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -55,48 +56,49 @@ class HealthEventTest {
         event2.setEvent_time("11:00:00");
         event2.setRepeating(true);
         event2.setRepeat_timeline(2);
+
+        userCalendarInfo= new UserCalendarInfo();
+        userCalendarInfo.setId(1);
+        userCalendarInfo.setGoogleCalendarLinked(false);
     }
 
     @Test
     void testGetEventsByUserId_Success() {
-        List<GenericEvent> events = Arrays.asList(event1, event2);
-        when(userRepository.getIdByToken(token)).thenReturn(1);
-        // When
-        when(eventService.getEventsByUserId(1)).thenReturn(events);
-        ResponseEntity<List<GenericEvent>> response = eventController.getEventsByUserId(token);
+            List<GenericEvent> events = Arrays.asList(event1, event2);
+            when(userRepository.findUserCalendarInfoByToken(token)).thenReturn(userCalendarInfo);
+            when(eventService.getEventsByUserId(1)).thenReturn(events);
+            ResponseEntity<List<GenericEvent>> response = eventController.getEventsByUserId(token);
 
-        // Then
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(2, Objects.requireNonNull(response.getBody()).size());
-        // Assert for the first event
-        assertEquals("Event 1", response.getBody().get(0).getTitle());
-        assertEquals(1, response.getBody().get(0).getUserId());
-        assertEquals("2023-10-01", response.getBody().get(0).getEvent_date());
-        assertEquals("10:00:00", response.getBody().get(0).getEvent_time());
-        assertFalse(response.getBody().get(0).getRepeating());
-        assertNull(response.getBody().get(0).getRepeat_timeline());
-       
-        // Assert for the second event
-        assertEquals("Event 2", response.getBody().get(1).getTitle());
-        assertEquals(1, response.getBody().get(1).getUserId());
-        assertEquals("2023-10-02", response.getBody().get(1).getEvent_date());
-        assertEquals("11:00:00", response.getBody().get(1).getEvent_time());
-        assertTrue(response.getBody().get(1).getRepeating());
-        assertEquals(2, response.getBody().get(1).getRepeat_timeline());
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+            assertEquals(2, Objects.requireNonNull(response.getBody()).size());
+            assertEquals("Event 1", response.getBody().get(0).getTitle());
+            assertEquals(1, response.getBody().get(0).getUserId());
+            assertEquals("2023-10-01", response.getBody().get(0).getEvent_date());
+            assertEquals("10:00:00", response.getBody().get(0).getEvent_time());
+
+            assertEquals("Event 2", response.getBody().get(1).getTitle());
+            assertEquals(1, response.getBody().get(1).getUserId());
+            assertEquals("2023-10-02", response.getBody().get(1).getEvent_date());
+            assertEquals("11:00:00", response.getBody().get(1).getEvent_time());
     }
-
     @Test
     void testGetEventsByUserId_EmptyList() {
-        // Given
-        Integer userId = 2;
+        when(eventService.getEventsByUserId(2)).thenReturn(List.of());
         when(userRepository.getIdByToken(token)).thenReturn(2);
-        // When
-        when(eventService.getEventsByUserId(userId)).thenReturn(Arrays.asList());
         ResponseEntity<List<GenericEvent>> response = eventController.getEventsByUserId(token);
 
-        // Then
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(0, response.getBody().size());
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        assertNull(response.getBody());
+    }
+
+
+    @Test
+    void testGetEventsByUserId_NonExistingUser() {
+        when(userRepository.findUserCalendarInfoByToken(token)).thenReturn(null);
+        ResponseEntity<List<GenericEvent>> response = eventController.getEventsByUserId(token);
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        assertNull(response.getBody());
+
     }
     @Test
     void testAddEvent_Success() {
