@@ -28,7 +28,7 @@ public class GenericEvent {
     private Integer userId;
 
     private String ingredients;
-
+    private Boolean completed;
     // Getters and Setters
     public String getDescription() {
         return description;
@@ -113,5 +113,13 @@ public class GenericEvent {
     }
     public void setIngredients(String ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 }

@@ -60,21 +60,21 @@ public class UserService implements UserDetailsService {
     public void modifyUser(UpdateUserRequest userRequest, Integer userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         // Enforce password complexity check
-        if (!isValidPassword(userRequest.getPassword())) {
+        if (userRequest.getPassword() != null && !isValidPassword(userRequest.getPassword())) {
             throw new IllegalArgumentException("Password must include at least one uppercase, one lowercase, one number, one special character, and be 8 characters long.");
         }
 
         // Enforce 8-character change rule
-        if (!isSignificantlyDifferent(user.getPassword(), userRequest.getPassword())) {
+        if (userRequest.getPassword() != null && user.getPassword() != null && !isSignificantlyDifferent(user.getPassword(), userRequest.getPassword())) {
             throw new IllegalArgumentException("New password must differ by at least 8 characters from the old password.");
         }
 
         
 
-        user.setPassword(passwordEncoder.encode(userRequest.getPassword())); 
-        user.setName(userRequest.getName());
-        user.setPhone(userRequest.getPhone());
-        user.setAge(userRequest.getAge());
+        if(userRequest.getPassword() != null) user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        if(userRequest.getName() != null) user.setName(userRequest.getName());
+        if(userRequest.getPhone() != null) user.setPhone(userRequest.getPhone());
+        if(userRequest.getAge() != null) user.setAge(userRequest.getAge());
         userRepository.save(user);
 
         // Log the modification
@@ -118,7 +118,7 @@ public class UserService implements UserDetailsService {
 
         user.getPreviousPasswords().add(passwordEncoder.encode(user.getPassword()));
         if (user.getPreviousPasswords().size() > 5) {
-            user.getPreviousPasswords().remove(0); // Keep only the last 5
+            user.getPreviousPasswords().remove(0);
         }
 
         user.setPassword(passwordEncoder.encode(newPassword));

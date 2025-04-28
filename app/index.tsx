@@ -51,7 +51,7 @@ export default function AuthScreen() {
     const validatePassword = (password: string): string[] => {
         const errors: string[] = [];
         
-        if (password.length < 8) {
+        if (password?.length < 8) {
             errors.push("Password must be at least 8 characters long");
         }
         if (!/[a-z]/.test(password)) {
@@ -82,7 +82,7 @@ export default function AuthScreen() {
         const { username, password } = credentials;
         if (!isLogin) {
             const errors = validatePassword(password);
-            if (errors.length > 0) {
+            if (errors?.length > 0) {
                 setPasswordErrors(errors);
                 showAlert('Password Requirements', 'Please fix the password issues below.', 'Close', "");
                 return;
@@ -95,7 +95,7 @@ export default function AuthScreen() {
             if(password == password.toLowerCase()) {
                 cLog(1, "Password must include at least one uppercase character");
             }
-            if(password.length < 15) {
+            if(password?.length < 15) {
                 cLog(1, "Password must have at least 15 characters");
             }
             if (/^[a-zA-Z0-9]*$/.test(password)) {

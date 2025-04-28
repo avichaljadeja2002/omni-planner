@@ -65,12 +65,13 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({
   const handleSave = async () => {
     const formattedData = {
       ...formData,
-      event_date: formData.event_date?.toISOString().split('T')[0],
-      event_time: formData.event_time?.toTimeString().split(' ')[0],
-      repeating: Boolean(formData.repeat_timeline && formData.repeat_timeline),
-      repeat_timeline: formData.repeat_timeline,
-      ingredients: formData.ingredients?.join(','),
-      money: formData.money,
+      event_date: formData?.event_date?.toISOString().split('T')[0],
+      completed: 0,
+      event_time: formData?.event_time?.toTimeString().split(' ')[0],
+      repeating: Boolean(formData?.repeat_timeline && formData?.repeat_timeline),
+      repeat_timeline: formData?.repeat_timeline,
+      ingredients:formData?.ingredients,
+      money: formData?.money,
     };
     cLog(1, formattedData);
     try {
@@ -164,7 +165,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({
   const handleDelete = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
-      await call(`/delete_event/${formData.id}/${token}`, 'DELETE');
+      await call(`/delete_event/${formData?.id}/${token}`, 'DELETE');
       navigation.navigate(mainPage as any);
     } catch (error) {
       console.error('Error deleting event:', error);

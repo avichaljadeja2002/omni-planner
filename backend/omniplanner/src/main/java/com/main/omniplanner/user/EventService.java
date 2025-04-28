@@ -41,4 +41,8 @@ public class EventService {
         Integer userId = userRepository.getIdByToken(token);
         return eventRepository.deleteEvent(id, userId) > 0;
     }
+
+    public boolean completeEvent(int id) {
+        return eventRepository.completeEvent(id);
+    }
 }
