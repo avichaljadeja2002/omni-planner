@@ -32,23 +32,23 @@ export default function AccountSetting() {
         const token = await AsyncStorage.getItem('token');
 
         try {
-            if (!formData.name.trim()) {
+            if (!formData?.name.trim()) {
                 showAlert('Invalid!', 'Name cannot be empty.', 'Close', '');
                 return;
             }
 
-            if (formData.age) {
-                const age = Number(formData.age);
+            if (formData?.age) {
+                const age = Number(formData?.age);
                 if (isNaN(age) || age < 1 || age > 150) {
-                    cLog(1, 'Invalid Age:', formData.age);
+                    cLog(1, 'Invalid Age:', formData?.age);
                     showAlert('Invalid Age', 'Please enter a valid age (1-150).', 'Close', '');
                     return;
                 }
             }
 
             const phoneRegex = /^[0-9]{7,15}$/;
-            if (formData.phone && !phoneRegex.test(formData.phone)) {
-                cLog(1, 'Invalid Phone:', formData.phone);
+            if (formData?.phone && !phoneRegex.test(formData?.phone)) {
+                cLog(1, 'Invalid Phone:', formData?.phone);
                 showAlert(
                     'Invalid Phone',
                     'Please enter a valid phone number (7-15 digits).',
@@ -58,9 +58,9 @@ export default function AccountSetting() {
                 return;
             }
 
-            await AsyncStorage.setItem('age', formData.age);
-            await AsyncStorage.setItem('phone', formData.phone);
-            await AsyncStorage.setItem('name', formData.name);
+            await AsyncStorage.setItem('age', formData?.age);
+            await AsyncStorage.setItem('phone', formData?.phone);
+            await AsyncStorage.setItem('name', formData?.name);
 
             const response = await call(
                 `/api/users/modify_user/${token}`,
@@ -73,7 +73,7 @@ export default function AccountSetting() {
                 throw new Error(response.data.message);
             } else {
                 Keyboard.dismiss();
-                showAlert('Success', 'Data saved successfully!', 'Close', '');
+                showAlert('Success', 'Account Settings saved successfully!', 'Close', '');
                 cLog(1, 'Account Information saved successfully:', formData);
             }
         } catch (error) {
@@ -111,7 +111,7 @@ export default function AccountSetting() {
     };
 
     const handlePasswordChange = async () => {
-        if (newPassword.length < 8) {
+        if (newPassword?.length < 8) {
             showAlert(
                 'Invalid Password',
                 'Password must be at least 8 characters long.',
@@ -147,7 +147,7 @@ export default function AccountSetting() {
                 newPassword,
             });
 
-            if (response.status === 200) {
+            if (response?.status === 200) {
                 showAlert('Success', 'Password changed successfully!', 'Close', '');
                 setChangePasswordModalVisible(false);
                 setOldPassword('');
@@ -160,9 +160,11 @@ export default function AccountSetting() {
                     '',
                 );
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error changing password:', error);
-            showAlert('Error', 'An unexpected error occurred.', 'Close', '');
+            let message = "'An error occurred while changing your password: \n"
+            if(error?.response?.data) message = message + error.response.data
+            showAlert('Error', message , 'Close', '');
         }
     };
 
@@ -181,7 +183,7 @@ export default function AccountSetting() {
                 <View style={styles.accountSetting}>
                     <Text style={styles.label}>Name</Text>
                     <TextInput
-                        value={formData.name}
+                        value={formData?.name}
                         onChangeText={(text) => handleChange('name', text)}
                         style={styles.textInput}
                         placeholder="Enter your name" />
@@ -189,7 +191,7 @@ export default function AccountSetting() {
                 <View style={styles.accountSetting}>
                     <Text style={styles.label}>Phone (Optional)</Text>
                     <TextInput
-                        value={formData.phone || ''}
+                        value={formData?.phone || ''}
                         onChangeText={(text) => handleChange('phone', text)}
                         style={styles.textInput}
                         placeholder="Enter your phone number"
@@ -198,7 +200,7 @@ export default function AccountSetting() {
                 <View style={styles.accountSetting}>
                     <Text style={styles.label}>Age (Optional)</Text>
                     <TextInput
-                        value={formData.age || ''}
+                        value={formData?.age || ''}
                         onChangeText={(text) => handleChange('age', text)}
                         style={styles.textInput}
                         placeholder="Enter your age"

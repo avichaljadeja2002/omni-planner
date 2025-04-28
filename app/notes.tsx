@@ -61,7 +61,7 @@ export default function Notes() {
                 <View style={styles.noteHeader}>
                     <Text style={styles.noteTitle}>Notes</Text>
                     <TextInput
-                        value={formData.text}
+                        value={formData?.text}
                         onChangeText={(text) => handleChange("text", text)}
                         style={styles.textInput}
                         placeholder="Write your notes here..."

@@ -183,11 +183,11 @@ public class UserController {
         //handle new password
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (!userService.isValidPassword(updateUser.getPassword())) {
+        if (updateUser.getPassword() != null && !userService.isValidPassword(updateUser.getPassword())) {
             return ResponseEntity.badRequest().body("Password must include at least one uppercase, one lowercase, one number, one special character, and be 8 characters long.");
         }
 
-        if (!userService.isSignificantlyDifferent(user.getPassword(), updateUser.getPassword())) {
+        if (updateUser.getPassword() != null && !userService.isSignificantlyDifferent(user.getPassword(), updateUser.getPassword())) {
             return ResponseEntity.badRequest().body("New password must differ by at least 8 characters from the old password.");
         }
 

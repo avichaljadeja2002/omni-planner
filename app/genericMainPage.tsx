@@ -173,7 +173,7 @@ const GenericMainPageForm: React.FC<FormProps> = ({
 
         {loading ? (
           <ActivityIndicator size="large" color="#9b59b6" />
-        ) : tasks.length > 0 ? (
+        ) : tasks?.length > 0 ? (
           <FlatList
             style={styles.flatList}
             data={tasks}
