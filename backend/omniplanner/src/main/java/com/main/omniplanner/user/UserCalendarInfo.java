@@ -10,6 +10,11 @@ public class UserCalendarInfo {
         this.isGoogleCalendarLinked = isGoogleCalendarLinked;
         this.googleCalendarAccessToken = googleCalendarAccessToken;
     }
+
+    public UserCalendarInfo() {
+
+    }
+
     public int getId() {
         return id;
     }
@@ -31,4 +36,15 @@ public class UserCalendarInfo {
                 '}';
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setGoogleCalendarLinked(boolean googleCalendarLinked) {
+        isGoogleCalendarLinked = googleCalendarLinked;
+    }
+
+    public void setGoogleCalendarAccessToken(String googleCalendarAccessToken) {
+        this.googleCalendarAccessToken = googleCalendarAccessToken;
+    }
 }

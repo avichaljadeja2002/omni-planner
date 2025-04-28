@@ -50,8 +50,8 @@ public class EventController {
     @PostMapping("/add_event/{event_type}/{token}")
     public ResponseEntity<GenericEvent> addEvent(@RequestBody GenericEvent event, @PathVariable String event_type, @PathVariable String token) {
         event.setCompleted(false);
-//        GenericEvent savedEvent = eventService.saveEvent(event, event_type, token);
-        return ResponseEntity.ok(event);
+        GenericEvent savedEvent = eventService.saveEvent(event, event_type, token);
+        return ResponseEntity.ok(savedEvent);
     }
 
     @Transactional
