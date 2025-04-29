@@ -28,7 +28,7 @@ public class GenericEvent {
     private Integer userId;
 
     private String ingredients;
-    private Boolean completed;
+    private boolean completed;
     // Getters and Setters
     public String getDescription() {
         return description;

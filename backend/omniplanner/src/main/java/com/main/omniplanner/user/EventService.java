@@ -42,7 +42,12 @@ public class EventService {
         return eventRepository.deleteEvent(id, userId) > 0;
     }
 
-    public boolean completeEvent(int id) {
-        return eventRepository.completeEvent(id);
+    public boolean completeEvent(int id, String token) {
+        Integer userId = userRepository.getIdByToken(token);
+        if (userId == null) {
+            return false;
+        }
+        int updatedRows = eventRepository.completeEvent(id);
+        return updatedRows > 0;
     }
 }

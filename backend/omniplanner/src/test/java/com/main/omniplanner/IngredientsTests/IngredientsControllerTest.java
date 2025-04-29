@@ -96,7 +96,7 @@ public class IngredientsControllerTest {
         when(ingredientsService.saveEvent(ingredient1)).thenReturn(ingredient1);
 
         // Act
-        ResponseEntity<Ingredients> response = ingredientsController.addEvent(ingredient1);
+        ResponseEntity<Ingredients> response = ingredientsController.addIngrediant(ingredient1);
 
         // Then
         assertEquals(HttpStatus.CREATED, response.getStatusCode());

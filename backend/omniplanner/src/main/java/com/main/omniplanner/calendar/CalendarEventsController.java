@@ -59,6 +59,7 @@ public class CalendarEventsController {
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
+            System.err.println("Error serializing response: " + e.getMessage());
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

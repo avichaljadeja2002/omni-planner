@@ -11,17 +11,35 @@ import java.util.List;
 
 @Repository
 public interface EventRepository extends JpaRepository<GenericEvent, Integer> {
-    @Query("SELECT f FROM GenericEvent f WHERE f.userId = :userId AND (f.repeating = true OR f.event_date >= :currentTimeMillis AND f.completed = false) ORDER BY f.event_date ASC")
+    /**
+     * Find upcoming events for a user
+     * - Events that are repeating OR have a date greater than or equal to current time
+     * - Events that are not completed (completed = 0)
+     */
+    @Query("SELECT f FROM GenericEvent f WHERE f.userId = :userId AND (f.repeating = true OR f.event_date >= :currentTimeMillis) AND f.completed = false ORDER BY f.event_date ASC")
     List<GenericEvent> findUpcomingByUserId(@Param("userId") Integer userId, @Param("currentTimeMillis") Long currentTimeMillis);
 
-    @Query("SELECT f FROM GenericEvent f WHERE f.userId = :userId AND f.event_type = :event_type AND (f.repeating = true OR f.event_date >= :currentTimeMillis) ORDER BY f.event_date ASC")
+    /**
+     * Find upcoming events of a specific type for a user
+     * - Events of a specific type
+     * - Events that are repeating OR have a date greater than or equal to current time
+     * - Events that are not completed (completed = 0)
+     */
+    @Query("SELECT f FROM GenericEvent f WHERE f.userId = :userId AND f.event_type = :event_type AND (f.repeating = true OR f.event_date >= :currentTimeMillis) AND f.completed = false ORDER BY f.event_date ASC")
     List<GenericEvent> findByEventType(@Param("event_type") String event_type, @Param("userId") Integer userId, @Param("currentTimeMillis") Long currentTimeMillis);
 
+    /**
+     * Delete a specific event for a user
+     */
     @Transactional
     @Modifying
     @Query("DELETE FROM GenericEvent f WHERE f.userId = :userId AND f.id = :id")
     int deleteEvent(@Param("id") int id, @Param("userId") Integer userId);
 
+    /**
+     * Mark an event as completed
+     */
+    @Modifying
     @Query("UPDATE GenericEvent ge SET ge.completed = true WHERE ge.id = :id")
-    boolean completeEvent(@Param("id") int id);
+    int completeEvent(@Param("id") int id);
 }
