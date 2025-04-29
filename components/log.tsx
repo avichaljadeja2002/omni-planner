@@ -1,5 +1,5 @@
-const logging = false;
-const loggingLevel = 2;
+const logging = true;
+const loggingLevel = 3;
 
 interface LogFunction {
     (logLevel?: number, ...messages: any[]): void;
