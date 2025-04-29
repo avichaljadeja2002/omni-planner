@@ -21,7 +21,7 @@ import {
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { cLog } from '../components/log';
-import { getPageFromEventType, getPageName, IPAddr } from '@/constants/constants';
+import { getPageFromEventType, getPageName } from '@/constants/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { call } from '../components/apiCall';
 

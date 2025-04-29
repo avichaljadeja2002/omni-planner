@@ -206,6 +206,12 @@ export default function AccountSetting() {
                         placeholder="Enter your age"
                         keyboardType="numeric" />
                 </View>
+                <TouchableOpacity
+                    style={styles.changePasswordButton}
+                    onPress={() => setChangePasswordModalVisible(true)}
+                >
+                    <Text style={styles.changePasswordButtonText}>Change Password</Text>
+                </TouchableOpacity>
             </View>
 
             <View style={styles.footer}>
@@ -217,12 +223,6 @@ export default function AccountSetting() {
                     onPress={() => showAlert('Logout', 'Are you sure you want to logout?', 'Cancel', 'Logout', confirmLogout)}
                 >
                     <Text style={styles.logoutButtonText}>Logout</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.changePasswordButton}
-                    onPress={() => setChangePasswordModalVisible(true)}
-                >
-                    <Text style={styles.changePasswordButtonText}>Change Password</Text>
                 </TouchableOpacity>
             </View>
             
@@ -315,9 +315,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     },
     footer: {
-    alignItems: 'center',
-    marginTop: 30,
-    },
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 0,
+        paddingHorizontal: 20,
+        paddingBottom: 20,
+        backgroundColor: '#fff', // Optional: to cover content behind the footer
+      },
     saveButton: {
     backgroundColor: '#65558f',
     borderRadius: 8,
