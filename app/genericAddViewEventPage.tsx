@@ -61,6 +61,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({
       : new Date(),
   });
   cLog(1, { 'Form Data': formData });
+  const isGCEvent = formData.event_type === 'google_calendar';
 
   const handleSave = async () => {
     const formattedData = {
@@ -180,12 +181,14 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({
             value={formData[field.name]}
             onChangeText={(text) => handleChange(field.name, text)}
             placeholder={field.label}
+            editable={isGCEvent ? false : true}
           />
         );
       case 'date':
         return (
           <TouchableOpacity
             style={styles2.dateTimeInput} 
+            disabled={isGCEvent}
             onPress={() => showPicker('date', field.name)}
           >
             <Text style={styles2.dateTimeText}>
@@ -210,7 +213,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({
       case 'multi-select':
         return (
           <View style={styles2.multiSelectContainer}>
-            <MultiSelect
+            <MultiSelect    
               items={additionalData}
               uniqueKey="value"
               selectedItems={
@@ -235,6 +238,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({
       case 'time':
         return (
           <TouchableOpacity
+            disabled={isGCEvent}
             style={styles2.dateTimeInput} 
             onPress={() => showPicker('time', field.name)}
           >
@@ -242,6 +246,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({
               {formData[field.name] instanceof Date
                 ? formData[field.name].toLocaleTimeString()
                 : 'Select Time'}
+                
             </Text>
             {showTimePicker && (
               <DateTimePicker
@@ -269,6 +274,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({
             value={formData[field.name]}
             onChange={(item) => handleChange(field.name, item.value)}
             placeholder="Select"
+            disable={isGCEvent}
           />
         );
       case 'textarea':
@@ -279,6 +285,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({
             onChangeText={(text) => handleChange(field.name, text)}
             multiline
             placeholder={field.label}
+            editable={isGCEvent ? false : true}
           />
         );
       case 'number':
@@ -289,6 +296,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({
             onChangeText={(text) => handleChange(field.name, text)}
             placeholder={field.label}
             keyboardType="numeric"
+            editable={isGCEvent ? false : true}
           />
         );
       default:
@@ -300,7 +308,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({
     <ScrollView contentContainerStyle={styles2.scrollViewContainer}>
       <View style={styles2.headerContainer}>
         <Text style={styles2.headerText}>{title}</Text>
-        {mode === 'view' && (
+        {mode === 'view' && !isGCEvent && (
           <TouchableOpacity
             style={styles2.deleteButton}
             onPress={() =>
@@ -334,16 +342,18 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({
             navigation.navigate(mainPage as any);
           }}
         >
-      <Text style={styles2.cancelButtonText}>Cancel</Text>
+        <Text style={styles2.cancelButtonText}>
+          {isGCEvent ? "Close" : "Cancel"}
+        </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles2.saveButton} onPress={() => {
+        {!isGCEvent && (<TouchableOpacity style={styles2.saveButton} onPress={() => {
           handleSave()
           setTimeout(() => {
             navigation.navigate(mainPage as any);
           }, 2000);
         }}>
           <Text style={styles2.saveButtonText}>Save</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>)}
       </View>
 
       <Alert
