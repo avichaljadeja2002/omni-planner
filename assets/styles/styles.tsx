@@ -27,6 +27,7 @@ export const styles = StyleSheet.create({
   noteContainer: {
     flex: 1,
     justifyContent: 'center',
+    backgroundColor: '#F8F8FF',
     paddingHorizontal: 20,
   },
   addContainer: {
@@ -54,6 +55,7 @@ export const styles = StyleSheet.create({
     height: 450,
     width: '100%',
     borderColor: '#ccc',
+    backgroundColor: '#fff',
     borderWidth: 1,
     borderRadius: 8,
     padding: 10,

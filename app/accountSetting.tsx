@@ -277,7 +277,7 @@ export default function AccountSetting() {
 const styles = StyleSheet.create({
     container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#F8F8FF',
     paddingHorizontal: 20,
     paddingVertical: 20,
     },
