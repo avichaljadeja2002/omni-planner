@@ -84,11 +84,10 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({
         formattedData
       );
       cLog(1, 'Event updated successfully:' + response.data);
-      showAlert('Success', 'Event saved successfully!', 'Close', '');
+      showAlert('Success', 'Event saved successfully!', '', '');
     } catch (error) {
       console.error('Error saving event:', error);
     }
-    navigation.navigate(mainPage as any);
   };
 
   const handleDateChange = (name: string, selectedDate: any) => {
@@ -335,9 +334,14 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({
             navigation.navigate(mainPage as any);
           }}
         >
-          <Text style={styles2.cancelButtonText}>Cancel</Text>
+      <Text style={styles2.cancelButtonText}>Cancel</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles2.saveButton} onPress={handleSave}>
+        <TouchableOpacity style={styles2.saveButton} onPress={() => {
+          handleSave()
+          setTimeout(() => {
+            navigation.navigate(mainPage as any);
+          }, 2000);
+        }}>
           <Text style={styles2.saveButtonText}>Save</Text>
         </TouchableOpacity>
       </View>

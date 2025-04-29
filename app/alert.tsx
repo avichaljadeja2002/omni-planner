@@ -30,12 +30,14 @@ const Alert: React.FC<AlertProps> = ({ isVisible, toggleModal, header, descripti
                     <Text style={styles.modalHeader}>{header}</Text>
                     <Text style={styles.modalMessage}>{description}</Text>
                     <View style={styles.modalButtons}>
-                        <TouchableOpacity
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={toggleModal}
-                        >
-                            <Text style={styles.textStyle}>{closeButtonText}</Text>
-                        </TouchableOpacity>
+                        {closeButtonText && (
+                            <TouchableOpacity
+                                style={[styles.button, styles.buttonClose]}
+                                onPress={toggleModal}
+                            >
+                                <Text style={styles.textStyle}>{closeButtonText}</Text>
+                            </TouchableOpacity>
+                        )}
                         {saveButtonText && (
                             <TouchableOpacity
                                 style={[styles.button, styles.saveButton]}
@@ -83,8 +85,8 @@ const styles = StyleSheet.create({
     },
     modalButtons: {
         flexDirection: 'row',
-        justifyContent: 'center',  // Center buttons horizontally
-        alignItems: 'center',  // Center buttons vertically if needed
+        justifyContent: 'center', 
+        alignItems: 'center', 
     },
     button: {
         borderRadius: 10,

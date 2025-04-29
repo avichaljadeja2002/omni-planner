@@ -29,7 +29,7 @@ public class IngredientsController {
     }
 
     @PostMapping("/add_ingredients")
-    public ResponseEntity<Ingredients> addEvent(@RequestBody Ingredients event) {
+    public ResponseEntity<Ingredients> addIngrediant(@RequestBody Ingredients event) {
         Ingredients savedEvent = ingredientsService.saveEvent(event);
         return new ResponseEntity<>(savedEvent, HttpStatus.CREATED);
     }

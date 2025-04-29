@@ -21,7 +21,7 @@ import {
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { cLog } from '../components/log';
-import { getPageFromEventType, getPageName } from '@/constants/constants';
+import { getPageFromEventType, getPageName, IPAddr } from '@/constants/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { call } from '../components/apiCall';
 
@@ -70,6 +70,27 @@ const GenericMainPageForm: React.FC<FormProps> = ({
     navigation.navigate(getPageName(route.thisPage) as any, { event: route });
   };
 
+  const complete_task = async (itemId: string) => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      if (!token) {
+        Alert.alert('Error', 'Authentication token not found');
+        return;
+      }
+      const url = `/complete_event/${itemId}/${token}`;
+      const response = await call(url, 'PUT'); 
+  
+      if (response.status === 200 && response.data) {
+        console.log(`Task ${itemId} completed. Refreshing list.`);
+        fetchEvents(); 
+      } else {
+         Alert.alert('Error', response.data?.message || 'Failed to complete event.');
+      }
+    } catch (error) {
+      console.error('Error completing events:', error);
+      Alert.alert('Error', 'An error occurred while completing the event.');
+    }
+  };
   const renderTask = ({ item }: { item: Task }) => (
     <TouchableOpacity style={styles.taskItem} onPress={() => handleViewPress(item)}>
       <View style={styles.taskicon}>
@@ -82,7 +103,8 @@ const GenericMainPageForm: React.FC<FormProps> = ({
         innerIconStyle={{ borderRadius: 0, borderWidth: 2 }}
         onPress={(isChecked: boolean) => {
           item.done = isChecked;
-          // TODO - CALL API on check
+          console.log(item.id);
+          complete_task(item.id);
         }}
       />
     </TouchableOpacity>

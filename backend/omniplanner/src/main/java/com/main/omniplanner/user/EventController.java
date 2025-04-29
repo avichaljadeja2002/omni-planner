@@ -62,10 +62,14 @@ public class EventController {
     }
 
     @Transactional
-    @PutMapping("/complete_event/{token}")
-    public ResponseEntity<Boolean> completeEvent(@RequestBody int id) {
-        Boolean updatedEvent = eventService.completeEvent(id);
-        return ResponseEntity.ok(updatedEvent);
+    @PutMapping("/complete_event/{eventId}/{token}")
+    public ResponseEntity<Boolean> completeEvent(@PathVariable int eventId, @PathVariable String token) {
+        boolean updated = eventService.completeEvent(eventId, token);
+        if (updated) {
+            return ResponseEntity.ok(true);
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(false);
+        }
     }
 
     @DeleteMapping("/delete_event/{eventId}/{token}")
