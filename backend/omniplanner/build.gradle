@@ -1,9 +1,17 @@
 plugins {
 	id 'java'
+	id 'info.solidsoft.pitest' version '1.15.0'
 	id 'org.springframework.boot' version '3.3.4'
 	id 'io.spring.dependency-management' version '1.1.6'
 	id 'com.adarshr.test-logger' version '4.0.0'
 	id 'jacoco'
+}
+
+pitest {
+	junit5PluginVersion = '1.2.2'  // Required for JUnit 5 support
+	targetClasses = ['com.main.omniplanner.*']  // Recommended: specify your target package
+	outputFormats = ['XML', 'HTML']  // Optional: for reports
+	threads = 4
 }
 
 group = 'com.main'
