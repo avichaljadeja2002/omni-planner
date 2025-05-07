@@ -30,7 +30,7 @@ const Alert: React.FC<AlertProps> = ({ isVisible, toggleModal, header, descripti
                     <Text style={styles.modalHeader}>{header}</Text>
                     <Text style={styles.modalMessage}>{description}</Text>
                     <View style={styles.modalButtons}>
-                        {closeButtonText && (
+                        {Boolean(closeButtonText) && (
                             <TouchableOpacity
                                 style={[styles.button, styles.buttonClose]}
                                 onPress={toggleModal}
@@ -38,7 +38,7 @@ const Alert: React.FC<AlertProps> = ({ isVisible, toggleModal, header, descripti
                                 <Text style={styles.textStyle}>{closeButtonText}</Text>
                             </TouchableOpacity>
                         )}
-                        {saveButtonText && (
+                        {Boolean(saveButtonText) && (
                             <TouchableOpacity
                                 style={[styles.button, styles.saveButton]}
                                 onPress={handleSave}

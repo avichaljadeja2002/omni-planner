@@ -240,7 +240,7 @@ export default function AuthScreen() {
                     secureTextEntry
                     onChangeText={handlePasswordChange}
                 />
-                {!isLogin && (
+                {!Boolean(isLogin) && (
                     <View style={{ alignSelf: 'flex-start', marginTop: 5, marginBottom: 10 }}>
                         <Text style={[styles.authPageNonheaderText, { fontSize: 12, color: '#777' }]}>
                             Password requirements:
