@@ -223,7 +223,7 @@ const GenericMainPageForm: React.FC<FormProps> = ({
             />
           </TouchableOpacity>
         </View>
-        {isCalendarVisible && (
+        {Boolean(isCalendarVisible) && (
           <Calendar
             onDayPress={handleDayPress}
             markedDates={{
@@ -241,7 +241,7 @@ const GenericMainPageForm: React.FC<FormProps> = ({
           />
         )}
       </View>
-      {googleCalendar && !isGoogleCalendarLinked && (
+      {Boolean(googleCalendar) && !Boolean(isGoogleCalendarLinked) && (
         <View style={{ alignItems: 'center', marginBottom: 25 }}>
           <TouchableOpacity style={styles.linkButton} onPress={handlePress}>
             <Text style={styles.linkButtonText}>Link to Google Calendar</Text>

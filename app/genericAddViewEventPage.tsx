@@ -196,7 +196,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({
                 ? formData[field.name].toDateString()
                 : 'Select Date'}
             </Text>
-            {showDatePicker && (
+            {Boolean(showDatePicker) && (
               <DateTimePicker
                 value={
                   currentField ? formData[currentField] || new Date() : new Date()
@@ -248,7 +248,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({
                 : 'Select Time'}
                 
             </Text>
-            {showTimePicker && (
+            {Boolean(showTimePicker) && (
               <DateTimePicker
                 minuteInterval={15}
                 value={
@@ -346,7 +346,7 @@ const GenericAddViewPageForm: React.FC<GenericEventPageProps> = ({
           {isGCEvent ? "Close" : "Cancel"}
         </Text>
         </TouchableOpacity>
-        {!isGCEvent && (<TouchableOpacity style={styles2.saveButton} onPress={() => {
+        {!Boolean(isGCEvent) && (<TouchableOpacity style={styles2.saveButton} onPress={() => {
           handleSave()
           setTimeout(() => {
             navigation.navigate(mainPage as any);
