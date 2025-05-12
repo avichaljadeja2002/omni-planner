@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Platform } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
 import App from './index';
 import HealthTracker from './mainHealthTracker';
@@ -21,12 +21,15 @@ import ViewCalendarEvents from './viewCalendarEvents';
 import ViewMealEvents from './viewMealEvents';
 import TaskScreen from './mainPage';
 import { styles } from '@/assets/styles/styles';
+import CoverageReportGenerator from '@/test/coverage';
 
 
 const Stack = createStackNavigator<RootStackParamList>();
+
 const CustomTopBar = ({ navigation }: StackHeaderProps) => {
   return (
     <View style={styles.topBar}>
+      {/* Existing navigation buttons */}
       <TouchableOpacity onPress={() => navigation.navigate('mainPage')}>
         <Ionicons name="home-outline" size={28} color="black" />
       </TouchableOpacity>
@@ -62,6 +65,7 @@ export default function Layout() {
           cardStyle: { backgroundColor: 'white' }
         }}
       >
+        {/* Your existing screens */}
         <Stack.Screen name="index" component={App} options={{ headerShown: false }} />
         <Stack.Screen name="mainPage" component={TaskScreen} />
         <Stack.Screen name="mainHealthTracker" component={HealthTracker} />
@@ -78,6 +82,18 @@ export default function Layout() {
         <Stack.Screen name="viewHealthEvents" component={ViewHealthEvents} />
         <Stack.Screen name="viewCalendarEvents" component={ViewCalendarEvents} />
         <Stack.Screen name="viewMealEvents" component={ViewMealEvents} />
+
+        {Platform.OS === 'web' && (
+          <Stack.Screen
+            name="coverage"
+            component={CoverageReportGenerator}
+            options={{
+              title: 'Coverage Report', 
+              headerShown: false, 
+            }}
+          />
+        )}
+
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -50,7 +50,7 @@ export default function AuthScreen() {
 
     const validatePassword = (password: string): string[] => {
         const errors: string[] = [];
-        
+
         if (password?.length < 8) {
             errors.push("Password must be at least 8 characters long");
         }
@@ -66,7 +66,7 @@ export default function AuthScreen() {
         if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
             errors.push("Password must contain at least one special character");
         }
-        
+
         return errors;
     };
 
@@ -92,19 +92,19 @@ export default function AuthScreen() {
         try {
             cLog(1, "Sending request to:", url);
             //cLog(1, "Credentials:", credentials);
-            if(password == password.toLowerCase()) {
+            if (password == password.toLowerCase()) {
                 cLog(1, "Password must include at least one uppercase character");
             }
-            if(password?.length < 15) {
+            if (password?.length < 15) {
                 cLog(1, "Password must have at least 15 characters");
             }
             if (/^[a-zA-Z0-9]*$/.test(password)) {
                 cLog(1, "Password must contain at least one special character");
             }
-            if(!/\d/.test(password)) {
+            if (!/\d/.test(password)) {
                 cLog(1, "Password must contain at least one number");
             }
-            if(password == password.toUpperCase()) {
+            if (password == password.toUpperCase()) {
                 cLog(1, "Password must include at least one lowercase character");
             }
             const response = await call(url, 'POST', undefined, { username, password });
@@ -200,7 +200,7 @@ export default function AuthScreen() {
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             <View style={styles.authPage}>
-            
+
                 <View style={styles.toggleContainer}>
                     <TouchableOpacity
                         style={[styles.toggleButton, isLogin && styles.toggleActive]}
@@ -208,12 +208,14 @@ export default function AuthScreen() {
                             setIsLogin(true);
                             setPasswordErrors([]);
                         }}
+                        testID="signin-toggle"
                     >
                         <Text style={[styles.toggleButtonText, isLogin && styles.toggleActiveText]}>Sign In</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={[styles.toggleButton, !isLogin && styles.toggleActive]}
                         onPress={() => setIsLogin(false)}
+                        testID="signup-toggle"
                     >
                         <Text style={[styles.toggleButtonText, !isLogin && styles.toggleActiveText]}>Sign Up</Text>
                     </TouchableOpacity>
@@ -221,13 +223,14 @@ export default function AuthScreen() {
 
                 <View style={{ height: "2%" }}></View>
 
-                <Text style={[styles.authPageNonheaderText, { textAlign: 'left', alignSelf: 'flex-start' }]}>
+                <Text testID="email-input" style={[styles.authPageNonheaderText, { textAlign: 'left', alignSelf: 'flex-start' }]}>
                     Email
                 </Text>
                 <TextInput
                     style={styles.authPageInput}
                     placeholder="Enter Email"
                     autoCapitalize="none"
+                    testID="email-input"
                     onChangeText={(text) => setCredentials({ ...credentials, username: text })}
                 />
 
@@ -263,8 +266,9 @@ export default function AuthScreen() {
                     </View>
                 )}
 
-                <TouchableOpacity style={styles.authButton} onPress={handleAuthRequest}>
-                    <Text style={styles.authButtonText}>{isLogin ? 'Log In' : 'Sign Up'}</Text>
+                <TouchableOpacity style={styles.authButton} onPress={handleAuthRequest} testID="auth-button"                >
+                    <Text style={styles.authButtonText} testID="welcome-title">
+                        {isLogin ? 'Log In' : 'Sign Up'}</Text>
                 </TouchableOpacity>
 
                 <GoogleSignInButton onPress={handleGoogleLogin} signIn={isLogin} />

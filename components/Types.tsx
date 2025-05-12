@@ -25,6 +25,7 @@ export type RootStackParamList = {
   'viewHealthEvents': { event: Task };
   'viewMealEvents': { event: Task };
   'viewCalendarEvents': { event: Task };
+  'coverage': undefined;
 };
 
 export type IconName = keyof typeof Ionicons.glyphMap;
