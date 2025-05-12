@@ -50,7 +50,7 @@ public class UserTest {
         boolean googleCalendarLinked = true;
         user.setGoogleCalendarLinked(googleCalendarLinked);  // Set googleCalendarLinked
         assertEquals(googleCalendarLinked, user.isGoogleCalendarLinked());  // Assert that isGoogleCalendarLinked returns the same value
-    }
+    } 
 
     @Test
     public void testGoogleCalendarLinkedFalse() {
