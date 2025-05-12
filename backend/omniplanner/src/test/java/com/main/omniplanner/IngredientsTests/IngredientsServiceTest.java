@@ -55,4 +55,13 @@ public class IngredientsServiceTest {
         verify(ingredientsRepository).save(ingredients);
         verify(ingredientsRepository).findIngredientsByUserId(eq(0));
     }
+
+    @Test
+    public void testSaveEventReturnsNonNull() {
+        when(ingredientsRepository.save(ingredients)).thenReturn(ingredients);
+        Ingredients saved = ingredientsService.saveEvent(ingredients);
+        assertNotNull(saved, "saveEvent should not return null");
+        assertEquals(ingredients, saved, "saveEvent should return the saved ingredient");
+    }
+
 }
