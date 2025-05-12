@@ -1,0 +1,17 @@
+{
+    {
+  "reporter": [
+    "text",
+    "lcov",
+    "clover"
+  ],
+  "exclude": [
+    "**/*.test.{js,jsx,ts,tsx}",
+    "**/test/**",
+    "**/__tests__/**"
+  ]
+}
+    "extends": "@istanbuljs/nyc-config-typescript",
+    "all": true
+}
+

@@ -21,8 +21,6 @@ import ViewCalendarEvents from './viewCalendarEvents';
 import ViewMealEvents from './viewMealEvents';
 import TaskScreen from './mainPage';
 import { styles } from '@/assets/styles/styles';
-import CoverageReportGenerator from '@/test/coverage';
-
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -82,18 +80,6 @@ export default function Layout() {
         <Stack.Screen name="viewHealthEvents" component={ViewHealthEvents} />
         <Stack.Screen name="viewCalendarEvents" component={ViewCalendarEvents} />
         <Stack.Screen name="viewMealEvents" component={ViewMealEvents} />
-
-        {Platform.OS === 'web' && (
-          <Stack.Screen
-            name="coverage"
-            component={CoverageReportGenerator}
-            options={{
-              title: 'Coverage Report', 
-              headerShown: false, 
-            }}
-          />
-        )}
-
       </Stack.Navigator>
     </NavigationContainer>
   );

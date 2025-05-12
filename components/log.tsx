@@ -1,4 +1,4 @@
-const logging = true;
+const logging = false;
 const loggingLevel = 3;
 
 interface LogFunction {
