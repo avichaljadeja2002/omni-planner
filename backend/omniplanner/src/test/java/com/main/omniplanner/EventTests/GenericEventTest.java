@@ -76,6 +76,19 @@ public class GenericEventTest {
     }
 
     @Test
+    public void testGetSetCompletedTrue() {
+        event.setCompleted(true);
+        assertTrue(event.isCompleted(), "Completed should be true when set to true");
+    }
+
+    @Test
+    public void testGetSetCompletedFalse() {
+        event.setCompleted(false);
+        assertFalse(event.isCompleted(), "Completed should be false when set to false");
+    }
+
+
+    @Test
     public void testGetSetIngredients(){
         event.setIngredients("3,4");
         assertEquals("3,4", event.getIngredients());

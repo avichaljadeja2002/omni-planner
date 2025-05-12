@@ -53,6 +53,13 @@ public class UserTest {
     }
 
     @Test
+    public void testGoogleCalendarLinkedFalse() {
+        user.setGoogleCalendarLinked(false);
+        assertEquals(false, user.isGoogleCalendarLinked(), "googleCalendarLinked should be false when set to false");
+    }
+
+
+    @Test
     public void testGetSetGoogleCalendarAccessToken(){
         String googleCalendarAccessToken = "abcdef123456";
         user.setGoogleCalendarAccessToken(googleCalendarAccessToken);  // Set googleCalendarAccessToken

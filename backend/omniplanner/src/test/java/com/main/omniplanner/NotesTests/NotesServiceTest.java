@@ -12,6 +12,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.Collections;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.*;
@@ -71,4 +72,38 @@ public class NotesServiceTest {
         verify(notesRepository, times(1)).findByUserId(eq(1)); // Only one call should happen here
     }
 
+    @Test
+    public void testUpdateExistingNoteText() {
+        Notes existing = new Notes();
+        existing.setId(1);
+        existing.setUserId(1);
+        existing.setText("Old Text");
+        when(notesRepository.findByUserId(1)).thenReturn(Collections.singletonList(existing));
+        when(notesRepository.save(any(Notes.class))).thenAnswer(i -> i.getArguments()[0]);
+        
+        Notes updated = new Notes();
+        updated.setText("New Text");
+        Notes result = notesService.saveOrUpdateNote(updated, 1);
+        assertEquals("New Text", result.getText());
+    }
+
+    @Test
+    public void testSaveOrUpdateNoteReturnsNonNull() {
+        when(notesRepository.findByUserId(1)).thenReturn(Collections.emptyList());
+        when(notesRepository.save(notes)).thenReturn(notes);
+        Notes result = notesService.saveOrUpdateNote(notes, 1);
+        assertNotNull(result);
+    }
+
+    @Test
+    public void testNewNoteUserIdIsSet() {
+        Notes newNote = new Notes();
+        when(notesRepository.findByUserId(eq(2))).thenReturn(Collections.emptyList());
+        when(notesRepository.save(any(Notes.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Notes savedNote = notesService.saveOrUpdateNote(newNote, 2);
+
+        assertEquals(2, savedNote.getUserId(), "UserId should be set on new note");
+        verify(notesRepository).save(newNote);
+    }
 }

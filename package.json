@@ -5,6 +5,7 @@
   "scripts": {
     "start": "expo start",
     "test": "(npx tsc || echo 'TypeScript failed') && (npx eslint . || echo 'ESLint failed') && cd backend/omniplanner && gradle && gradle clean pitest",
+    "mutationTest": "cd backend/omniplanner && gradle clean pitest",
     "build-ios": "npx eas build -p ios --profile preview",
     "build-android": "npx eas build -p android --profile preview",
     "backend": "cd backend/omniplanner && gradle bootRun",

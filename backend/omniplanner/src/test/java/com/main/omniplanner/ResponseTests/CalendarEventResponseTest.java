@@ -88,4 +88,10 @@ public class CalendarEventResponseTest {
         assertEquals("Mock Event 1", mockEvent1.toString());
         assertEquals("Mock Event 2", mockEvent2.toString());
     }
+
+    @Test
+    public void testIsGoogleCalendarLinkedFalse() {
+        CalendarEventResponse response = new CalendarEventResponse(null, false);
+        assertFalse(response.isGoogleCalendarLinked(), "googleCalendarLinked should be false");
+    }
 }
