@@ -198,4 +198,33 @@ class EventControllerTest {
         assertEquals(1, response.getBody().get(0).getId());
         assertEquals("Event 1", response.getBody().get(0).getTitle());
     }
+
+    @Test
+    void testAddEvent_SetsCompletedFalseAndSavesEvent() {
+        // Arrange
+        GenericEvent event = spy(new GenericEvent());
+        event.setId(1);
+        event.setTitle("Event 1");
+
+        String eventType = "Work";
+
+        // The eventService will return the event passed to it
+        when(eventService.saveEvent(any(GenericEvent.class), eq(eventType), eq(token)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        // Act
+        ResponseEntity<GenericEvent> response = eventController.addEvent(event, eventType, token);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(1, response.getBody().getId());
+        assertEquals("Event 1", response.getBody().getTitle());
+
+        // Verify setCompleted(false) was called on the event
+        verify(event).setCompleted(false);
+
+        // Optionally verify saveEvent was called with the event
+        verify(eventService).saveEvent(event, eventType, token);
+    }
 }
