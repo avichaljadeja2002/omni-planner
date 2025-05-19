@@ -8,6 +8,7 @@ console.log("YOOO EXECUTING")
 
 // Mock libraries or modules here if needed
 jest.mock('react-native-reanimated', () => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const Reanimated = require('react-native-reanimated/mock');
   return Reanimated;
 });
@@ -44,7 +45,7 @@ jest.mock('@react-navigation/native', () => ({
 // Mock the fetch API which is used by some libraries like expo-auth-session internally
 global.fetch = jest.fn((url, options) => {
   // You can add specific mock responses based on URL or options here if needed
-  console.warn(`Workspace called with URL: ${url}`); // Optional: helps debug fetch calls in tests
+  console.warn(`Workspace called with URL: ${url}, options: ${options}`); // Optional: helps debug fetch calls in tests
   return Promise.resolve({
     ok: true,
     json: () => Promise.resolve({}), // Default empty JSON response

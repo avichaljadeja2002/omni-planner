@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Platform } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
 import App from './index';
 import HealthTracker from './mainHealthTracker';

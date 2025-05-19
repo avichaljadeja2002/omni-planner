@@ -222,25 +222,6 @@ public class UserServiceTest {
         assertEquals("Password must include at least one uppercase, one lowercase, one number, one special character, and be 8 characters long.", response.getBody());
     }
 
-
-//    @Test
-//    public void testChangePassword_ReusedPassword() {
-//        Integer userId = 1;
-//        String oldPassword = "Test_password1@";
-//        String newPassword = "oldPass123";  // Same as old password
-//
-//        User user = new User();
-//        user.setPassword("Test_password1@");
-//        user.setPreviousPasswords(Arrays.asList(passwordEncoder.encode("Test_password1@")));
-//        when(passwordEncoder.matches(oldPassword, user.getPassword())).thenReturn(true);
-//        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-//
-//        ResponseEntity<?> response = userService.changePassword(userId, oldPassword, newPassword);
-//
-//        assertEquals(400, response.getStatusCodeValue());
-//        assertEquals("Password cannot be reused", response.getBody());
-//    }
-
     @Test
     public void testChangePassword_Success() {
         Integer userId = 1;
