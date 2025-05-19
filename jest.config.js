@@ -36,13 +36,17 @@ module.exports = {
         "**/?(*.)+(spec|test).{js,jsx,ts,tsx}"
     ],
     "collectCoverage": true,
-    "collectCoverageFrom": [
-        "src/**/*.{js,jsx,ts,tsx}",
-        "!src/**/*.test.{js,jsx,ts,tsx}",
-        "!src/**/__tests__/**",
-        "!src/**/index.{js,jsx,ts,tsx}",
-        "!src/types/**"
-    ],
+  collectCoverageFrom: [
+    '**/*.{js,jsx,ts,tsx}', // Collect coverage from all JS/JSX/TS/TSX files
+    '!**/node_modules/**', // Exclude node_modules
+    '!**/vendor/**',       // Exclude vendor files if you have them
+    '!**/__tests__/**',    // Exclude test files themselves from coverage
+    '!**/coverage/**',     // Exclude coverage output directory
+    '!**/babel.config.js', // Exclude Babel config
+    '!**/jest.config.js',  // Exclude Jest config
+    '!**/metro.config.js', // Exclude Metro config
+    '!**/app.json',        // Exclude app.json
+  ],
     "coverageReporters": ["text", "lcov", "clover"],
     "coverageDirectory": "coverage",
     "maxWorkers": "50%",

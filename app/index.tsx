@@ -223,7 +223,7 @@ export default function AuthScreen() {
 
                 <View style={{ height: "2%" }}></View>
 
-                <Text testID="email-input" style={[styles.authPageNonheaderText, { textAlign: 'left', alignSelf: 'flex-start' }]}>
+                <Text style={[styles.authPageNonheaderText, { textAlign: 'left', alignSelf: 'flex-start' }]}>
                     Email
                 </Text>
                 <TextInput
@@ -241,6 +241,7 @@ export default function AuthScreen() {
                     style={styles.authPageInput}
                     placeholder="Enter Password"
                     secureTextEntry
+                    testID="password-input"
                     onChangeText={handlePasswordChange}
                 />
                 {!Boolean(isLogin) && (

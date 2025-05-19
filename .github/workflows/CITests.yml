@@ -2,9 +2,15 @@ name: CI Tests
 
 on:
   push:
+    branches:
+      - main 
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  starting-tests: 
+  starting-tests:
+    name: Starting Tests
     runs-on: ubuntu-latest
     steps:
       - name: Starting Tests
@@ -22,6 +28,13 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Cache npm dependencies (Lint)
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-lint
+          restore-keys: |
+            ${{ runner.os }}-node-
       - name: Install dependencies
         run: npm install
 
@@ -39,6 +52,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
+      - name: Cache npm dependencies (Type Check)
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-typecheck
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Install dependencies
         run: npm install
@@ -64,20 +85,56 @@ jobs:
   #     - name: Run Expo Doctor
   #       run: npx expo-doctor@latest
 
-  code-tests:
+  ui-tests: 
+    name: Run UI Tests with Coverage
     runs-on: ubuntu-latest
     needs: starting-tests
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Cache npm dependencies (UI Tests)
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-uitests
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps 
+      - name: Set up Environment Variables
+        run: |
+          echo "EXPO_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.EXPO_PUBLIC_GOOGLE_CLIENT_ID }}" >> $GITHUB_ENV
+          echo "EXPO_PUBLIC_CLIENT_ID=${{ secrets.EXPO_PUBLIC_CLIENT_ID }}" >> $GITHUB_ENV
+
+      - name: Run UI Tests with Coverage
+        run: npm run testUI -- --coverage
+
+      - name: Upload UI Coverage Report (Optional - e.g., for Codecov)
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} 
+          directory: ./coverage 
+          flags: ui-jest
+          name: omni-planner-ui-coverage 
+          fail_ci_if_error: false 
+          verbose: true 
+  code-tests: 
+    runs-on: ubuntu-latest
+    needs: starting-tests
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node (for gradlew wrapper)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Needed if your gradlew wrapper relies on Node
 
       - name: Set execute permission for gradlew
         run: chmod +x ./backend/omniplanner/gradlew
@@ -88,7 +145,15 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
 
-      - name: Run Tests with Coverage
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Run Backend Tests with Coverage (JaCoCo)
         run: |
           cd backend/omniplanner
           ./gradlew test jacocoTestReport
@@ -99,7 +164,16 @@ jobs:
           name: jacoco-report
           path: backend/omniplanner/build/reports/jacoco/test/html
 
-  mutation-tests:
+      - name: Upload Backend Coverage to Codecov (Optional)
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} 
+          file: backend/omniplanner/build/reports/jacoco/test/jacocoTestReport.xml 
+          flags: backend-jacoco
+          name: omni-planner-backend-coverage
+          fail_ci_if_error: false
+          verbose: true
+
     runs-on: ubuntu-latest
     needs: starting-tests
     steps:
@@ -123,12 +197,20 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
 
-      - name: Run Mutation Tests
+      - name: Cache Gradle packages (Mutation)
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}-mutation
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Run Mutation Tests (PITest)
         run: |
           cd backend/omniplanner
           ./gradlew clean pitest
 
-      - name: Upload Coverage Report
+      - name: Upload Mutation Report 
         uses: actions/upload-artifact@v4
         with:
           name: mutation-report
