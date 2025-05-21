@@ -39,6 +39,9 @@ public class EventService {
 
     public boolean deleteEvent(int id, String token) {
         Integer userId = userRepository.getIdByToken(token);
+        if (userId == null) {
+            throw new NullPointerException("Invalid token");
+        }
         return eventRepository.deleteEvent(id, userId) > 0;
     }
 

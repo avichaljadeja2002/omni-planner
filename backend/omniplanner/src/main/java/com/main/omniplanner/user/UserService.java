@@ -1,6 +1,7 @@
 package com.main.omniplanner.user;
 
 import com.main.omniplanner.requests.UpdateUserRequest;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 
 import java.util.regex.Pattern;
@@ -57,7 +58,8 @@ public class UserService implements UserDetailsService {
     }
 
     public void modifyUser(UpdateUserRequest userRequest, Integer userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new EntityNotFoundException("User not found")); // Use
         // Enforce password complexity check
         if (userRequest.getPassword() != null && !isValidPassword(userRequest.getPassword())) {
             throw new IllegalArgumentException("Password must include at least one uppercase, one lowercase, one number, one special character, and be 8 characters long.");
@@ -71,9 +73,9 @@ public class UserService implements UserDetailsService {
         
 
         if(userRequest.getPassword() != null) user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-        if(userRequest.getName() != null) user.setName(userRequest.getName());
-        if(userRequest.getPhone() != null) user.setPhone(userRequest.getPhone());
-        if(userRequest.getAge() != null) user.setAge(userRequest.getAge());
+        user.setName(userRequest.getName());
+        user.setPhone(userRequest.getPhone());
+        user.setAge(userRequest.getAge());
         userRepository.save(user);
 
         // Log the modification

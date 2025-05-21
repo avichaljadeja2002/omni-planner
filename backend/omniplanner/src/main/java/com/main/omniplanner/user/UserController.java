@@ -37,7 +37,7 @@ public class UserController {
 
     // Track failed login attempts in memory
     private final ConcurrentHashMap<String, AtomicInteger> failedLoginAttempts = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, Instant> lockoutExpiry = new ConcurrentHashMap<>();
+    public final ConcurrentHashMap<String, Instant> lockoutExpiry = new ConcurrentHashMap<>();
 
     private static final int MAX_ATTEMPTS = 3;
     private static final int LOCKOUT_DURATION_MINUTES = 15;
