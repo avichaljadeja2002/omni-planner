@@ -269,8 +269,6 @@ export default function AuthScreen() {
 
                 <GoogleSignInButton onPress={handleGoogleLogin} signIn={isLogin} />
 
-                /*<button className="btn btn-primary" style={{marginTop: 20}} onClick={() => {location.href = '@Url.Action("OathRedirect", "Home")';}}>Sign In With Outlook</button>*/
-
                 <Alert
                     isVisible={alertModal.visible}
                     toggleModal={hideAlert}
