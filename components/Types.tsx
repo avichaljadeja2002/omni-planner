@@ -51,6 +51,13 @@ export interface GoogleCalendarProps {
   handlePress?: () => void;
 }
 
+export interface ImapCalendarProps {
+  imapCalendar?: boolean;
+  isImapCalendarLinked?: boolean;
+  setIsImapCalendarLinked?: React.Dispatch<React.SetStateAction<boolean>>;
+  handlePressImap?: () => void;
+}
+
 export interface NavigationProps {
   nextPage: keyof RootStackParamList;
   thisPage: keyof RootStackParamList;
