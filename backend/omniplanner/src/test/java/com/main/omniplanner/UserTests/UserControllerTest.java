@@ -283,4 +283,93 @@ public class UserControllerTest {
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
         assertEquals("Invalid token", response.getBody());
     }
+    
+    @Test
+    public void testAccountUnlock_AfterLockoutExpires() {
+        // Simulate lockout expiry
+        String username = "test_username";
+        // Directly manipulate lockoutExpiry map for test
+        userController.lockoutExpiry.put(username, Instant.now().minusSeconds(60));
+        assertFalse(userController.isAccountLocked(username));
+    }
+    @Test
+    public void testRegisterUser_InvalidPassword() {
+        when(userRepository.findByUsername("test_username")).thenReturn(Optional.empty());
+        when(userService.isValidPassword("Test_password1@")).thenReturn(false);
+
+        ResponseEntity<?> response = userController.registerUser(user);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(
+            "Password must include at least one uppercase, one lowercase, one number, one special character, and be 8 characters long.",
+            response.getBody()
+        );
+    }
+
+    @Test
+    public void testRegisterUser_VerifiesPasswordAndEnabledAndAudit() {
+        when(userRepository.findByUsername("test_username")).thenReturn(Optional.empty());
+        when(passwordEncoder.encode("Test_password1@")).thenReturn("encoded_pass");
+        when(userService.isValidPassword("Test_password1@")).thenReturn(true);
+        when(userRepository.save(any(User.class))).thenReturn(user);
+
+        User spyUser = spy(user);
+
+        userController.registerUser(spyUser);
+
+        verify(spyUser).setPassword("encoded_pass");
+        verify(spyUser).setEnabled(true);
+        verify(auditService).logAccountEvent(eq("test_username"), eq("Account Created"));
+    }
+    @Test
+    public void testLoginUser_AccountLocked() {
+        // Simulate account locked
+        userController.lockoutExpiry.put("test_username", Instant.now().plusSeconds(900));
+        when(userRepository.findByUsername("test_username")).thenReturn(Optional.of(user));
+        ResponseEntity<?> response = userController.loginUser(loginRequest);
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        assertTrue(response.getBody().toString().contains("locked"));
+    }
+    @Test
+    public void testLoginUser_FailBadCred_TracksAttemptAndAudits() {
+        when(userRepository.findByUsername("test_username")).thenReturn(Optional.of(user));
+        when(authenticationManager.authenticate(any()))
+                .thenThrow(new BadCredentialsException("Bad credentials"));
+
+        UserController spyController = spy(userController);
+        doNothing().when(spyController).trackFailedAttempt(anyString());
+
+        ResponseEntity<?> response = spyController.loginUser(loginRequest);
+
+        verify(spyController).trackFailedAttempt("test_username");
+        verify(auditService).logAccountEvent(eq("test_username"), eq("Login Failed"));
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    }
+    @Test
+    public void testModifyUser_PasswordValidationFailure() {
+        UpdateUserRequest updateUser = new UpdateUserRequest("test_name", "test_phone", "test_age", "badpass");
+        when(userRepository.getIdByToken("test_token")).thenReturn(1);
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+        when(userService.isValidPassword("badpass")).thenReturn(false);
+
+        ResponseEntity<?> response = userController.modifyUser("test_token", updateUser);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(
+            "Password must include at least one uppercase, one lowercase, one number, one special character, and be 8 characters long.",
+            response.getBody()
+        );
+    }
+
+    @Test
+    public void testModifyUser_VerifiesServiceAndAudit() {
+        UpdateUserRequest updateUser = new UpdateUserRequest("test_name", "test_phone", "test_age", null);
+        when(userRepository.getIdByToken("test_token")).thenReturn(1);
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+        when(userRepository.save(user)).thenReturn(user);
+
+        userController.modifyUser("test_token", updateUser);
+
+        verify(userService).modifyUser(updateUser, 1);
+        verify(auditService).logAccountEvent(eq("test_username"), eq("User Modified"));
+    }
+
 }

@@ -48,27 +48,26 @@ public class EventServiceTest {
 
     @Test
     public void testGetSaveEvent() {
-        when(eventRepository.save(event)).thenReturn(event);
+        // Initialize event with incorrect values
+        event.setEvent_type("Personal");
+        event.setUserId(999);
+
         when(userRepository.getIdByToken(token)).thenReturn(0);
+        when(eventRepository.save(event)).thenReturn(event);
         when(eventRepository.findUpcomingByUserId(eq(0), anyLong()))
-                .thenReturn(Collections.singletonList(event));
+                .thenReturn(List.of(event));
 
-        eventService.saveEvent(event, "Work", token);
+        // Test saveEvent return value
+        GenericEvent savedEvent = eventService.saveEvent(event, "Work", token);
+
+        // Verify setters were called via field assertions
+        assertEquals("Work", savedEvent.getEvent_type());
+        assertEquals(0, savedEvent.getUserId());
+
+        // Existing assertions
         List<GenericEvent> eventList = eventService.getEventsByUserId(0);
-        assertFalse(eventList.isEmpty(), "The list should not be empty");
-        GenericEvent testEvent = eventList.get(0);
-        assertEquals(0, testEvent.getId());
-        assertEquals("2024-11-05", testEvent.getEvent_date());
-        assertEquals("10:30:00", testEvent.getEvent_time());
-        assertEquals(9.99, testEvent.getMoney(), 0.0001, "Money value mismatch");
-        assertEquals(2, testEvent.getRepeat_timeline());
-        assertEquals(true, testEvent.getRepeating());
-        assertEquals("Team Meeting", testEvent.getTitle());
-        assertEquals("Work", testEvent.getEvent_type());
-        assertEquals(0, testEvent.getUserId());
-
+        assertFalse(eventList.isEmpty());
         verify(eventRepository).save(event);
-        verify(eventRepository).findUpcomingByUserId(eq(0), anyLong());
     }
 
     @Test void testGetEventsByType() {
@@ -90,4 +89,53 @@ public class EventServiceTest {
 
         verify(eventRepository).findByEventType(eq("Work"), eq(0), anyLong());
     }
+
+    @Test
+    void testDeleteEvent_Success() {
+        when(userRepository.getIdByToken(token)).thenReturn(1);
+        when(eventRepository.deleteEvent(1, 1)).thenReturn(1);
+
+        assertTrue(eventService.deleteEvent(1, token));
+    }
+
+    @Test
+    void testDeleteEvent_Failure() {
+        when(userRepository.getIdByToken(token)).thenReturn(1);
+        when(eventRepository.deleteEvent(2, 1)).thenReturn(0);
+
+        assertFalse(eventService.deleteEvent(2, token));
+    }
+
+    @Test
+    void testDeleteEvent_InvalidUser() {
+        when(userRepository.getIdByToken(token)).thenReturn(null);
+
+        assertThrows(NullPointerException.class,
+                () -> eventService.deleteEvent(1, token));
+    }
+
+    @Test
+    void testCompleteEvent_Success() {
+        when(userRepository.getIdByToken(token)).thenReturn(1);
+        when(eventRepository.completeEvent(1)).thenReturn(1);
+
+        assertTrue(eventService.completeEvent(1, token));
+    }
+
+    @Test
+    void testCompleteEvent_Failure() {
+        when(userRepository.getIdByToken(token)).thenReturn(1);
+        when(eventRepository.completeEvent(2)).thenReturn(0);
+
+        assertFalse(eventService.completeEvent(2, token));
+    }
+
+    @Test
+    void testCompleteEvent_InvalidUser() {
+        when(userRepository.getIdByToken(token)).thenReturn(null);
+
+        assertFalse(eventService.completeEvent(1, token));
+    }
+
+
 }

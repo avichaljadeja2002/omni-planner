@@ -223,8 +223,69 @@ class EventControllerTest {
 
         // Verify setCompleted(false) was called on the event
         verify(event).setCompleted(false);
-
+ 
         // Optionally verify saveEvent was called with the event
         verify(eventService).saveEvent(event, eventType, token);
     }
+    @Test
+    void testCompleteEvent_Success() {
+        int eventId = 1;
+        String token = "testToken";
+
+        // Mock the service to return true (event marked as completed)
+        when(eventService.completeEvent(eventId, token)).thenReturn(true);
+
+        ResponseEntity<Boolean> response = eventController.completeEvent(eventId, token);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(true, response.getBody());
+        verify(eventService).completeEvent(eventId, token);
+    }
+
+    @Test
+    void testCompleteEvent_Forbidden() {
+        int eventId = 2;
+        String token = "invalidToken";
+
+        // Mock the service to return false (event not completed, e.g., invalid token)
+        when(eventService.completeEvent(eventId, token)).thenReturn(false);
+
+        ResponseEntity<Boolean> response = eventController.completeEvent(eventId, token);
+
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        assertEquals(false, response.getBody());
+        verify(eventService).completeEvent(eventId, token);
+    }
+
+    @Test
+    void testDeleteEvent_Success() {
+        int eventId = 1;
+        String token = "testToken";
+
+        // Mock the service to return true (event deleted)
+        when(eventService.deleteEvent(eventId, token)).thenReturn(true);
+
+        ResponseEntity<Boolean> response = eventController.deleteEvent(eventId, token);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(true, response.getBody());
+        verify(eventService).deleteEvent(eventId, token);
+    }
+
+    @Test
+    void testDeleteEvent_Failure() {
+        int eventId = 2;
+        String token = "invalidToken";
+
+        // Mock the service to return false (event not deleted, e.g., not found or forbidden)
+        when(eventService.deleteEvent(eventId, token)).thenReturn(false);
+
+        ResponseEntity<Boolean> response = eventController.deleteEvent(eventId, token);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(false, response.getBody());
+        verify(eventService).deleteEvent(eventId, token);
+    }
+
+
 }
