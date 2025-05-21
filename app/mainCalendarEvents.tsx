@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import GenericMainPageForm from './genericMainPage';
-import { View } from 'react-native';
+import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Linking from 'expo-linking';
 import { cLog } from '../components/log'
@@ -8,6 +8,13 @@ import { call, full_call } from '../components/apiCall';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Alert from './alert';
 import { useAlert } from '../hooks/useAlert';
+
+type CalendarEvent = {
+  summary: string;
+  start: string;
+  end: string;
+  location?: string;
+};
 
 const CLIENT_ID = process.env.EXPO_PUBLIC_CLIENT_ID || '';
 const CLIENT_SECRET = process.env.EXPO_PUBLIC_CLIENT_SECRET || '';
@@ -70,6 +77,71 @@ export default function CalendarTracker() {
     }
   };
 
+  // const [events, setEvents] = useState<CalendarEvent[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const [authCode, setAuthCode] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (authCode) {
+      // fetch token only when authCode is set
+      const fetchToken = async () => {
+        try {
+          const res = await fetch('http://localhost:3000/token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code: authCode }),
+          });
+
+          const data = await res.json();
+          console.log('✅ Access token:', data.token);
+        } catch (err) {
+          console.error('❌ Error exchanging authorization code:', err);
+        }
+      };
+
+      fetchToken();
+    }
+  }, [authCode]);
+
+  const handlePressImap = async () => {
+    try {
+      console.log('Trying to fetch events:');
+      const response = await fetch('http://localhost:3000/events');
+      const data = await response.json();
+
+      console.log('✅ Fetched Events:', data);
+
+      // Log each event
+      data.forEach(async (event: { summary: any; start: any; end: any; }) => {
+        console.log('📅 Event Title:', event.summary.val);
+        console.log(new Date(event.start));
+        const formattedData = {
+          title: "IMAP: " + event.summary.val,
+          event_date: (new Date(event.start)).toISOString().split('T')[0],
+          event_time: (new Date(event.start)).toTimeString().split(' ')[0],
+        };
+        cLog(1, formattedData);
+        try {
+          const token = await AsyncStorage.getItem('token');
+          cLog(1, 'Saving event to:' + `/add_event/calendar`);
+          const response = await call(
+            `/add_event/calendar/${token}`,
+            'POST',
+            undefined,
+            formattedData
+          );
+          cLog(1, 'Event updated successfully:' + response.data);
+          showAlert('Success', 'Event saved successfully!', '', '');
+        } catch (error) {
+          console.error('Error saving event:', error);
+        }
+      });
+    } catch (err) {
+      console.error('❌ Error fetching events:', err);
+    }
+  };
+
   const linkGoogleCalendar = async (accessToken: any) => {
     cLog(1, "Linking Google Calendar for user and fetching events...");
     try {
@@ -97,10 +169,12 @@ export default function CalendarTracker() {
         thisPage='mainCalendarEvents'
         hitAddress={`/get_calendar_events/`}
         googleCalendar={true}
+        imapCalendar={true}
         sliceRange={20}
         eventIdFunc={(event: any) => `${event.id}-${event.event_date}-${event.event_time}`}
         eventIconFunc={() => 'calendar-outline'}
         handlePress={handlePress}
+        handlePressImap={handlePressImap}
         isGoogleCalendarLinked={isGoogleCalendarLinked}
         setIsGoogleCalendarLinked={setIsGoogleCalendarLinked}
       />

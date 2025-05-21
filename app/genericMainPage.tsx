@@ -14,6 +14,7 @@ import { Ionicons } from '@expo/vector-icons';
 import {
   EventProps,
   GoogleCalendarProps,
+  ImapCalendarProps,
   NavigationProps,
   RootStackParamList,
   Task,
@@ -25,7 +26,7 @@ import { getPageFromEventType, getPageName } from '@/constants/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { call } from '../components/apiCall';
 
-interface FormProps extends EventProps, GoogleCalendarProps, NavigationProps {
+interface FormProps extends EventProps, GoogleCalendarProps, NavigationProps, ImapCalendarProps {
   title: string;
   header?: string;
   hitAddress: string;
@@ -39,13 +40,17 @@ const GenericMainPageForm: React.FC<FormProps> = ({
   thisPage,
   hitAddress,
   googleCalendar = false,
+  imapCalendar = false,
   eventIdFunc = (event) => event.id.toString(),
   eventTitleFunc = (event) => `${event.title}`,
   eventIconFunc,
   handlePress,
+  handlePressImap,
   sliceRange = 10,
   isGoogleCalendarLinked = false,
+  isImapCalendarLinked = false,
   setIsGoogleCalendarLinked = () => {},
+  setIsImapCalendarLinked = () => {},
 }) => {
   const [selectedDate, setSelectedDate] = useState('');
   const [isCalendarVisible, setIsCalendarVisible] = useState(true);
@@ -247,6 +252,13 @@ const GenericMainPageForm: React.FC<FormProps> = ({
             <Text style={styles.linkButtonText}>Link to Google Calendar</Text>
           </TouchableOpacity>
         </View>
+      )}
+      {Boolean(imapCalendar) && !Boolean(isImapCalendarLinked) && (
+          <View style={{ alignItems: 'center', marginBottom: 25 }}>
+            <TouchableOpacity style={styles.linkButton} onPress={handlePressImap}>
+              <Text style={styles.linkButtonText}>Link to Outlook using IMAP</Text>
+            </TouchableOpacity>
+          </View>
       )}
     </View>
   );
