@@ -32,7 +32,8 @@ public class CalendarEventResponseTest {
     public void testConstructorAndGetters() {
         // Initialize CalendarEventResponse with mocked events
         boolean googleCalendarLinked = true;
-        CalendarEventResponse response = new CalendarEventResponse(mockEvents, googleCalendarLinked);
+        boolean imapLinked = true;
+        CalendarEventResponse response = new CalendarEventResponse(mockEvents, googleCalendarLinked, imapLinked);
 
         // Verify that the mocked events list is returned
         assertEquals(mockEvents, response.getEvents());
@@ -46,7 +47,7 @@ public class CalendarEventResponseTest {
     @Test
     public void testSetEvents() {
         // Create initial CalendarEventResponse with no events
-        CalendarEventResponse response = new CalendarEventResponse(null, false);
+        CalendarEventResponse response = new CalendarEventResponse(null, false, false);
 
         // Set mocked events
         response.setEvents(mockEvents);
@@ -58,7 +59,7 @@ public class CalendarEventResponseTest {
     @Test
     public void testSetGoogleCalendarLinked() {
         // Create CalendarEventResponse with googleCalendarLinked initially false
-        CalendarEventResponse response = new CalendarEventResponse(null, false);
+        CalendarEventResponse response = new CalendarEventResponse(null, false, false);
 
         // Change googleCalendarLinked value
         response.setGoogleCalendarLinked(true);
@@ -70,7 +71,7 @@ public class CalendarEventResponseTest {
     @Test
     public void testNullEvents() {
         // Create CalendarEventResponse with null events
-        CalendarEventResponse response = new CalendarEventResponse(null, true);
+        CalendarEventResponse response = new CalendarEventResponse(null, true, true);
 
         // Verify that getEvents returns null
         assertNull(response.getEvents());
