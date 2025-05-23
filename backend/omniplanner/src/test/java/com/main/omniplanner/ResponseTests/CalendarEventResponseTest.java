@@ -70,6 +70,18 @@ public class CalendarEventResponseTest {
     }
 
     @Test
+    public void testSetImapLinked() {
+        // Create CalendarEventResponse with googleCalendarLinked initially false
+        CalendarEventResponse response = new CalendarEventResponse(null, false, false);
+
+        // Change googleCalendarLinked value
+        response.setImapLinked(true);
+
+        // Verify the value is updated correctly
+        assertTrue(response.isImapLinked());
+    }
+
+    @Test
     public void testNullEvents() {
         // Create CalendarEventResponse with null events
         CalendarEventResponse response = new CalendarEventResponse(null, true, true);
