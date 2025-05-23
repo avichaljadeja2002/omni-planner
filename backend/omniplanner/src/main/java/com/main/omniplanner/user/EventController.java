@@ -1,6 +1,7 @@
 package com.main.omniplanner.user;
 
 import com.main.omniplanner.calendar.LinkGoogleCalendar;
+import com.main.omniplanner.calendar.LinkImap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,9 @@ public class EventController {
     @Autowired
     private LinkGoogleCalendar linkGoogleCalendar;
 
+    @Autowired
+    private LinkImap linkImap;
+
     public EventController(EventService eventService, UserRepository userRepository) {
         this.eventService = eventService;
         this.userRepository = userRepository;
@@ -33,6 +37,10 @@ public class EventController {
             List<GenericEvent> events = eventService.getEventsByUserId(userCalendarInfo.getId());
             if(userCalendarInfo.isGoogleCalendarLinked()) {
                 List<GenericEvent> calendarEvents = linkGoogleCalendar.getGoogleCalendarEvents(userCalendarInfo.getGoogleCalendarAccessToken());
+                events.addAll(calendarEvents);
+            }
+            if(userCalendarInfo.isImapLinked()) {
+                List<GenericEvent> calendarEvents = linkImap.getImapEvents(userCalendarInfo.getImapAccessToken());
                 events.addAll(calendarEvents);
             }
             return ResponseEntity.ok(events);

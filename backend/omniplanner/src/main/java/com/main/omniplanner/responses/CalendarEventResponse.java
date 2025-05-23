@@ -8,10 +8,12 @@ public class CalendarEventResponse {
 
     private List<GenericEvent> events;
     private boolean googleCalendarLinked;
+    private boolean imapLinked;
 
-    public CalendarEventResponse(List<GenericEvent> events, boolean googleCalendarLinked) {
+    public CalendarEventResponse(List<GenericEvent> events, boolean googleCalendarLinked, boolean imapLinked) {
         this.events = events;
         this.googleCalendarLinked = googleCalendarLinked;
+        this.imapLinked = imapLinked;
     }
 
     public List<GenericEvent> getEvents() {
@@ -28,6 +30,14 @@ public class CalendarEventResponse {
 
     public void setGoogleCalendarLinked(boolean googleCalendarLinked) {
         this.googleCalendarLinked = googleCalendarLinked;
+    }
+
+    public boolean isImapLinked() {
+        return imapLinked;
+    }
+
+    public void setImapLinked(boolean imapLinked) {
+        this.imapLinked = imapLinked;
     }
 }
 

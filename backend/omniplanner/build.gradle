@@ -46,6 +46,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.security:spring-security-crypto'
+	implementation 'com.sun.mail:jakarta.mail:2.0.1'
+	implementation 'org.mnode.ical4j:ical4j:3.0.25'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.mockito:mockito-core:5.3.1'

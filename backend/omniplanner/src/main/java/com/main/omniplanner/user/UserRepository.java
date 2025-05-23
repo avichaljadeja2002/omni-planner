@@ -16,6 +16,6 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query("SELECT id FROM User WHERE token = :token")
     Integer getIdByToken(String token);
 
-    @Query("SELECT NEW com.main.omniplanner.user.UserCalendarInfo(u.id, u.googleCalendarLinked, u.googleCalendarAccessToken) FROM User u WHERE u.token = :token")
+    @Query("SELECT NEW com.main.omniplanner.user.UserCalendarInfo(u.id, u.googleCalendarLinked, u.googleCalendarAccessToken, u.imapLinked, u.imapAccessToken) FROM User u WHERE u.token = :token")
     UserCalendarInfo findUserCalendarInfoByToken(@Param("token") String token);
 }

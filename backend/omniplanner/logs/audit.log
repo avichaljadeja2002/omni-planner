@@ -315,3 +315,109 @@
 2025-05-20T23:32:43.949-04:00  INFO 17904 --- [omniplanner] [http-nio-0.0.0.0-8080-exec-10] com.main.omniplanner.user.AuditService   : Account Event - User: a@m.com - Event: Login Successful
 2025-05-20T23:34:50.935-04:00  INFO 17904 --- [omniplanner] [http-nio-0.0.0.0-8080-exec-9] com.main.omniplanner.user.AuditService   : Account Event - User: a@n.com - Event: Account Created
 2025-05-20T23:34:53.094-04:00  INFO 17904 --- [omniplanner] [http-nio-0.0.0.0-8080-exec-10] com.main.omniplanner.user.AuditService   : Account Event - User: a@n.com - Event: Login Successful
+2025-05-23T04:42:03.328-04:00  INFO 16276 --- [omniplanner] [main] c.m.omniplanner.OmniplannerApplication   : Starting OmniplannerApplication using Java 17.0.12 with PID 16276 (C:\Users\norflewe\OneDrive - Rose-Hulman Institute of Technology\Documents\Capstone\omni-planner\backend\omniplanner\build\classes\java\main started by norflewe in C:\Users\norflewe\OneDrive - Rose-Hulman Institute of Technology\Documents\Capstone\omni-planner\backend\omniplanner)
+2025-05-23T04:42:03.335-04:00  INFO 16276 --- [omniplanner] [main] c.m.omniplanner.OmniplannerApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-05-23T04:42:05.196-04:00  INFO 16276 --- [omniplanner] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-23T04:42:05.324-04:00  INFO 16276 --- [omniplanner] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 107 ms. Found 4 JPA repository interfaces.
+2025-05-23T04:42:06.256-04:00  INFO 16276 --- [omniplanner] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-23T04:42:06.276-04:00  INFO 16276 --- [omniplanner] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-23T04:42:06.276-04:00  INFO 16276 --- [omniplanner] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-05-23T04:42:06.406-04:00  INFO 16276 --- [omniplanner] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-23T04:42:06.409-04:00  INFO 16276 --- [omniplanner] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2648 ms
+2025-05-23T04:42:06.662-04:00  INFO 16276 --- [omniplanner] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-23T04:42:06.757-04:00  INFO 16276 --- [omniplanner] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2025-05-23T04:42:06.814-04:00  INFO 16276 --- [omniplanner] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-23T04:42:07.357-04:00  INFO 16276 --- [omniplanner] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-23T04:42:07.423-04:00  INFO 16276 --- [omniplanner] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-23T04:42:07.756-04:00  INFO 16276 --- [omniplanner] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.sqlite.jdbc4.JDBC4Connection@32d0d7eb
+2025-05-23T04:42:07.760-04:00  INFO 16276 --- [omniplanner] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-23T04:42:09.420-04:00  INFO 16276 --- [omniplanner] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-23T04:42:09.575-04:00  INFO 16276 --- [omniplanner] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-23T04:42:10.002-04:00  INFO 16276 --- [omniplanner] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-05-23T04:42:10.944-04:00  INFO 16276 --- [omniplanner] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userService
+2025-05-23T04:42:10.973-04:00  WARN 16276 --- [omniplanner] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-23T04:42:11.550-04:00  WARN 16276 --- [omniplanner] [main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2025-05-23T04:42:11.773-04:00  INFO 16276 --- [omniplanner] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-23T04:42:11.787-04:00  INFO 16276 --- [omniplanner] [main] c.m.omniplanner.OmniplannerApplication   : Started OmniplannerApplication in 9.191 seconds (process running for 10.772)
+2025-05-23T04:49:22.227-04:00  INFO 12404 --- [omniplanner] [main] c.m.omniplanner.OmniplannerApplication   : Starting OmniplannerApplication using Java 17.0.12 with PID 12404 (C:\Users\norflewe\OneDrive - Rose-Hulman Institute of Technology\Documents\Capstone\omni-planner\backend\omniplanner\build\classes\java\main started by norflewe in C:\Users\norflewe\OneDrive - Rose-Hulman Institute of Technology\Documents\Capstone\omni-planner\backend\omniplanner)
+2025-05-23T04:49:22.231-04:00  INFO 12404 --- [omniplanner] [main] c.m.omniplanner.OmniplannerApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-05-23T04:49:23.787-04:00  INFO 12404 --- [omniplanner] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-23T04:49:23.905-04:00  INFO 12404 --- [omniplanner] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 97 ms. Found 4 JPA repository interfaces.
+2025-05-23T04:49:24.826-04:00  INFO 12404 --- [omniplanner] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-23T04:49:24.854-04:00  INFO 12404 --- [omniplanner] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-23T04:49:24.854-04:00  INFO 12404 --- [omniplanner] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-05-23T04:49:25.015-04:00  INFO 12404 --- [omniplanner] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-23T04:49:25.015-04:00  INFO 12404 --- [omniplanner] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2379 ms
+2025-05-23T04:49:25.273-04:00  INFO 12404 --- [omniplanner] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-23T04:49:25.382-04:00  INFO 12404 --- [omniplanner] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2025-05-23T04:49:25.442-04:00  INFO 12404 --- [omniplanner] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-23T04:49:26.002-04:00  INFO 12404 --- [omniplanner] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-23T04:49:26.061-04:00  INFO 12404 --- [omniplanner] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-23T04:49:26.362-04:00  INFO 12404 --- [omniplanner] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.sqlite.jdbc4.JDBC4Connection@782e6b40
+2025-05-23T04:49:26.365-04:00  INFO 12404 --- [omniplanner] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-23T04:49:27.919-04:00  INFO 12404 --- [omniplanner] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-23T04:49:27.976-04:00  INFO 12404 --- [omniplanner] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-23T04:49:28.304-04:00  INFO 12404 --- [omniplanner] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-05-23T04:49:29.192-04:00  INFO 12404 --- [omniplanner] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userService
+2025-05-23T04:49:29.217-04:00  WARN 12404 --- [omniplanner] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-23T04:49:29.791-04:00  WARN 12404 --- [omniplanner] [main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2025-05-23T04:49:29.994-04:00  INFO 12404 --- [omniplanner] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-23T04:49:30.007-04:00  INFO 12404 --- [omniplanner] [main] c.m.omniplanner.OmniplannerApplication   : Started OmniplannerApplication in 8.605 seconds (process running for 9.388)
+2025-05-23T04:54:28.977-04:00  INFO 16052 --- [omniplanner] [main] c.m.omniplanner.OmniplannerApplication   : Starting OmniplannerApplication using Java 17.0.12 with PID 16052 (C:\Users\norflewe\OneDrive - Rose-Hulman Institute of Technology\Documents\Capstone\omni-planner\backend\omniplanner\build\classes\java\main started by norflewe in C:\Users\norflewe\OneDrive - Rose-Hulman Institute of Technology\Documents\Capstone\omni-planner\backend\omniplanner)
+2025-05-23T04:54:28.977-04:00  INFO 16052 --- [omniplanner] [main] c.m.omniplanner.OmniplannerApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-05-23T04:54:30.676-04:00  INFO 16052 --- [omniplanner] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-23T04:54:30.779-04:00  INFO 16052 --- [omniplanner] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 92 ms. Found 4 JPA repository interfaces.
+2025-05-23T04:54:31.627-04:00  INFO 16052 --- [omniplanner] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-23T04:54:31.648-04:00  INFO 16052 --- [omniplanner] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-23T04:54:31.648-04:00  INFO 16052 --- [omniplanner] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-05-23T04:54:31.760-04:00  INFO 16052 --- [omniplanner] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-23T04:54:31.760-04:00  INFO 16052 --- [omniplanner] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2418 ms
+2025-05-23T04:54:32.013-04:00  INFO 16052 --- [omniplanner] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-23T04:54:32.105-04:00  INFO 16052 --- [omniplanner] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2025-05-23T04:54:32.159-04:00  INFO 16052 --- [omniplanner] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-23T04:54:32.649-04:00  INFO 16052 --- [omniplanner] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-23T04:54:32.706-04:00  INFO 16052 --- [omniplanner] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-23T04:54:33.001-04:00  INFO 16052 --- [omniplanner] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.sqlite.jdbc4.JDBC4Connection@3b65084e
+2025-05-23T04:54:33.004-04:00  INFO 16052 --- [omniplanner] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-23T04:54:34.459-04:00  INFO 16052 --- [omniplanner] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-23T04:54:34.518-04:00  INFO 16052 --- [omniplanner] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-23T04:54:34.847-04:00  INFO 16052 --- [omniplanner] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-05-23T04:54:35.699-04:00  INFO 16052 --- [omniplanner] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userService
+2025-05-23T04:54:35.725-04:00  WARN 16052 --- [omniplanner] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-23T04:54:36.284-04:00  WARN 16052 --- [omniplanner] [main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2025-05-23T04:54:36.511-04:00  INFO 16052 --- [omniplanner] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-23T04:54:36.529-04:00  INFO 16052 --- [omniplanner] [main] c.m.omniplanner.OmniplannerApplication   : Started OmniplannerApplication in 8.227 seconds (process running for 16.032)
+2025-05-23T04:55:37.979-04:00  INFO 16052 --- [omniplanner] [http-nio-0.0.0.0-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-05-23T04:55:37.979-04:00  INFO 16052 --- [omniplanner] [http-nio-0.0.0.0-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-05-23T04:55:37.982-04:00  INFO 16052 --- [omniplanner] [http-nio-0.0.0.0-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2025-05-23T04:55:46.559-04:00  INFO 16052 --- [omniplanner] [http-nio-0.0.0.0-8080-exec-3] com.main.omniplanner.user.AuditService   : Account Event - User: a@b.com - Event: Account Created
+2025-05-23T04:55:49.127-04:00  INFO 16052 --- [omniplanner] [http-nio-0.0.0.0-8080-exec-5] com.main.omniplanner.user.AuditService   : Account Event - User: a@b.com - Event: Login Successful
+2025-05-23T05:03:45.456-04:00  INFO 2876 --- [omniplanner] [main] c.m.omniplanner.OmniplannerApplication   : Starting OmniplannerApplication using Java 17.0.12 with PID 2876 (C:\Users\norflewe\OneDrive - Rose-Hulman Institute of Technology\Documents\Capstone\omni-planner\backend\omniplanner\build\classes\java\main started by norflewe in C:\Users\norflewe\OneDrive - Rose-Hulman Institute of Technology\Documents\Capstone\omni-planner\backend\omniplanner)
+2025-05-23T05:03:45.460-04:00  INFO 2876 --- [omniplanner] [main] c.m.omniplanner.OmniplannerApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-05-23T05:03:46.782-04:00  INFO 2876 --- [omniplanner] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-23T05:03:46.895-04:00  INFO 2876 --- [omniplanner] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 98 ms. Found 4 JPA repository interfaces.
+2025-05-23T05:03:47.764-04:00  INFO 2876 --- [omniplanner] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-23T05:03:47.789-04:00  INFO 2876 --- [omniplanner] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-23T05:03:47.789-04:00  INFO 2876 --- [omniplanner] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-05-23T05:03:47.907-04:00  INFO 2876 --- [omniplanner] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-23T05:03:47.908-04:00  INFO 2876 --- [omniplanner] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2101 ms
+2025-05-23T05:03:48.148-04:00  INFO 2876 --- [omniplanner] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-23T05:03:48.251-04:00  INFO 2876 --- [omniplanner] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2025-05-23T05:03:48.305-04:00  INFO 2876 --- [omniplanner] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-23T05:03:48.835-04:00  INFO 2876 --- [omniplanner] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-23T05:03:48.905-04:00  INFO 2876 --- [omniplanner] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-23T05:03:49.271-04:00  INFO 2876 --- [omniplanner] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.sqlite.jdbc4.JDBC4Connection@782e6b40
+2025-05-23T05:03:49.273-04:00  INFO 2876 --- [omniplanner] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-23T05:03:50.748-04:00  INFO 2876 --- [omniplanner] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-23T05:03:50.805-04:00  INFO 2876 --- [omniplanner] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-23T05:03:51.147-04:00  INFO 2876 --- [omniplanner] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-05-23T05:03:52.050-04:00  INFO 2876 --- [omniplanner] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userService
+2025-05-23T05:03:52.080-04:00  WARN 2876 --- [omniplanner] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-23T05:03:52.655-04:00  WARN 2876 --- [omniplanner] [main] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2025-05-23T05:03:52.874-04:00  INFO 2876 --- [omniplanner] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-23T05:03:52.889-04:00  INFO 2876 --- [omniplanner] [main] c.m.omniplanner.OmniplannerApplication   : Started OmniplannerApplication in 8.178 seconds (process running for 8.803)
+2025-05-23T05:06:05.505-04:00  INFO 2876 --- [omniplanner] [http-nio-0.0.0.0-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-05-23T05:06:05.505-04:00  INFO 2876 --- [omniplanner] [http-nio-0.0.0.0-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-05-23T05:06:05.507-04:00  INFO 2876 --- [omniplanner] [http-nio-0.0.0.0-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2025-05-23T05:06:24.350-04:00  INFO 2876 --- [omniplanner] [http-nio-0.0.0.0-8080-exec-3] com.main.omniplanner.user.AuditService   : Account Event - User: b@b.com - Event: Account Created
+2025-05-23T05:06:26.670-04:00  INFO 2876 --- [omniplanner] [http-nio-0.0.0.0-8080-exec-4] com.main.omniplanner.user.AuditService   : Account Event - User: b@b.com - Event: Login Successful

@@ -53,8 +53,8 @@ export interface GoogleCalendarProps {
 
 export interface ImapCalendarProps {
   imapCalendar?: boolean;
-  isImapCalendarLinked?: boolean;
-  setIsImapCalendarLinked?: React.Dispatch<React.SetStateAction<boolean>>;
+  isImapLinked?: boolean;
+  setIsImapLinked?: React.Dispatch<React.SetStateAction<boolean>>;
   handlePressImap?: () => void;
 }
 

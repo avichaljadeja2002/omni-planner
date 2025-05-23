@@ -36,8 +36,15 @@ public class User {
     @Column(name = "google_calendar_linked")
     private boolean googleCalendarLinked = false;
 
+    @Column(name = "imap_linked")
+    private boolean imapLinked = false;
+
     @Column(name = "google_calendar_access_token")
     private String googleCalendarAccessToken;
+
+    @Column(name = "imap_access_token")
+    private String imapAccessToken;
+
     @Column(name = "is_google_login", nullable = false)
     private boolean isGoogleLogin = false;
 
@@ -96,12 +103,28 @@ public class User {
         return googleCalendarLinked;
     }
 
+    public boolean isImapLinked() {
+        return imapLinked;
+    }
+
     public void setGoogleCalendarLinked(boolean googleCalendarLinked) {
         this.googleCalendarLinked = googleCalendarLinked;
     }
 
+    public void setImapLinked(boolean imapLinked) {
+        this.imapLinked = imapLinked;
+    }
+
+    public String getImapAccessToken() {
+        return imapAccessToken;
+    }
+
     public String getGoogleCalendarAccessToken() {
         return googleCalendarAccessToken;
+    }
+
+    public void setImapAccessToken(String imapAccessToken) {
+        this.imapAccessToken = imapAccessToken;
     }
 
     public void setGoogleCalendarAccessToken(String googleCalendarAccessToken) {

@@ -48,9 +48,9 @@ const GenericMainPageForm: React.FC<FormProps> = ({
   handlePressImap,
   sliceRange = 10,
   isGoogleCalendarLinked = false,
-  isImapCalendarLinked = false,
+  isImapLinked = false,
   setIsGoogleCalendarLinked = () => {},
-  setIsImapCalendarLinked = () => {},
+  setIsImapLinked = () => {},
 }) => {
   const [selectedDate, setSelectedDate] = useState('');
   const [isCalendarVisible, setIsCalendarVisible] = useState(true);
@@ -123,9 +123,12 @@ const GenericMainPageForm: React.FC<FormProps> = ({
       const response = await call(`${hitAddress}${token}`, 'GET');
 
       if (response.status === 200 && response.data) {
-        const { events, googleCalendarLinked } = response.data;
+        const { events, googleCalendarLinked, imapCalendarLinked } = response.data;
         if (googleCalendar) {
           setIsGoogleCalendarLinked(googleCalendarLinked);
+        }
+        if (imapCalendar) {
+          setIsGoogleCalendarLinked(imapCalendarLinked);
         }
         const eventsArray = Array.isArray(events) ? events : response.data;
         cLog(1, { 'eventsArray': eventsArray });
@@ -228,7 +231,7 @@ const GenericMainPageForm: React.FC<FormProps> = ({
             />
           </TouchableOpacity>
         </View>
-        {isCalendarVisible && (
+        {Boolean(isCalendarVisible) && (
           <Calendar
             onDayPress={handleDayPress}
             markedDates={{
@@ -246,19 +249,19 @@ const GenericMainPageForm: React.FC<FormProps> = ({
           />
         )}
       </View>
-      {googleCalendar && !isGoogleCalendarLinked && (
+      {Boolean(googleCalendar) && !Boolean(isGoogleCalendarLinked) && (
         <View style={{ alignItems: 'center', marginBottom: 25 }}>
           <TouchableOpacity style={styles.linkButton} onPress={handlePress}>
             <Text style={styles.linkButtonText}>Link to Google Calendar</Text>
           </TouchableOpacity>
         </View>
       )}
-      {Boolean(imapCalendar) && !Boolean(isImapCalendarLinked) && (
-          <View style={{ alignItems: 'center', marginBottom: 25 }}>
-            <TouchableOpacity style={styles.linkButton} onPress={handlePressImap}>
-              <Text style={styles.linkButtonText}>Link to Outlook using IMAP</Text>
-            </TouchableOpacity>
-          </View>
+      {Boolean(imapCalendar) && !Boolean(isImapLinked) && (
+        <View style={{ alignItems: 'center', marginBottom: 25 }}>
+          <TouchableOpacity style={styles.linkButton} onPress={handlePressImap}>
+            <Text style={styles.linkButtonText}>Link to Outlook using IMAP</Text>
+          </TouchableOpacity>
+        </View>
       )}
     </View>
   );

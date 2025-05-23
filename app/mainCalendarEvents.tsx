@@ -1,20 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import GenericMainPageForm from './genericMainPage';
-import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
+import { View } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Linking from 'expo-linking';
-import { cLog } from '../components/log'
+// import { cLog } from '../components/log';
 import { call, full_call } from '../components/apiCall';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Alert from './alert';
 import { useAlert } from '../hooks/useAlert';
-
-type CalendarEvent = {
-  summary: string;
-  start: string;
-  end: string;
-  location?: string;
-};
 
 const CLIENT_ID = process.env.EXPO_PUBLIC_CLIENT_ID || '';
 const CLIENT_SECRET = process.env.EXPO_PUBLIC_CLIENT_SECRET || '';
@@ -28,18 +21,19 @@ const { alertModal, showAlert, hideAlert } = useAlert();
 
 export default function CalendarTracker() {
   const [isGoogleCalendarLinked, setIsGoogleCalendarLinked] = useState(false);
+  const [isImapLinked, setIsImapLinked] = useState(false);
 
   const handlePress = async () => {
     try {
-      cLog(1, "Initiating OAuth login...");
+      console.log("Initiating OAuth login...");
       const authUrl = `${AUTH_URI}?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=https://www.googleapis.com/auth/calendar&access_type=offline&prompt=consent`;
       const result = await WebBrowser.openAuthSessionAsync(authUrl, REDIRECT_URI);
-      cLog(1, "WebBrowser result:" + result);
+      console.log("WebBrowser result:" + result);
       if (result.type === 'success' && result.url) {
         const authCodeMatch = result.url.match(/code=([^&]*)/);
         const authCode = authCodeMatch ? authCodeMatch[1] : null;
         if (authCode) {
-          cLog(1, "Received authorization code:" + authCode);
+          console.log("Received authorization code:" + authCode);
           getAccessToken(authCode);
         } else {
           console.error("Authorization code not found in the redirect URL");
@@ -54,8 +48,34 @@ export default function CalendarTracker() {
     }
   };
 
+  const handlePressImap = async () => {
+    console.log("Button pressed");
+    try {
+      console.log("Initiating OAuth login...");
+      const authUrl = `${AUTH_URI}?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=https://www.googleapis.com/auth/calendar&access_type=offline&prompt=consent`;
+      const result = await WebBrowser.openAuthSessionAsync(authUrl, REDIRECT_URI);
+      console.log("WebBrowser result:" + result);
+      if (result.type === 'success' && result.url) {
+        const authCodeMatch = result.url.match(/code=([^&]*)/);
+        const authCode = authCodeMatch ? authCodeMatch[1] : null;
+        if (authCode) {
+          console.log("Received authorization code:" + authCode);
+          getAccessTokenImap(authCode);
+        } else {
+          console.error("Authorization code not found in the redirect URL");
+          showAlert('Authorization failed', 'Code not found', 'Close', '');
+        }
+      } else {
+        console.error("WebBrowser failed to authorize");
+        showAlert('Authorization failed', '', 'Close', '');
+      }
+    } catch (error) {
+      console.error("Error during OAuth flow:", error);
+    }
+  };
+
   const getAccessToken = async (authCode: string) => {
-    cLog(1, "Exchanging authorization code for access token...");
+    console.log("Exchanging authorization code for access token...");
     try {
       const params = new URLSearchParams();
       params.append('code', authCode);
@@ -65,7 +85,7 @@ export default function CalendarTracker() {
       params.append('grant_type', 'authorization_code');
       const response = await full_call(TOKEN_URI, 'POST', 'application/x-www-form-urlencoded', params);
       if (response.data.access_token) {
-        cLog(1, "Received access token:" + response.data.access_token);
+        console.log("Received access token:" + response.data.access_token);
         linkGoogleCalendar(response.data.access_token);
       } else {
         console.error("Failed to retrieve access token");
@@ -77,79 +97,36 @@ export default function CalendarTracker() {
     }
   };
 
-  // const [events, setEvents] = useState<CalendarEvent[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const [authCode, setAuthCode] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (authCode) {
-      // fetch token only when authCode is set
-      const fetchToken = async () => {
-        try {
-          const res = await fetch('http://localhost:3000/token', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ code: authCode }),
-          });
-
-          const data = await res.json();
-          console.log('✅ Access token:', data.token);
-        } catch (err) {
-          console.error('❌ Error exchanging authorization code:', err);
-        }
-      };
-
-      fetchToken();
-    }
-  }, [authCode]);
-
-  const handlePressImap = async () => {
+  const getAccessTokenImap = async (authCode: string) => {
+    console.log("Exchanging authorization code for access token...");
     try {
-      console.log('Trying to fetch events:');
-      const response = await fetch('http://localhost:3000/events');
-      const data = await response.json();
-
-      console.log('✅ Fetched Events:', data);
-
-      // Log each event
-      data.forEach(async (event: { summary: any; start: any; end: any; }) => {
-        console.log('📅 Event Title:', event.summary.val);
-        console.log(new Date(event.start));
-        const formattedData = {
-          title: "IMAP: " + event.summary.val,
-          event_date: (new Date(event.start)).toISOString().split('T')[0],
-          event_time: (new Date(event.start)).toTimeString().split(' ')[0],
-        };
-        cLog(1, formattedData);
-        try {
-          const token = await AsyncStorage.getItem('token');
-          cLog(1, 'Saving event to:' + `/add_event/calendar`);
-          const response = await call(
-            `/add_event/calendar/${token}`,
-            'POST',
-            undefined,
-            formattedData
-          );
-          cLog(1, 'Event updated successfully:' + response.data);
-          showAlert('Success', 'Event saved successfully!', '', '');
-        } catch (error) {
-          console.error('Error saving event:', error);
-        }
-      });
-    } catch (err) {
-      console.error('❌ Error fetching events:', err);
+      const params = new URLSearchParams();
+      params.append('code', authCode);
+      params.append('client_id', CLIENT_ID);
+      params.append('client_secret', CLIENT_SECRET);
+      params.append('redirect_uri', REDIRECT_URI);
+      params.append('grant_type', 'authorization_code');
+      const response = await full_call(TOKEN_URI, 'POST', 'application/x-www-form-urlencoded', params);
+      if (response.data.access_token) {
+        console.log("Received access token:" + response.data.access_token);
+        linkImap(response.data.access_token);
+      } else {
+        console.error("Failed to retrieve access token");
+        showAlert('Error', 'Failed to retrieve access token', 'Close', '');
+      }
+    } catch (error) {
+      console.error('Error exchanging authorization code:', error);
+      showAlert('Error', 'Error exchanging authorization code', 'Close', '');
     }
   };
 
   const linkGoogleCalendar = async (accessToken: any) => {
-    cLog(1, "Linking Google Calendar for user and fetching events...");
+    console.log("Linking Google Calendar for user and fetching events...");
     try {
       const token = await AsyncStorage.getItem('token');
       const response = await call(`/link_calendar/${token}`, 'POST', undefined, { accessToken: accessToken });
       if (response.status === 200 && response.data.includes("successfully")) {
-        cLog(1, 'Google Calendar linked successfully:' + response.data);
-        showAlert('Success', 'Google Calendar linked successfully!', 'Close', '');
+        console.log('Google Calendar linked successfully:' + response.data);
         setIsGoogleCalendarLinked(true);
       } else {
         console.error("Failed to link Google Calendar");
@@ -158,6 +135,25 @@ export default function CalendarTracker() {
     } catch (error) {
       console.error('Error linking Google Calendar:', error);
       showAlert("Error", 'Error linking Google Calendar', 'Close', '');
+    }
+  };
+
+  const linkImap = async (accessToken: any) => {
+    console.log("Linking Imap for user and fetching events...");
+    try {
+      const token = await AsyncStorage.getItem('token');
+      const response = await call(`/link_imap/${token}`, 'POST', undefined, { accessToken: accessToken });
+      if (response.status === 200 && response.data.includes("successfully")) {
+        console.log('Imap linked successfully:' + response.data);
+        showAlert('Success', 'Imap linked successfully!', 'Close', '');
+        setIsImapLinked(true);
+      } else {
+        console.error("Failed to link Imap");
+        showAlert('Error', 'Failed to link Imap', 'Close', '');
+      }
+    } catch (error) {
+      console.error('Error linking Imap:', error);
+      showAlert("Error", 'Error linking Imap', 'Close', '');
     }
   };
 
@@ -176,7 +172,9 @@ export default function CalendarTracker() {
         handlePress={handlePress}
         handlePressImap={handlePressImap}
         isGoogleCalendarLinked={isGoogleCalendarLinked}
+        isImapLinked={isImapLinked}
         setIsGoogleCalendarLinked={setIsGoogleCalendarLinked}
+        setIsImapLinked={setIsImapLinked}
       />
       <Alert
         isVisible={alertModal.visible}

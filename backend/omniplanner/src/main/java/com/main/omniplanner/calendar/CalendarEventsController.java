@@ -28,6 +28,9 @@ public class CalendarEventsController {
     @Autowired
     private LinkGoogleCalendar linkGoogleCalendar;
 
+    @Autowired
+    private LinkImap linkImap;
+
     public CalendarEventsController(EventService eventService, UserRepository userRepository) {
         this.eventsService = eventService;
         this.userRepository = userRepository;
@@ -38,6 +41,7 @@ public class CalendarEventsController {
         Integer userId = userRepository.getIdByToken(token);
         List<GenericEvent> combinedEvents = new ArrayList<>();
         boolean isGoogleCalendarLinked = false;
+        boolean isImapLinked = false;
 
         try {
             Optional<User> user = userRepository.findById(String.valueOf(userId));
@@ -52,10 +56,20 @@ public class CalendarEventsController {
                 }
             }
 
+            if (user.isPresent() && user.get().isImapLinked()) {
+                isImapLinked = true;
+                String accessToken = user.get().getImapAccessToken();
+
+                if (accessToken != null && !accessToken.isEmpty()) {
+                    List<GenericEvent> imapEvents = linkImap.getImapEvents(accessToken);
+                    combinedEvents.addAll(imapEvents);
+                }
+            }
+
             List<GenericEvent> localEvents = eventsService.getEventsByType("calendar", userId);
             combinedEvents.addAll(localEvents);
 
-            CalendarEventResponse response = new CalendarEventResponse(combinedEvents, isGoogleCalendarLinked);
+            CalendarEventResponse response = new CalendarEventResponse(combinedEvents, isGoogleCalendarLinked, isImapLinked);
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
