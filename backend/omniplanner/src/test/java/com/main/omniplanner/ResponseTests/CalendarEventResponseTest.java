@@ -38,6 +38,7 @@ public class CalendarEventResponseTest {
         // Verify that the mocked events list is returned
         assertEquals(mockEvents, response.getEvents());
         assertTrue(response.isGoogleCalendarLinked());
+        assertTrue(response.isImapLinked());
 
         // Verify interactions with mocked events (if needed)
         Mockito.verifyNoInteractions(mockEvent1);
