@@ -128,7 +128,7 @@ const GenericMainPageForm: React.FC<FormProps> = ({
           setIsGoogleCalendarLinked(googleCalendarLinked);
         }
         if (imapCalendar) {
-          setIsGoogleCalendarLinked(imapCalendarLinked);
+          setIsImapLinked(imapCalendarLinked);
         }
         const eventsArray = Array.isArray(events) ? events : response.data;
         cLog(1, { 'eventsArray': eventsArray });
