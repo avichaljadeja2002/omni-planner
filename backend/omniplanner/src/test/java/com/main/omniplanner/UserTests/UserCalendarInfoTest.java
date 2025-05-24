@@ -36,4 +36,11 @@ public class UserCalendarInfoTest {
         userCalendarInfo.setGoogleCalendarAccessToken(googleCalendarAccessToken);  // Set googleCalendarAccessToken
         assertEquals(googleCalendarAccessToken, userCalendarInfo.getGoogleCalendarAccessToken());  // Assert that googleCalendarAccessToken returns the same value
     }
+
+    @Test
+    public void testGetSetImapAccessToken(){
+        String imapAccessToken = "abcdef123456";
+        userCalendarInfo.setImapAccessToken(imapAccessToken);  // Set imapAccessToken
+        assertEquals(imapAccessToken, userCalendarInfo.getImapAccessToken());  // Assert that imapAccessToken returns the same value
+    }
 }
