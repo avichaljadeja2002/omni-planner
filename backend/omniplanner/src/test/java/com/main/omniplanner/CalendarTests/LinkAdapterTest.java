@@ -11,6 +11,7 @@ import java.net.http.HttpResponse;
 
 import com.main.omniplanner.calendar.LinkImap;
 import com.main.omniplanner.calendar.LinkAdapter;
+import com.main.omniplanner.requests.CalendarLinkRequest;
 import java.io.IOException;
 
 class LinkAdapterTest {
