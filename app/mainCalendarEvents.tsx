@@ -23,33 +23,15 @@ export default function CalendarTracker() {
   const [isGoogleCalendarLinked, setIsGoogleCalendarLinked] = useState(false);
   const [isImapLinked, setIsImapLinked] = useState(false);
 
-  const handlePress = async () => {
-    try {
-      console.log("Initiating OAuth login...");
-      const authUrl = `${AUTH_URI}?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=https://www.googleapis.com/auth/calendar&access_type=offline&prompt=consent`;
-      const result = await WebBrowser.openAuthSessionAsync(authUrl, REDIRECT_URI);
-      console.log("WebBrowser result:" + result);
-      if (result.type === 'success' && result.url) {
-        const authCodeMatch = result.url.match(/code=([^&]*)/);
-        const authCode = authCodeMatch ? authCodeMatch[1] : null;
-        if (authCode) {
-          console.log("Received authorization code:" + authCode);
-          getAccessToken(authCode);
-        } else {
-          console.error("Authorization code not found in the redirect URL");
-          showAlert('Authorization failed', 'Code not found', 'Close', '');
-        }
-      } else {
-        console.error("WebBrowser failed to authorize");
-        showAlert('Authorization failed', '', 'Close', '');
-      }
-    } catch (error) {
-      console.error("Error during OAuth flow:", error);
-    }
+  const handlePressGoogleCalendar = async () => {
+    handlePress(false);
   };
 
   const handlePressImap = async () => {
-    console.log("Button pressed");
+    handlePress(true);
+  };
+
+  const handlePress = async (isImap: Boolean) => {
     try {
       console.log("Initiating OAuth login...");
       const authUrl = `${AUTH_URI}?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=https://www.googleapis.com/auth/calendar&access_type=offline&prompt=consent`;
@@ -60,7 +42,7 @@ export default function CalendarTracker() {
         const authCode = authCodeMatch ? authCodeMatch[1] : null;
         if (authCode) {
           console.log("Received authorization code:" + authCode);
-          getAccessTokenImap(authCode);
+          getAccessToken(authCode, isImap);
         } else {
           console.error("Authorization code not found in the redirect URL");
           showAlert('Authorization failed', 'Code not found', 'Close', '');
@@ -72,9 +54,9 @@ export default function CalendarTracker() {
     } catch (error) {
       console.error("Error during OAuth flow:", error);
     }
-  };
+  }
 
-  const getAccessToken = async (authCode: string) => {
+  const getAccessToken = async (authCode: string, isImap: Boolean) => {
     console.log("Exchanging authorization code for access token...");
     try {
       const params = new URLSearchParams();
@@ -86,7 +68,11 @@ export default function CalendarTracker() {
       const response = await full_call(TOKEN_URI, 'POST', 'application/x-www-form-urlencoded', params);
       if (response.data.access_token) {
         console.log("Received access token:" + response.data.access_token);
-        linkGoogleCalendar(response.data.access_token);
+        if(isImap){
+          link(response.data.access_token, "imap");
+        } else {
+          link(response.data.access_token, "calendar");
+        }
       } else {
         console.error("Failed to retrieve access token");
         showAlert('Error', 'Failed to retrieve access token', 'Close', '');
@@ -97,63 +83,21 @@ export default function CalendarTracker() {
     }
   };
 
-  const getAccessTokenImap = async (authCode: string) => {
-    console.log("Exchanging authorization code for access token...");
-    try {
-      const params = new URLSearchParams();
-      params.append('code', authCode);
-      params.append('client_id', CLIENT_ID);
-      params.append('client_secret', CLIENT_SECRET);
-      params.append('redirect_uri', REDIRECT_URI);
-      params.append('grant_type', 'authorization_code');
-      const response = await full_call(TOKEN_URI, 'POST', 'application/x-www-form-urlencoded', params);
-      if (response.data.access_token) {
-        console.log("Received access token:" + response.data.access_token);
-        linkImap(response.data.access_token);
-      } else {
-        console.error("Failed to retrieve access token");
-        showAlert('Error', 'Failed to retrieve access token', 'Close', '');
-      }
-    } catch (error) {
-      console.error('Error exchanging authorization code:', error);
-      showAlert('Error', 'Error exchanging authorization code', 'Close', '');
-    }
-  };
-
-  const linkGoogleCalendar = async (accessToken: any) => {
-    console.log("Linking Google Calendar for user and fetching events...");
+  const link = async (accessToken: any, name: string) => {
+    console.log("Linking " + name + " for user and fetching events...");
     try {
       const token = await AsyncStorage.getItem('token');
-      const response = await call(`/link_calendar/${token}`, 'POST', undefined, { accessToken: accessToken });
+      const response = await call(`/link_` + name + `/${token}`, 'POST', undefined, { accessToken: accessToken });
       if (response.status === 200 && response.data.includes("successfully")) {
-        console.log('Google Calendar linked successfully:' + response.data);
+        console.log(name + ' linked successfully:' + response.data);
         setIsGoogleCalendarLinked(true);
       } else {
-        console.error("Failed to link Google Calendar");
-        showAlert('Error', 'Failed to link Google Calendar', 'Close', '');
+        console.error("Failed to link " + name);
+        showAlert('Error', 'Failed to link ' + name, 'Close', '');
       }
     } catch (error) {
-      console.error('Error linking Google Calendar:', error);
-      showAlert("Error", 'Error linking Google Calendar', 'Close', '');
-    }
-  };
-
-  const linkImap = async (accessToken: any) => {
-    console.log("Linking Imap for user and fetching events...");
-    try {
-      const token = await AsyncStorage.getItem('token');
-      const response = await call(`/link_imap/${token}`, 'POST', undefined, { accessToken: accessToken });
-      if (response.status === 200 && response.data.includes("successfully")) {
-        console.log('Imap linked successfully:' + response.data);
-        showAlert('Success', 'Imap linked successfully!', 'Close', '');
-        setIsImapLinked(true);
-      } else {
-        console.error("Failed to link Imap");
-        showAlert('Error', 'Failed to link Imap', 'Close', '');
-      }
-    } catch (error) {
-      console.error('Error linking Imap:', error);
-      showAlert("Error", 'Error linking Imap', 'Close', '');
+      console.error('Error linking ' + name + ':', error);
+      showAlert("Error", 'Error linking ' + name, 'Close', '');
     }
   };
 
@@ -169,7 +113,7 @@ export default function CalendarTracker() {
         sliceRange={20}
         eventIdFunc={(event: any) => `${event.id}-${event.event_date}-${event.event_time}`}
         eventIconFunc={() => 'calendar-outline'}
-        handlePress={handlePress}
+        handlePressGoogleCalendar={handlePressGoogleCalendar}
         handlePressImap={handlePressImap}
         isGoogleCalendarLinked={isGoogleCalendarLinked}
         isImapLinked={isImapLinked}

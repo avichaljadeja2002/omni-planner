@@ -1,5 +1,6 @@
 package com.main.omniplanner.user;
 
+import com.main.omniplanner.calendar.LinkAdapter;
 import com.main.omniplanner.calendar.LinkGoogleCalendar;
 import com.main.omniplanner.calendar.LinkImap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,6 @@ public class EventController {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private LinkGoogleCalendar linkGoogleCalendar;
-
-    @Autowired
-    private LinkImap linkImap;
-
     public EventController(EventService eventService, UserRepository userRepository) {
         this.eventService = eventService;
         this.userRepository = userRepository;
@@ -35,13 +30,13 @@ public class EventController {
         UserCalendarInfo userCalendarInfo = userRepository.findUserCalendarInfoByToken(token);
         if(userCalendarInfo != null) {
             List<GenericEvent> events = eventService.getEventsByUserId(userCalendarInfo.getId());
-            if(userCalendarInfo.isGoogleCalendarLinked()) {
-                List<GenericEvent> calendarEvents = linkGoogleCalendar.getGoogleCalendarEvents(userCalendarInfo.getGoogleCalendarAccessToken());
-                events.addAll(calendarEvents);
-            }
-            if(userCalendarInfo.isImapLinked()) {
-                List<GenericEvent> calendarEvents = linkImap.getImapEvents(userCalendarInfo.getImapAccessToken());
-                events.addAll(calendarEvents);
+            Boolean[] isLinked = {userCalendarInfo.isGoogleCalendarLinked(), userCalendarInfo.isImapLinked()};
+            LinkGoogleCalendar[] links = {new LinkGoogleCalendar(), new LinkAdapter()};
+            String[] accessTokens = {userCalendarInfo.getGoogleCalendarAccessToken(), userCalendarInfo.getImapAccessToken()};
+            for(int i = 0; i < 2; i++){
+                if(isLinked[i]) {
+                    events.addAll(links[i].getGoogleCalendarEvents(accessTokens[i]));
+                }  
             }
             return ResponseEntity.ok(events);
         }

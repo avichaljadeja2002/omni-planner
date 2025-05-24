@@ -44,7 +44,7 @@ const GenericMainPageForm: React.FC<FormProps> = ({
   eventIdFunc = (event) => event.id.toString(),
   eventTitleFunc = (event) => `${event.title}`,
   eventIconFunc,
-  handlePress,
+  handlePressGoogleCalendar,
   handlePressImap,
   sliceRange = 10,
   isGoogleCalendarLinked = false,
@@ -251,7 +251,7 @@ const GenericMainPageForm: React.FC<FormProps> = ({
       </View>
       {Boolean(googleCalendar) && !Boolean(isGoogleCalendarLinked) && (
         <View style={{ alignItems: 'center', marginBottom: 25 }}>
-          <TouchableOpacity style={styles.linkButton} onPress={handlePress}>
+          <TouchableOpacity style={styles.linkButton} onPress={handlePressGoogleCalendar}>
             <Text style={styles.linkButtonText}>Link to Google Calendar</Text>
           </TouchableOpacity>
         </View>

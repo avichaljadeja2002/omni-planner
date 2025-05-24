@@ -48,7 +48,7 @@ public class LinkImap {
     private UserRepository userRepository;
 
     @PostMapping("/link_imap/{token}")
-    public String linkCalendar(@RequestBody CalendarLinkRequest request, @PathVariable String token) {
+    public String linkImap(@RequestBody CalendarLinkRequest request, @PathVariable String token) {
         Integer userId = userRepository.getIdByToken(token);
         try {
             System.out.println("Linking Imap for user ID: " + userId);

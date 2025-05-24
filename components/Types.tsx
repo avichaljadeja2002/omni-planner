@@ -48,7 +48,7 @@ export interface GoogleCalendarProps {
   googleCalendar?: boolean;
   isGoogleCalendarLinked?: boolean;
   setIsGoogleCalendarLinked?: React.Dispatch<React.SetStateAction<boolean>>;
-  handlePress?: () => void;
+  handlePressGoogleCalendar?: () => void;
 }
 
 export interface ImapCalendarProps {
