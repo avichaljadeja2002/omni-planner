@@ -13,6 +13,7 @@ import com.main.omniplanner.calendar.LinkImap;
 import com.main.omniplanner.calendar.LinkAdapter;
 import com.main.omniplanner.requests.CalendarLinkRequest;
 import java.io.IOException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LinkAdapterTest {
     @Autowired
@@ -43,7 +44,7 @@ class LinkAdapterTest {
         CalendarLinkRequest request2 = new CalendarLinkRequest();
         assertEquals(
             linkAdapter.linkCalendar(request2, token),
-            response
+            response.body()
         );
     }
 
