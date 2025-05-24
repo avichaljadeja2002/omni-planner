@@ -13,7 +13,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class LinkImapRequestTest throws IOException, InterruptedException {
+public class LinkImapRequestTest {
     @Test
     public void testLinkImap() {
         String token = "4034e083-7065-47d6-bfed-62eb5ba8a06e";
