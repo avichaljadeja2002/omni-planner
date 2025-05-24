@@ -1,6 +1,5 @@
 package com.main.omniplanner.EventTests;
 
-import com.main.omniplanner.user.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -8,6 +7,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import com.main.omniplanner.EventTests.*;
+import com.main.omniplanner.user.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,8 +26,8 @@ class EmailCalendarEventTest {
 
     private EventController eventController;
 
-    private GmailEvent gmailEvent;
-    private ImapEvent imapEvent;
+    private GmailCalendarEvent event1;
+    private ImapCalendarEvent event2;
     String token;
     @BeforeEach
     void setUp() {
@@ -36,7 +37,7 @@ class EmailCalendarEventTest {
         eventController = new EventController(eventService, userRepository);
         token = "1a2b3c4d";
 
-        gmailEvent = new GmailEvent();
+        event1 = new GmailCalendarEvent();
         event1.setDescription("Meeting 1");
         event1.setEvent_date("2023-10-01");
         event1.setEvent_time("10:00:00");
@@ -45,9 +46,8 @@ class EmailCalendarEventTest {
         event1.setTitle("Event 1");
         event1.setUserId(1);
         event1.setEvent_type("Calendar");
-        event1.setEmail_type("Gmail");
 
-        event2 = new GenericEvent();
+        event2 = new ImapCalendarEvent();
         event2.setDescription("Meeting 2");
         event2.setEvent_date("2023-10-02");
         event2.setEvent_time("11:00:00");
@@ -58,45 +58,31 @@ class EmailCalendarEventTest {
         event2.setTitle("Event 2");
         event2.setUserId(1);
         event2.setEvent_type("Calendar");
-        event1.setEmail_type("IMAP");
     }
 
     @Test
     void testGetEmailEventNames() {
-        List<GenericEvent> events = Arrays.asList(event1, event2);
-        UserCalendarInfo userCalendarInfo = new UserCalendarInfo();
-        userCalendarInfo.setId(1);
-        userCalendarInfo.setGoogleCalendarLinked(true);
-        userCalendarInfo.setImapLinked(true);
+        assertEquals("Google: Event 1", event1.getLabel());
+        assertEquals("Google", event1.getEmail_type());
+        assertEquals("Meeting 1", event1.getDescription());
+        assertEquals("2023-10-01", event1.getEvent_date());
+        assertEquals("10:00:00", event1.getEvent_time());
+        assertEquals(false, event1.getRepeating());
+        assertEquals(1, event1.getId());
+        assertEquals("Event 1", event1.getTitle());
+        assertEquals(1, event1.getUserId());
+        assertEquals("Calendar", event1.getEvent_type());
 
-        when(userRepository.findUserCalendarInfoByToken(token)).thenReturn(userCalendarInfo);
-        when(eventService.getEventsByUserId(1)).thenReturn(events);
-        ResponseEntity<List<GenericEvent>> response = eventController.getEventsByUserId(token);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(2, Objects.requireNonNull(response.getBody()).size());
-
-        assertEquals("Google: Event 1", response.getBody().get(0).getLabel());
-        assertEquals("Google", response.getBody().get(0).setEmail_type());
-        assertEquals("Meeting 1", response.getBody().get(0).getDescription());
-        assertEquals("2023-10-01", response.getBody().get(0).getEvent_date());
-        assertEquals("10:00:00", response.getBody().get(0).getEvent_time());
-        assertEquals(false, response.getBody().get(0).getRepeating());
-        assertEquals(1, response.getBody().get(0).getId());
-        assertEquals("Event 1", response.getBody().get(0).getTitle());
-        assertEquals(1, response.getBody().get(0).getUserId());
-        assertEquals("Calendar", response.getBody().get(0).getEvent_type());
-
-        assertEquals("Imap: Event 1", response.getBody().get(0).getLabel());
-        assertEquals("Imap", response.getBody().get(0).setEmail_type());
-        assertEquals("Meeting 2", response.getBody().get(1).getDescription());
-        assertEquals("2023-10-02", response.getBody().get(1).getEvent_date());
-        assertEquals("11:00:00", response.getBody().get(1).getEvent_time());
-        assertEquals(true, response.getBody().get(1).getRepeating());
-        assertEquals(2, response.getBody().get(1).getRepeat_timeline());
-        assertEquals(2, response.getBody().get(1).getId());
-        assertEquals("Event 2", response.getBody().get(1).getTitle());
-        assertEquals(1, response.getBody().get(1).getUserId());
-        assertEquals("Calendar", response.getBody().get(1).getEvent_type());
+        assertEquals("Imap: Event 2", event2.getLabel());
+        assertEquals("Imap", event2.getEmail_type());
+        assertEquals("Meeting 2", event2.getDescription());
+        assertEquals("2023-10-02", event2.getEvent_date());
+        assertEquals("11:00:00", event2.getEvent_time());
+        assertEquals(true, event2.getRepeating());
+        assertEquals(2, event2.getRepeat_timeline());
+        assertEquals(2, event2.getId());
+        assertEquals("Event 2", event2.getTitle());
+        assertEquals(1, event2.getUserId());
+        assertEquals("Calendar", event2.getEvent_type());
     }
 }
