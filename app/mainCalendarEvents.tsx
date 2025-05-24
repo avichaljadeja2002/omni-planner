@@ -31,7 +31,7 @@ export default function CalendarTracker() {
     handlePress(true);
   };
 
-  const handlePress = async (isImap: Boolean) => {
+  const handlePress = async (isImap: boolean) => {
     try {
       console.log("Initiating OAuth login...");
       const authUrl = `${AUTH_URI}?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=https://www.googleapis.com/auth/calendar&access_type=offline&prompt=consent`;
@@ -56,7 +56,7 @@ export default function CalendarTracker() {
     }
   }
 
-  const getAccessToken = async (authCode: string, isImap: Boolean) => {
+  const getAccessToken = async (authCode: string, isImap: boolean) => {
     console.log("Exchanging authorization code for access token...");
     try {
       const params = new URLSearchParams();
