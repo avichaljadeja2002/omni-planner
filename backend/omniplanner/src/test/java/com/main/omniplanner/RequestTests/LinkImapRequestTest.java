@@ -13,7 +13,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class LinkImapRequestTest {
+public class LinkImapRequestTest throws IOException, InterruptedException {
     @Test
     public void testLinkImap() {
         String token = "4034e083-7065-47d6-bfed-62eb5ba8a06e";
@@ -28,7 +28,15 @@ public class LinkImapRequestTest {
             .POST(HttpRequest.BodyPublishers.ofString("{}")) // Replace "{}" with your actual JSON if needed
             .build();
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        // HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(response.statusCode());
+            System.out.println(response.body());
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            // Optionally: fail the test or handle error
+        }
 
         assertEquals(200, response.statusCode()); // Adjust expected status if needed
         System.out.println(response.body()); // Optional: see response 
