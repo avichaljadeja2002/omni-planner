@@ -43,4 +43,17 @@ public class UserCalendarInfoTest {
         userCalendarInfo.setImapAccessToken(imapAccessToken);  // Set imapAccessToken
         assertEquals(imapAccessToken, userCalendarInfo.getImapAccessToken());  // Assert that imapAccessToken returns the same value
     }
+
+    @Test
+    public void testToString(){
+        int id = 123456;
+        userCalendarInfo.setId(id);  // Set id
+        boolean googleCalendarLinked = true;
+        googleCalendarLinked.setGoogleCalendarLinked(googleCalendarLinked);  // Set googleCalendarLinked
+        String googleCalendarAccessToken = "abcdef123456";
+        userCalendarInfo.setGoogleCalendarAccessToken(googleCalendarAccessToken);  // Set googleCalendarAccessToken
+        assertEquals("UserCalendarInfo{" + "id=" + id + ", isGoogleCalendarLinked=" + isGoogleCalendarLinked +	
+        ", googleCalendarAccessToken='" + (googleCalendarAccessToken != null ? "[present]" : "[null]") + '\'' +  
+        '}', userCalendarInfo.toString());  // Assert that imapAccessToken returns the same value
+    }
 }
