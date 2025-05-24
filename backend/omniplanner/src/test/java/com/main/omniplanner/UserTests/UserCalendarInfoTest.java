@@ -49,11 +49,11 @@ public class UserCalendarInfoTest {
         int id = 123456;
         userCalendarInfo.setId(id);  // Set id
         boolean googleCalendarLinked = true;
-        googleCalendarLinked.setGoogleCalendarLinked(googleCalendarLinked);  // Set googleCalendarLinked
+        userCalendarInfo.setGoogleCalendarLinked(googleCalendarLinked);  // Set googleCalendarLinked
         String googleCalendarAccessToken = "abcdef123456";
-        userCalendarInfo.setGoogleCalendarAccessToken(googleCalendarAccessToken);  // Set googleCalendarAccessToken
-        assertEquals("UserCalendarInfo{" + "id=" + id + ", isGoogleCalendarLinked=" + isGoogleCalendarLinked +	
+        userCalendarInfo.setGoogleCalendarAccessToken(googleCalendarAccessToken);  // Set userCalendarInfo
+        assertEquals("UserCalendarInfo{" + "id=" + id + ", isGoogleCalendarLinked=" + googleCalendarLinked +	
         ", googleCalendarAccessToken='" + (googleCalendarAccessToken != null ? "[present]" : "[null]") + '\'' +  
-        '}', userCalendarInfo.toString());  // Assert that imapAccessToken returns the same value
+        '}', userCalendarInfo.toString());  // Assert that toString returns the correct value
     }
 }
