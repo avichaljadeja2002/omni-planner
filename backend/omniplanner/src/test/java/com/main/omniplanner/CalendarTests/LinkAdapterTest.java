@@ -1,5 +1,15 @@
 package com.main.omniplanner.CalendarTests;
 
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.net.http.HttpRequest;
+import java.net.URI;
+import java.net.http.HttpRequest.BodyPublishers;
+
+import com.main.omniplanner.calendar.LinkImap;
+import com.main.omniplanner.calendar.LinkAdapter;
+
 class LinkAdapterTest {
     @Autowired
     private LinkAdapter linkAdapter;
@@ -9,13 +19,13 @@ class LinkAdapterTest {
 
     @Test
     void testLinkCalendar() {
+        String token = "4034e083-7065-47d6-bfed-62eb5ba8a06e";
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create("http://localhost:8080/link_imap/" + token))
             .header("Authorization", "Bearer " + accessToken)
             .header("Content-Type", "application/json")
             .POST(HttpRequest.BodyPublishers.ofString("{}"))
             .build();
-        String token = "4034e083-7065-47d6-bfed-62eb5ba8a06e";
         assertEquals(linkAdapter.linkCalendar(request, token), linkImap.linkImap(request, token));
     }
 
