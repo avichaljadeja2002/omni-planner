@@ -19,14 +19,19 @@ class LinkAdapterTest {
 
     @Test
     void testLinkCalendar() {
+        String accessToken = "ya29.a0AW4XtxjEhBkK40ZBkqv-TSmgJ-Kmxiyib-9IYmwCjrzH2Mtwu_0Tfnf8p5kXno4bIVa8pAWSr2c2EX_kwzVkHir_v28iwi67EJnnyLjHTpl238qDrk3OUE79CWBveP2VrhIO7ufVKOhG1eaYiA553DvDAG8IGjghEGC7nnI2aCgYKAaQSARUSFQHGX2MimrAisgI1kHK6HmmTZvSNCw0175";
         String token = "4034e083-7065-47d6-bfed-62eb5ba8a06e";
-        HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create("http://localhost:8080/link_imap/" + token))
-            .header("Authorization", "Bearer " + accessToken)
-            .header("Content-Type", "application/json")
-            .POST(HttpRequest.BodyPublishers.ofString("{}"))
-            .build();
-        assertEquals(linkAdapter.linkCalendar(request, token), linkImap.linkImap(request, token));
+        // HttpRequest request = HttpRequest.newBuilder()
+        //     .uri(URI.create("http://localhost:8080/link_imap/" + token))
+        //     .header("Authorization", "Bearer " + accessToken)
+        //     .header("Content-Type", "application/json")
+        //     .POST(HttpRequest.BodyPublishers.ofString("{}"))
+        //     .build();
+        CalendarLinkRequest request = new CalendarLinkRequest();
+        assertEquals(
+            linkAdapter.linkCalendar(request, token),
+            linkImap.linkImap(request, token)
+        );
     }
 
     @Test
