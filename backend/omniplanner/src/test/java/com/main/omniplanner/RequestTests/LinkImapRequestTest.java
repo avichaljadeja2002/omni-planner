@@ -40,6 +40,5 @@ public class LinkImapRequestTest {
         }
 
         assertEquals(200, response.statusCode());
-        System.out.println(response.body());
     }
 }
