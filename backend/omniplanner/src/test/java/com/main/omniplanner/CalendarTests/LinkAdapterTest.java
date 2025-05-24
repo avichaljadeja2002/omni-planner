@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LinkAdapterTest {
     @Autowired
-    private LinkAdapter linkAdapter;
+    private LinkAdapter linkAdapter  = new LinkAdapter();;
 
     @Autowired
     private LinkImap linkImap;
