@@ -43,7 +43,7 @@ class LinkAdapterTest {
         // }
         CalendarLinkRequest request = new CalendarLinkRequest();
         assertEquals(
-            ((new linkAdapter)).linkCalendar(request, token).contains("successfully"),
+            linkAdapter.linkCalendar(request, token).contains("successfully"),
             true
         );
     }
