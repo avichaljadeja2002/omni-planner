@@ -42,9 +42,8 @@ class LinkAdapterTest {
         //     e.printStackTrace();
         // }
         CalendarLinkRequest request = new CalendarLinkRequest();
-        System.out.println(linkAdapter.linkCalendar(request, token));
         assertEquals(
-            linkAdapter.linkCalendar(request, token).contains("successfully"),
+            (new linkAdapter).linkCalendar(request, token).contains("successfully"),
             true
         );
     }
