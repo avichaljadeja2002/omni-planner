@@ -22,4 +22,11 @@ public class UserCalendarInfoTest {
         userCalendarInfo.setGoogleCalendarLinked(googleCalendarLinked);  // Set googleCalendarLinked
         assertEquals(googleCalendarLinked, userCalendarInfo.isGoogleCalendarLinked());  // Assert that isGoogleCalendarLinked returns the same value
     }
+
+    @Test
+    public void testGetSetImapLinked(){
+        boolean imapLinked = true;
+        userCalendarInfo.setImapLinked(imapLinked);  // Set imapLinked
+        assertEquals(imapLinked, userCalendarInfo.isImapLinked());  // Assert that isImapLinked returns the same value
+    }
 }
