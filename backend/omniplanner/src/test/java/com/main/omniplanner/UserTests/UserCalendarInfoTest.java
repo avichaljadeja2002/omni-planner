@@ -29,4 +29,11 @@ public class UserCalendarInfoTest {
         userCalendarInfo.setImapLinked(imapLinked);  // Set imapLinked
         assertEquals(imapLinked, userCalendarInfo.isImapLinked());  // Assert that isImapLinked returns the same value
     }
+
+    @Test
+    public void testGetSetGoogleCalendarAccessToken(){
+        String googleCalendarAccessToken = "abcdef123456";
+        userCalendarInfo.setGoogleCalendarAccessToken(googleCalendarAccessToken);  // Set googleCalendarAccessToken
+        assertEquals(googleCalendarAccessToken, userCalendarInfo.getGoogleCalendarAccessToken());  // Assert that googleCalendarAccessToken returns the same value
+    }
 }
