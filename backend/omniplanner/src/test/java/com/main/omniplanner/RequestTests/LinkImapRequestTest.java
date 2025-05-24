@@ -8,6 +8,11 @@ import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
 public class LinkImapRequestTest {
     @Test
     public void testLinkImap() {
@@ -17,7 +22,7 @@ public class LinkImapRequestTest {
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create("https://your-api-url.com/link_imap/" + token))
+            .uri(URI.create("http://localhost:8080/link_imap/" + token))
             .header("Authorization", "Bearer " + accessToken)
             .header("Content-Type", "application/json")
             .POST(HttpRequest.BodyPublishers.ofString("{}")) // Replace "{}" with your actual JSON if needed
