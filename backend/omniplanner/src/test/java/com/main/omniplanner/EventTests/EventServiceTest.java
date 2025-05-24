@@ -47,13 +47,6 @@ public class EventServiceTest {
     }
 
     @Test
-    public void testEventTypeIsSet() {
-        GenericEvent event = new GenericEvent();
-        event.setEvent_type("work");
-        assertEquals("work", event.getEvent_type());
-    }
-
-    @Test
     public void testGetSaveEvent() {
         when(eventRepository.save(event)).thenReturn(event);
         when(userRepository.getIdByToken(token)).thenReturn(0);
@@ -76,6 +69,19 @@ public class EventServiceTest {
 
         verify(eventRepository).save(event);
         verify(eventRepository).findUpcomingByUserId(eq(0), anyLong());
+    }
+
+    @Test
+    public void testGetDeleteEvent() {
+        when(eventRepository.save(event)).thenReturn(event);
+        when(userRepository.getIdByToken(token)).thenReturn(0);
+        when(eventRepository.findUpcomingByUserId(eq(0), anyLong()))
+                .thenReturn(Collections.singletonList(event));
+
+        eventService.saveEvent(event, "Work", token);
+        eventService.deleteEvent(0, token);
+        List<GenericEvent> eventList = eventService.getEventsByUserId(0);
+        assertTrue(eventList.isEmpty(), "The list should be empty");
     }
 
     @Test void testGetEventsByType() {
