@@ -26,10 +26,9 @@ public class LinkImapRequestTest {
             .uri(URI.create("http://localhost:8080/link_imap/" + token))
             .header("Authorization", "Bearer " + accessToken)
             .header("Content-Type", "application/json")
-            .POST(HttpRequest.BodyPublishers.ofString("{}")) // Replace "{}" with your actual JSON if needed
+            .POST(HttpRequest.BodyPublishers.ofString("{}"))
             .build();
 
-        // HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         HttpResponse<String> response = null;
 
         try {
@@ -38,35 +37,9 @@ public class LinkImapRequestTest {
             System.out.println(response.body());
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-            // Optionally: fail the test or handle error
         }
 
-        assertEquals(200, response.statusCode()); // Adjust expected status if needed
-        System.out.println(response.body()); // Optional: see response 
-    
-    //     const response = await call(`/link_imap/${token}`, 'POST', undefined, { accessToken: accessToken });
-
-    //     String urlString = "http://localhost:8080/link_imap/" + token;
-    //     URL url = new URL(urlString);
-    //     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-    //     conn.setRequestMethod("POST");
-    //     conn.setDoOutput(true);
-    //     conn.setRequestProperty("Authorization", "Bearer " + accessToken);
-    //     conn.setRequestProperty("Content-Type", "application/json");
-
-    //     // Send empty body or actual payload
-    //     String body = "{}";  // or your actual JSON payload
-    //     try (OutputStream os = conn.getOutputStream()) {
-    //         byte[] input = body.getBytes(StandardCharsets.UTF_8);
-    //         os.write(input, 0, input.length);
-    //     }
-
-    //     int responseCode = conn.getResponseCode();
-    //     assertEquals(200, responseCode); // Assuming 200 is the expected result
-    //     assertEquals(response.status, 200);
-    //     assertEquals(response.data, "imap linked successfully:Imap linked successfully for user ID: 19");
+        assertEquals(200, response.statusCode());
+        System.out.println(response.body());
     }
-        // assertEquals("imap linked successfully:Imap linked successfully for user ID: 19", 
-        // linkImap(undefined, "4/0AUJR-x45Nr_xxrl42wDxKQslgfLlC3iECMcinK-7uN8q6vT9EdR7kBKkaP4PGcvB7drHdQ"));
 }
