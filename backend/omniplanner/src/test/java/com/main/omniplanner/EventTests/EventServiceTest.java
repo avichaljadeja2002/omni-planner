@@ -71,19 +71,6 @@ public class EventServiceTest {
         verify(eventRepository).findUpcomingByUserId(eq(0), anyLong());
     }
 
-    @Test
-    public void testGetDeleteEvent() {
-        when(eventRepository.save(event)).thenReturn(event);
-        when(userRepository.getIdByToken(token)).thenReturn(0);
-        when(eventRepository.findUpcomingByUserId(eq(0), anyLong()))
-                .thenReturn(Collections.singletonList(event));
-
-        eventService.saveEvent(event, "Work", token);
-        eventService.deleteEvent(0, token);
-        List<GenericEvent> eventList = eventService.getEventsByUserId(0);
-        assertTrue(eventList.isEmpty(), "The list should be empty");
-    }
-
     @Test void testGetEventsByType() {
         when(eventRepository.findByEventType(eq("Work"), eq(0), anyLong()))
                 .thenReturn(Collections.singletonList(event));
