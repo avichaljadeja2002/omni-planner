@@ -17,12 +17,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
+@TestConfiguration
 class LinkAdapterTest {
     @Autowired
     private LinkAdapter linkAdapter  = new LinkAdapter();;
 
     @Autowired
     private LinkImap linkImap;
+
+    @Bean
+    public LinkAdapter linkAdapter() {
+        return new LinkAdapter();
+    }
 
     @Test
     void testLinkCalendar() {
