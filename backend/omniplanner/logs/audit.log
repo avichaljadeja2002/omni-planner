@@ -802,3 +802,4 @@
 2025-05-23T23:24:26.942-04:00  INFO 23388 --- [omniplanner] [http-nio-0.0.0.0-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
 2025-05-23T23:24:48.809-04:00  INFO 23388 --- [omniplanner] [http-nio-0.0.0.0-8080-exec-3] com.main.omniplanner.user.AuditService   : Account Event - User: u@c.com - Event: Account Created
 2025-05-23T23:24:50.987-04:00  INFO 23388 --- [omniplanner] [http-nio-0.0.0.0-8080-exec-4] com.main.omniplanner.user.AuditService   : Account Event - User: u@c.com - Event: Login Successful
+2025-05-23T23:52:01.146-04:00  WARN 23388 --- [omniplanner] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=7m24s86ms791µs700ns).
