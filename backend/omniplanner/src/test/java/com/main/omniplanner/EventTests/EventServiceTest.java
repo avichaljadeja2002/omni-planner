@@ -47,6 +47,13 @@ public class EventServiceTest {
     }
 
     @Test
+    public void testEventTypeIsSet() {
+        GenericEvent event = new GenericEvent();
+        event.setEvent_type("work");
+        assertEquals("work", event.getEvent_type());
+    }
+
+    @Test
     public void testGetSaveEvent() {
         when(eventRepository.save(event)).thenReturn(event);
         when(userRepository.getIdByToken(token)).thenReturn(0);
