@@ -39,8 +39,9 @@ class LinkAdapterTest {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+        CalendarLinkRequest request2 = new CalendarLinkRequest();
         assertEquals(
-            linkAdapter.linkCalendar(request, token),
+            linkAdapter.linkCalendar(request2, token),
             response
         );
     }
