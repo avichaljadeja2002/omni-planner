@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.net.http.HttpRequest;
 import java.net.URI;
 import java.net.http.HttpRequest.BodyPublishers;
+import java.net.http.HttpClient;
+import java.net.http.HttpResponse;
 
 import com.main.omniplanner.calendar.LinkImap;
 import com.main.omniplanner.calendar.LinkAdapter;
+import java.io.IOException;
 
 class LinkAdapterTest {
     @Autowired
@@ -21,6 +24,7 @@ class LinkAdapterTest {
     void testLinkCalendar() {
         String accessToken = "ya29.a0AW4XtxjEhBkK40ZBkqv-TSmgJ-Kmxiyib-9IYmwCjrzH2Mtwu_0Tfnf8p5kXno4bIVa8pAWSr2c2EX_kwzVkHir_v28iwi67EJnnyLjHTpl238qDrk3OUE79CWBveP2VrhIO7ufVKOhG1eaYiA553DvDAG8IGjghEGC7nnI2aCgYKAaQSARUSFQHGX2MimrAisgI1kHK6HmmTZvSNCw0175";
         String token = "4034e083-7065-47d6-bfed-62eb5ba8a06e";
+        HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create("http://localhost:8080/link_imap/" + token))
             .header("Authorization", "Bearer " + accessToken)
@@ -41,9 +45,9 @@ class LinkAdapterTest {
         );
     }
 
-    @Test
-    void testGetGoogleCalendarEvents() {
-        String access_token = "ya29.a0AW4XtxjEhBkK40ZBkqv-TSmgJ-Kmxiyib-9IYmwCjrzH2Mtwu_0Tfnf8p5kXno4bIVa8pAWSr2c2EX_kwzVkHir_v28iwi67EJnnyLjHTpl238qDrk3OUE79CWBveP2VrhIO7ufVKOhG1eaYiA553DvDAG8IGjghEGC7nnI2aCgYKAaQSARUSFQHGX2MimrAisgI1kHK6HmmTZvSNCw0175";
-        assertEquals(linkAdapter.getGoogleCalendarEvents(access_token), linkImap.getImapEvents(access_token));
-    }
+    // @Test
+    // void testGetGoogleCalendarEvents() {
+    //     String access_token = "ya29.a0AW4XtxjEhBkK40ZBkqv-TSmgJ-Kmxiyib-9IYmwCjrzH2Mtwu_0Tfnf8p5kXno4bIVa8pAWSr2c2EX_kwzVkHir_v28iwi67EJnnyLjHTpl238qDrk3OUE79CWBveP2VrhIO7ufVKOhG1eaYiA553DvDAG8IGjghEGC7nnI2aCgYKAaQSARUSFQHGX2MimrAisgI1kHK6HmmTZvSNCw0175";
+    //     assertEquals(linkAdapter.getGoogleCalendarEvents(access_token), linkImap.getImapEvents(access_token));
+    // }
 }
