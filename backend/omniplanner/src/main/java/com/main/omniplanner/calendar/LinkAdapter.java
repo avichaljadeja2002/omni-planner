@@ -20,6 +20,7 @@ public class LinkAdapter extends LinkGoogleCalendar {
 
     @Override
     public String linkCalendar(@RequestBody CalendarLinkRequest request, @PathVariable String token) {
+        // return linkImap.linkImap(request, token);
         String accessToken = request.getAccessToken();
 
         HttpClient client = HttpClient.newHttpClient();
