@@ -15,6 +15,7 @@ import com.main.omniplanner.requests.CalendarLinkRequest;
 import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest
 class LinkAdapterTest {
     @Autowired
     private LinkAdapter linkAdapter  = new LinkAdapter();;

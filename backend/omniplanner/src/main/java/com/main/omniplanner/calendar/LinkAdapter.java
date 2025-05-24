@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public class LinkAdapter extends LinkGoogleCalendar {
-    LinkImap linkImap;
+
+    private LinkImap linkImap = new LinkImap();
 
     @Override
     public String linkCalendar(@RequestBody CalendarLinkRequest request, @PathVariable String token) {
