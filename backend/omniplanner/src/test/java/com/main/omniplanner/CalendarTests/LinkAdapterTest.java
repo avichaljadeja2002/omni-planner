@@ -14,6 +14,7 @@ import com.main.omniplanner.requests.CalendarLinkRequest;
 import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.springframework.beans.factory.annotation.Autowired;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LinkAdapterTest {
     @Autowired
@@ -29,7 +30,7 @@ class LinkAdapterTest {
         CalendarLinkRequest request = new CalendarLinkRequest();
         request.setAccessToken(accessToken);
         String response = linkAdapter.linkCalendar(request, token);
-        assertEquals(response.contains("success"), true);
+        assertTrue(response.contains("success"));
     }
 
     // @Test
