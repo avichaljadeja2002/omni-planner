@@ -43,9 +43,9 @@ class EmailCalendarEventTest {
         event1.setEvent_time("10:00:00");
         event1.setRepeating(false);
         event1.setId(1);
-        event1.setTitle("Event 1");
+        event1.setSubtitle("Event 1");
         event1.setUserId(1);
-        event1.setEvent_type("Calendar");
+        event1.setEvent_type("google_calendar");
 
         event2 = new ImapCalendarEvent();
         event2.setDescription("Meeting 2");
@@ -55,34 +55,32 @@ class EmailCalendarEventTest {
         event2.setRepeating(true);
         event2.setRepeat_timeline(2);
         event2.setId(2);
-        event2.setTitle("Event 2");
+        event2.setSubtitle("Event 2");
         event2.setUserId(1);
-        event2.setEvent_type("Calendar");
+        event2.setEvent_type("imap");
     }
 
     @Test
     void testGetEmailEventNames() {
-        assertEquals("Google: Event 1", event1.getLabel());
-        assertEquals("Google", event1.getEmail_type());
+        assertEquals("Google: Event 1", event1.getTitle());
+        assertEquals("google_calendar", event1.getEvent_type());
         assertEquals("Meeting 1", event1.getDescription());
         assertEquals("2023-10-01", event1.getEvent_date());
         assertEquals("10:00:00", event1.getEvent_time());
         assertEquals(false, event1.getRepeating());
         assertEquals(1, event1.getId());
-        assertEquals("Event 1", event1.getTitle());
         assertEquals(1, event1.getUserId());
-        assertEquals("Calendar", event1.getEvent_type());
+        assertEquals("google_calendar", event1.getEvent_type());
 
-        assertEquals("Imap: Event 2", event2.getLabel());
-        assertEquals("Imap", event2.getEmail_type());
+        assertEquals("Imap: Event 2", event2.getTitle());
+        assertEquals("imap", event2.getEvent_type());
         assertEquals("Meeting 2", event2.getDescription());
         assertEquals("2023-10-02", event2.getEvent_date());
         assertEquals("11:00:00", event2.getEvent_time());
         assertEquals(true, event2.getRepeating());
         assertEquals(2, event2.getRepeat_timeline());
         assertEquals(2, event2.getId());
-        assertEquals("Event 2", event2.getTitle());
         assertEquals(1, event2.getUserId());
-        assertEquals("Calendar", event2.getEvent_type());
+        assertEquals("imap", event2.getEvent_type());
     }
 }

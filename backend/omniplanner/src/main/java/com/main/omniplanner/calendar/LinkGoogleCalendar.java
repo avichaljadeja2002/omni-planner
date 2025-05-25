@@ -12,6 +12,7 @@ import com.main.omniplanner.requests.CalendarLinkRequest;
 import com.main.omniplanner.user.GenericEvent;
 import com.main.omniplanner.user.User;
 import com.main.omniplanner.user.UserRepository;
+import com.main.omniplanner.user.GmailCalendarEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,10 +73,10 @@ public class LinkGoogleCalendar {
             int loopLimit = Math.min(events.getItems().size(), 10); // If size is less than 10, use the size, else 10
             for (int i = 0; i < loopLimit; i++) {
                 Event event = events.getItems().get(i);
-                GenericEvent calendarEvent = new GenericEvent();
+                GmailCalendarEvent calendarEvent = new GmailCalendarEvent();
 
                 calendarEvent.setId(i);
-                calendarEvent.setTitle("Google: " + event.getSummary());
+                calendarEvent.setSubtitle(event.getSummary());
                 calendarEvent.setEvent_type("google_calendar");
                 calendarEvent.setDescription(event.getDescription());
 
@@ -89,7 +90,7 @@ public class LinkGoogleCalendar {
                 if (currentDate != null) {
                     calendarEvent.setEvent_date(formattedDate); // Set the formatted String
                     calendarEvent.setEvent_time(formattedTime);
-                    calendarEventsList.add(calendarEvent);
+                    calendarEventsList.add((GenericEvent) calendarEvent);
                 }
             }
         } catch (IOException | GeneralSecurityException e) {

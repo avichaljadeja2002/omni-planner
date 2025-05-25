@@ -12,6 +12,7 @@ import com.main.omniplanner.requests.CalendarLinkRequest;
 import com.main.omniplanner.user.GenericEvent;
 import com.main.omniplanner.user.User;
 import com.main.omniplanner.user.UserRepository;
+import com.main.omniplanner.user.ImapCalendarEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -86,10 +87,11 @@ public class LinkImap {
                 Message messages[] = inbox.getMessages();
                 int i = 0;
                 for(Message message:messages) {
-                    calendarEventsList.add(new GenericEvent());
-                    calendarEventsList.get(i).setId(i);
-                    calendarEventsList.get(i).setTitle("IMAP: " + message.getSubject());
-                    calendarEventsList.get(i).setEvent_type("imap");
+                    ImapCalendarEvent calendarEvent = new ImapCalendarEvent();
+                    calendarEvent.setId(i);
+                    calendarEvent.setSubtitle(message.getSubject());
+                    calendarEvent.setEvent_type("imap");
+                    calendarEventsList.add((GenericEvent) calendarEvent);
                     Date date = message.getReceivedDate();
                     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");

@@ -1,14 +1,19 @@
 package com.main.omniplanner.user;
 
-import com.main.omniplanner.user.*;
-
 public class ImapCalendarEvent extends EmailCalendarEvent {
 
-    public String getLabel() {
-        return "Imap: " + getTitle();
+    private String subtitle;
+    private String email_type = "Imap";
+
+    // Implement the setSubtitle() method from EmailCalendarInfo
+    @Override
+    public void setSubtitle(String subtitle) {
+        this.subtitle = subtitle;
     }
-    
-    public String getEmail_type() {
-        return "Imap";
+
+    // Implement the getTitle() method from EmailCalendarInfo
+    @Override
+    public String getTitle() {
+        return email_type + ": " + subtitle;
     }
 }
