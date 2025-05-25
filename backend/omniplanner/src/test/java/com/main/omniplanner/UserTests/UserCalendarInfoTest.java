@@ -44,7 +44,7 @@ public class UserCalendarInfoTest {
         assertEquals(imapAccessToken, userCalendarInfo.getImapAccessToken());  // Assert that imapAccessToken returns the same value
     }
 
-    @Test
+      
     public void testToString(){
         int id = 123456;
         userCalendarInfo.setId(id);  // Set id
@@ -55,5 +55,15 @@ public class UserCalendarInfoTest {
         assertEquals("UserCalendarInfo{" + "id=" + id + ", isGoogleCalendarLinked=" + googleCalendarLinked +	
         ", googleCalendarAccessToken='" + (googleCalendarAccessToken != null ? "[present]" : "[null]") + '\'' +  
         '}', userCalendarInfo.toString());  // Assert that toString returns the correct value
+    }
+
+    @Test
+    public void testConstructor(){
+        UserCalendarInfo userCalendarInfo2 = new UserCalendarInfo(123456, true, "abcdef123456", true, "abcdef123456");
+        assertEquals(123456, userCalendarInfo2.getId());
+        assertTrue(userCalendarInfo2.isGoogleCalendarLinked());
+        assertEquals("abcdef123456", userCalendarInfo2.getGoogleCalendarAccessToken());
+        assertTrue(userCalendarInfo2.isImapLinked());
+        assertEquals("abcdef123456", userCalendarInfo2.getImapAccessToken());
     }
 }
