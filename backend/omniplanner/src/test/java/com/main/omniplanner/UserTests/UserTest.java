@@ -116,6 +116,15 @@ public class UserTest {
     }
 
     @Test
+    public void testGetSetImapAccessToken(){
+        String imapAccessToken = "abcdef123456";
+        user.setImapAccessToken(imapAccessToken);  // Set imapAccessToken
+        assertEquals(imapAccessToken, user.getImapAccessToken());  // Assert that imapAccessToken returns the same value
+        user.setImapAccessToken(imapAccessToken);  // Set imapAccessToken
+        assertEquals(imapAccessToken, user.getImapAccessToken());  // Assert that imapAccessToken returns the same value
+    }
+
+    @Test
     public void testGenerateToken() {
         // Arrange
         User user = new User();
