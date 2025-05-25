@@ -20,29 +20,7 @@ public class LinkAdapter extends LinkGoogleCalendar {
 
     @Override
     public String linkCalendar(@RequestBody CalendarLinkRequest request, @PathVariable String token) {
-        // return linkImap.linkImap(request, token);
-        String accessToken = request.getAccessToken();
-
-        HttpClient client = HttpClient.newHttpClient();
-
-        HttpRequest httpRequest = HttpRequest.newBuilder()
-            .uri(URI.create("http://localhost:8080/link_imap/" + token))
-            .header("Authorization", "Bearer " + accessToken)
-            .header("Content-Type", "application/json")
-            .POST(HttpRequest.BodyPublishers.ofString("{}"))
-            .build();
-
-        HttpResponse<String> response = null;
-
-        try {
-            response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            System.out.println(response.statusCode());
-            System.out.println(response.body());
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return response.body();
+        return linkImap.linkImap(request, token);
     }
 
     @Override
