@@ -96,6 +96,33 @@ public class EventServiceTest {
         verify(eventRepository).findUpcomingByUserId(eq(0), anyLong());
     }
 
+    @Test
+    public void testGetSaveEventChangeToken() {
+        String token2 = "2b3c4d5e";
+        when(eventRepository.save(event)).thenReturn(event);
+        when(userRepository.getIdByToken(token)).thenReturn(0);
+        when(userRepository.getIdByToken(token2)).thenReturn(1);
+        when(eventRepository.findUpcomingByUserId(eq(0), anyLong()))
+                .thenReturn(Collections.singletonList(event));
+
+        eventService.saveEvent(event, "Work", token2);
+        List<GenericEvent> eventList = eventService.getEventsByUserId(0);
+        assertFalse(eventList.isEmpty(), "The list should not be empty");
+        GenericEvent testEvent = eventList.get(0);
+        assertEquals(0, testEvent.getId());
+        assertEquals("2024-11-05", testEvent.getEvent_date());
+        assertEquals("10:30:00", testEvent.getEvent_time());
+        assertEquals(9.99, testEvent.getMoney(), 0.0001, "Money value mismatch");
+        assertEquals(2, testEvent.getRepeat_timeline());
+        assertEquals(true, testEvent.getRepeating());
+        assertEquals("Team Meeting", testEvent.getTitle());
+        assertEquals("Work", testEvent.getEvent_type());
+        assertEquals(1, testEvent.getUserId());
+
+        verify(eventRepository).save(event);
+        verify(eventRepository).findUpcomingByUserId(eq(0), anyLong());
+    }
+
     @Test void testGetEventsByType() {
         when(eventRepository.findByEventType(eq("Work"), eq(0), anyLong()))
                 .thenReturn(Collections.singletonList(event));
