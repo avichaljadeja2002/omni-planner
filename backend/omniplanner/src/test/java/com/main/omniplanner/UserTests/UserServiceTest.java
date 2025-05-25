@@ -153,21 +153,40 @@ public class UserServiceTest {
         System.out.println(response.getBody());
         assertEquals(400, response.getStatusCodeValue());
         assertEquals("Password cannot be reused", response.getBody());
-        // Integer userId = 1;
-        // String oldPassword = "Test_password1@";
-        // String newPassword = "Test_password1@";
-
-        // User user = new User();
-        // user.setPassword(passwordEncoder.encode("Test_password1@"));
-        // user.setLastPasswordUpdate(new Timestamp(System.currentTimeMillis() - (25 * 60 * 60 * 1000)));  // 25 hours ago
-
-        // when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-
-        // ResponseEntity<?> response = userService.changePassword(userId, oldPassword, newPassword);
-
-        // assertEquals(400, response.getStatusCodeValue());
-        // assertEquals("Password cannot be reused", response.getBody());
     }
+
+    // @Test
+    // public void testChangePassword_MoreThan5PreviousPasswords() {
+    //     Integer userId = 1;
+    //     String password1 = passwordEncoder.encode("Test_password1@");
+    //     String password2 = passwordEncoder.encode("AFfcInEfKuYcwUq2!");
+    //     String password3 = passwordEncoder.encode("RlAtLNgiWgbI3Lv3#");
+    //     String password4 = passwordEncoder.encode("ei2xshtRHGS8TXQ4$");
+    //     String password5 = passwordEncoder.encode("wyFSgpZnii8f7np5%");
+    //     String password6 = passwordEncoder.encode("ozmkyOHyvABUM4E6^");
+    //     String password7 = passwordEncoder.encode("aBqGq8YH0arx4XN7&");
+    //     String password6Unencoded = "ozmkyOHyvABUM4E6^";
+    //     String password7Unencoded = "aBqGq8YH0arx4XN7&";
+    //     User user = new User();
+    //     user.setPassword(password6Unencoded);
+
+    //     ArrayList<String> previousPasswords = new ArrayList<>();
+    //     previousPasswords.add(password5);
+    //     previousPasswords.add(password4);
+    //     previousPasswords.add(password3);
+    //     previousPasswords.add(password2);
+    //     previousPasswords.add(password1);
+    //     user.setPreviousPasswords(previousPasswords);
+
+    //     when(passwordEncoder.matches(password6Unencoded, user.getPassword())).thenReturn(true);
+    //     when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+
+    //     ResponseEntity<?> response = userService.changePassword(userId, password6Unencoded, password7Unencoded);
+    //     assertEquals(200, response.getStatusCodeValue());
+    //     assertEquals("Password changed successfully", response.getBody());
+    //     ArrayList<String> updatedPasswords = new ArrayList<>(Arrays.asList(password2, password3, password4, password5, password6));
+    //     assertEquals(updatedPasswords, user.getPreviousPasswords());
+    // }
 
     @Test
     public void testChangePassword_Within24Hours() {
@@ -256,25 +275,6 @@ public class UserServiceTest {
         assertEquals(400, response.getStatusCodeValue());
         assertEquals("Password must include at least one uppercase, one lowercase, one number, one special character, and be 8 characters long.", response.getBody());
     }
-
-
-//    @Test
-//    public void testChangePassword_ReusedPassword() {
-//        Integer userId = 1;
-//        String oldPassword = "Test_password1@";
-//        String newPassword = "oldPass123";  // Same as old password
-//
-//        User user = new User();
-//        user.setPassword("Test_password1@");
-//        user.setPreviousPasswords(Arrays.asList(passwordEncoder.encode("Test_password1@")));
-//        when(passwordEncoder.matches(oldPassword, user.getPassword())).thenReturn(true);
-//        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-//
-//        ResponseEntity<?> response = userService.changePassword(userId, oldPassword, newPassword);
-//
-//        assertEquals(400, response.getStatusCodeValue());
-//        assertEquals("Password cannot be reused", response.getBody());
-//    }
 
     @Test
     public void testChangePassword_Success() {

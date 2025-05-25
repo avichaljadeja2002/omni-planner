@@ -81,4 +81,12 @@ public class GenericEventTest {
         assertEquals("3,4", event.getIngredients());
     }
 
+    @Test
+    public void testGetSetCompleted(){
+        event.setCompleted(false);
+        assertFalse(event.isCompleted());
+        event.setCompleted(true);
+        assertTrue(event.isCompleted());
+    }
+
 }
