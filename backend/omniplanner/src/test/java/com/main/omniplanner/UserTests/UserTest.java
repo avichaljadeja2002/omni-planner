@@ -101,6 +101,19 @@ public class UserTest {
         assertEquals(googleCalendarLinked, user.isGoogleCalendarLinked());  // Assert that isGoogleCalendarLinked returns the same value
     }
 
+    @Test
+    public void testGetSetImapLinked(){
+        boolean imapLinked = true;
+        user.setImapLinked(imapLinked);  // Set imapLinked
+        assertEquals(imapLinked, user.isImapLinked());  // Assert that isImapLinked returns the same value
+        user.setImapLinked(imapLinked);  // Set imapLinked
+        assertEquals(imapLinked, user.isImapLinked());  // Assert that isImapLinked returns the same value
+        imapLinked = false;
+        user.setImapLinked(imapLinked);  // Set imapLinked
+        assertEquals(imapLinked, user.isImapLinked());  // Assert that isImapLinked returns the same value
+        user.setImapLinked(imapLinked);  // Set imapLinked
+        assertEquals(imapLinked, user.isImapLinked());  // Assert that isImapLinked returns the same value
+    }
 
     @Test
     public void testGenerateToken() {
