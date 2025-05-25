@@ -143,4 +143,26 @@ public class EventServiceTest {
 
         verify(eventRepository).findByEventType(eq("Work"), eq(0), anyLong());
     }
+
+    @Test
+    void testDeleteEvent() {
+        int eventId = 1;
+        String validToken = "validToken";
+        Integer userId = 42;
+
+        when(userRepository.getIdByToken(validToken)).thenReturn(userId);
+        when(eventRepository.deleteEvent(eventId, userId)).thenReturn(1);
+
+        assertTrue(eventService.deleteEvent(eventId, validToken));
+    }
+
+    @Test
+    void testDeleteEventFailure() {
+        int eventId = 2;
+        String invalidToken = "invalidToken";
+
+        when(userRepository.getIdByToken(invalidToken)).thenReturn(null);
+
+        assertFalse(eventService.deleteEvent(eventId, invalidToken));
+    }
 }
