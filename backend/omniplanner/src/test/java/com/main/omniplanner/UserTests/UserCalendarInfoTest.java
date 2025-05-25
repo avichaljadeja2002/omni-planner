@@ -60,10 +60,15 @@ public class UserCalendarInfoTest {
     @Test
     public void testConstructor(){
         UserCalendarInfo userCalendarInfo2 = new UserCalendarInfo(123456, true, "abcdef123456", true, "abcdef123456");
+        int id = 123456;
         assertEquals(123456, userCalendarInfo2.getId());
         assertTrue(userCalendarInfo2.isGoogleCalendarLinked());
-        assertEquals("abcdef123456", userCalendarInfo2.getGoogleCalendarAccessToken());
+        String googleCalendarAccessToken = "abcdef123456";
+        assertEquals(googleCalendarAccessToken, userCalendarInfo2.getGoogleCalendarAccessToken());
         assertTrue(userCalendarInfo2.isImapLinked());
         assertEquals("abcdef123456", userCalendarInfo2.getImapAccessToken());
+        assertEquals("UserCalendarInfo{" + "id=" + id + ", isGoogleCalendarLinked=" + true +	
+        ", googleCalendarAccessToken='" + (googleCalendarAccessToken != null ? "[present]" : "[null]") + '\'' +  
+        '}', userCalendarInfo2.toString());
     }
 }
