@@ -46,13 +46,6 @@ public class UserTest {
     }
 
     @Test
-    public void testGetSetGoogleCalendarLinked(){
-        boolean googleCalendarLinked = true;
-        user.setGoogleCalendarLinked(googleCalendarLinked);  // Set googleCalendarLinked
-        assertEquals(googleCalendarLinked, user.isGoogleCalendarLinked());  // Assert that isGoogleCalendarLinked returns the same value
-    }
-
-    @Test
     public void testGetSetGoogleCalendarAccessToken(){
         String googleCalendarAccessToken = "abcdef123456";
         user.setGoogleCalendarAccessToken(googleCalendarAccessToken);  // Set googleCalendarAccessToken
@@ -92,6 +85,20 @@ public class UserTest {
         boolean googleLogin = true;
         user.setGoogleLogin(googleLogin);  // Set googleLogin
         assertEquals(googleLogin, user.isGoogleLogin());  // Assert that isGoogleLogin returns the same value
+    }
+
+    @Test
+    public void testGetSetGoogleCalendarLinked(){
+        boolean googleCalendarLinked = true;
+        user.setGoogleLogin(googleCalendarLinked);  // Set googleCalendarLinked
+        assertEquals(googleCalendarLinked, user.isGoogleLogin());  // Assert that isGoogleCalendarLinked returns the same value
+        user.setGoogleCalendarLinked(googleCalendarLinked);  // Set googleCalendarLinked
+        assertEquals(googleCalendarLinked, user.isGoogleCalendarLinked());  // Assert that isGoogleCalendarLinked returns the same value
+        googleCalendarLinked = false;
+        user.setGoogleLogin(googleCalendarLinked);  // Set googleCalendarLinked
+        assertEquals(googleCalendarLinked, user.isGoogleLogin());  // Assert that isGoogleCalendarLinked returns the same value
+        user.setGoogleCalendarLinked(googleCalendarLinked);  // Set googleCalendarLinked
+        assertEquals(googleCalendarLinked, user.isGoogleCalendarLinked());  // Assert that isGoogleCalendarLinked returns the same value
     }
 
 
