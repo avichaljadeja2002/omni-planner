@@ -165,4 +165,38 @@ public class EventServiceTest {
 
         assertFalse(eventService.deleteEvent(eventId, invalidToken));
     }
+
+    @Test
+    void testCompleteEvent_Success() {
+        int eventId = 1;
+        int userId = 42;
+
+        when(userRepository.getIdByToken(token)).thenReturn(userId);
+        when(eventRepository.completeEvent(eventId)).thenReturn(1);
+
+        boolean result = eventService.completeEvent(eventId, token);
+
+        assertTrue(result);
+    }
+
+    @Test
+    void testCompleteEvent_InvalidToken() {
+        int eventId = 1;
+
+        when(userRepository.getIdByToken(token)).thenReturn(null);
+
+        assertFalse(eventService.completeEvent(eventId, token));
+        verify(eventRepository, never()).completeEvent(anyInt());
+    }
+
+    @Test
+    void testCompleteEvent_NoRowsUpdated() {
+        int eventId = 1;
+        int userId = 42;
+
+        when(userRepository.getIdByToken(token)).thenReturn(userId);
+        when(eventRepository.completeEvent(eventId)).thenReturn(0);
+
+        assertFalse(eventService.completeEvent(eventId, token));
+    }
 }
