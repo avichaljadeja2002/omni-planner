@@ -53,7 +53,8 @@ public class EventServiceTest {
         when(eventRepository.findUpcomingByUserId(eq(0), anyLong()))
                 .thenReturn(Collections.singletonList(event));
 
-        eventService.saveEvent(event, "Work", token);
+        GenericEvent savedEvent = eventService.saveEvent(event, "Work", token);
+        assertEquals(savedEvent, event);
         List<GenericEvent> eventList = eventService.getEventsByUserId(0);
         assertFalse(eventList.isEmpty(), "The list should not be empty");
         GenericEvent testEvent = eventList.get(0);
