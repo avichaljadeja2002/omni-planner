@@ -72,7 +72,7 @@ public class CalendarEventResponseTest {
         response.setGoogleCalendarLinked(false);
 
         // Verify the value is updated correctly
-        assertTrue(response.isGoogleCalendarLinked());
+        assertFalse(response.isGoogleCalendarLinked());
     }
 
     @Test
@@ -85,6 +85,12 @@ public class CalendarEventResponseTest {
 
         // Verify the value is updated correctly
         assertTrue(response.isImapLinked());
+
+        // Change googleCalendarLinked value
+        response.setImapLinked(false);
+
+        // Verify the value is updated correctly
+        assertFalse(response.isImapLinked());
     }
 
     @Test
