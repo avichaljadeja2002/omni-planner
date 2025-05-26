@@ -15,9 +15,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.http.HttpStatus;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Arrays;
 import java.util.Optional;
 import java.io.ByteArrayOutputStream;
@@ -302,28 +305,36 @@ public class UserServiceTest {
         assertEquals("User not found", exception.getMessage());
     }
 
-    // @Test
-    // void testModifyUser_CallsAuditLog() {
-    //     Integer userId = 1;
-    //     String oldPassword = "Test_password1@";
-    //     String newPassword = "NewPassword123!";
-    //     String username = "testUser";
+    @Test
+    void changePassword_removesOldestPreviousPassword_whenPreviousPasswordListExceedsFive() {
+        // Arrange
+        User user = new User();
+        user.setId(1);
+        user.setUsername("testUser");
+        user.setPassword("OldPassword123!");
+        user.setLastPasswordUpdate(Timestamp.valueOf(LocalDateTime.now().minusDays(2)));
 
-    //     User existingUser = new User();
-    //     existingUser.setId(userId);
-    //     existingUser.setPassword(oldPassword);
-    //     existingUser.setUsername(username);
+        List<String> previousPasswords = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            previousPasswords.add("encoded_OldPass" + i);
+        }
+        user.setPreviousPasswords(previousPasswords);
 
-    //     UpdateUserRequest userRequest = new UpdateUserRequest(
-    //         newPassword, "New Name", "555-5555", "30"
-    //     );
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches("OldPassword123!", "OldPassword123!")).thenReturn(true);
+        when(passwordEncoder.encode("OldPassword123!")).thenReturn("encoded_OldPassword123!");
+        when(passwordEncoder.encode("NewPassword456$%^")).thenReturn("encoded_NewPassword456$%^");
 
-    //     when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
-    //     when(passwordEncoder.encode(anyString())).thenAnswer(invocation -> invocation.getArgument(0));
-    //     when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        doNothing().when(auditService).logAccountEvent(anyString(), anyString());
 
-    //     userService.modifyUser(userRequest, userId);
+        // Act
+        ResponseEntity<?> response = userService.changePassword(1, "OldPassword123!", "NewPassword456$%^");
 
-    //     verify(auditService).logAccountEvent(eq(username), eq("User Modified"));
-    // }
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Password changed successfully", response.getBody());
+        assertEquals(6, user.getPreviousPasswords().size());
+        assertFalse(user.getPreviousPasswords().contains("encoded_OldPass0"));
+        verify(auditService).logAccountEvent(eq(user.getUsername()), eq("Password Changed"));
+    }
 }
