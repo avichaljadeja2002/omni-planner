@@ -364,6 +364,21 @@ public class UserControllerTest {
     }
 
     @Test
+    public void testModifyUser_PasswordNotSignificantlyDifferent() {
+        UpdateUserRequest updateUser = new UpdateUserRequest("test_name", "test_phone", "test_age", "Test_password2@");
+        when(userRepository.getIdByToken("test_token")).thenReturn(1);
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+        when(userService.isValidPassword("Test_password2@")).thenReturn(true);
+
+        ResponseEntity<?> response = userController.modifyUser("test_token", updateUser);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(
+            "New password must differ by at least 8 characters from the old password.",
+            response.getBody()
+        );
+    }
+
+    @Test
     public void testModifyUser_VerifiesServiceAndAudit() {
         UpdateUserRequest updateUser = new UpdateUserRequest("test_name", "test_phone", "test_age", null);
         when(userRepository.getIdByToken("test_token")).thenReturn(1);
