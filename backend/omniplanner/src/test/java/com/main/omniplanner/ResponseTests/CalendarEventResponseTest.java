@@ -67,6 +67,12 @@ public class CalendarEventResponseTest {
 
         // Verify the value is updated correctly
         assertTrue(response.isGoogleCalendarLinked());
+
+        // Change googleCalendarLinked value
+        response.setGoogleCalendarLinked(false);
+
+        // Verify the value is updated correctly
+        assertTrue(response.isGoogleCalendarLinked());
     }
 
     @Test
