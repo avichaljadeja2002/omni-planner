@@ -83,13 +83,19 @@ public class UserServiceTest {
     // Test modifyUser method
     @Test
     void testModifyUser_Success() {
+        User existingUser = new User();
+        existingUser.setId(1);
+        existingUser.setPassword("OldPassword1!");
+
         UpdateUserRequest updateUserRequest = new UpdateUserRequest("new_name", "new_phone", "new_age", "Test_significantly_different_password1@");
 
-        when(userRepository.findById(1)).thenReturn(Optional.of(user));  // Mocking the repository to return the user
-        when(userRepository.save(user)).thenReturn(user);  // Mock save method
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+        when(passwordEncoder.encode(anyString())).thenAnswer(invocation -> invocation.getArgument(0));
+        when(userRepository.save(user)).thenReturn(user);
 
         userService.modifyUser(updateUserRequest, 1);
 
+        assertEquals("Test_significantly_different_password1@", user.getPassword());
         assertEquals("new_name", user.getName());
         assertEquals("new_phone", user.getPhone());
         assertEquals("new_age", user.getAge());
