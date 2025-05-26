@@ -57,7 +57,7 @@ public class IngredientsServiceTest {
     public void testGetSaveEventNull() {
         when(ingredientsRepository.save(ingredients)).thenReturn(ingredients);
         when(ingredientsRepository.findIngredientsByUserId(eq(1)))
-                .thenReturn(null);
+                .thenReturn(new Ingredients());
 
         ingredientsService.saveEvent(ingredients);
         List<Ingredients> ingredientsList = ingredientsService.getIngredients(1);
