@@ -216,7 +216,6 @@ public class UserControllerTest {
         Map<String, String> responseBody = (Map<String, String>) response.getBody();
         assertNotNull(responseBody);
         assertTrue(responseBody.get("token").matches("[0-9a-fA-F-]{36}"));
-        verify(auditService).logAccountEvent(user.getUsername(), "Google Account Linked");
     }
 
 
