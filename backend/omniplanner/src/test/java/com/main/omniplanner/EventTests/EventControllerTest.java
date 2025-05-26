@@ -192,6 +192,7 @@ class EventControllerTest {
 
         ResponseEntity<List<GenericEvent>> response = eventController.getEventsByUserId(token);
 
+        assertFalse(event1.isCompleted());
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals(1, response.getBody().size());
