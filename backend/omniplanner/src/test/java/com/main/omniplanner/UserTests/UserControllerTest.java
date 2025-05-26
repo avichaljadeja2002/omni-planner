@@ -310,4 +310,69 @@ public class UserControllerTest {
         
         assertTrue(userController.isAccountLocked(username));
     }
+
+    // @Test
+    // void testIsAccountLocked_UnlocksAccount_WhenLockoutTimeIsInPast() {
+    //     String username = "user2";
+    //     Instant pastLockout = Instant.now().minus(Duration.ofMinutes(5));
+
+    //     service.lockoutExpiry.put(username, pastLockout);
+    //     service.failedLoginAttempts.put(username, 3);
+
+    //     boolean locked = service.isAccountLocked(username);
+
+    //     assertFalse(locked);
+    //     // Verify entries are removed
+    //     assertFalse(service.lockoutExpiry.containsKey(username));
+    //     assertFalse(service.failedLoginAttempts.containsKey(username));
+    // }
+
+    @Test
+    void testIsAccountLocked_UnlocksAccount_WhenLockoutTimeIsInPast() {
+        String username = "user2";
+        Instant pastLockout = Instant.now().minus(Duration.ofMinutes(5));
+
+        // Use reflection or helper methods if lockoutExpiry is private
+        putLockoutExpiry(userController, username, pastLockout);
+        putFailedLoginAttempts(userController, username, 3);
+
+        boolean locked = userController.isAccountLocked(username);
+
+        assertFalse(locked);
+        assertFalse(containsKey(userController, "lockoutExpiry", username));
+        assertFalse(containsKey(userController, "failedLoginAttempts", username));
+    }
+
+    private void putLockoutExpiry(Object instance, String username, Instant expiry) {
+        try {
+            Field field = instance.getClass().getDeclaredField("lockoutExpiry");
+            field.setAccessible(true);
+            Map<String, Instant> map = (Map<String, Instant>) field.get(instance);
+            map.put(username, expiry);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void putFailedLoginAttempts(Object instance, String username, int attempts) {
+        try {
+            Field field = instance.getClass().getDeclaredField("failedLoginAttempts");
+            field.setAccessible(true);
+            Map<String, Integer> map = (Map<String, Integer>) field.get(instance);
+            map.put(username, attempts);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private boolean containsKey(Object instance, String fieldName, String key) {
+        try {
+            Field field = instance.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            Map<?, ?> map = (Map<?, ?>) field.get(instance);
+            return map.containsKey(key);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
