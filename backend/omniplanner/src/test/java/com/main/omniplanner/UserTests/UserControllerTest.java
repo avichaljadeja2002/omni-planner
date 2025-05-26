@@ -15,10 +15,12 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.Instant;
+import java.time.Duration;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -282,5 +284,30 @@ public class UserControllerTest {
 
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
         assertEquals("Invalid token", response.getBody());
+    }
+
+    private static void setLockoutExpiryViaReflection(Object userController, String username, Instant expiry) throws Exception {
+        Field field = userController.getClass().getDeclaredField("lockoutExpiry");
+        field.setAccessible(true);
+        Map<String, Instant> lockoutExpiry = (Map<String, Instant>) field.get(userController);
+        lockoutExpiry.put(username, expiry);
+    }
+    
+    private static void setFailedLoginAttemptsViaReflection(Object userController, String username, int attempts) throws Exception {
+        Field field = userController.getClass().getDeclaredField("failedLoginAttempts");
+        field.setAccessible(true);
+        Map<String, Integer> failedLoginAttempts = (Map<String, Integer>) field.get(userController);
+        failedLoginAttempts.put(username, attempts);
+    }
+
+    @Test
+    void testIsAccountLocked() throws Exception {
+        String username = "user1";
+        Instant futureLockout = Instant.now().plus(Duration.ofMinutes(5));
+        
+        setLockoutExpiryViaReflection(userController, username, futureLockout);
+        setFailedLoginAttemptsViaReflection(userController, username, 3);
+        
+        assertTrue(userController.isAccountLocked(username));
     }
 }
