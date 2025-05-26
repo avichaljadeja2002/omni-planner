@@ -78,10 +78,15 @@ public class UserControllerTest {
         when(userService.isValidPassword("Test_password1@")).thenReturn(true);
 
         ResponseEntity<?> response = userController.registerUser(user);
+
+        assertEquals("test_password_encoded", user.getPassword());
+        assertTrue(user.isEnabled());
+        verify(auditService).logAccountEvent("test_username", "Account Created");
+
         System.out.println(user.getPassword());
         System.out.println(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        // Assert response body as a Map
+        
         @SuppressWarnings("unchecked")
         Map<String, String> responseBody = (Map<String, String>) response.getBody();
         assertNotNull(responseBody);
