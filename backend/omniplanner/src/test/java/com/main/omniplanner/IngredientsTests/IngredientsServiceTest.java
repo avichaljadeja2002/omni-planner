@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class IngredientsServiceTest {
 
@@ -52,4 +53,17 @@ public class IngredientsServiceTest {
         verify(ingredientsRepository).save(ingredients);
         verify(ingredientsRepository).findIngredientsByUserId(eq(0));
     }
+
+    @Test
+    public void testSaveEventReturnsSavedIngredient() {
+        Ingredients input = new Ingredients();
+        Ingredients saved = new Ingredients();
+        
+        when(ingredientsRepository.save(input)).thenReturn(saved);
+        
+        Ingredients result = ingredientsService.saveEvent(input);
+        
+        assertNotNull(result); // This will fail if return value is mutated to null
+        assertEquals(saved, result); // Also fails if result is null
+}
 }
