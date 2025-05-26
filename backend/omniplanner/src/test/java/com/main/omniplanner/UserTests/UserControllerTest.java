@@ -92,6 +92,20 @@ public class UserControllerTest {
     }
 
     @Test
+    public void testRegisterUser_InvalidPassword() {
+        when(userRepository.findByUsername("test_username")).thenReturn(Optional.empty());
+        when(passwordEncoder.encode("invalid_password")).thenReturn("test_password_encoded");
+        when(userRepository.save(user)).thenReturn(user);
+        when(userService.isValidPassword("invalid_password")).thenReturn(false);
+
+        ResponseEntity<?> response = userController.registerUser(user);
+        System.out.println(user.getPassword());
+        System.out.println(response);
+        assertEquals(400, response.getStatusCodeValue());
+        assertEquals("Password must include at least one uppercase, one lowercase, one number, one special character, and be 8 characters long.", response.getBody());
+    }
+
+    @Test
     public void testRegisterUser_Fail() {
         when(userRepository.findByUsername("test_username")).thenReturn(Optional.of(user));
         ResponseEntity<?> response = userController.registerUser(user);
