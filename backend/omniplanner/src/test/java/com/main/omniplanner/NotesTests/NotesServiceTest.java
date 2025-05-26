@@ -89,4 +89,27 @@ public class NotesServiceTest {
         assertEquals("Updated Note", result.getText()); // Checks mutation on text
         verify(notesRepository).save(existing);         // Catches wrong save target
     }
+
+    @Test
+    void testMultipleExistingNotes_OnlyFirstUpdated() {
+        Notes inputNote = new Notes();
+        inputNote.setText("Fresh Text");
+
+        Notes existing1 = new Notes();
+        existing1.setText("Old 1");
+
+        Notes existing2 = new Notes();
+        existing2.setText("Old 2");
+
+        List<Notes> existingList = List.of(existing1, existing2);
+
+        when(notesRepository.findByUserId(3)).thenReturn(existingList);
+        when(notesRepository.save(existing1)).thenReturn(existing1);
+
+        Notes result = notesService.saveOrUpdateNote(inputNote, 3);
+
+        assertEquals("Fresh Text", result.getText());   // Validates setText usage
+        verify(notesRepository).save(existing1);        // Prevents saving wrong index
+        verify(notesRepository, never()).save(existing2);
+    }
 }
