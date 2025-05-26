@@ -20,6 +20,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -294,6 +296,18 @@ public class UserServiceTest {
         assertEquals("Password changed successfully", response.getBody());
     }
 
-
-
+    @Test
+    void testPrintStatementIsCorrect() {
+        String oldPassword = "Test_password1@";
+        String newPassword = "NewPassword123!";
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        System.setOut(new PrintStream(outContent));
+        try {
+            userService.isSignificantlyDifferent(oldPassword, newPassword);
+            assertEquals("\"" + oldPassword + "\"" + " " + "\"" + newPassword + "\"" + System.lineSeparator(), outContent.toString());
+        } finally {
+            System.setOut(originalOut);
+        }
+    }
 }
