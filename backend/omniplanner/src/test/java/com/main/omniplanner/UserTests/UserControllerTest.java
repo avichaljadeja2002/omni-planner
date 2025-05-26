@@ -373,4 +373,14 @@ public class UserControllerTest {
         verify(auditService).logAccountEvent(eq("test_username"), eq("User Modified"));
     }
 
+    @Test
+    public void testTrackFailedAttempt() {
+        String username = "test_username";
+        userController.trackFailedAttempt(username);
+        userController.trackFailedAttempt(username);
+        userController.trackFailedAttempt(username);
+        verify(auditService).logAccountEvent(username, "Account Locked");
+        assertTrue(userController.isAccountLocked(username));
+    }
+
 }

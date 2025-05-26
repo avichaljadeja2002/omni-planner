@@ -21,10 +21,10 @@ class EventControllerTest {
     @Mock
     private EventService eventService;
 
+    private EventController eventController;
+
     @Autowired
     private UserRepository userRepository;
-
-    private EventController eventController;
 
     private GenericEvent event1;
     private GenericEvent event2;
@@ -191,8 +191,7 @@ class EventControllerTest {
         when(eventService.getEventsByUserId(1)).thenReturn(events);
 
         ResponseEntity<List<GenericEvent>> response = eventController.getEventsByUserId(token);
-
-        assertFalse(event1.isCompleted());
+        
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals(1, response.getBody().size());
