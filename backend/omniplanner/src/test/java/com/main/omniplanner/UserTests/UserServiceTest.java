@@ -27,6 +27,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import org.mockito.ArgumentCaptor;
 
 public class UserServiceTest {
 
@@ -307,7 +308,6 @@ public class UserServiceTest {
 
     @Test
     void changePassword_removesOldestPreviousPassword_whenPreviousPasswordListExceedsFive() {
-        // Arrange
         User user = new User();
         user.setId(1);
         user.setUsername("testUser");
@@ -327,14 +327,46 @@ public class UserServiceTest {
 
         doNothing().when(auditService).logAccountEvent(anyString(), anyString());
 
-        // Act
         ResponseEntity<?> response = userService.changePassword(1, "OldPassword123!", "NewPassword456$%^");
 
-        // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Password changed successfully", response.getBody());
         assertEquals(6, user.getPreviousPasswords().size());
         assertFalse(user.getPreviousPasswords().contains("encoded_OldPass0"));
+        verify(auditService).logAccountEvent(eq(user.getUsername()), eq("Password Changed"));
+    }
+
+    @Test
+    void changePassword_doesNotRemoveOldPassword_whenPreviousPasswordListHasFiveOrFewer() {
+        User user = new User();
+        user.setId(1);
+        user.setUsername("testUser");
+        user.setLastPasswordUpdate(Timestamp.valueOf(LocalDateTime.now().minusDays(2)));
+        
+        when(passwordEncoder.encode(anyString())).thenAnswer(invocation -> "encoded_" + invocation.getArgument(0));
+        
+        user.setPassword("encoded_OldPassword123!");
+        
+        List<String> previousPasswords = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            previousPasswords.add("encoded_OldPass" + i);
+        }
+        user.setPreviousPasswords(new ArrayList<>(previousPasswords));
+        
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches("OldPassword123!", "encoded_OldPassword123!")).thenReturn(true);
+        
+        doNothing().when(auditService).logAccountEvent(anyString(), anyString());
+        System.out.println("Previous passwords before change: " + user.getPreviousPasswords().size());
+        ResponseEntity<?> response = userService.changePassword(1, "OldPassword123!", "NewPassword456$%^");
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(userCaptor.capture());
+        User savedUser = userCaptor.getValue();
+        System.out.println("Previous passwords after change: " + user.getPreviousPasswords().size());
+        
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Password changed successfully", response.getBody());
+        assertEquals(5, user.getPreviousPasswords().size());
         verify(auditService).logAccountEvent(eq(user.getUsername()), eq("Password Changed"));
     }
 }

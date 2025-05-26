@@ -123,6 +123,8 @@ public class UserService implements UserDetailsService {
 
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setLastPasswordUpdate(new Timestamp(System.currentTimeMillis()));
+
+        userRepository.save(user);
         
         auditService.logAccountEvent(user.getUsername(), "Password Changed");
         return ResponseEntity.ok("Password changed successfully");
