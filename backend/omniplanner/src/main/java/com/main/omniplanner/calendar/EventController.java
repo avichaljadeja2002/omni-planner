@@ -1,8 +1,6 @@
-com.main.omniplanner.calendar
+package com.main.omniplanner.calendar;
 
-import com.main.omniplanner.calendar.LinkAdapter;
-import com.main.omniplanner.calendar.LinkGoogleCalendar;
-import com.main.omniplanner.calendar.LinkImap;
+import com.main.omniplanner.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
