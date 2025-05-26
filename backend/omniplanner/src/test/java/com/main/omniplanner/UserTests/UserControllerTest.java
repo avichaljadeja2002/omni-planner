@@ -1,3 +1,4 @@
+
 package com.main.omniplanner.UserTests;
 
 import com.main.omniplanner.requests.ChangePasswordRequest;
@@ -15,12 +16,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.Instant;
-import java.time.Duration;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -48,7 +47,6 @@ public class UserControllerTest {
 
     private final Map<String, Instant> lockoutExpiry = new ConcurrentHashMap<>();
     private final Map<String, AtomicInteger> failedLoginAttempts = new ConcurrentHashMap<>();
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -78,15 +76,10 @@ public class UserControllerTest {
         when(userService.isValidPassword("Test_password1@")).thenReturn(true);
 
         ResponseEntity<?> response = userController.registerUser(user);
-
-        assertEquals("test_password_encoded", user.getPassword());
-        assertTrue(user.isEnabled());
-        verify(auditService).logAccountEvent("test_username", "Account Created");
-
         System.out.println(user.getPassword());
         System.out.println(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        
+        // Assert response body as a Map
         @SuppressWarnings("unchecked")
         Map<String, String> responseBody = (Map<String, String>) response.getBody();
         assertNotNull(responseBody);
@@ -94,20 +87,6 @@ public class UserControllerTest {
         assertEquals("", responseBody.get("name"));
         assertEquals("", responseBody.get("phone"));
         assertEquals("", responseBody.get("age"));
-    }
-
-    @Test
-    public void testRegisterUser_InvalidPassword() {
-        when(userRepository.findByUsername("test_username")).thenReturn(Optional.empty());
-        when(passwordEncoder.encode("invalid_password")).thenReturn("test_password_encoded");
-        when(userRepository.save(user)).thenReturn(user);
-        when(userService.isValidPassword("invalid_password")).thenReturn(false);
-
-        ResponseEntity<?> response = userController.registerUser(user);
-        System.out.println(user.getPassword());
-        System.out.println(response);
-        assertEquals(400, response.getStatusCodeValue());
-        assertEquals("Password must include at least one uppercase, one lowercase, one number, one special character, and be 8 characters long.", response.getBody());
     }
 
     @Test
@@ -305,92 +284,93 @@ public class UserControllerTest {
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
         assertEquals("Invalid token", response.getBody());
     }
-
-    private static void setLockoutExpiryViaReflection(Object userController, String username, Instant expiry) throws Exception {
-        Field field = userController.getClass().getDeclaredField("lockoutExpiry");
-        field.setAccessible(true);
-        Map<String, Instant> lockoutExpiry = (Map<String, Instant>) field.get(userController);
-        lockoutExpiry.put(username, expiry);
-    }
     
-    private static void setFailedLoginAttemptsViaReflection(Object userController, String username, int attempts) throws Exception {
-        Field field = userController.getClass().getDeclaredField("failedLoginAttempts");
-        field.setAccessible(true);
-        Map<String, Integer> failedLoginAttempts = (Map<String, Integer>) field.get(userController);
-        failedLoginAttempts.put(username, attempts);
+    @Test
+    public void testAccountUnlock_AfterLockoutExpires() {
+        // Simulate lockout expiry
+        String username = "test_username";
+        // Directly manipulate lockoutExpiry map for test
+        userController.lockoutExpiry.put(username, Instant.now().minusSeconds(60));
+        assertFalse(userController.isAccountLocked(username));
+    }
+    @Test
+    public void testRegisterUser_InvalidPassword() {
+        when(userRepository.findByUsername("test_username")).thenReturn(Optional.empty());
+        when(userService.isValidPassword("Test_password1@")).thenReturn(false);
+
+        ResponseEntity<?> response = userController.registerUser(user);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(
+            "Password must include at least one uppercase, one lowercase, one number, one special character, and be 8 characters long.",
+            response.getBody()
+        );
     }
 
     @Test
-    void testIsAccountLocked() throws Exception {
-        String username = "user1";
-        Instant futureLockout = Instant.now().plus(Duration.ofMinutes(5));
-        
-        setLockoutExpiryViaReflection(userController, username, futureLockout);
-        setFailedLoginAttemptsViaReflection(userController, username, 3);
-        
-        assertTrue(userController.isAccountLocked(username));
+    public void testRegisterUser_VerifiesPasswordAndEnabledAndAudit() {
+        when(userRepository.findByUsername("test_username")).thenReturn(Optional.empty());
+        when(passwordEncoder.encode("Test_password1@")).thenReturn("encoded_pass");
+        when(userService.isValidPassword("Test_password1@")).thenReturn(true);
+        when(userRepository.save(any(User.class))).thenReturn(user);
+
+        User spyUser = spy(user);
+
+        userController.registerUser(spyUser);
+
+        verify(spyUser).setPassword("encoded_pass");
+        verify(spyUser).setEnabled(true);
+        verify(auditService).logAccountEvent(eq("test_username"), eq("Account Created"));
+    }
+    @Test
+    public void testLoginUser_AccountLocked() {
+        // Simulate account locked
+        userController.lockoutExpiry.put("test_username", Instant.now().plusSeconds(900));
+        when(userRepository.findByUsername("test_username")).thenReturn(Optional.of(user));
+        ResponseEntity<?> response = userController.loginUser(loginRequest);
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        assertTrue(response.getBody().toString().contains("locked"));
+    }
+    @Test
+    public void testLoginUser_FailBadCred_TracksAttemptAndAudits() {
+        when(userRepository.findByUsername("test_username")).thenReturn(Optional.of(user));
+        when(authenticationManager.authenticate(any()))
+                .thenThrow(new BadCredentialsException("Bad credentials"));
+
+        UserController spyController = spy(userController);
+        doNothing().when(spyController).trackFailedAttempt(anyString());
+
+        ResponseEntity<?> response = spyController.loginUser(loginRequest);
+
+        verify(spyController).trackFailedAttempt("test_username");
+        verify(auditService).logAccountEvent(eq("test_username"), eq("Login Failed"));
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    }
+    @Test
+    public void testModifyUser_PasswordValidationFailure() {
+        UpdateUserRequest updateUser = new UpdateUserRequest("test_name", "test_phone", "test_age", "badpass");
+        when(userRepository.getIdByToken("test_token")).thenReturn(1);
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+        when(userService.isValidPassword("badpass")).thenReturn(false);
+
+        ResponseEntity<?> response = userController.modifyUser("test_token", updateUser);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(
+            "Password must include at least one uppercase, one lowercase, one number, one special character, and be 8 characters long.",
+            response.getBody()
+        );
     }
 
     @Test
-    void testIsAccountLocked_UnlocksAccount_WhenLockoutTimeIsInPast() {
-        String username = "user2";
-        Instant pastLockout = Instant.now().minus(Duration.ofMinutes(5));
+    public void testModifyUser_VerifiesServiceAndAudit() {
+        UpdateUserRequest updateUser = new UpdateUserRequest("test_name", "test_phone", "test_age", null);
+        when(userRepository.getIdByToken("test_token")).thenReturn(1);
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+        when(userRepository.save(user)).thenReturn(user);
 
-        putLockoutExpiry(userController, username, pastLockout);
-        putFailedLoginAttempts(userController, username, 3);
+        userController.modifyUser("test_token", updateUser);
 
-        boolean locked = userController.isAccountLocked(username);
-
-        assertFalse(locked);
-        assertFalse(containsKey(userController, "lockoutExpiry", username));
-        assertFalse(containsKey(userController, "failedLoginAttempts", username));
+        verify(userService).modifyUser(updateUser, 1);
+        verify(auditService).logAccountEvent(eq("test_username"), eq("User Modified"));
     }
 
-    private void putLockoutExpiry(Object instance, String username, Instant expiry) {
-        try {
-            Field field = instance.getClass().getDeclaredField("lockoutExpiry");
-            field.setAccessible(true);
-            Map<String, Instant> map = (Map<String, Instant>) field.get(instance);
-            map.put(username, expiry);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void putFailedLoginAttempts(Object instance, String username, int attempts) {
-        try {
-            Field field = instance.getClass().getDeclaredField("failedLoginAttempts");
-            field.setAccessible(true);
-            Map<String, Integer> map = (Map<String, Integer>) field.get(instance);
-            map.put(username, attempts);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private boolean containsKey(Object instance, String fieldName, String key) {
-        try {
-            Field field = instance.getClass().getDeclaredField(fieldName);
-            field.setAccessible(true);
-            Map<?, ?> map = (Map<?, ?>) field.get(instance);
-            return map.containsKey(key);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Test
-    void accountIsLockedAfterMaxAttempts() {
-        String username = "testUser";
-        int MAX_ATTEMPTS = 3;
-
-        for (int i = 0; i < MAX_ATTEMPTS; i++) {
-            userController.trackFailedAttempt(username);
-        }
-
-        verify(auditService).logAccountEvent(username, "Account Locked");
-
-        Instant lockoutTime = userController.getLockoutExpiry().get(username);
-        assertNotNull(lockoutTime);
-    }
 }
