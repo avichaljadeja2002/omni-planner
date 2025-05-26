@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.Instant;
 import java.util.Map;
@@ -116,6 +118,7 @@ public class UserControllerTest {
         @SuppressWarnings("unchecked")
         Map<String, String> responseBody = (Map<String, String>) response.getBody();
         assertNotNull(responseBody);
+        assertEquals(authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())), SecurityContextHolder.getContext().getAuthentication());
         assertEquals("test_token", responseBody.get("token"));
         assertEquals("Login successful", responseBody.get("message"));
         assertEquals("test_username", responseBody.get("email"));
