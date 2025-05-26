@@ -86,6 +86,9 @@ public class UserServiceTest {
         User existingUser = new User();
         existingUser.setId(1);
         existingUser.setPassword("OldPassword1!");
+        existingUser.setUsername("test_username");
+
+        String username = existingUser.getUsername();
 
         UpdateUserRequest updateUserRequest = new UpdateUserRequest("new_name", "new_phone", "new_age", "Test_significantly_different_password1@");
 
@@ -101,6 +104,7 @@ public class UserServiceTest {
         assertEquals("new_age", user.getAge());
 
         verify(userRepository).save(user);  // Verify that the save method was called
+        verify(auditService).logAccountEvent(eq(username), eq("User Modified"));
     }
 
     @Test
@@ -297,4 +301,29 @@ public class UserServiceTest {
 
         assertEquals("User not found", exception.getMessage());
     }
+
+    // @Test
+    // void testModifyUser_CallsAuditLog() {
+    //     Integer userId = 1;
+    //     String oldPassword = "Test_password1@";
+    //     String newPassword = "NewPassword123!";
+    //     String username = "testUser";
+
+    //     User existingUser = new User();
+    //     existingUser.setId(userId);
+    //     existingUser.setPassword(oldPassword);
+    //     existingUser.setUsername(username);
+
+    //     UpdateUserRequest userRequest = new UpdateUserRequest(
+    //         newPassword, "New Name", "555-5555", "30"
+    //     );
+
+    //     when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
+    //     when(passwordEncoder.encode(anyString())).thenAnswer(invocation -> invocation.getArgument(0));
+    //     when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+    //     userService.modifyUser(userRequest, userId);
+
+    //     verify(auditService).logAccountEvent(eq(username), eq("User Modified"));
+    // }
 }
