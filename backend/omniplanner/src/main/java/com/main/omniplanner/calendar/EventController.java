@@ -1,4 +1,4 @@
-package com.main.omniplanner.user;
+com.main.omniplanner.calendar
 
 import com.main.omniplanner.calendar.LinkAdapter;
 import com.main.omniplanner.calendar.LinkGoogleCalendar;
