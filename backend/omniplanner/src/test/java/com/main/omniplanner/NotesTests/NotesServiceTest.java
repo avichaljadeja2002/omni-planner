@@ -71,4 +71,22 @@ public class NotesServiceTest {
         verify(notesRepository, times(1)).findByUserId(eq(1)); // Only one call should happen here
     }
 
+    @Test
+    void testUpdateExistingNote() {
+        Notes inputNote = new Notes();
+        inputNote.setText("Updated Note");
+
+        Notes existing = new Notes();
+        existing.setText("Old Note");
+
+        List<Notes> existingList = List.of(existing);
+
+        when(notesRepository.findByUserId(1)).thenReturn(existingList);
+        when(notesRepository.save(existing)).thenReturn(existing);
+
+        Notes result = notesService.saveOrUpdateNote(inputNote, 1);
+
+        assertEquals("Updated Note", result.getText()); // Checks mutation on text
+        verify(notesRepository).save(existing);         // Catches wrong save target
+    }
 }

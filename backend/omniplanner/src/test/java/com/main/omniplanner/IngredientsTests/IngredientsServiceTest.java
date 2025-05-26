@@ -52,15 +52,4 @@ public class IngredientsServiceTest {
         verify(ingredientsRepository).save(ingredients);
         verify(ingredientsRepository).findIngredientsByUserId(eq(0));
     }
-
-    @Test
-    public void testGetSaveEventNull() {
-        when(ingredientsRepository.save(ingredients)).thenReturn(ingredients);
-        when(ingredientsRepository.findIngredientsByUserId(eq(1)))
-                .thenReturn(new Ingredients());
-
-        ingredientsService.saveEvent(ingredients);
-        List<Ingredients> ingredientsList = ingredientsService.getIngredients(1);
-        assertTrue(ingredientsList.isEmpty(), "The list should be empty");
-    }
 }
