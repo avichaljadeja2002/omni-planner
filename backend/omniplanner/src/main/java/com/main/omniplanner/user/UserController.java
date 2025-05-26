@@ -42,6 +42,10 @@ public class UserController {
     private static final int MAX_ATTEMPTS = 3;
     private static final int LOCKOUT_DURATION_MINUTES = 15;
 
+    public Map<String, Instant> getLockoutExpiry() {
+        return this.lockoutExpiry;
+    }
+
     // Check for locked account logic
     public boolean isAccountLocked(String username) {
         if (lockoutExpiry.containsKey(username)) {

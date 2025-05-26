@@ -48,6 +48,7 @@ public class UserControllerTest {
 
     private final Map<String, Instant> lockoutExpiry = new ConcurrentHashMap<>();
     private final Map<String, AtomicInteger> failedLoginAttempts = new ConcurrentHashMap<>();
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -311,28 +312,11 @@ public class UserControllerTest {
         assertTrue(userController.isAccountLocked(username));
     }
 
-    // @Test
-    // void testIsAccountLocked_UnlocksAccount_WhenLockoutTimeIsInPast() {
-    //     String username = "user2";
-    //     Instant pastLockout = Instant.now().minus(Duration.ofMinutes(5));
-
-    //     service.lockoutExpiry.put(username, pastLockout);
-    //     service.failedLoginAttempts.put(username, 3);
-
-    //     boolean locked = service.isAccountLocked(username);
-
-    //     assertFalse(locked);
-    //     // Verify entries are removed
-    //     assertFalse(service.lockoutExpiry.containsKey(username));
-    //     assertFalse(service.failedLoginAttempts.containsKey(username));
-    // }
-
     @Test
     void testIsAccountLocked_UnlocksAccount_WhenLockoutTimeIsInPast() {
         String username = "user2";
         Instant pastLockout = Instant.now().minus(Duration.ofMinutes(5));
 
-        // Use reflection or helper methods if lockoutExpiry is private
         putLockoutExpiry(userController, username, pastLockout);
         putFailedLoginAttempts(userController, username, 3);
 
@@ -374,5 +358,20 @@ public class UserControllerTest {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Test
+    void accountIsLockedAfterMaxAttempts() {
+        String username = "testUser";
+        int MAX_ATTEMPTS = 3;
+
+        for (int i = 0; i < MAX_ATTEMPTS; i++) {
+            userController.trackFailedAttempt(username);
+        }
+
+        verify(auditService).logAccountEvent(username, "Account Locked");
+
+        Instant lockoutTime = userController.getLockoutExpiry().get(username);
+        assertNotNull(lockoutTime);
     }
 }
