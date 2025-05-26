@@ -1440,3 +1440,73 @@
 2025-05-26T03:48:29.026-04:00  INFO 18612 --- [omniplanner] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2025-05-26T03:48:29.027-04:00  INFO 18612 --- [omniplanner] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown initiated...
 2025-05-26T03:48:29.029-04:00  INFO 18612 --- [omniplanner] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown completed.
+2025-05-26T04:00:33.691-04:00  INFO 25000 --- [omniplanner] [Test worker] c.m.o.OmniplannerApplicationTest         : Starting OmniplannerApplicationTest using Java 17.0.12 with PID 25000 (started by norflewe in C:\Users\norflewe\OneDrive - Rose-Hulman Institute of Technology\Documents\Capstone\omni-planner\backend\omniplanner)
+2025-05-26T04:00:33.691-04:00  INFO 25000 --- [omniplanner] [Test worker] c.m.o.OmniplannerApplicationTest         : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T04:00:36.521-04:00  INFO 25000 --- [omniplanner] [Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-26T04:00:36.679-04:00  INFO 25000 --- [omniplanner] [Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 130 ms. Found 4 JPA repository interfaces.
+2025-05-26T04:00:37.943-04:00  INFO 25000 --- [omniplanner] [Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-26T04:00:38.138-04:00  INFO 25000 --- [omniplanner] [Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2025-05-26T04:00:38.260-04:00  INFO 25000 --- [omniplanner] [Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-26T04:00:39.151-04:00  INFO 25000 --- [omniplanner] [Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-26T04:00:39.257-04:00  INFO 25000 --- [omniplanner] [Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-26T04:00:39.607-04:00  INFO 25000 --- [omniplanner] [Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.sqlite.jdbc4.JDBC4Connection@14221dc6
+2025-05-26T04:00:39.611-04:00  INFO 25000 --- [omniplanner] [Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-26T04:00:42.060-04:00  INFO 25000 --- [omniplanner] [Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-26T04:00:42.166-04:00  INFO 25000 --- [omniplanner] [Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-26T04:00:42.738-04:00  INFO 25000 --- [omniplanner] [Test worker] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-05-26T04:00:44.359-04:00  INFO 25000 --- [omniplanner] [Test worker] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userService
+2025-05-26T04:00:44.415-04:00  WARN 25000 --- [omniplanner] [Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-26T04:00:45.822-04:00  WARN 25000 --- [omniplanner] [Test worker] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2025-05-26T04:00:46.164-04:00  INFO 25000 --- [omniplanner] [Test worker] c.m.o.OmniplannerApplicationTest         : Started OmniplannerApplicationTest in 13.296 seconds (process running for 23.038)
+2025-05-26T04:00:47.185-04:00  INFO 25000 --- [omniplanner] [Test worker] c.m.omniplanner.OmniplannerApplication   : Starting OmniplannerApplication using Java 17.0.12 with PID 25000 (started by norflewe in C:\Users\norflewe\OneDrive - Rose-Hulman Institute of Technology\Documents\Capstone\omni-planner\backend\omniplanner)
+2025-05-26T04:00:47.186-04:00  INFO 25000 --- [omniplanner] [Test worker] c.m.omniplanner.OmniplannerApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T04:00:47.509-04:00  INFO 25000 --- [omniplanner] [Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-26T04:00:47.542-04:00  INFO 25000 --- [omniplanner] [Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 32 ms. Found 4 JPA repository interfaces.
+2025-05-26T04:00:47.980-04:00  INFO 25000 --- [omniplanner] [Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-26T04:00:48.011-04:00  INFO 25000 --- [omniplanner] [Test worker] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-26T04:00:48.012-04:00  INFO 25000 --- [omniplanner] [Test worker] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2025-05-26T04:00:48.168-04:00  INFO 25000 --- [omniplanner] [Test worker] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-26T04:00:48.169-04:00  INFO 25000 --- [omniplanner] [Test worker] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 979 ms
+2025-05-26T04:00:48.331-04:00  INFO 25000 --- [omniplanner] [Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-26T04:00:48.341-04:00  INFO 25000 --- [omniplanner] [Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-26T04:00:48.365-04:00  INFO 25000 --- [omniplanner] [Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-26T04:00:48.369-04:00  INFO 25000 --- [omniplanner] [Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2025-05-26T04:00:48.371-04:00  INFO 25000 --- [omniplanner] [Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection org.sqlite.jdbc4.JDBC4Connection@265bc5cb
+2025-05-26T04:00:48.372-04:00  INFO 25000 --- [omniplanner] [Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2025-05-26T04:00:48.555-04:00  INFO 25000 --- [omniplanner] [Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-26T04:00:48.565-04:00  INFO 25000 --- [omniplanner] [Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-26T04:00:48.674-04:00  INFO 25000 --- [omniplanner] [Test worker] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userService
+2025-05-26T04:00:48.685-04:00  WARN 25000 --- [omniplanner] [Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-26T04:00:48.822-04:00  WARN 25000 --- [omniplanner] [Test worker] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2025-05-26T04:00:48.905-04:00  INFO 25000 --- [omniplanner] [Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-26T04:00:48.905-04:00  INFO 25000 --- [omniplanner] [Test worker] c.m.omniplanner.OmniplannerApplication   : Started OmniplannerApplication in 1.774 seconds (process running for 25.793)
+2025-05-26T04:00:49.888-04:00  INFO 25000 --- [omniplanner] [Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.main.omniplanner.ConfigTests.GlobalExceptionHandlerTest]: GlobalExceptionHandlerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-05-26T04:00:49.937-04:00  INFO 25000 --- [omniplanner] [Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.main.omniplanner.OmniplannerApplication for test class com.main.omniplanner.ConfigTests.GlobalExceptionHandlerTest
+2025-05-26T04:00:50.069-04:00  INFO 25000 --- [omniplanner] [Test worker] c.m.o.C.GlobalExceptionHandlerTest       : Starting GlobalExceptionHandlerTest using Java 17.0.12 with PID 25000 (started by norflewe in C:\Users\norflewe\OneDrive - Rose-Hulman Institute of Technology\Documents\Capstone\omni-planner\backend\omniplanner)
+2025-05-26T04:00:50.069-04:00  INFO 25000 --- [omniplanner] [Test worker] c.m.o.C.GlobalExceptionHandlerTest       : No active profile set, falling back to 1 default profile: "default"
+2025-05-26T04:00:50.636-04:00  INFO 25000 --- [omniplanner] [Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-26T04:00:50.688-04:00  INFO 25000 --- [omniplanner] [Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 50 ms. Found 4 JPA repository interfaces.
+2025-05-26T04:00:50.964-04:00  INFO 25000 --- [omniplanner] [Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-26T04:00:50.980-04:00  INFO 25000 --- [omniplanner] [Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-26T04:00:51.008-04:00  INFO 25000 --- [omniplanner] [Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-26T04:00:51.014-04:00  INFO 25000 --- [omniplanner] [Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2025-05-26T04:00:51.016-04:00  INFO 25000 --- [omniplanner] [Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Added connection org.sqlite.jdbc4.JDBC4Connection@1b6c53d0
+2025-05-26T04:00:51.017-04:00  INFO 25000 --- [omniplanner] [Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2025-05-26T04:00:51.290-04:00  INFO 25000 --- [omniplanner] [Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-26T04:00:51.306-04:00  INFO 25000 --- [omniplanner] [Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-26T04:00:51.549-04:00  INFO 25000 --- [omniplanner] [Test worker] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userService
+2025-05-26T04:00:51.590-04:00  WARN 25000 --- [omniplanner] [Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-26T04:00:51.981-04:00  WARN 25000 --- [omniplanner] [Test worker] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2025-05-26T04:00:52.103-04:00  INFO 25000 --- [omniplanner] [Test worker] c.m.o.C.GlobalExceptionHandlerTest       : Started GlobalExceptionHandlerTest in 2.15 seconds (process running for 28.977)
+2025-05-26T04:00:53.749-04:00  INFO 25000 --- [omniplanner] [http-nio-0.0.0.0-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-05-26T04:00:53.750-04:00  INFO 25000 --- [omniplanner] [http-nio-0.0.0.0-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-05-26T04:00:53.752-04:00  INFO 25000 --- [omniplanner] [http-nio-0.0.0.0-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2025-05-26T04:00:56.270-04:00  INFO 25000 --- [omniplanner] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-26T04:00:56.276-04:00  INFO 25000 --- [omniplanner] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-26T04:00:56.282-04:00  INFO 25000 --- [omniplanner] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-26T04:00:57.220-04:00  INFO 25000 --- [omniplanner] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-26T04:00:57.222-04:00  INFO 25000 --- [omniplanner] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
+2025-05-26T04:00:57.225-04:00  INFO 25000 --- [omniplanner] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
+2025-05-26T04:00:57.239-04:00  INFO 25000 --- [omniplanner] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-26T04:00:57.240-04:00  INFO 25000 --- [omniplanner] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown initiated...
+2025-05-26T04:00:57.242-04:00  INFO 25000 --- [omniplanner] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown completed.
