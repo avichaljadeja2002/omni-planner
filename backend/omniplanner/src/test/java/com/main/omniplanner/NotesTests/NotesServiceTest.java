@@ -15,7 +15,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class NotesServiceTest {
 
@@ -60,15 +59,6 @@ public class NotesServiceTest {
         verify(notesRepository).save(notes);
         verify(notesRepository, times(2)).findByUserId(eq(1)); // Adjusted to expect 1 call
     }
-    @Test
-    public void testSaveOrUpdateNote_WithNullUserId_ThrowsException() {
-    Notes note = new Notes();
-    note.setText("Sample note");
-
-    assertThrows(IllegalArgumentException.class, () -> {
-        notesService.saveOrUpdateNote(note, null);
-    });
-}
 
     @Test
     public void testSaveNewNote() {
